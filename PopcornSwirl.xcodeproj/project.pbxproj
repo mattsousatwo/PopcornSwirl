@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		617B6E0E251A5D5B00BCF757 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617B6E0D251A5D5B00BCF757 /* Home.swift */; };
+		617B6E10251A5D7000BCF757 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617B6E0F251A5D7000BCF757 /* Menu.swift */; };
 		61C83ED9251A3DF50012019F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C83ED8251A3DF50012019F /* AppDelegate.swift */; };
 		61C83EDB251A3DF50012019F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C83EDA251A3DF50012019F /* SceneDelegate.swift */; };
 		61C83EDE251A3DF50012019F /* PopcornSwirl.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 61C83EDC251A3DF50012019F /* PopcornSwirl.xcdatamodeld */; };
-		61C83EE0251A3DF50012019F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C83EDF251A3DF50012019F /* ContentView.swift */; };
 		61C83EE2251A3DF90012019F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61C83EE1251A3DF90012019F /* Assets.xcassets */; };
 		61C83EE5251A3DF90012019F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61C83EE4251A3DF90012019F /* Preview Assets.xcassets */; };
 		61C83EE8251A3DF90012019F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61C83EE6251A3DF90012019F /* LaunchScreen.storyboard */; };
@@ -29,11 +30,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		617B6E0D251A5D5B00BCF757 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		617B6E0F251A5D7000BCF757 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		61C83ED5251A3DF50012019F /* PopcornSwirl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PopcornSwirl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61C83ED8251A3DF50012019F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		61C83EDA251A3DF50012019F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		61C83EDD251A3DF50012019F /* PopcornSwirl.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PopcornSwirl.xcdatamodel; sourceTree = "<group>"; };
-		61C83EDF251A3DF50012019F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		61C83EE1251A3DF90012019F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		61C83EE4251A3DF90012019F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		61C83EE7251A3DF90012019F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -113,7 +115,6 @@
 			children = (
 				61C83ED8251A3DF50012019F /* AppDelegate.swift */,
 				61C83EDA251A3DF50012019F /* SceneDelegate.swift */,
-				61C83EDF251A3DF50012019F /* ContentView.swift */,
 				61C83EE1251A3DF90012019F /* Assets.xcassets */,
 				61C83EE6251A3DF90012019F /* LaunchScreen.storyboard */,
 				61C83EE9251A3DF90012019F /* Info.plist */,
@@ -126,6 +127,8 @@
 			isa = PBXGroup;
 			children = (
 				61C83F00251A41440012019F /* MovieCard.swift */,
+				617B6E0D251A5D5B00BCF757 /* Home.swift */,
+				617B6E0F251A5D7000BCF757 /* Menu.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -240,8 +243,9 @@
 			files = (
 				61C83F01251A41440012019F /* MovieCard.swift in Sources */,
 				61C83ED9251A3DF50012019F /* AppDelegate.swift in Sources */,
+				617B6E10251A5D7000BCF757 /* Menu.swift in Sources */,
 				61C83EDB251A3DF50012019F /* SceneDelegate.swift in Sources */,
-				61C83EE0251A3DF50012019F /* ContentView.swift in Sources */,
+				617B6E0E251A5D5B00BCF757 /* Home.swift in Sources */,
 				61C83EDE251A3DF50012019F /* PopcornSwirl.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
