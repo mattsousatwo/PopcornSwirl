@@ -21,16 +21,46 @@ struct Home: View {
             ZStack {
                 
                 
-                ScrollView(.vertical, showsIndicators:  false) {
-                    VStack(spacing: 15) {
-                        ForEach(1...8, id: \.self ) { i in
-                            Text("Hello \(i)").font(.system(.title, design: .rounded)).bold()
-                        }
+                VStack(spacing: 20) {
+                    HStack {
+                        Text("Latest").font(.system(.title, design: .rounded)).bold()
+                            .padding(.horizontal)
+                        Spacer()
+                    }
+                    ScrollView(.horizontal, showsIndicators:  false) {
+                        HStack(spacing: 15) {
+                            ForEach(1...8, id: \.self ) { i in
+                                VStack {
+                                    MovieCard()
+                                    Text("Hello \(i)").font(.system(.title, design: .rounded)).bold()
+                                }
+                            }
+                            
+                        }.padding()
                         
-                    }.padding()
+                    } // scroll
+
+                    HStack {
+                        Text("Popular").font(.system(.title, design: .rounded)).bold()
+                            .padding(.horizontal)
+                        Spacer()
+                    }
+                    ScrollView(.horizontal, showsIndicators:  false) {
+                        HStack(spacing: 15) {
+                            ForEach(1...8, id: \.self ) { i in
+                                VStack {
+                                    MovieCard(color: Color(.systemTeal))
+                                    Text("Hello \(i)").font(.system(.title, design: .rounded)).bold()
+                                }
+                            }
+                            
+                        }.padding()
+                        
+                    } // scroll
+
                     
-                }// scroll
                     
+                }
                     
                 GeometryReader { _ in
                     

@@ -9,13 +9,23 @@
 import SwiftUI
 
 struct MovieCard: View {
+    
+    var color: Color = .blue
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        RoundedRectangle(cornerRadius: 12)
+            .frame(width: 100, height: 200)
+            .foregroundColor(color)
+            .shadow(radius: 5)
+            
+        
+        
     }
 }
 
 struct MovieCard_Previews: PreviewProvider {
     static var previews: some View {
-        MovieCard()
+        MovieCard().previewLayout(.sizeThatFits)
     }
 }
