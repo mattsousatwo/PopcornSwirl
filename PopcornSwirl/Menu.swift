@@ -16,7 +16,7 @@ struct Menu: View {
         VStack(spacing: 25) {
             
 
-            NavigationLink(destination: MovieCard(),
+            NavigationLink(destination: MovieDetail(),
                            isActive: $movie,
                            label: { // Icon
                 Image(systemName: "person").resizable()
