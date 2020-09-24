@@ -87,9 +87,13 @@ struct Home: View {
                             self.showMenu.toggle()
                         }) {
                             if self.showMenu == true {
-                                Image(systemName: "arrow.left").font(.body).foregroundColor(.black)
+                                Image(systemName: "arrow.left").resizable().scaledToFit()
+                                    .frame(width: 40, height: 20)
+                                    .foregroundColor(.black)
                             } else {
-                                Image(systemName: "list.bullet").renderingMode(.original)
+                                Image(systemName: "list.bullet").resizable().scaledToFit()
+                                    .frame(width: 40, height: 20)
+                                    .foregroundColor(.black)
                             }
                         }
                     )

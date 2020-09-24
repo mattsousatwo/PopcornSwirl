@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		61322942251D26EF00A84C62 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61322941251D26EF00A84C62 /* Buttons.swift */; };
 		617B6E0E251A5D5B00BCF757 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617B6E0D251A5D5B00BCF757 /* Home.swift */; };
 		617B6E10251A5D7000BCF757 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617B6E0F251A5D7000BCF757 /* Menu.swift */; };
 		617B6E12251A625900BCF757 /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617B6E11251A625900BCF757 /* MovieDetail.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		61322941251D26EF00A84C62 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		617B6E0D251A5D5B00BCF757 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		617B6E0F251A5D7000BCF757 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		617B6E11251A625900BCF757 /* MovieDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				617B6E11251A625900BCF757 /* MovieDetail.swift */,
 				617B6E13251A937500BCF757 /* Colors+EXT.swift */,
 				617B6E15251AA0C300BCF757 /* Star.swift */,
+				61322941251D26EF00A84C62 /* Buttons.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				617B6E14251A937500BCF757 /* Colors+EXT.swift in Sources */,
 				617B6E12251A625900BCF757 /* MovieDetail.swift in Sources */,
 				61C83ED9251A3DF50012019F /* AppDelegate.swift in Sources */,
+				61322942251D26EF00A84C62 /* Buttons.swift in Sources */,
 				617B6E10251A5D7000BCF757 /* Menu.swift in Sources */,
 				61C83EDB251A3DF50012019F /* SceneDelegate.swift in Sources */,
 				617B6E0E251A5D5B00BCF757 /* Home.swift in Sources */,

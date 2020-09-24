@@ -112,22 +112,12 @@ struct MovieDetail: View {
                         
                             // Trailer button
                         HStack {
-                            
-                            let icons = ["eye", "bookmark.fill", "play.fill"]
-                            
-                            ForEach(0..<icons.count, id: \.self) { i in
-                                RoundedRectangle(cornerRadius: 8)
-                                    .frame(width: 40,
-                                           height: 50)
-                                    .foregroundColor( .indigo)
-                                    .shadow(radius: 8)
-                                    .overlay(
-                                        Image(systemName: icons[i])
-                                            .foregroundColor(.white)
-                                    )
-                                    .padding(2)
+ 
+                                WatchedButton()
+                                BookmarkButton()
+                                PlayButton()
                                 
-                            }
+                            
 
                         }
                         .padding(.vertical)

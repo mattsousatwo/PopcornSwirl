@@ -65,6 +65,9 @@ struct Menu: View {
                 }
              }
             
+            
+            
+            WatchedButton()
             Spacer(minLength: 15)
             
         } // V stack
