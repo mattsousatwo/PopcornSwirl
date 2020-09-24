@@ -31,6 +31,7 @@ struct Home: View {
                         HStack(spacing: 15) {
                             ForEach(1...8, id: \.self ) { i in
                                 VStack {
+
                                     MovieCard()
                                     Text("Hello \(i)").font(.system(.title, design: .rounded)).bold()
                                 }

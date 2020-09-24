@@ -9,91 +9,94 @@
 import SwiftUI
 
 struct Star: View {
-    
-    
-    //                      (X: Left, Right, Y: Up, Down)
-    
-    var rect: CGSize
-  
+    var status: StarStatus
     var body: some View {
-        
-        
-        
-        // Center
-        let centerX = rect.width / 2
-        let centerY = rect.height / 2
-        // Furthest points
-        let top = centerY - 75
-        let bottom = centerY + 100
-        let leading = centerX - 100
-        let trailing = centerX + 100
+        Image(systemName: status.rawValue).resizable()
+            .foregroundColor(.lightYellow)
+            .frame(width: 25, height: 25)
+    }
+}
 
-        // Outer Points
-        let outsideTop = CGPoint(x: centerX, y: top)
-        let outsideRightTop = CGPoint(x: trailing, y: centerY)
-        let outsideRightBottom = CGPoint(x: trailing - 30, y: bottom)
-        let outsideLeftTop = CGPoint(x: leading, y: centerY )
-        let outsideLeftBottom = CGPoint(x: leading + 30, y: bottom)
-        
-        // Inner Points
-        let rightInnerTop = CGPoint(x:  centerX + 30, y: centerY - 5)
-        let rightInnerBottom = CGPoint(x: centerX + 50, y: centerY + 40)
-        let innerCenter = CGPoint(x: centerX , y: centerY + 60)
-        let leftInnerTop = CGPoint(x: centerX - 30, y: centerY - 5)
-        let leftInnerBottom = CGPoint(x: centerX - 50, y: centerY + 40)
-        
-        Path { path in
-        path.move(to: outsideTop) // (CENTER,UP) - TOP RIGHT
-        
-        
-            path.addLine(to: rightInnerTop) // (RIGHT, DOWN)
-        
-        path.addLine(to: outsideRightTop) // (RIGHT, CENTER) - RIGHT TOP
-        
-            path.addLine(to: rightInnerBottom) // (LEFT, DOWN)
-        
-        path.addLine(to: outsideRightBottom) // (RIGHT, DOWN) - RIGHT BOTTOM
-        
-            path.addLine(to: innerCenter) // (LEFT, UP )
-        
-        path.addLine(to: outsideLeftBottom) // (LEFT, DOWN) - LEFT BOTTOM
-        
-            path.addLine(to: leftInnerBottom) // (RIGHT, UP)
-        
-        path.addLine(to: outsideLeftTop) // (LEFT, UP) - LEFT TOP
-        
-            path.addLine(to: leftInnerTop) // (RIGHT, center)
-        
-        path.addLine(to: outsideTop) // (RIGHT, UP) - TOP LEFT
-        
-        
-        
-        path.closeSubpath()
-        
-        
-            
+
+struct StarBar: View {
+    
+    var value: Double
+    
+    private var status: [StarStatus] {
+        switch value {
+        case 0...0.4 :
+            return [.empty, .empty, .empty, .empty, .empty]
+        case 0.5...0.9 :
+            return [.half, .empty, .empty, .empty, .empty]
+        case 1...1.4 :
+            return [.full, .empty, .empty, .empty, .empty]
+        case 1.5...1.9 :
+            return [.full, .half, .empty, .empty, .empty]
+        case 2...2.4 :
+            return [.full, .full, .empty, .empty, .empty]
+        case 2.5...2.9 :
+            return [.full, .full, .half, .empty, .empty]
+        case 3...3.4 :
+            return [.full, .full, .full, .empty, .empty]
+        case 3.5...3.9 :
+            return [.full, .full, .full, .half, .empty]
+        case 4...4.4 :
+            return [.full, .full, .full, .full, .empty]
+        case 4.5...4.9 :
+            return [.full, .full, .full, .full, .half]
+        case 5:
+            return [.full, .full, .full, .full, .full]
+        default:
+            return [.nonExistant, .nonExistant, .nonExistant, .nonExistant, .nonExistant]
         }
-        .fill(Color.green)
-
-        
     }
     
+    var body: some View {
+        HStack {
+            ForEach(status, id: \.self) { x in
+                Star(status: x)
+            }
+            Text("\(value, specifier: "%.1f")").font(.system(size: 20)).bold()
+            .foregroundColor(.lightYellow)
+        }
+    }
 }
 
 
 
 struct Star_Previews: PreviewProvider {
-    static var previews: some View {
+    static var previews: some View {  
         Group {
-            Star(rect: CGSize(width: 200, height: 200))
+            StarBar(value: 2.7)
                 .previewLayout(.sizeThatFits)
-                .foregroundColor(.yellow)
-            Star(rect: CGSize(width: 200, height: 200))
-
-                .foregroundColor(.lightYellow)
-                
             
+            StarBar(value: 3.8)
+                .previewLayout(.sizeThatFits)
+            
+            Star(status: StarStatus.empty)
+            .frame(width: 100, height: 100)
+                .foregroundColor(Color.lightYellow)
+                .previewLayout(.sizeThatFits)
+            
+            Star(status: .half)
+            .frame(width: 100, height: 100)
+                .foregroundColor(Color.lightYellow)
+                .previewLayout(.sizeThatFits)
+            
+            
+            Star(status: .full)
+            .frame(width: 100, height: 100)
+                .foregroundColor(Color.lightYellow)
+                .previewLayout(.sizeThatFits)
             
         }
     }
+}
+
+
+enum StarStatus: String  {
+    case empty = "star"
+    case half = "star.lefthalf.fill"
+    case full = "star.fill"
+    case nonExistant = "star.slash"
 }

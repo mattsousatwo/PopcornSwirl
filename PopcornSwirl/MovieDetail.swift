@@ -13,17 +13,17 @@ struct MovieDetail: View {
        
  
         GeometryReader { geometry in
- 
-            ZStack {
+            ScrollView {
+                ZStack {
                 
                 VStack {
                     
                     // Movie Poster
                     RoundedRectangle(cornerRadius: 0)
                         .frame(width: geometry.size.width,
-                               height: geometry.size.height / 2)
+                               height: geometry.size.height / 3)
                         .foregroundColor( Color.lightBlue).edgesIgnoringSafeArea(.top)
- 
+                    
                     ZStack {
                             
                         // Detail Background
@@ -34,47 +34,110 @@ struct MovieDetail: View {
                             .shadow(radius: 2)
                             .foregroundColor(Color.pGray)
                             .edgesIgnoringSafeArea(.bottom)
-                            .offset(x: 0,
-                                    y: -25)
-                        
-                            
-                        VStack {
 
-                            HStack {
+                            .overlay(
                                 
-                                VStack(alignment: .leading, spacing: 10) {
-                                    Text("rating")
-                                    Text("Title")
-                                    Text("Sub title ")
+                                VStack(alignment: .leading) {
+                                    HStack(alignment: .bottom) {
+                                        // Movie Poster
+                                        MovieCard(color: .darkLime)
+                                            .overlay(
+                                                Image(systemName: "person.fill").resizable().scaledToFit().padding()
+                                            )
+                                            .padding()
+                                        VStack(alignment: .leading, spacing: 10) {
+                                            // Movie Title
+                                            Text("Title")
+                                            // Genre
+                                            Text("Sub title ")
+                                            // Rating
+                                            StarBar(value: 2.7)
+                                                .padding()
+                                        }
+                                    }
+                                    
+                                    // Description
+                                    Text("Description")
+                                        .padding()
+                                        
+                                    // Actors scroll view
+                                    Text("Actors").font(.system(.largeTitle)).bold()
+                                        .padding(.horizontal)
+                                    
+                                    ScrollView(.horizontal, showsIndicators:  false) {
+                                        HStack {
+                                            ForEach(1...8, id: \.self ) { i in
+                                            
+                                                MovieCard(color: .pPurple).padding()
+                                            
+                                            }
+                                        }
+                                    } // actors scroll view
+                                    
+                                    
+                                    
+                                    
                                 }
-                                .padding()
-                                Spacer()
-                            }
+                                , alignment: .topLeading )
                             
-                            
-                            Spacer()
-                        }
-                        
+                       
+                                
                         
                     } // z stack
+                    
+                    .offset(x: 0, y: -100)
                     .overlay(
                         
+                            // Trailer button
+                        HStack {
                             RoundedRectangle(cornerRadius: 8)
-                            .frame(width: 60,
-                                height: 60)
-                            .foregroundColor( .darkBlue )
-                            .shadow(radius: 8)
-                            .padding()
+                                .frame(width: 50,
+                                       height: 50)
+                                .foregroundColor( .indigo)
+                                .shadow(radius: 8)
+                                .overlay(
+                                    Image(systemName: "eye")
+                                        .foregroundColor(.white)
+                                )
+                                .padding()
+                            
+                            
+                                
+                            RoundedRectangle(cornerRadius: 8)
+                                .frame(width: 50,
+                                       height: 50)
+                                .foregroundColor( .indigo)
+                                .shadow(radius: 8)
+                                .overlay(
+                                    Image(systemName: "bookmark")
+                                        .foregroundColor(.white)
+                                )
+                                .padding()
+                            
+                            RoundedRectangle(cornerRadius: 8)
+                                .frame(width: 50,
+                                       height: 50)
+                                .foregroundColor( .indigo)
+                                .shadow(radius: 8)
+                                .overlay(
+                                    Image(systemName: "play.fill")
+                                        .foregroundColor(.white)
+                                )
+                                .padding()
+                        }
                             .offset(x: -10,
-                                    y: -65)
+                                    y: -145)
                             , alignment: .topTrailing)
                         
-                    
+                
                 }  // v
                 
             } // z
-     
+            }
         } // geo
+        
+        .navigationBarBackButtonHidden(false )
+        
         
         
     } // body
