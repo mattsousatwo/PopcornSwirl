@@ -31,9 +31,12 @@ struct Home: View {
                         HStack(spacing: 15) {
                             ForEach(1...8, id: \.self ) { i in
                                 VStack {
-
-                                    MovieCard()
-                                    Text("Hello \(i)").font(.system(.title, design: .rounded)).bold()
+                                    
+                                    NavigationLink(destination: MovieDetail()) {
+                                        MovieCard()
+                                    }
+                                    
+                                    Text("Movie \(i)").font(.system(.title, design: .rounded)).bold()
                                 }
                             }
                             
@@ -51,7 +54,7 @@ struct Home: View {
                             ForEach(1...8, id: \.self ) { i in
                                 VStack {
                                     MovieCard(color: Color(.systemTeal))
-                                    Text("Hello \(i)").font(.system(.title, design: .rounded)).bold()
+                                    Text("Movie \(i)").font(.system(.title, design: .rounded)).bold()
                                 }
                             }
                             
@@ -94,6 +97,8 @@ struct Home: View {
                 
                 
             } // Z
+            
+            .background(Color.snowWhite).edgesIgnoringSafeArea(.bottom)
         } // Nav
 
         

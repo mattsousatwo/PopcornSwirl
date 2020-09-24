@@ -16,40 +16,53 @@ struct Menu: View {
         VStack(spacing: 25) {
             
 
+            // Go to saved Movies
             NavigationLink(destination: MovieDetail(),
                            isActive: $movie,
                            label: { // Icon
-                Image(systemName: "person").resizable()
-                    .padding()
-                    .frame(width: 55, height: 55)
-                    .background(Color.green)
-                    .foregroundColor(Color.white)
-                    .cornerRadius(12)
+                            VStack {
+                            Image(systemName: "bookmark.fill").resizable().scaledToFit()
+                                .padding()
+                                .frame(width: 70, height: 70)
+                                .background(Color.green)
+                                .foregroundColor(Color.white)
+                                .cornerRadius(12)
+                            Text("Saved").font(.title3).bold()
+                                .foregroundColor(.black)
+                            }
             })
             
             
             Button(action: {
                  
              }) {
+                VStack {
                  // Icon
-                 Image(systemName: "person").resizable()
-                     .padding()
-                     .frame(width: 55, height: 55)
-                     .background(Color.red)
-                     .foregroundColor(Color.white)
-                     .cornerRadius(12)
+                    Image(systemName: "eye").resizable().scaledToFit()
+                        .padding()
+                        .frame(width: 70, height: 70)
+                        .background(Color.red)
+                        .foregroundColor(Color.white)
+                        .cornerRadius(12)
+                    Text("Watched").font(.title3).bold()
+                        .foregroundColor(.black)
+                }
              }
             
             Button(action: {
                  
              }) {
-                 // Icon
-                 Image(systemName: "person").resizable()
-                     .padding()
-                     .frame(width: 55, height: 55)
-                     .background(Color.blue)
-                     .foregroundColor(Color.white)
-                     .cornerRadius(12)
+                VStack {
+                    // Icon
+                    Image(systemName: "magnifyingglass").resizable().scaledToFit()
+                        .padding()
+                        .frame(width: 70, height: 70)
+                        .background(Color.blue)
+                        .foregroundColor(Color.white)
+                        .cornerRadius(12)
+                    Text("Search").font(.title3).bold()
+                        .foregroundColor(.black)
+                }
              }
             
             Spacer(minLength: 15)
