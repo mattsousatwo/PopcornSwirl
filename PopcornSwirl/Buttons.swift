@@ -12,7 +12,8 @@ struct CustomButton: View {
     
     @State var pressed: Bool = false
     
-    var rect: CGFloat = 50
+    var width: CGFloat = 50
+    var height: CGFloat = 50
     var trueImage: String = "person.fill"
     var falseImage: String = "person"
     
@@ -22,7 +23,7 @@ struct CustomButton: View {
             .opacity( pressed ?  1.0 : 0.7)
 //            .scaleEffect( pressed ? CGSize(width: 0.8, height: 0.8) : CGSize(width: 1.0, height: 1.0))
             .padding()
-            .frame(width: rect, height: rect)
+            .frame(width: width, height: height)
             .background(Color.lightBlue)
             .foregroundColor(.snowWhite)
             .cornerRadius(8)
@@ -42,10 +43,12 @@ struct WatchedButton: View {
     
     var pressed: Bool = false
     
+    
     var body: some View {
         
         CustomButton(pressed: pressed,
-                     rect: 60,
+                     width: 60,
+                     height: 60 ,
                      trueImage: "film",
                      falseImage: "film")
     }
@@ -59,7 +62,8 @@ struct BookmarkButton: View {
     var body: some View {
         
         CustomButton(pressed: pressed,
-                     rect: 60,
+                     width: 60,
+                     height: 60,
                      trueImage: "bookmark.fill",
                      falseImage: "bookmark.fill")
         
@@ -73,7 +77,8 @@ struct PlayButton: View {
     var body: some View {
         
         CustomButton(pressed: pressed,
-                     rect: 60,
+                     width: 60,
+                     height: 60,
                      trueImage: "play.fill",
                      falseImage: "play.fill")
         

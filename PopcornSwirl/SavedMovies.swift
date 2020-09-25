@@ -12,12 +12,17 @@ struct SavedMovies: View {
     
     
     var body: some View {
-        ScrollView {
-
-            SavedRow()
-            
-        }// Main Scroll
-        .background(Color.pGray)
+        
+        GeometryReader { _ in
+        
+        
+    
+         
+                SavedRow()
+      
+        
+        }
+        .background(Color.pGray3)
         .edgesIgnoringSafeArea(.bottom)
         
         .navigationTitle(Text("Saved Movies"))
@@ -27,7 +32,7 @@ struct SavedMovies: View {
 
 struct SavedRow: View {
     
-    var elements = ["Indiana Jones", "Die Hard", "Double Jeprody", "Tropic Thunder", "Alladin", "The Lion king", "Space Jam", "Avatar"]
+    var elements = ["Indiana Jones", "Die Hard", "Double Jeprody", "Tropic Thunder", "Alladin", "The Lion king", "Space Jam", "Avatar", "Casino Royal", "Iorn Man", "Star Trek", "2012", "Ocean Twelve", "Pokemon", "The Karate Kid"]
     
     private var elementsArray: [[String]] {
         
@@ -47,27 +52,29 @@ struct SavedRow: View {
     var body: some View {
         
         GeometryReader { geometry in
-            VStack {
+            ScrollView {
+                VStack {
                 
-                ForEach(elementsArray, id: \.self) { array in
-                    HStack {
-                        ForEach(array, id: \.self) { x in
-                            MovieCard().overlay(
-                                Text(x).foregroundColor(.white)
-                            )
-                        } // ForEach(array)
-                        .padding(.horizontal, 15)
-                        Spacer()
-                    } // HStack
-                    .frame(width: geometry.size.width,
-                           height: 200)
+                    ForEach(elementsArray, id: \.self) { array in
+                        HStack {
+                            ForEach(array, id: \.self) { x in
+                                MovieCard(color: .pPurple).overlay(
+                                    Text(x).foregroundColor(.white)
+                                )
+                            } // ForEach(array)
+                            .padding(.horizontal, 15)
+                            Spacer()
+                        } // HStack
+                        .frame(width: geometry.size.width,
+                               height: 200)
+                        
+                    } // ForEach(elementsArray)
                     
-                } // ForEach(elementsArray)
-                
-            } // VStack
-
+                } // VStack
+            } // Scroll
         } // Geo
-        .padding(.vertical)
+        
+        .padding(.bottom)
    
     }
 }

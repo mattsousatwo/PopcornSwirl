@@ -30,7 +30,7 @@ struct MovieDetail: View {
                                     .padding()
                                 VStack(alignment: .leading, spacing: 10) {
                                     // Movie Title
-                                    Text("Die Hard").font(.system(.largeTitle)).bold()
+                                    Text("Title").font(.system(.largeTitle)).bold()
                                     // Genre
                                     Text("Action / Adventure")
                                     // Rating
@@ -71,7 +71,7 @@ struct MovieDetail: View {
                                 HStack {
                                     ForEach(1...8, id: \.self ) { i in
                                     
-                                        MovieCard(color: .pPurple).padding()
+                                        MovieCard(color: .pPurple).padding(.horizontal, 7)
                                     
                                     }
                                 }
@@ -100,7 +100,7 @@ struct MovieDetail: View {
                                 HStack {
                                     ForEach(1...8, id: \.self ) { i in
                                     
-                                        MovieCard(color: .lightPink).padding()
+                                        MovieCard(color: .lightPink).padding(.horizontal, 7)
                                     
                                     }
                                 }
@@ -120,8 +120,8 @@ struct MovieDetail: View {
                             // Trailer button
                         HStack {
  
-                                WatchedButton()
-                                BookmarkButton()
+                            WatchedButton()
+                            BookmarkButton()
                             
                             PlayButton(pressed: false)
                                 

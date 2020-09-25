@@ -11,6 +11,7 @@ import SwiftUI
 struct Menu: View {
     @State var movie = false
     @State var saved = false
+    @State var search = false
     
     var body: some View {
         
@@ -50,21 +51,20 @@ struct Menu: View {
             })
             
             
-            Button(action: {
-                 
-             }) {
+            NavigationLink(destination: SearchMovie(searchTag: "Searching...."),
+                           isActive: $search,
+                           label: { // Icon
                 VStack {
-                    // Icon
                     Image(systemName: "magnifyingglass").resizable().scaledToFit()
                         .padding()
                         .frame(width: 70, height: 70)
                         .background(Color.blue)
                         .foregroundColor(Color.white)
                         .cornerRadius(12)
-                    Text("Search").font(.title3).bold()
+                    Text("Detail").font(.title3).bold()
                         .foregroundColor(.black)
-                }
-             }
+                    }
+            })
             
             
             
