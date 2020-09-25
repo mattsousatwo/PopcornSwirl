@@ -12,6 +12,7 @@ struct MovieDetail: View {
     
     @State private var showDesription: Bool = false
     
+    
     var body: some View {
        
  
@@ -58,7 +59,11 @@ struct MovieDetail: View {
                             
                             
                             // Actors scroll view
-                            Text("Actors").font(.system(.title2)).bold()
+                            HStack {
+                                Text("Actors").font(.system(.title2)).bold()
+                                Spacer()
+                                Text("See All")
+                            }
                                 .padding(.horizontal)
                                 .padding(.top)
                             
@@ -83,8 +88,11 @@ struct MovieDetail: View {
                                     
                                 )
                                 
-                            
-                            Text("Suggested Movies").font(.system(.title2)).bold()
+                            HStack {
+                                Text("Suggested Movies").font(.system(.title2)).bold()
+                                Spacer()
+                                Text("See All")
+                            }
                                 .padding(.horizontal)
                                 .padding(.top)
                             
@@ -103,7 +111,6 @@ struct MovieDetail: View {
                         }
                         
                         
-                    
                             
                 } // z stack
                     
@@ -115,7 +122,8 @@ struct MovieDetail: View {
  
                                 WatchedButton()
                                 BookmarkButton()
-                                PlayButton()
+                            
+                            PlayButton(pressed: false)
                                 
                             
 
@@ -130,6 +138,8 @@ struct MovieDetail: View {
                 
                 
             } // scroll
+            
+            
         } // geo
         
         

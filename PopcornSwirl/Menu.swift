@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Menu: View {
     @State var movie = false
+    @State var saved = false
     
     var body: some View {
         
@@ -20,34 +21,34 @@ struct Menu: View {
             NavigationLink(destination: MovieDetail(),
                            isActive: $movie,
                            label: { // Icon
-                            VStack {
-                            Image(systemName: "bookmark.fill").resizable().scaledToFit()
-                                .padding()
-                                .frame(width: 70, height: 70)
-                                .background(Color.green)
-                                .foregroundColor(Color.white)
-                                .cornerRadius(12)
-                            Text("Saved").font(.title3).bold()
-                                .foregroundColor(.black)
-                            }
+                VStack {
+                    Image(systemName: "doc.plaintext").resizable().scaledToFit()
+                        .padding()
+                        .frame(width: 70, height: 70)
+                        .background(Color.green)
+                        .foregroundColor(Color.white)
+                        .cornerRadius(12)
+                    Text("Detail").font(.title3).bold()
+                        .foregroundColor(.black)
+                    }
             })
             
             
-            Button(action: {
-                 
-             }) {
+            NavigationLink(destination: SavedMovies(),
+                           isActive: $saved,
+                           label: { // Icon
                 VStack {
-                 // Icon
-                    Image(systemName: "eye").resizable().scaledToFit()
+                    Image(systemName: "bookmark.fill").resizable().scaledToFit()
                         .padding()
                         .frame(width: 70, height: 70)
-                        .background(Color.red)
+                        .background(Color.watermelonRed )
                         .foregroundColor(Color.white)
                         .cornerRadius(12)
-                    Text("Watched").font(.title3).bold()
+                    Text("Saved").font(.title3).bold()
                         .foregroundColor(.black)
-                }
-             }
+                    }
+            })
+            
             
             Button(action: {
                  
@@ -71,7 +72,7 @@ struct Menu: View {
             Spacer(minLength: 15)
             
         } // V stack
-        .padding(35)
+        .padding()
             .background(Color(.systemGray6)).edgesIgnoringSafeArea(.bottom)
         
     } // body

@@ -32,8 +32,8 @@ struct CustomButton: View {
             .onTapGesture {
                 self.pressed.toggle()
             }
-    }
-    
+        
+        }
     
 }
 
@@ -68,7 +68,7 @@ struct BookmarkButton: View {
 
 struct PlayButton: View {
     
-    var pressed: Bool = false 
+    var pressed: Bool
     
     var body: some View {
         
@@ -77,6 +77,27 @@ struct PlayButton: View {
                      trueImage: "play.fill",
                      falseImage: "play.fill")
         
+    }
+}
+
+
+struct RecognitionField: View {
+    
+    @Binding var pressed: Bool
+    
+    var body: some View {
+        
+        RoundedRectangle(cornerRadius: 12)
+            .padding(.horizontal)
+            .frame(width: UIScreen.main.bounds.width,
+                   height: 100)
+            .background(Color.pGray2)
+            .overlay(
+                Text("animated")
+                    .padding()
+                , alignment: .center)
+            .offset(x: 0, y: pressed ? 0 : 100)
+            .animation(.easeInOut)
     }
 }
 
