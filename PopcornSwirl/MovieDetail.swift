@@ -32,10 +32,10 @@ struct MovieDetail: View {
                                     // Movie Title
                                     Text("Title").font(.system(.largeTitle)).bold()
                                     // Genre
-                                    Text("Action / Adventure")
+                                    Text("Action / Adventure").foregroundColor(.gray)
                                     // Rating
                                     StarBar(value: 4.8)
-                                        .padding(.vertical)
+                                        .padding(.vertical, 4)
                                 }
                             }
                             
@@ -71,7 +71,11 @@ struct MovieDetail: View {
                                 HStack {
                                     ForEach(1...8, id: \.self ) { i in
                                     
-                                        MovieCard(color: .pPurple).padding(.horizontal, 7)
+                                        ActorCard2(color: .coral,
+                                                  image: Image(systemName: "person.fill"),
+                                                  width: 100,
+                                                  height: 200)
+                                            .padding(.horizontal, 7).padding(.vertical, 5)
                                     
                                     }
                                 }
