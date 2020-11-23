@@ -7,11 +7,15 @@
 //
 
 import SwiftUI
+import Alamofire
+
 
 struct Home: View {
     
     @State var showMenu = false
     
+    let nowPlaying = "https://api.themoviedb.org/3/movie/now_playing?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&page=1"
+    let decoder = JSONDecoder()
     
     var body: some View {
         
@@ -105,6 +109,40 @@ struct Home: View {
             .background(Color.snowWhite).edgesIgnoringSafeArea(.bottom)
         } // Nav
 
+        
+        
+        .onAppear(perform: {
+            
+             AF.request( nowPlaying).responseJSON { response in
+                
+//                    debugPrint(response)
+
+                if let x = response.data {
+                    do {
+                        let xData = try decoder.decode(NowPlaying.self, from: x)
+                        
+                        print("\(xData.page)" + " xData")
+                        
+                        guard let overview = xData.results.first?.overview else { return }
+                        guard let title = xData.results.first?.title else { return }
+                        
+                        print(title + "\n" + overview + "xData")
+                        
+                    } catch {
+                        print(error)
+                    }
+                }
+                
+            }
+            
+            
+        
+        })
+        
+        
+        
+        
+        
         
     } // body
 }
