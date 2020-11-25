@@ -14,16 +14,15 @@ struct Home: View {
     
     @State var showMenu = false
     
-    let nowPlaying = "https://api.themoviedb.org/3/movie/now_playing?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&page=1"
-    let decoder = JSONDecoder()
+    let movieManager = MovieManager()
+    
+    @State private var popMovies : [PopularMovie] = []
     
     var body: some View {
         
-         
         
         NavigationView {
             ZStack {
-                
                 
                 VStack(spacing: 20) {
                     HStack {
@@ -32,19 +31,26 @@ struct Home: View {
                         Spacer()
                     }
                     ScrollView(.horizontal, showsIndicators:  false) {
+                        
                         HStack(spacing: 15) {
-                            ForEach(1...8, id: \.self ) { i in
+                                
+                            ForEach(0...movieManager.popularMovies.count, id: \.self ) { i in
                                 VStack {
                                     
-                                    NavigationLink(destination: MovieDetail()) {
+                                    // Probably an issue due to Multithreading 
+                                    if movieManager.popularMovies.count != 0 {
+                                        NavigationLink(destination: MovieDetail()) {
                                         MovieCard()
+                                        }
+                                        
+                                        Text("\(movieManager.popularMovies[i].title) \(i)").font(.system(.title, design: .rounded)).bold()
                                     }
-                                    
-                                    Text("Movie \(i)").font(.system(.title, design: .rounded)).bold()
                                 }
                             }
+                                
+                        } .padding()
                             
-                        }.padding()
+                        
                         
                     } // scroll
 
@@ -53,6 +59,7 @@ struct Home: View {
                             .padding(.horizontal)
                         Spacer()
                     }
+                    // Horizontal Scroll
                     ScrollView(.horizontal, showsIndicators:  false) {
                         HStack(spacing: 15) {
                             ForEach(1...8, id: \.self ) { i in
@@ -68,7 +75,7 @@ struct Home: View {
 
                     
                     
-                }
+                } // VStack
                     
                 GeometryReader { _ in
                     
@@ -113,30 +120,8 @@ struct Home: View {
         
         .onAppear(perform: {
             
-             AF.request( nowPlaying).responseJSON { response in
-                
-//                    debugPrint(response)
-
-                if let x = response.data {
-                    do {
-                        let xData = try decoder.decode(NowPlaying.self, from: x)
-                        
-                        print("\(xData.page)" + " xData")
-                        
-                        guard let overview = xData.results.first?.overview else { return }
-                        guard let title = xData.results.first?.title else { return }
-                        
-                        print(title + "\n" + overview + "xData")
-                        
-                    } catch {
-                        print(error)
-                    }
-                }
-                
-            }
-            
-            
-        
+//           popMovies = movieManager.getPopularMovies()
+            movieManager.getPublishedPopMovies()
         })
         
         
