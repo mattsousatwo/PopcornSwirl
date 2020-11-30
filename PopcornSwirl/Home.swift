@@ -14,7 +14,10 @@ struct Home: View {
     
     @State var showMenu = false
     
+    @ObservedObject var observed = Observer() 
+    
     let movieManager = MovieManager()
+//    let movieStore = MovieStore()
     
     @State private var popMovies : [PopularMovie] = []
     
@@ -34,16 +37,17 @@ struct Home: View {
                         
                         HStack(spacing: 15) {
                                 
-                            ForEach(0...movieManager.popularMovies.count, id: \.self ) { i in
+                            ForEach(0...observed.movies.count, id: \.self ) { i in
                                 VStack {
                                     
-                                    // Probably an issue due to Multithreading 
-                                    if movieManager.popularMovies.count != 0 {
+                                    
+                                    if observed.movies.count != 0 {
                                         NavigationLink(destination: MovieDetail()) {
                                         MovieCard()
                                         }
                                         
-                                        Text("\(movieManager.popularMovies[i].title) \(i)").font(.system(.title, design: .rounded)).bold()
+                                        Text("\(observed.movies[i].title) \(i)").font(.system(.title, design: .rounded)).bold()
+                                         
                                     }
                                 }
                             }
@@ -120,8 +124,13 @@ struct Home: View {
         
         .onAppear(perform: {
             
+//            observed.getMoivies()
+            
 //           popMovies = movieManager.getPopularMovies()
-            movieManager.getPublishedPopMovies()
+//            movieManager.getPublishedPopMovies()
+//            movieStore.fetchPopularMovies()
+            
+            
         })
         
         

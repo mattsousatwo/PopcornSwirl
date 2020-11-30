@@ -36,8 +36,8 @@ struct Results: Codable {
 
 // Keys for Popular movies
 struct Popular: Codable {
-    var page: Int
-    var results: [PopularMovie]
+    public var page: Int
+    public var results: [PopMovie]
 }
 
 struct PopularMovie: Codable {
@@ -55,6 +55,18 @@ struct PopularMovie: Codable {
     var video: Bool
     var vote_average: Double
 }
+
+
+
+
+struct PopMovie: Codable, Identifiable {
+    public var id: Int
+    public var title: String
+    public var overview: String
+}
+
+
+
 
 
 // Class to handle fetching Movie data 
@@ -83,11 +95,11 @@ class MovieManager {
                    guard let overview = xData.results.first?.overview else { return }
                    guard let title = xData.results.first?.title else { return }
                    
-                    popMovies = xData.results
+ //                   popMovies = xData.results
                    print("Title: " + title + "\n" + "Overview: " + overview + "PopularMovieRequest 1")
                    print("Count: \(xData.results.count)")
                 
-                self.popularMovies = xData.results
+//                self.popularMovies = xData.results
                    
                } catch {
                    print(error)
@@ -108,17 +120,17 @@ class MovieManager {
            
            if let x = response.data {
                do {
-                DispatchQueue.main.async {
+                DispatchQueue.global().async {
                     self.popularMovies = self.parseJSON(data: x)
-                }
+                    
                    
                     guard let overview = self.popularMovies.first?.overview else { return }
                     guard let title = self.popularMovies.first?.title else { return }
                    
                 
-                   print("Title: " + title + "\n" + "Overview: " + overview + "PopularMovieRequest 1")
-                   print("Count: \(self.popularMovies.count)")
-                
+                    print("Title: " + title + "\n" + "Overview: " + overview + "PopularMovieRequest 1")
+                    print("Count: \(self.popularMovies.count)")
+                    }
                 
                }
             
@@ -128,12 +140,12 @@ class MovieManager {
         
         
         
-    }
+    } 
     
     func parseJSON(data: Data) -> [PopularMovie] {
         do {
             let movieStore = try self.decoder.decode(Popular.self, from: data)
-            self.popularMovies = movieStore.results
+      //      self.popularMovies = movieStore.results
         } catch {
             print(error)
         }
@@ -144,3 +156,4 @@ class MovieManager {
     
     
 }
+
