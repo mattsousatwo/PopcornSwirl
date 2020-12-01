@@ -70,6 +70,9 @@ class Observer: ObservableObject {
                 print("\(decodedMovies.results)")
                 
                 self.movies = decodedMovies.results
+                for i in 0..<self.movies.count {
+                    print("title: \(self.movies[i].title), \n   overview: \(self.movies[i].overview) \n ")
+                }
                 
             } catch {
                 print(error)

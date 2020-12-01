@@ -37,7 +37,7 @@ struct Home: View {
                         
                         HStack(spacing: 15) {
                                 
-                            ForEach(0...observed.movies.count, id: \.self ) { i in
+                            ForEach(0..<observed.movies.count, id: \.self ) { i in
                                 VStack {
                                     
                                     
