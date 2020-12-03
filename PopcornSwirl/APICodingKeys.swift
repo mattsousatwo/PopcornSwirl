@@ -9,14 +9,14 @@
 import Foundation
 import Alamofire
 
-// Keys for Now Playing
-struct NowPlaying: Codable {
+// MARK: - Latest Movies Coding Keys
+struct Latest: Codable {
     var page: Int
-    var results: [Results]
+    var results: [LatestMovie]
 }
 
 
-struct Results: Codable {
+struct LatestMovie: Codable {
     var poster_path: String
     var adult: Bool
     var overview: String
@@ -34,7 +34,7 @@ struct Results: Codable {
 }
 
 
-// Keys for Popular movies
+// MARK: - Popular Coding Keys
 struct Popular: Codable {
     public var page: Int
     public var results: [PopMovie]
@@ -67,93 +67,13 @@ struct PopMovie: Codable, Identifiable {
 
 
 
-
-
-// Class to handle fetching Movie data 
-class MovieManager {
     
-    var decoder = JSONDecoder()
-    lazy var APIKey = "ebccbee67fef37cc7a99378c44af7d33"
-    
-    @Published var popularMovies: [PopularMovie] = []
-        
-    // Get most popular movies from DB
-    func getPopularMovies() -> [PopularMovie] {
-        
-        let popularMovieRequest = "https://api.themoviedb.org/3/movie/popular?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&page=1"
-        var popMovies: [PopularMovie] = []
-         
-        AF.request( popularMovieRequest ).responseJSON { response in
-           
-           if let x = response.data {
-               do {
-                
-                let xData = try self.decoder.decode(Popular.self, from: x)
-                   
-                   print("\(xData.page)" + " xData")
-                   
-                   guard let overview = xData.results.first?.overview else { return }
-                   guard let title = xData.results.first?.title else { return }
-                   
- //                   popMovies = xData.results
-                   print("Title: " + title + "\n" + "Overview: " + overview + "PopularMovieRequest 1")
-                   print("Count: \(xData.results.count)")
-                
-//                self.popularMovies = xData.results
-                   
-               } catch {
-                   print(error)
-               }
-           }
-           
-       }
-        
-        return popMovies
-        
-        
-    }
-    
-    func getPublishedPopMovies()  {
-        let popularMovieRequest = "https://api.themoviedb.org/3/movie/popular?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&page=1"
-         
-        AF.request( popularMovieRequest ).responseJSON { response in
-           
-           if let x = response.data {
-               do {
-                DispatchQueue.global().async {
-                    self.popularMovies = self.parseJSON(data: x)
-                    
-                   
-                    guard let overview = self.popularMovies.first?.overview else { return }
-                    guard let title = self.popularMovies.first?.title else { return }
-                   
-                
-                    print("Title: " + title + "\n" + "Overview: " + overview + "PopularMovieRequest 1")
-                    print("Count: \(self.popularMovies.count)")
-                    }
-                
-               }
-            
-           }
-           
-       }
-        
-        
-        
-    } 
-    
-    func parseJSON(data: Data) -> [PopularMovie] {
-        do {
-            let movieStore = try self.decoder.decode(Popular.self, from: data)
-      //      self.popularMovies = movieStore.results
-        } catch {
-            print(error)
-        }
-        return popularMovies
-        
-    }
-    
-    
-    
+// MARK: - LatestMovies
+struct Latest2: Codable {
+    var title: String
+    var release_date: String
+    var vote_average: Int
+    var vote_count: Int
+    var poster_path: String?
 }
 

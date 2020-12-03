@@ -9,58 +9,22 @@
 import Foundation
 import Alamofire
 
-class Observer: ObservableObject {
+class MovieStore: ObservableObject {
     
-    @Published var movies = [PopMovie]()
+    // Movie Stores
+    @Published var popularMovies = [PopMovie]() // all popular movies
+    @Published var latestMovies = [Latest2]() // all latest movies
+    
     let decoder = JSONDecoder()
     
+    // API Key
+    public var apiKey = "ebccbee67fef37cc7a99378c44af7d33"
     
-    func getMoivies() {
+    // Fetch all popular movies
+    func fetchPopularMovies() {
+        let popMovieRequest = "https://api.themoviedb.org/3/movie/popular?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&page=1"
         
-        let movieRequest = "https://api.themoviedb.org/3/movie/popular?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&page=1"
-        
-        AF.request(movieRequest).responseJSON {
-            response in
-            
-            if let json = response.value {
-                
-                if (json as? [String: AnyObject]) != nil {
-                    print("1")
-                    if let dictionaryArray = json as? Dictionary<String, AnyObject?> {
-                        let jsonArray = dictionaryArray["value"]
-                        print("2")
-                        if let jsonArray = jsonArray as? Array<Dictionary<String, AnyObject>>{
-                            print("3")
-                            for i in 0..<jsonArray.count{
-                                let json = jsonArray[i]
-                                if let id = json["id"] as? Int,
-                                   let title = json["title"] as? String,
-                                   let overview = json["overview"] as? String {
-                                    self.movies.append(PopMovie(id: id, title: title, overview: overview)) 
-                                    print("Title: \(self.movies[i].title), \n   Overview: \(self.movies[i].overview)")
-                                    
-                                }
-                                
-                            }
-                            
-                        }
-                        
-                    }
-                    
-                }
-                
-            }
-            
-            
-        } // AF.request
-        
-        
-    }
-    
-    func getMovies2() {
-        let popularMovieRequest = "https://api.themoviedb.org/3/movie/popular?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&page=1"
-        
-        AF.request( popularMovieRequest ).responseJSON {
+        AF.request( popMovieRequest ).responseJSON {
             response in
             
             guard let json = response.data else { return }
@@ -69,24 +33,55 @@ class Observer: ObservableObject {
                 let decodedMovies = try self.decoder.decode(Popular.self, from: json)
                 print("\(decodedMovies.results)")
                 
-                self.movies = decodedMovies.results
-                for i in 0..<self.movies.count {
-                    print("title: \(self.movies[i].title), \n   overview: \(self.movies[i].overview) \n ")
+                self.popularMovies = decodedMovies.results
+                for i in 0..<self.popularMovies.count {
+                    print("title: \(self.popularMovies[i].title), \n   overview: \(self.popularMovies[i].overview) \n ")
                 }
                 
             } catch {
                 print(error)
-            }
+            } // do / catch
             
             
             
-        }
+        } // request
         
-    }
+    } // fetchPopularMovies
     
     
+    // Fetch all the latest movies
+    func fetchLatestMovies() {
+        let latestRequest = "https://api.themoviedb.org/3/movie/latest?api_key=\(apiKey)&language=en-US"
+        
+        AF.request( latestRequest ).responseJSON {
+            response in
+            
+            guard let json = response.data else { return }
+            
+            do {
+                let decodedMovie = try self.decoder.decode(Latest2.self, from: json)
+                self.latestMovies.append(decodedMovie)
+                
+                     print("Latest /n")
+                print("\(self.latestMovies.count)")
+                     for i in self.popularMovies {
+                         print("title: \(i.title)")
+                     }
+                
+            } catch {
+                print(error)
+            }
+        
+        } // request
+        
+    } // ()
+    
+    
+    // Initalizer
     init() {
-        getMovies2()
+        fetchPopularMovies()
+        fetchLatestMovies()
+        
     }
     
     

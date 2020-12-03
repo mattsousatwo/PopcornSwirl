@@ -14,15 +14,13 @@ struct Home: View {
     
     @State var showMenu = false
     
-    @ObservedObject var observed = Observer() 
+    @ObservedObject var movieStore = MovieStore() 
     
-    let movieManager = MovieManager()
 //    let movieStore = MovieStore()
     
-    @State private var popMovies : [PopularMovie] = []
+    
     
     var body: some View {
-        
         
         NavigationView {
             ZStack {
@@ -37,24 +35,22 @@ struct Home: View {
                         
                         HStack(spacing: 15) {
                                 
-                            ForEach(0..<observed.movies.count, id: \.self ) { i in
+                            ForEach(0..<movieStore.popularMovies.count, id: \.self ) { i in
                                 VStack {
                                     
                                     
-                                    if observed.movies.count != 0 {
+                                    if movieStore.popularMovies.count != 0 {
                                         NavigationLink(destination: MovieDetail()) {
                                         MovieCard()
                                         }
                                         
-                                        Text("\(observed.movies[i].title) \(i)").font(.system(.title, design: .rounded)).bold()
+                                        Text("\(movieStore.popularMovies[i].title) \(i)").font(.system(.body, design: .rounded)).bold().lineLimit(2).multilineTextAlignment(TextAlignment.center)
                                          
                                     }
                                 }
                             }
                                 
                         } .padding()
-                            
-                        
                         
                     } // scroll
 
@@ -77,8 +73,6 @@ struct Home: View {
                         
                     } // scroll
 
-                    
-                    
                 } // VStack
                     
                 GeometryReader { _ in
@@ -113,29 +107,10 @@ struct Home: View {
                         }
                     )
                 
-                
-                
-            } // Z
+                } // Z
             
             .background(Color.snowWhite).edgesIgnoringSafeArea(.bottom)
         } // Nav
-
-        
-        
-        .onAppear(perform: {
-            
-//            observed.getMoivies()
-            
-//           popMovies = movieManager.getPopularMovies()
-//            movieManager.getPublishedPopMovies()
-//            movieStore.fetchPopularMovies()
-            
-            
-        })
-        
-        
-        
-        
         
         
     } // body
