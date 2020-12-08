@@ -45,6 +45,7 @@ struct PopularMovie: Codable {
     var adult: Bool
     var overview: String
     var release_date: String
+    var id: Int
 //    var genre_ids
     var original_title: String
     var original_language: String
@@ -63,6 +64,7 @@ struct PopMovie: Codable, Identifiable {
     public var id: Int
     public var title: String
     public var overview: String
+    public var poster_path: String 
 }
 
 
@@ -77,3 +79,38 @@ struct Latest2: Codable {
     var poster_path: String?
 }
 
+
+
+
+// External IDs - used to get data from IMDB
+struct ExternalID: Codable {
+    var imdb_id: String?
+    var id: Int 
+}
+
+
+
+// MARK: - FINDBY
+
+struct FindResults: Codable {
+    
+    var movie_results: [FindMovieResults]
+    
+    var person_results: [FindPersonResults]
+    
+
+}
+
+struct FindMovieResults: Codable {
+    var poster_path: String?
+}
+
+struct FindPersonResults: Codable {
+    var profile_path: String?
+    var adult: Bool
+    var id: Int
+    var name: String
+    var popularity: Int
+//    var known_for: [KnownFor]
+    
+}

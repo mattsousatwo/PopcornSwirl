@@ -12,6 +12,12 @@ struct MovieDetail: View {
     
     @State private var showDesription: Bool = false
     
+    @ObservedObject var movieStore = MovieStore()
+    
+    var movieID = Int()
+    var movieTitle = String()
+//    var genre = String()
+    var movieOverview = String()
     
     var body: some View {
        
@@ -30,7 +36,7 @@ struct MovieDetail: View {
                                     .padding()
                                 VStack(alignment: .leading, spacing: 10) {
                                     // Movie Title
-                                    Text("Title").font(.system(.largeTitle)).bold()
+                                    Text(movieTitle).font(.system(.largeTitle)).bold()
                                     // Genre
                                     Text("Action / Adventure").foregroundColor(.gray)
                                     // Rating
@@ -49,7 +55,7 @@ struct MovieDetail: View {
                                     
                                     Text("A really long description of the movie would go here. Probably 3 - 4 lines of text.")
                                 case false: // hide
-                                    Text("A short description of the movie...")
+                                    Text(movieOverview)
                                 }
                             }
                             .foregroundColor(.black)
@@ -152,6 +158,15 @@ struct MovieDetail: View {
         
         .navigationBarBackButtonHidden(false )
         
+        
+        .onAppear() {
+            print( "Movie ID: \(movieID)"  )
+            print( "Movie Title: \(movieTitle)"  )
+            print( "Movie Overview: \(movieOverview)"  )
+            
+            movieStore.fetchExternalIDWithMovie(id: movieID)
+            movieStore.fetchActorsForMovie(id: movieStore.externalMovieID)
+        }
         
         
     } // body

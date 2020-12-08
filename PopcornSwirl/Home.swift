@@ -18,12 +18,13 @@ struct Home: View {
     
 //    let movieStore = MovieStore()
     
-    
-    
     var body: some View {
         
         NavigationView {
             ZStack {
+                
+                
+                // MARK: - LATEST MOVIES STACK
                 
                 VStack(spacing: 20) {
                     HStack {
@@ -40,11 +41,17 @@ struct Home: View {
                                     
                                     
                                     if movieStore.popularMovies.count != 0 {
-                                        NavigationLink(destination: MovieDetail()) {
-                                        MovieCard()
+                                        NavigationLink(destination: MovieDetail(
+                                            movieID: movieStore.popularMovies[i].id,
+                                            movieTitle: movieStore.popularMovies[i].title,
+                                            movieOverview: movieStore.popularMovies[i].overview)) {
+                                            MovieCard()
+                                            
                                         }
                                         
+                                        // Can also just remove title label and have the poster stand alone 
                                         Text("\(movieStore.popularMovies[i].title) \(i)").font(.system(.body, design: .rounded)).bold().lineLimit(2).multilineTextAlignment(TextAlignment.center)
+                                            
                                          
                                     }
                                 }
@@ -54,6 +61,7 @@ struct Home: View {
                         
                     } // scroll
 
+                    // MARK: - POPULAR MOVIES STACK
                     HStack {
                         Text("Popular").font(.system(.title, design: .rounded)).bold()
                             .padding(.horizontal)
@@ -62,10 +70,10 @@ struct Home: View {
                     // Horizontal Scroll
                     ScrollView(.horizontal, showsIndicators:  false) {
                         HStack(spacing: 15) {
-                            ForEach(1...8, id: \.self ) { i in
+                            ForEach(0..<movieStore.latestMovies.count, id: \.self ) { i in
                                 VStack {
                                     MovieCard(color: Color(.systemTeal))
-                                    Text("Movie \(i)").font(.system(.title, design: .rounded)).bold()
+                                    Text("\(movieStore.latestMovies[i].title)").font(.system(.title, design: .rounded)).bold()
                                 }
                             }
                             
@@ -112,6 +120,10 @@ struct Home: View {
             .background(Color.snowWhite).edgesIgnoringSafeArea(.bottom)
         } // Nav
         
+        .onAppear() {
+            movieStore.fetchPopularMovies()
+            movieStore.fetchLatestMovies()
+        }
         
     } // body
 }

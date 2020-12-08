@@ -66,6 +66,8 @@ struct ActorCard2: View {
     var image: Image = Image(systemName: "globe")
     var width: CGFloat = 100
     var height: CGFloat = 200
+    var name: String = "Names"
+    var movieCount: String = "20 Movies"
     
     var body: some View {
         
@@ -93,8 +95,8 @@ struct ActorCard2: View {
                             .frame(width: 25, height: 50)
                         Spacer()
                         
-                        Text("Names").font(.system(size: 18))
-                        Text("73 Movies").font(.system(size: 8))
+                        Text(name).font(.system(size: 18))
+                        Text(movieCount).font(.system(size: 8))
                             .foregroundColor(.gray)
                         
                         Spacer()
