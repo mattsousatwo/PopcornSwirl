@@ -103,6 +103,8 @@ struct FindResults: Codable {
 
 struct FindMovieResults: Codable {
     var poster_path: String?
+    var title: String
+    var id: Int 
 }
 
 struct FindPersonResults: Codable {
@@ -113,4 +115,30 @@ struct FindPersonResults: Codable {
     var popularity: Int
 //    var known_for: [KnownFor]
     
+}
+
+
+// MARK: - Movie Credits
+struct MovieCredits: Codable {
+    var id: Int
+    var cast: [MovieCast]
+    var crew: [MovieCrew]
+}
+
+struct MovieCast: Codable {
+    var id: Int
+    var known_for_department: String
+    var name: String
+    var popularity: Double
+    var profile_path: String?
+    var character: String
+    var order: Int
+}
+
+struct MovieCrew: Codable {
+    var name: String
+    var profile_path: String?
+    var popularity: Double
+    var department: String
+    var job: String 
 }

@@ -75,17 +75,19 @@ struct MovieDetail: View {
                             
                             ScrollView(.horizontal, showsIndicators:  false) {
                                 HStack {
-                                    ForEach(1...8, id: \.self ) { i in
+
+                                    ForEach(0..<movieStore.movieCast.count, id: \.self ) { i in
                                     
                                         ActorCard2(color: .coral,
                                                   image: Image(systemName: "person.fill"),
                                                   width: 100,
-                                                  height: 200)
+                                                  height: 200,
+                                                  name: movieStore.movieCast[i].name)
                                             .padding(.horizontal, 7).padding(.vertical, 5)
                                     
                                     }
                                 }
-                            } // actors scroll view
+                            } .padding() // actors scroll view
                             
                             
                             RoundedRectangle(cornerRadius: 12)
@@ -160,12 +162,12 @@ struct MovieDetail: View {
         
         
         .onAppear() {
+            
             print( "Movie ID: \(movieID)"  )
             print( "Movie Title: \(movieTitle)"  )
             print( "Movie Overview: \(movieOverview)"  )
             
-            movieStore.fetchExternalIDWithMovie(id: movieID)
-            movieStore.fetchActorsForMovie(id: movieStore.externalMovieID)
+            movieStore.fetchMovieCreditsForMovie(id: movieID)
         }
         
         

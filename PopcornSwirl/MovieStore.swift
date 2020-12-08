@@ -14,9 +14,9 @@ class MovieStore: ObservableObject {
     // Movie Stores
     @Published var popularMovies = [PopMovie]() // all popular movies
     @Published var latestMovies = [Latest2]() // all latest movies
-    @Published var externalMovieID = String()
+    @Published var movieCast = [MovieCast]() // cast for movie
     
-    let decoder = JSONDecoder()
+    lazy var decoder = JSONDecoder()
     
     // API Key
     public var apiKey = "ebccbee67fef37cc7a99378c44af7d33"
@@ -110,59 +110,31 @@ class MovieStore: ObservableObject {
     } // ()
     
     
-    // Get ExternalID to search IMDB for actors using externalID
-    func fetchExternalIDWithMovie(id: Int) {
-        print("movieID" + ": \(id)")
-        let externalRequest = "https://api.themoviedb.org/3/movie/\(id)/external_ids?api_key=\(apiKey)"
+    // MARK: GET MOVIE CREDITS
+    // Get the credits for a movie to fill up the actors view
+    func fetchMovieCreditsForMovie(id: Int) {
         
-        // Get IMDB ID
-        AF.request( externalRequest ).responseJSON {
-            response in
-            
-            guard let json = response.data else { return }
-            
-            do {
-                let externalIDs = try self.decoder.decode(ExternalID.self, from: json)
-                
-                guard let imdbID = externalIDs.imdb_id else { return }
-                self.externalMovieID = imdbID
-                print("externalTAG = \(imdbID)")
-//                self.fetchActorsForMovie(id: self.externalMovieID)
-            } catch {
-                print(error)
-            }
-        }
+        let creditsRequest = "https://api.themoviedb.org/3/movie/\(id)/credits?api_key=\(apiKey)&language=en-US"
         
-        
-    }
-    
-    
-    func fetchActorsForMovie(id: String) {
-            
-        print("IMDBID" + ": \(id)")
-        
-        let actorsRequest = "https://api.themoviedb.org/3/find/\(id)?api_key=\(apiKey)&language=en-US&external_source=imdb_id"
-        
-        AF.request( actorsRequest ).responseJSON {
-            response in
+        AF.request( creditsRequest ).responseJSON { response in
             
             guard let json = response.data else { return }
             
             do {
                 
-                let findResults = try self.decoder.decode(FindResults.self, from: json)
+                let movieCredits = try self.decoder.decode(MovieCredits.self, from: json)
                 
-                let f = findResults.person_results
-                print(#function)
-                print("person_results count: " + "\(f.count)")
-                
+                self.movieCast = movieCredits.cast
+                print("cast count: \(self.movieCast.count)")
+                for x in self.movieCast {
+                    print(x.name)
+                }
                 
             } catch {
                 print(error)
             }
             
         }
-        
         
     }
     
