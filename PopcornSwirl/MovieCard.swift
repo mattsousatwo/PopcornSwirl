@@ -22,6 +22,30 @@ struct MovieCard: View {
     }
 }
 
+struct Poster: View {
+    
+    @ObservedObject var urlImageModel: URLImageModel
+    
+    let defaultImage = UIImage(systemName: "globe")
+    
+    init(urlString: String?) {
+        urlImageModel = URLImageModel(url: urlString)
+    }
+    
+    var body: some View {
+        
+        Image(uiImage: urlImageModel.image ?? defaultImage!).resizable().clipShape(
+            RoundedRectangle(cornerRadius: 12)
+        )
+        
+        .frame(width: 100, height: 200)
+        .foregroundColor(Color.darkLime)
+        .shadow(radius: 5)
+    }
+    
+    
+}
+
 struct ActorCard: View {
     
     var color: Color = Color.yellow
@@ -66,8 +90,8 @@ struct ActorCard2: View {
     var image: Image = Image(systemName: "globe")
     var width: CGFloat = 100
     var height: CGFloat = 200
-    var name: String = "Names"
-    var movieCount: String = "20 Movies"
+    var title: String = "Names"
+    var subtitle: String = "20 Movies"
     
     var body: some View {
         
@@ -95,8 +119,8 @@ struct ActorCard2: View {
                             .frame(width: 25, height: 50)
                         Spacer()
                         
-                        Text(name).font(.system(size: 18))
-                        Text(movieCount).font(.system(size: 8))
+                        Text(title).font(.system(size: 18))
+                        Text(subtitle).font(.system(size: 8))
                             .foregroundColor(.gray)
                         
                         Spacer()
@@ -186,6 +210,8 @@ struct MovieCard_Previews: PreviewProvider {
         Group {
             
             MovieCard()
+            
+            Poster(urlString: nil)
             
             ActorCard(color: .blue)
             

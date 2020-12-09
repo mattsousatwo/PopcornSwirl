@@ -55,6 +55,7 @@ class MovieStore: ObservableObject {
     lazy var baseImageURL = "https://image.tmdb.org/t/p/"
     // base + size + path = image
 
+    var imageURL = "https://image.tmdb.org/t/p/" + "original"
     
     func fetchPopularMoviePosters() {
         
@@ -127,7 +128,12 @@ class MovieStore: ObservableObject {
                 self.movieCast = movieCredits.cast
                 print("cast count: \(self.movieCast.count)")
                 for x in self.movieCast {
+                    print("Actor: \(x)")
                     print(x.name)
+                    print("Character: " + x.character)
+                    print("Popularity: " + "\(x.popularity)")
+                    print("KnownFor: " + x.known_for_department)
+                    print("\n")
                 }
                 
             } catch {

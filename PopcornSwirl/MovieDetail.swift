@@ -82,7 +82,8 @@ struct MovieDetail: View {
                                                   image: Image(systemName: "person.fill"),
                                                   width: 100,
                                                   height: 200,
-                                                  name: movieStore.movieCast[i].name)
+                                                  title: movieStore.movieCast[i].name,
+                                                  subtitle: movieStore.movieCast[i].character)
                                             .padding(.horizontal, 7).padding(.vertical, 5)
                                     
                                     }

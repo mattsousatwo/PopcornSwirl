@@ -12,9 +12,11 @@ import Alamofire
 
 struct Home: View {
     
+    
+    
     @State var showMenu = false
     
-    @ObservedObject var movieStore = MovieStore() 
+    @ObservedObject var movieStore = MovieStore()
     
 //    let movieStore = MovieStore()
     
@@ -45,7 +47,7 @@ struct Home: View {
                                             movieID: movieStore.popularMovies[i].id,
                                             movieTitle: movieStore.popularMovies[i].title,
                                             movieOverview: movieStore.popularMovies[i].overview)) {
-                                            MovieCard()
+                                            Poster(urlString: movieStore.imageURL + movieStore.popularMovies[i].poster_path)
                                             
                                         }
                                         
@@ -72,8 +74,15 @@ struct Home: View {
                         HStack(spacing: 15) {
                             ForEach(0..<movieStore.latestMovies.count, id: \.self ) { i in
                                 VStack {
-                                    MovieCard(color: Color(.systemTeal))
+//
+//                                    if movieStore.latestMovies[i].poster_path != nil {
+//                                        Poster(urlString: "\(movieStore.imageURL + movieStore.latestMovies[i].poster_path!) " )
+//
+//                                    } else {
+                                        MovieCard()
+                                    
                                     Text("\(movieStore.latestMovies[i].title)").font(.system(.title, design: .rounded)).bold()
+                                    
                                 }
                             }
                             
