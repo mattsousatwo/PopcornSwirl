@@ -142,3 +142,19 @@ struct MovieCrew: Codable {
     var department: String
     var job: String 
 }
+
+
+
+// MARK: Recommendations
+struct Recommendation: Codable {
+    var page: Int
+    var results:  [RecommendedMovie]
+}
+
+struct RecommendedMovie: Codable { 
+    var title: String
+    var poster_path: String?
+    var overview: String
+    var popularity: Double
+    var id: Int 
+}

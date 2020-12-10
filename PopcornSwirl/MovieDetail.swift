@@ -18,6 +18,7 @@ struct MovieDetail: View {
     var movieTitle = String()
 //    var genre = String()
     var movieOverview = String()
+    var posterPath = String()
     
     var body: some View {
        
@@ -29,10 +30,7 @@ struct MovieDetail: View {
                         VStack(alignment: .leading) {
                             HStack(alignment: .bottom) {
                                 // Movie Poster
-                                MovieCard(color: .darkLime)
-                                    .overlay(
-                                        Image(systemName: "person.fill").resizable().scaledToFit().padding()
-                                    )
+                                Poster(urlString: movieStore.imageURL + posterPath)
                                     .padding()
                                 VStack(alignment: .leading, spacing: 10) {
                                     // Movie Title
@@ -100,7 +98,7 @@ struct MovieDetail: View {
                                         .foregroundColor(.pGray2)
                                     
                                 )
-                                
+                            // MARK: - Suggested Movies
                             HStack {
                                 Text("Suggested Movies").font(.system(.title2)).bold()
                                 Spacer()
@@ -111,12 +109,19 @@ struct MovieDetail: View {
                             
                             ScrollView(.horizontal, showsIndicators:  false) {
                                 HStack {
-                                    ForEach(1...8, id: \.self ) { i in
-                                    
-                                        MovieCard(color: .lightPink).padding(.horizontal, 7)
-                                    
-                                    }
-                                }
+                                    ForEach(0..<movieStore.recommendedMovies.count, id: \.self ) { i in
+                                        if movieStore.recommendedMovies[i].poster_path != nil {
+                                            NavigationLink(destination: MovieDetail(
+                                                            movieID: movieStore.recommendedMovies[i].id,
+                                                            movieTitle: movieStore.recommendedMovies[i].title,
+                                                            movieOverview: movieStore.recommendedMovies[i].overview,
+                                                            posterPath: movieStore.recommendedMovies[i].poster_path ?? "" )) {
+                                                // link label
+                                                Poster(urlString: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
+                                            } // Nav Label
+                                        } // if poster != nil
+                                    } // ForEach
+                                } // HS
                             } // actors scroll view
                             
                             
@@ -167,8 +172,10 @@ struct MovieDetail: View {
             print( "Movie ID: \(movieID)"  )
             print( "Movie Title: \(movieTitle)"  )
             print( "Movie Overview: \(movieOverview)"  )
+            print( "Path: \(movieStore.imageURL + posterPath)" )
             
             movieStore.fetchMovieCreditsForMovie(id: movieID)
+            movieStore.fetchRecommendedMoviesForMovie(id: movieID)
         }
         
         

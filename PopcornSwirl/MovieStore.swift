@@ -15,6 +15,8 @@ class MovieStore: ObservableObject {
     @Published var popularMovies = [PopMovie]() // all popular movies
     @Published var latestMovies = [Latest2]() // all latest movies
     @Published var movieCast = [MovieCast]() // cast for movie
+    @Published var recommendedMovies = [RecommendedMovie]() // all recommended movies by movie id
+    
     
     lazy var decoder = JSONDecoder()
     
@@ -98,6 +100,7 @@ class MovieStore: ObservableObject {
                     print("\(self.latestMovies.count)")
                      for i in self.latestMovies {
                          print("title: \(i.title)")
+                        print("poster: \(i.poster_path ?? "--")")
                      }
                 
             } catch {
@@ -144,6 +147,41 @@ class MovieStore: ObservableObject {
         
     }
     
+    // Get similar movies 
+    func fetchRecommendedMoviesForMovie(id: Int) {
+        
+        let recommendedRequest = "https://api.themoviedb.org/3/movie/\(id)/recommendations?api_key=\(apiKey)&language=en-US&page=1"
+        
+        AF.request( recommendedRequest ).responseJSON { response in
+            
+            guard let json = response.data else { return }
+            
+            do {
+                
+                let recomendations = try self.decoder.decode(Recommendation.self, from: json)
+                
+                self.recommendedMovies = recomendations.results
+                for x in self.recommendedMovies {
+                    print("Movie: \(x.title)")
+                    print("Overview: \(x.overview)")
+                    print("Poster Path: \(x.poster_path ?? "is empty")")
+                    print("\n")
+                }
+                
+                
+            } catch {
+                print(error)
+            }
+            
+        }
+        
+    }
+    
+    
+    
+    func fetchActorImages() {
+        
+    }
     
     
     // Initalizer

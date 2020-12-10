@@ -26,11 +26,11 @@ struct Home: View {
             ZStack {
                 
                 
-                // MARK: - LATEST MOVIES STACK
+                // MARK: - POPULAR MOVIES STACK
                 
                 VStack(spacing: 20) {
                     HStack {
-                        Text("Latest").font(.system(.title, design: .rounded)).bold()
+                        Text("Popular Movies").font(.system(.title, design: .rounded)).bold()
                             .padding(.horizontal)
                         Spacer()
                     }
@@ -46,14 +46,15 @@ struct Home: View {
                                         NavigationLink(destination: MovieDetail(
                                             movieID: movieStore.popularMovies[i].id,
                                             movieTitle: movieStore.popularMovies[i].title,
-                                            movieOverview: movieStore.popularMovies[i].overview)) {
+                                            movieOverview: movieStore.popularMovies[i].overview,
+                                            posterPath: movieStore.popularMovies[i].poster_path)) {
                                             Poster(urlString: movieStore.imageURL + movieStore.popularMovies[i].poster_path)
                                             
                                         }
                                         
                                         // Can also just remove title label and have the poster stand alone 
-                                        Text("\(movieStore.popularMovies[i].title) \(i)").font(.system(.body, design: .rounded)).bold().lineLimit(2).multilineTextAlignment(TextAlignment.center)
-                                            
+//                                        Text("\(movieStore.popularMovies[i].title) \(i)").font(.system(.body, design: .rounded)).bold().lineLimit(2).multilineTextAlignment(TextAlignment.center)
+//
                                          
                                     }
                                 }
@@ -63,9 +64,9 @@ struct Home: View {
                         
                     } // scroll
 
-                    // MARK: - POPULAR MOVIES STACK
+                    // MARK: - LATEST MOVIES STACK
                     HStack {
-                        Text("Popular").font(.system(.title, design: .rounded)).bold()
+                        Text("Latest Movies").font(.system(.title, design: .rounded)).bold()
                             .padding(.horizontal)
                         Spacer()
                     }
@@ -74,15 +75,15 @@ struct Home: View {
                         HStack(spacing: 15) {
                             ForEach(0..<movieStore.latestMovies.count, id: \.self ) { i in
                                 VStack {
-//
-//                                    if movieStore.latestMovies[i].poster_path != nil {
-//                                        Poster(urlString: "\(movieStore.imageURL + movieStore.latestMovies[i].poster_path!) " )
-//
-//                                    } else {
+
+                                    if movieStore.latestMovies[i].poster_path != nil {
+                                        Poster(urlString: "\(movieStore.imageURL + movieStore.latestMovies[i].poster_path!) " )
+
+                                    } else {
                                         MovieCard()
                                     
                                     Text("\(movieStore.latestMovies[i].title)").font(.system(.title, design: .rounded)).bold()
-                                    
+                                    }
                                 }
                             }
                             

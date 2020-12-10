@@ -22,25 +22,34 @@ struct MovieCard: View {
     }
 }
 
+// Used to display movie poster
 struct Poster: View {
     
     @ObservedObject var urlImageModel: URLImageModel
-    
-    let defaultImage = UIImage(systemName: "globe")
     
     init(urlString: String?) {
         urlImageModel = URLImageModel(url: urlString)
     }
     
     var body: some View {
-        
-        Image(uiImage: urlImageModel.image ?? defaultImage!).resizable().clipShape(
+        switch urlImageModel.image {
+        case nil:
             RoundedRectangle(cornerRadius: 12)
-        )
-        
-        .frame(width: 100, height: 200)
-        .foregroundColor(Color.darkLime)
-        .shadow(radius: 5)
+                .frame(width: 100, height: 200)
+                .foregroundColor(Color.coral)
+                .shadow(radius: 5)
+            
+        default:
+            Image(uiImage: urlImageModel.image!).resizable().clipShape(
+                RoundedRectangle(cornerRadius: 12)
+            )
+            
+            .frame(width: 100, height: 200)
+            .foregroundColor(Color.darkLime)
+            .shadow(radius: 5)
+            
+        }
+
     }
     
     
