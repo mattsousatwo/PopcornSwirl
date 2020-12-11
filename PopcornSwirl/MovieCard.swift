@@ -27,26 +27,35 @@ struct Poster: View {
     
     @ObservedObject var urlImageModel: URLImageModel
     
-    init(urlString: String?) {
+    var title = String()
+    
+    init(urlString: String?, title: String) {
         urlImageModel = URLImageModel(url: urlString)
+        self.title = title 
     }
     
     var body: some View {
         switch urlImageModel.image {
         case nil:
             RoundedRectangle(cornerRadius: 12)
-                .frame(width: 100, height: 200)
+                .frame(width: 150, height: 300)
                 .foregroundColor(Color.coral)
                 .shadow(radius: 5)
             
         default:
-            Image(uiImage: urlImageModel.image!).resizable().clipShape(
-                RoundedRectangle(cornerRadius: 12)
-            )
-            
-            .frame(width: 100, height: 200)
-            .foregroundColor(Color.darkLime)
-            .shadow(radius: 5)
+            VStack(alignment: .leading) {
+                Image(uiImage: urlImageModel.image!).resizable().clipShape(
+                    RoundedRectangle(cornerRadius: 12)
+                )
+                
+                .frame(width: 150, height: 250)
+                .foregroundColor(Color.darkLime)
+                .shadow(radius: 5)
+                
+                Text(title).foregroundColor(.black).lineLimit(2).fixedSize(horizontal: false, vertical: true )
+                    .frame(width: 150, height: 50)
+            }
+            .frame(width: 150, height: 300)
             
         }
 
@@ -220,7 +229,7 @@ struct MovieCard_Previews: PreviewProvider {
             
             MovieCard()
             
-            Poster(urlString: nil)
+            Poster(urlString: nil, title: "")
             
             ActorCard(color: .blue)
             

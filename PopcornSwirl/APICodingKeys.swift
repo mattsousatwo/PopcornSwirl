@@ -17,7 +17,7 @@ struct Latest: Codable {
 
 
 struct LatestMovie: Codable {
-    var poster_path: String
+    var poster_path: String?
     var adult: Bool
     var overview: String
     var release_date: String
@@ -26,11 +26,21 @@ struct LatestMovie: Codable {
     var original_title: String
     var original_language: String
     var title: String
-    var backdrop_path: String
+    var backdrop_path: String?
     var popularity: Double
     var vote_count: Double 
     var video: Bool
     var vote_average: Double
+}
+
+
+// MARK: - LatestMovies
+struct Latest2: Codable {
+    var title: String
+    var release_date: String
+    var vote_average: Int
+    var vote_count: Int
+    var poster_path: String?
 }
 
 
@@ -66,20 +76,6 @@ struct PopMovie: Codable, Identifiable {
     public var overview: String
     public var poster_path: String 
 }
-
-
-
-    
-// MARK: - LatestMovies
-struct Latest2: Codable {
-    var title: String
-    var release_date: String
-    var vote_average: Int
-    var vote_count: Int
-    var poster_path: String?
-}
-
-
 
 
 // External IDs - used to get data from IMDB

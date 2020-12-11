@@ -30,11 +30,11 @@ struct MovieDetail: View {
                         VStack(alignment: .leading) {
                             HStack(alignment: .bottom) {
                                 // Movie Poster
-                                Poster(urlString: movieStore.imageURL + posterPath)
+                                Poster(urlString: movieStore.imageURL + posterPath, title: movieTitle)
                                     .padding()
                                 VStack(alignment: .leading, spacing: 10) {
                                     // Movie Title
-                                    Text(movieTitle).font(.system(.largeTitle)).bold()
+                                    Text(movieTitle).font(.system(.largeTitle))
                                     // Genre
                                     Text("Action / Adventure").foregroundColor(.gray)
                                     // Rating
@@ -117,11 +117,11 @@ struct MovieDetail: View {
                                                             movieOverview: movieStore.recommendedMovies[i].overview,
                                                             posterPath: movieStore.recommendedMovies[i].poster_path ?? "" )) {
                                                 // link label
-                                                Poster(urlString: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
+                                                Poster(urlString: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""), title: movieStore.recommendedMovies[i].title)
                                             } // Nav Label
                                         } // if poster != nil
                                     } // ForEach
-                                } // HS
+                                } .padding()  // HS
                             } // actors scroll view
                             
                             

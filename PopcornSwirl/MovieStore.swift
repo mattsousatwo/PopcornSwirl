@@ -13,7 +13,7 @@ class MovieStore: ObservableObject {
     
     // Movie Stores
     @Published var popularMovies = [PopMovie]() // all popular movies
-    @Published var latestMovies = [Latest2]() // all latest movies
+    @Published var latestMovies = [LatestMovie]() // all latest movies
     @Published var movieCast = [MovieCast]() // cast for movie
     @Published var recommendedMovies = [RecommendedMovie]() // all recommended movies by movie id
     
@@ -93,14 +93,14 @@ class MovieStore: ObservableObject {
             guard let json = response.data else { return }
                         
             do {
-               let movie = try self.decoder.decode(Latest2.self, from: json)
+                let movie = try self.decoder.decode(LatestMovie.self, from: json)
                 self.latestMovies.append(movie)
                 
                      print("Latest /n")
-                    print("\(self.latestMovies.count)")
+                     print("\(self.latestMovies.count)")
                      for i in self.latestMovies {
                          print("title: \(i.title)")
-                        print("poster: \(i.poster_path ?? "--")")
+                         print("poster: \(i.poster_path ?? "--")")
                      }
                 
             } catch {
