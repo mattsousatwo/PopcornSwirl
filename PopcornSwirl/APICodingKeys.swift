@@ -154,3 +154,21 @@ struct RecommendedMovie: Codable {
     var popularity: Double
     var id: Int 
 }
+
+
+// MARK: Search Results
+struct MovieSearch: Codable {
+    var page: Int
+    var results: [MovieSearchResults]
+}
+
+struct MovieSearchResults: Codable {
+    var poster_path: String?
+    var adult: Bool
+    var overview: String
+    var id: Int
+    var title: String
+    var backdrop_path: String?
+    var popularity: Double
+    var vote_average: Double 
+}

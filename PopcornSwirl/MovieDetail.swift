@@ -176,6 +176,8 @@ struct MovieDetail: View {
             
             movieStore.fetchMovieCreditsForMovie(id: movieID)
             movieStore.fetchRecommendedMoviesForMovie(id: movieID)
+            
+            movieStore.fetchResultsForMovie(query: "croft")
         }
         
         

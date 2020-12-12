@@ -17,102 +17,19 @@ class MovieStore: ObservableObject {
     @Published var movieCast = [MovieCast]() // cast for movie
     @Published var recommendedMovies = [RecommendedMovie]() // all recommended movies by movie id
     
+    @Published var movieSearchResults = [MovieSearchResults]()
     
-    lazy var decoder = JSONDecoder()
+    
+    lazy var decoder = JSONDecoder() // used to decode json data
+    
+    lazy var imageURL = "https://image.tmdb.org/t/p/" + "original" // used as base for movie images
+        /// Need base_url, file_size and file_path to retrieve images
+    
     
     // API Key
-    public var apiKey = "ebccbee67fef37cc7a99378c44af7d33"
+    lazy var apiKey = "ebccbee67fef37cc7a99378c44af7d33"
     
-    // Fetch all popular movies
-    func fetchPopularMovies() {
-        let popMovieRequest = "https://api.themoviedb.org/3/movie/popular?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&page=1"
-        
-        AF.request( popMovieRequest ).responseJSON {
-            response in
-            
-            guard let json = response.data else { return }
-            
-            do {
-                let decodedMovies = try self.decoder.decode(Popular.self, from: json)
-                
-                
-                self.popularMovies = decodedMovies.results
-                for i in 0..<self.popularMovies.count {
-                    print("title: \(self.popularMovies[i].title), \n   overview: \(self.popularMovies[i].overview) \n   poster_path: \(self.popularMovies[i].poster_path)")
-                }
-                
-            } catch {
-                print(error)
-            } // do / catch
-            
-            
-            
-        } // request
-        
-    } // fetchPopularMovies
-    
-    
-    // Need base_url, file_size and file_path to retrieve images
-    
-    lazy var baseImageURL = "https://image.tmdb.org/t/p/"
-    // base + size + path = image
 
-    var imageURL = "https://image.tmdb.org/t/p/" + "original"
-    
-    func fetchPopularMoviePosters() {
-        
-        var posterPaths: [String] = []
-        
-        for movie in self.popularMovies {
-            
-            posterPaths.append(movie.poster_path)
-            
-        }
-        
-        if posterPaths.count != 0 {
-            for poster in posterPaths {
-                AF.request( baseImageURL + "h100" + poster).response {
-                    response in
-                    
-                    guard let fetchedPoster = response.data else { return }
-                    
-                }
-                
-            }
-        }
-    }
-    
-    
-    // Fetch all the latest movie ----- MARK: GETS LATEST MOVIE not movieS
-    func fetchLatestMovies() {
-        let latestRequest = "https://api.themoviedb.org/3/movie/latest?api_key=\(apiKey)&language=en-US"
-        
-        AF.request( latestRequest ).responseJSON {
-            response in
-            
-            guard let json = response.data else { return }
-                        
-            do {
-                let movie = try self.decoder.decode(LatestMovie.self, from: json)
-                self.latestMovies.append(movie)
-                
-                     print("Latest /n")
-                     print("\(self.latestMovies.count)")
-                     for i in self.latestMovies {
-                         print("title: \(i.title)")
-                         print("poster: \(i.poster_path ?? "--")")
-                     }
-                
-            } catch {
-                print(error)
-            }
-            
-            
-        
-        } // request
-        
-    } // ()
-    
     
     // MARK: GET MOVIE CREDITS
     // Get the credits for a movie to fill up the actors view
@@ -147,7 +64,81 @@ class MovieStore: ObservableObject {
         
     }
     
-    // Get similar movies 
+    func fetchActorImages() {
+        
+    }
+
+    
+    // Initalizer
+    init() {
+        
+    }
+    
+}
+
+
+// MARK: Movies
+extension MovieStore {
+    
+    // MARK: FETCH Popular Movies
+    func fetchPopularMovies() {
+        let popMovieRequest = "https://api.themoviedb.org/3/movie/popular?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&page=1"
+        
+        AF.request( popMovieRequest ).responseJSON {
+            response in
+            
+            guard let json = response.data else { return }
+            
+            do {
+                let decodedMovies = try self.decoder.decode(Popular.self, from: json)
+                
+                
+                self.popularMovies = decodedMovies.results
+                for i in 0..<self.popularMovies.count {
+                    print("title: \(self.popularMovies[i].title), \n   overview: \(self.popularMovies[i].overview) \n   poster_path: \(self.popularMovies[i].poster_path)")
+                }
+                
+            } catch {
+                print(error)
+            } // do / catch
+            
+            
+            
+        } // request
+        
+    } // fetchPopularMovies
+    
+     // MARK: Fetch the Latest Movie - Need to fix to fetch recent movies
+    func fetchLatestMovies() {
+        let latestRequest = "https://api.themoviedb.org/3/movie/latest?api_key=\(apiKey)&language=en-US"
+        
+        AF.request( latestRequest ).responseJSON {
+            response in
+            
+            guard let json = response.data else { return }
+                        
+            do {
+                let movie = try self.decoder.decode(LatestMovie.self, from: json)
+                self.latestMovies.append(movie)
+                
+                     print("Latest /n")
+                     print("\(self.latestMovies.count)")
+                     for i in self.latestMovies {
+                         print("title: \(i.title)")
+                         print("poster: \(i.poster_path ?? "--")")
+                     }
+                
+            } catch {
+                print(error)
+            }
+            
+            
+        
+        } // request
+        
+    } // ()
+ 
+    // MARK: Get Reccomended Movies for movie
     func fetchRecommendedMoviesForMovie(id: Int) {
         
         let recommendedRequest = "https://api.themoviedb.org/3/movie/\(id)/recommendations?api_key=\(apiKey)&language=en-US&page=1"
@@ -177,16 +168,53 @@ class MovieStore: ObservableObject {
         
     }
     
+}
+
+
+// MARK: Actors
+extension MovieStore {
     
     
-    func fetchActorImages() {
+}
+
+
+// MARK: Search
+extension MovieStore {
+    
+    // MARK: GET Search Results (MOVIE)
+    func fetchResultsForMovie(query: String) {
+        
+        let searchMovieRequest = "https://api.themoviedb.org/3/search/movie?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&query=\(query)&page=1&include_adult=false"
+        
+        AF.request( searchMovieRequest ).responseJSON { response in
+            
+            guard let json = response.data else { return }
+            
+            do {
+                
+                let searchResults = try self.decoder.decode(MovieSearch.self, from: json)
+                
+                self.movieSearchResults = searchResults.results
+                
+                print("Movie Query Result Count:  \(self.movieSearchResults.count)")
+                
+            } catch {
+                print(error)
+            }
+            
+            
+        }
         
     }
     
-    
-    // Initalizer
-    init() {
+    // MARK: GET Search Results (ACTOR)
+    func fetchResultsForActor(query: String) {
         
     }
+}
+
+
+// MARK: POST :: DELETE
+extension MovieStore {
     
 }

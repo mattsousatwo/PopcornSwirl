@@ -151,6 +151,7 @@ struct Home: View {
         .onAppear() {
             movieStore.fetchPopularMovies()
             movieStore.fetchLatestMovies()
+            
         }
         
     } // body
