@@ -194,9 +194,17 @@ extension MovieStore {
                 
                 let searchResults = try self.decoder.decode(MovieSearch.self, from: json)
                 
-                self.movieSearchResults = searchResults.results
+                guard let results = searchResults.results else {
+                    print("No movie results found")
+                    return }
+                
+                self.movieSearchResults = results
                 
                 print("Movie Query Result Count:  \(self.movieSearchResults.count)")
+                for movie in self.movieSearchResults {
+                    print(movie.title)
+                    
+                }
                 
             } catch {
                 print(error)

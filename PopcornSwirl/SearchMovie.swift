@@ -12,6 +12,8 @@ struct SearchMovie: View {
     
     @State var searchTag: String
     
+    @ObservedObject var movieStore = MovieStore()
+    
     var body: some View {
         
         VStack {
@@ -24,6 +26,13 @@ struct SearchMovie: View {
                             
                         TextField("Search", text: $searchTag).font(.title2)
                             .padding(.trailing)
+                            .onChange(of: searchTag, perform: { _ in
+                                
+                                movieStore.fetchResultsForMovie(query: searchTag)
+                                
+                            })
+                                
+                            
                     }
                     .mask(
                         RoundedRectangle(cornerRadius: 10)
@@ -32,14 +41,16 @@ struct SearchMovie: View {
 
                 .frame(width: UIScreen.main.bounds.width,
                        height: 40)
-
-                    SavedRow()
+                    
+                    SavedRow(search: $searchTag) 
             
             
             
         }
         .background(Color.pGray)
         .edgesIgnoringSafeArea(.bottom)
+        
+
         
     }
 }

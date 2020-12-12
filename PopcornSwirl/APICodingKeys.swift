@@ -158,8 +158,8 @@ struct RecommendedMovie: Codable {
 
 // MARK: Search Results
 struct MovieSearch: Codable {
-    var page: Int
-    var results: [MovieSearchResults]
+    var page: Int?
+    var results: [MovieSearchResults]?
 }
 
 struct MovieSearchResults: Codable {

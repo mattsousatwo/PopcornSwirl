@@ -11,6 +11,8 @@ import SwiftUI
 struct SavedMovies: View {
     
     
+    @Binding var bindingString: String // PLACEHOLDER
+    
     var body: some View {
         
         GeometryReader { _ in
@@ -18,7 +20,7 @@ struct SavedMovies: View {
         
     
          
-                SavedRow()
+                SavedRow(search: $bindingString)
       
         
         }
@@ -31,6 +33,12 @@ struct SavedMovies: View {
 } // SavedMovies()
 
 struct SavedRow: View {
+    
+    @ObservedObject var movieStore = MovieStore()
+    
+    var searchResults = [Poster]()
+    @Binding var search: String
+    
     
     var elements = ["Indiana Jones", "Die Hard", "Double Jeprody", "Tropic Thunder", "Alladin", "The Lion king", "Space Jam", "Avatar", "Casino Royal", "Iorn Man", "Star Trek", "2012", "Ocean Twelve", "Pokemon", "The Karate Kid"]
     
@@ -75,15 +83,21 @@ struct SavedRow: View {
         } // Geo
         
         .padding(.bottom)
+        
+        .onAppear {
+            
+            movieStore.fetchResultsForMovie(query: search)
+        }
    
     }
+    
 }
 
 struct SavedMovies_Previews: PreviewProvider {
     static var previews: some View {
-        SavedMovies()
+//        SavedMovies()
         
-        SavedRow().previewLayout(.sizeThatFits)
+        SavedRow(search: .constant("String")).previewLayout(.sizeThatFits)
     }
 }
 
