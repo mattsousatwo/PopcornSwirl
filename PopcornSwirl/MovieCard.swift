@@ -8,16 +8,30 @@
 
 import SwiftUI
 
-struct MovieCard: View {
+struct MoviePoster: View {
+
+    @ObservedObject var urlImageModel: URLImageModel
     
-    var color: Color = .blue
+    init(urlString: String?) {
+        urlImageModel = URLImageModel(url: urlString)
+    }
     
     var body: some View {
         
-        RoundedRectangle(cornerRadius: 12)
-            .frame(width: 100, height: 200)
-            .foregroundColor(color)
+        switch urlImageModel.image {
+        case nil:
+            RoundedRectangle(cornerRadius: 12)
+                .frame(width: 150, height: 300)
+                .foregroundColor(.blue)
+                .shadow(radius: 5)
+        default:
+            Image(uiImage: urlImageModel.image!).resizable().clipShape(
+                RoundedRectangle(cornerRadius: 12)
+            )
+            .frame(width: 150,
+                   height: 300)
             .shadow(radius: 5)
+        }
         
     }
 }
@@ -31,7 +45,7 @@ struct Poster: View {
     
     init(urlString: String?, title: String) {
         urlImageModel = URLImageModel(url: urlString)
-        self.title = title 
+        self.title = title
     }
     
     var body: some View {
@@ -49,11 +63,13 @@ struct Poster: View {
                 )
                 
                 .frame(width: 150, height: 250)
-                .foregroundColor(Color.darkLime)
                 .shadow(radius: 5)
                 
+                    
                 Text(title).foregroundColor(.black).lineLimit(2).fixedSize(horizontal: false, vertical: true )
-                    .frame(width: 150, height: 50)
+                        .frame(width: 150, height: 50)
+                
+
             }
             .frame(width: 150, height: 300)
             
@@ -223,11 +239,77 @@ struct ActorCard3: View {
     
 }
 
+struct Actor: View {
+
+    @ObservedObject var actorImage: URLImageModel
+    var name: String
+    var subtitle: String
+    var favorite: Bool
+    
+    init(imageURL: String?, name: String, favorite: Bool, subtitle: String) {
+        actorImage = URLImageModel(url: imageURL)
+        self.name = name
+        self.subtitle = subtitle
+        
+        self.favorite = favorite
+        
+        
+    }
+    
+    var body: some View {
+        
+        switch actorImage.image {
+        case nil:
+            RoundedRectangle(cornerRadius: 12)
+                .frame(width: 100,
+                       height: 200)
+                .foregroundColor(.darkBlue)
+                .shadow(radius: 5)
+
+        default:
+            VStack {
+                
+                Image(uiImage: actorImage.image!).resizable().clipShape(
+                    RoundedRectangle(cornerRadius: 12)
+                )
+                .frame(width: 100,
+                       height: 200)
+                .shadow(radius: 5)
+
+                .overlay(
+                    
+                    Button(action: {
+                        print("favorite button tapped")
+                    }, label: {
+                        Image(systemName: favorite ? "heart.fill": "heart")
+                            .frame(width: 30, height: 30)
+                            .padding()
+                            .foregroundColor(.pGray3)
+                    })
+
+                    , alignment: .bottomTrailing)
+                Text(name)
+                    .frame(width: 95,
+                           height: 15,
+                           alignment: .center)
+                    .foregroundColor(.black)
+                Text(subtitle)
+                    .frame(width: 80,
+                           height: 15,
+                           alignment: .center)
+                    .foregroundColor(.gray)
+            } // VStack
+            
+        } // switch
+        
+    }
+}
+
 struct MovieCard_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             
-            MovieCard()
+            MoviePoster(urlString: nil)
             
             Poster(urlString: nil, title: "")
             
@@ -236,6 +318,8 @@ struct MovieCard_Previews: PreviewProvider {
             ActorCard2(color: .green)
             
             ActorCard3(color: .coral)
+            
+            Actor(imageURL: nil, name: "Actor Name", favorite: false, subtitle: "Subtitle")
             
         }.previewLayout(.sizeThatFits)
     }

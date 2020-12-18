@@ -12,7 +12,8 @@ struct Star: View {
     var status: StarStatus
     var body: some View {
         Image(systemName: status.rawValue).resizable()
-            .foregroundColor(.lightYellow)
+//            .foregroundColor(.lightYellow)
+            .foregroundColor(.pGray3)
             .frame(width: 25, height: 25)
     }
 }
@@ -57,7 +58,7 @@ struct StarBar: View {
                 Star(status: x)
             }
             Text("\(value, specifier: "%.1f")").font(.system(size: 20)).bold()
-            .foregroundColor(.lightYellow)
+            .foregroundColor(.pGray3)
         }
     }
 }

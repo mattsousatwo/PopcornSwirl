@@ -9,41 +9,6 @@
 import Foundation
 import Alamofire
 
-// MARK: - Latest Movies Coding Keys
-struct Latest: Codable {
-    var page: Int
-    var results: [LatestMovie]
-}
-
-
-struct LatestMovie: Codable {
-    var poster_path: String?
-    var adult: Bool
-    var overview: String
-    var release_date: String
-//    var genre_ids: [GenreIDs]
-    var id: Int
-    var original_title: String
-    var original_language: String
-    var title: String
-    var backdrop_path: String?
-    var popularity: Double
-    var vote_count: Double 
-    var video: Bool
-    var vote_average: Double
-}
-
-
-// MARK: - LatestMovies
-struct Latest2: Codable {
-    var title: String
-    var release_date: String
-    var vote_average: Int
-    var vote_count: Int
-    var poster_path: String?
-}
-
-
 // MARK: - Popular Coding Keys
 struct Popular: Codable {
     public var page: Int
@@ -76,14 +41,6 @@ struct PopMovie: Codable, Identifiable {
     public var overview: String
     public var poster_path: String 
 }
-
-
-// External IDs - used to get data from IMDB
-struct ExternalID: Codable {
-    var imdb_id: String?
-    var id: Int 
-}
-
 
 
 // MARK: - FINDBY
@@ -162,7 +119,7 @@ struct MovieSearch: Codable {
     var results: [MovieSearchResults]?
 }
 
-struct MovieSearchResults: Codable {
+struct MovieSearchResults: Codable, Hashable {
     var poster_path: String?
     var adult: Bool
     var overview: String
@@ -170,5 +127,38 @@ struct MovieSearchResults: Codable {
     var title: String
     var backdrop_path: String?
     var popularity: Double
-    var vote_average: Double 
+    var vote_average: Double
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+
+// MARK: Upcoming Movies
+struct UpcomingSchema: Codable {
+    var page: Int
+    var results: [UpcomingMovie]
+    
+}
+
+struct UpcomingMovie: Codable {
+    var poster_path: String?
+    var overview: String
+    var id: Int
+    var title: String
+    var backdrop_path: String?
+    var popularity: Double
+    var vote_average: Double
+}
+
+
+// MARK: - GET ACTOR IMAGES
+struct ActorSchema: Codable {
+    var id: Int
+    var profiles: [ActorImageProfile]
+}
+
+struct ActorImageProfile: Codable {
+    var file_path: String?
 }

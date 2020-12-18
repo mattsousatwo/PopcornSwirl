@@ -8,17 +8,17 @@
 
 import Foundation
 import Alamofire
+import SwiftUI
 
 class MovieStore: ObservableObject {
     
     // Movie Stores
     @Published var popularMovies = [PopMovie]() // all popular movies
-    @Published var latestMovies = [LatestMovie]() // all latest movies
     @Published var movieCast = [MovieCast]() // cast for movie
     @Published var recommendedMovies = [RecommendedMovie]() // all recommended movies by movie id
-    
     @Published var movieSearchResults = [MovieSearchResults]()
-    
+    @Published var upcomingMovies = [UpcomingMovie]()
+    @Published var actorImageProfiles = [Int : String]()
     
     lazy var decoder = JSONDecoder() // used to decode json data
     
@@ -28,46 +28,6 @@ class MovieStore: ObservableObject {
     
     // API Key
     lazy var apiKey = "ebccbee67fef37cc7a99378c44af7d33"
-    
-
-    
-    // MARK: GET MOVIE CREDITS
-    // Get the credits for a movie to fill up the actors view
-    func fetchMovieCreditsForMovie(id: Int) {
-        
-        let creditsRequest = "https://api.themoviedb.org/3/movie/\(id)/credits?api_key=\(apiKey)&language=en-US"
-        
-        AF.request( creditsRequest ).responseJSON { response in
-            
-            guard let json = response.data else { return }
-            
-            do {
-                
-                let movieCredits = try self.decoder.decode(MovieCredits.self, from: json)
-                
-                self.movieCast = movieCredits.cast
-                print("cast count: \(self.movieCast.count)")
-                for x in self.movieCast {
-                    print("Actor: \(x)")
-                    print(x.name)
-                    print("Character: " + x.character)
-                    print("Popularity: " + "\(x.popularity)")
-                    print("KnownFor: " + x.known_for_department)
-                    print("\n")
-                }
-                
-            } catch {
-                print(error)
-            }
-            
-        }
-        
-    }
-    
-    func fetchActorImages() {
-        
-    }
-
     
     // Initalizer
     init() {
@@ -107,36 +67,6 @@ extension MovieStore {
         } // request
         
     } // fetchPopularMovies
-    
-     // MARK: Fetch the Latest Movie - Need to fix to fetch recent movies
-    func fetchLatestMovies() {
-        let latestRequest = "https://api.themoviedb.org/3/movie/latest?api_key=\(apiKey)&language=en-US"
-        
-        AF.request( latestRequest ).responseJSON {
-            response in
-            
-            guard let json = response.data else { return }
-                        
-            do {
-                let movie = try self.decoder.decode(LatestMovie.self, from: json)
-                self.latestMovies.append(movie)
-                
-                     print("Latest /n")
-                     print("\(self.latestMovies.count)")
-                     for i in self.latestMovies {
-                         print("title: \(i.title)")
-                         print("poster: \(i.poster_path ?? "--")")
-                     }
-                
-            } catch {
-                print(error)
-            }
-            
-            
-        
-        } // request
-        
-    } // ()
  
     // MARK: Get Reccomended Movies for movie
     func fetchRecommendedMoviesForMovie(id: Int) {
@@ -168,12 +98,124 @@ extension MovieStore {
         
     }
     
+    // MARK: FETCH Upcoming Movies
+    func fetchUpcomingMovies() {
+        
+        let upcomingMovieRequest = "https://api.themoviedb.org/3/movie/upcoming?api_key=\(apiKey)&language=en-US&page=1"
+        
+        AF.request( upcomingMovieRequest ).responseJSON { response in
+            
+            
+            guard let json = response.data else {
+                print("Upcoming movie response is nil ")
+                return
+            }
+            
+            do {
+                let movies = try self.decoder.decode(UpcomingSchema.self, from: json)
+                
+                self.upcomingMovies = movies.results
+                
+                
+            } catch {
+                print(error)
+            }
+            
+            
+            
+            
+        }
+        
+        
+    }
+    
+    
 }
 
 
 // MARK: Actors
 extension MovieStore {
     
+    // MARK: GET MOVIE CREDITS
+    // Get the credits for a movie to fill up the actors view
+    func fetchMovieCreditsForMovie(id: Int) {
+        
+        let creditsRequest = "https://api.themoviedb.org/3/movie/\(id)/credits?api_key=\(apiKey)&language=en-US"
+        
+        AF.request( creditsRequest ).responseJSON { response in
+            
+            guard let json = response.data else { return }
+            
+            do {
+                
+                let movieCredits = try self.decoder.decode(MovieCredits.self, from: json)
+                
+                self.movieCast = movieCredits.cast
+                print("cast count: \(self.movieCast.count)")
+                for x in self.movieCast {
+                    print("Actor: \(x)")
+                    print(x.name)
+                    print("Character: " + x.character)
+                    print("Popularity: " + "\(x.popularity)")
+                    print("KnownFor: " + x.known_for_department)
+                    print("ID: " + "\(x.id)")
+                    print("\n")
+                }
+                
+            } catch {
+                print(error)
+            }
+            
+            
+            self.getImagesForActor()
+        }
+        
+    }
+    
+    
+    // Get Images for Actor
+    func getImagesForActor() {
+        
+        // added dictionary to match ids to images
+        
+        for actor in self.movieCast {
+            let imageRequest = "https://api.themoviedb.org/3/person/\(actor.id)/images?api_key=ebccbee67fef37cc7a99378c44af7d33"
+            AF.request( imageRequest ).responseJSON { response in
+                
+                guard let json = response.data else {
+                    print("No response for Actor image request ")
+                    return }
+                
+                
+                do {
+                    let results = try self.decoder.decode(ActorSchema.self, from: json)
+                    
+                    for profile in results.profiles {
+                        
+                        guard let imagePath = profile.file_path else {
+                            print("There is no image path for actorID: \(actor.id)")
+                            return
+                        }
+                        
+                        print("Profile paths = \(actor.id), \(imagePath)")
+                        
+                        self.actorImageProfiles[actor.id] = imagePath
+                            
+                    }
+                    print("profile in actorImageProfile count = \(self.actorImageProfiles.count)")
+                } catch {
+                    print(error)
+                }
+                
+                    
+                
+            }
+        }
+        
+        
+        
+    }
+
     
 }
 

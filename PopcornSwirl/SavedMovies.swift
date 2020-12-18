@@ -17,10 +17,9 @@ struct SavedMovies: View {
         
         GeometryReader { _ in
         
-        
-    
          
-                SavedRow(search: $bindingString)
+//                SavedRow(search: $bindingString)
+            Text("SavedMovies")
       
         
         }
@@ -36,22 +35,17 @@ struct SavedRow: View {
     
     @ObservedObject var movieStore = MovieStore()
     
-    var searchResults = [Poster]()
     @Binding var search: String
-    
-    
-    var elements = ["Indiana Jones", "Die Hard", "Double Jeprody", "Tropic Thunder", "Alladin", "The Lion king", "Space Jam", "Avatar", "Casino Royal", "Iorn Man", "Star Trek", "2012", "Ocean Twelve", "Pokemon", "The Karate Kid"]
-    
-    private var elementsArray: [[String]] {
-        
-        var newArray: [[String]] = []
 
-        let dividedCount = elements.count / 3
+    
+    private var elementsArray: [[MovieSearchResults]] {
+        
+        var newArray: [[MovieSearchResults]] = []
+
+        let dividedCount = movieStore.movieSearchResults.count / 2
         
         if dividedCount >= 1 {
-            newArray = elements.divided(into: 3)
-        } else {
-            newArray = [elements]
+            newArray = movieStore.movieSearchResults.divided(into: 2)
         }
         
         return newArray
@@ -65,17 +59,19 @@ struct SavedRow: View {
                 
                     ForEach(elementsArray, id: \.self) { array in
                         HStack {
-                            ForEach(array, id: \.self) { x in
-                                MovieCard(color: .pPurple).overlay(
-                                    Text(x).foregroundColor(.white)
-                                )
+                            Spacer()
+                            ForEach(array, id: \.self) { movie in
+                                
+                                Poster(urlString: self.movieStore.imageURL + (movie.poster_path ?? "" ),
+                                       title: movie.title)
                             } // ForEach(array)
                             .padding(.horizontal, 15)
                             Spacer()
                         } // HStack
                         .frame(width: geometry.size.width,
-                               height: 200)
-                        
+                               height: 300,
+                               alignment: .center)
+                        .padding()
                     } // ForEach(elementsArray)
                     
                 } // VStack
@@ -84,10 +80,9 @@ struct SavedRow: View {
         
         .padding(.bottom)
         
-        .onAppear {
-            
-            movieStore.fetchResultsForMovie(query: search)
-        }
+//        .onChange(of: search) { (_) in
+//            movieStore.fetchResultsForMovie(query: search)
+//        }
    
     }
     
@@ -95,7 +90,7 @@ struct SavedRow: View {
 
 struct SavedMovies_Previews: PreviewProvider {
     static var previews: some View {
-//        SavedMovies()
+        SavedMovies(bindingString: .constant(""))
         
         SavedRow(search: .constant("String")).previewLayout(.sizeThatFits)
     }

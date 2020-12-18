@@ -24,17 +24,22 @@ struct MovieDetail: View {
        
  
         GeometryReader { geometry in
-            ScrollView {
+            ZStack {
+                // Background
+                LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .top, endPoint: .bottom)
+                    .ignoresSafeArea(edges: .top)
+                // Content
+                ScrollView {
                 
                 ZStack {
                         VStack(alignment: .leading) {
                             HStack(alignment: .bottom) {
                                 // Movie Poster
-                                Poster(urlString: movieStore.imageURL + posterPath, title: movieTitle)
+                                MoviePoster(urlString: movieStore.imageURL + posterPath)
                                     .padding()
                                 VStack(alignment: .leading, spacing: 10) {
                                     // Movie Title
-                                    Text(movieTitle).font(.system(.largeTitle))
+                                    Text(movieTitle).font(.system(.largeTitle)).multilineTextAlignment(.leading).lineLimit(3).frame(width: geometry.size.width/2, height: 200, alignment: .bottomLeading)
                                     // Genre
                                     Text("Action / Adventure").foregroundColor(.gray)
                                     // Rating
@@ -74,18 +79,31 @@ struct MovieDetail: View {
                             ScrollView(.horizontal, showsIndicators:  false) {
                                 HStack {
 
-                                    ForEach(0..<movieStore.movieCast.count, id: \.self ) { i in
+                                    if movieStore.actorImageProfiles.count != 0  {
+                                        
+                                        ForEach(0..<movieStore.actorImageProfiles.count, id: \.self ) { i in
+                                        
+                                            
+                                            if i <= 9 {
+
+                                                if let actorImagePath = movieStore.actorImageProfiles[movieStore.movieCast[i].id] {
+                                                    
+                                                
+                                                    Actor(imageURL: movieStore.imageURL + actorImagePath,
+                                                          name: movieStore.movieCast[i].name,
+                                                          favorite: false,
+                                                          subtitle: movieStore.movieCast[i].character)
+                                                
+                                                } // if let
+
+                                                
+                                            } // if actor index is less than 9
+                                            
+                                        } // ForEach
                                     
-                                        ActorCard2(color: .coral,
-                                                  image: Image(systemName: "person.fill"),
-                                                  width: 100,
-                                                  height: 200,
-                                                  title: movieStore.movieCast[i].name,
-                                                  subtitle: movieStore.movieCast[i].character)
-                                            .padding(.horizontal, 7).padding(.vertical, 5)
+                                    } // if movieCast != 0
                                     
-                                    }
-                                }
+                                } // HSTack
                             } .padding() // actors scroll view
                             
                             
@@ -157,6 +175,7 @@ struct MovieDetail: View {
                 
             } // scroll
             
+            } // ZStack
             
         } // geo
         
@@ -174,10 +193,12 @@ struct MovieDetail: View {
             print( "Movie Overview: \(movieOverview)"  )
             print( "Path: \(movieStore.imageURL + posterPath)" )
             
+            
+            
             movieStore.fetchMovieCreditsForMovie(id: movieID)
+            
             movieStore.fetchRecommendedMoviesForMovie(id: movieID)
             
-            movieStore.fetchResultsForMovie(query: "croft")
         }
         
         
@@ -186,6 +207,6 @@ struct MovieDetail: View {
 
 struct MovieDetail_Previews: PreviewProvider {
     static var previews: some View {
-        MovieDetail()
+        MovieDetail(movieTitle: "Long movie title goes here ")
     }
 }

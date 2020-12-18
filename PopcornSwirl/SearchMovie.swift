@@ -26,12 +26,19 @@ struct SearchMovie: View {
                             
                         TextField("Search", text: $searchTag).font(.title2)
                             .padding(.trailing)
-                            .onChange(of: searchTag, perform: { _ in
-                                
-                                movieStore.fetchResultsForMovie(query: searchTag)
-                                
-                            })
-                                
+//
+//                            .onChange(of: searchTag, perform: { _ in
+//
+//                                movieStore.fetchResultsForMovie(query: searchTag)
+//
+//                            })
+
+
+                        Button(action: {
+                            movieStore.fetchResultsForMovie(query: searchTag)
+                        }) {
+                            Text("button")
+                        }
                             
                     }
                     .mask(
@@ -42,15 +49,13 @@ struct SearchMovie: View {
                 .frame(width: UIScreen.main.bounds.width,
                        height: 40)
                     
-                    SavedRow(search: $searchTag) 
+            SavedRow(search: $searchTag)
             
             
             
         }
         .background(Color.pGray)
         .edgesIgnoringSafeArea(.bottom)
-        
-
         
     }
 }

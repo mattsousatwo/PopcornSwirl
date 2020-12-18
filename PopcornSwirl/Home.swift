@@ -44,7 +44,6 @@ struct Home: View {
                             HStack(spacing: 15) {
                                     
                                 ForEach(0..<movieStore.popularMovies.count, id: \.self ) { i in
-                                    VStack {
                                         
                                         
                                         if movieStore.popularMovies.count != 0 {
@@ -57,10 +56,7 @@ struct Home: View {
                                                 
                                             }
                                             
-                                            // Can also just remove title label and have the poster stand alone
-//                                            Text("\(movieStore.popularMovies[i].title) \(i)").font(.system(.body, design: .rounded)).bold().lineLimit(2).multilineTextAlignment(TextAlignment.center)
-                                            
-                                        }
+                                        
                                     }
                                 }
                                     
@@ -68,36 +64,36 @@ struct Home: View {
                             
                         } // scroll
 
-                        // MARK: - LATEST MOVIES STACK
+                        // MARK: - UPCOMING MOVIES STACK
                         HStack {
-                            Text("Latest Movies").font(.system(.title, design: .rounded)).bold()
+                            Text("Upcoming Movies").font(.system(.title, design: .rounded)).bold()
                                 .padding(.horizontal)
                             Spacer()
                         }
                         // Horizontal Scroll
                         ScrollView(.horizontal, showsIndicators:  false) {
                             HStack(spacing: 15) {
-                                ForEach(0..<movieStore.latestMovies.count, id: \.self ) { i in
-                                    VStack {
+                                ForEach(0..<movieStore.upcomingMovies.count, id: \.self ) { i in
+                                    
 
 
 
-                                        if movieStore.latestMovies.count != 0 {
+                                        if movieStore.upcomingMovies.count != 0 {
                                             NavigationLink(destination: MovieDetail(
-                                                movieID: movieStore.latestMovies[i].id,
-                                                movieTitle: movieStore.latestMovies[i].title,
-                                                movieOverview: movieStore.latestMovies[i].overview,
-                                                posterPath: ""
+                                                movieID: movieStore.upcomingMovies[i].id,
+                                                movieTitle: movieStore.upcomingMovies[i].title,
+                                                movieOverview: movieStore.upcomingMovies[i].overview,
+                                                posterPath: (movieStore.upcomingMovies[i].poster_path ?? "")
                                             )) {
-                                                Poster(urlString: movieStore.imageURL + (movieStore.latestMovies[i].poster_path ?? ""), title: "\(movieStore.latestMovies[i].title)")
+                                                Poster(urlString: movieStore.imageURL + (movieStore.upcomingMovies[i].poster_path ?? ""), title: movieStore.upcomingMovies[i].title)
                                             }
-//                                            Text("\(movieStore.latestMovies[i].title)").font(.system(.body, design: .rounded)).bold()
+//
                                             
                                         }
                                         
                                         
 
-                                    }
+                                    
                                 }
                                 
                             }.padding()
@@ -150,7 +146,7 @@ struct Home: View {
         
         .onAppear() {
             movieStore.fetchPopularMovies()
-            movieStore.fetchLatestMovies()
+            movieStore.fetchUpcomingMovies()
             
         }
         
