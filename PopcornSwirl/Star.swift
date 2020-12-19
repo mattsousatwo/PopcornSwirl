@@ -25,31 +25,37 @@ struct StarBar: View {
     
     private var status: [StarStatus] {
         switch value {
-        case 0...0.4 :
+        case 0...0.49 :
             return [.empty, .empty, .empty, .empty, .empty]
-        case 0.5...0.9 :
+        case 0.5...0.99 :
             return [.half, .empty, .empty, .empty, .empty]
-        case 1...1.4 :
+        case 1...1.49 :
             return [.full, .empty, .empty, .empty, .empty]
-        case 1.5...1.9 :
+        case 1.5...1.99 :
             return [.full, .half, .empty, .empty, .empty]
-        case 2...2.4 :
+        case 2...2.49 :
             return [.full, .full, .empty, .empty, .empty]
-        case 2.5...2.9 :
+        case 2.5...2.99 :
             return [.full, .full, .half, .empty, .empty]
-        case 3...3.4 :
+        case 3...3.49 :
             return [.full, .full, .full, .empty, .empty]
-        case 3.5...3.9 :
+        case 3.5...3.99 :
             return [.full, .full, .full, .half, .empty]
-        case 4...4.4 :
+        case 4...4.49 :
             return [.full, .full, .full, .full, .empty]
-        case 4.5...4.9 :
+        case 4.5...4.99 :
             return [.full, .full, .full, .full, .half]
         case 5:
             return [.full, .full, .full, .full, .full]
         default:
             return [.nonExistant, .nonExistant, .nonExistant, .nonExistant, .nonExistant]
         }
+    }
+    
+    init(value: Double) {
+        let dividedValue = value / 2
+        self.value = dividedValue
+        print("Star Bar Converted Value: input value = \(value), divided value = \(dividedValue)")
     }
     
     var body: some View {
@@ -68,10 +74,10 @@ struct StarBar: View {
 struct Star_Previews: PreviewProvider {
     static var previews: some View {  
         Group {
-            StarBar(value: 2.7)
+            StarBar(value: 5.8)
                 .previewLayout(.sizeThatFits)
             
-            StarBar(value: 3.8)
+            StarBar(value: 9.8)
                 .previewLayout(.sizeThatFits)
             
             Star(status: StarStatus.empty)

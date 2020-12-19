@@ -39,7 +39,8 @@ struct PopMovie: Codable, Identifiable {
     public var id: Int
     public var title: String
     public var overview: String
-    public var poster_path: String 
+    public var poster_path: String
+    public var vote_average: Double
 }
 
 
@@ -109,7 +110,8 @@ struct RecommendedMovie: Codable {
     var poster_path: String?
     var overview: String
     var popularity: Double
-    var id: Int 
+    var id: Int
+    var vote_average: Double
 }
 
 
@@ -161,4 +163,5 @@ struct ActorSchema: Codable {
 
 struct ActorImageProfile: Codable {
     var file_path: String?
+    var vote_average: Double
 }

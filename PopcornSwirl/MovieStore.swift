@@ -55,7 +55,7 @@ extension MovieStore {
                 
                 self.popularMovies = decodedMovies.results
                 for i in 0..<self.popularMovies.count {
-                    print("title: \(self.popularMovies[i].title), \n   overview: \(self.popularMovies[i].overview) \n   poster_path: \(self.popularMovies[i].poster_path)")
+                    print("title: \(self.popularMovies[i].title), \n   overview: \(self.popularMovies[i].overview) \n   poster_path: \(self.popularMovies[i].poster_path) \n    vote avg: \(self.popularMovies[i].vote_average)" )
                 }
                 
             } catch {
@@ -176,8 +176,6 @@ extension MovieStore {
     // Get Images for Actor
     func getImagesForActor() {
         
-        // added dictionary to match ids to images
-        
         for actor in self.movieCast {
             let imageRequest = "https://api.themoviedb.org/3/person/\(actor.id)/images?api_key=ebccbee67fef37cc7a99378c44af7d33"
             AF.request( imageRequest ).responseJSON { response in
@@ -190,16 +188,22 @@ extension MovieStore {
                 do {
                     let results = try self.decoder.decode(ActorSchema.self, from: json)
                     
-                    for profile in results.profiles {
+                    for profileOne in results.profiles {
                         
-                        guard let imagePath = profile.file_path else {
-                            print("There is no image path for actorID: \(actor.id)")
-                            return
+                        for profileTwo in results.profiles {
+                            // check for most voted for image && set path to actor id
+                            if profileOne.vote_average > profileTwo.vote_average {
+                                
+                                guard let imagePath = profileOne.file_path else { return }
+                                
+                                self.actorImageProfiles[actor.id] = imagePath
+                                
+                            } else {
+                                guard let imagePath = profileTwo.file_path else { return }
+                                
+                                self.actorImageProfiles[actor.id] = imagePath
+                            }
                         }
-                        
-                        print("Profile paths = \(actor.id), \(imagePath)")
-                        
-                        self.actorImageProfiles[actor.id] = imagePath
                             
                     }
                     print("profile in actorImageProfile count = \(self.actorImageProfiles.count)")

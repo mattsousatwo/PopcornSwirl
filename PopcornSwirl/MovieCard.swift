@@ -289,13 +289,19 @@ struct Actor: View {
 
                     , alignment: .bottomTrailing)
                 Text(name)
-                    .frame(width: 95,
-                           height: 15,
+                    .font(.title3)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .frame(width: 100,
+                           height: 30,
                            alignment: .center)
                     .foregroundColor(.black)
                 Text(subtitle)
+                    .fontWeight(.light)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
                     .frame(width: 80,
-                           height: 15,
+                           height: 30,
                            alignment: .center)
                     .foregroundColor(.gray)
             } // VStack

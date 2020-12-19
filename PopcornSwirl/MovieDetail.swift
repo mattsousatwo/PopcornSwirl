@@ -19,6 +19,7 @@ struct MovieDetail: View {
 //    var genre = String()
     var movieOverview = String()
     var posterPath = String()
+    var rating = Double()
     
     var body: some View {
        
@@ -43,7 +44,8 @@ struct MovieDetail: View {
                                     // Genre
                                     Text("Action / Adventure").foregroundColor(.gray)
                                     // Rating
-                                    StarBar(value: 4.8)
+                                    StarBar(value: rating)
+
                                         .padding(.vertical, 4)
                                 }
                             }
@@ -83,27 +85,23 @@ struct MovieDetail: View {
                                         
                                         ForEach(0..<movieStore.actorImageProfiles.count, id: \.self ) { i in
                                         
-                                            
                                             if i <= 9 {
 
                                                 if let actorImagePath = movieStore.actorImageProfiles[movieStore.movieCast[i].id] {
                                                     
-                                                
-                                                    Actor(imageURL: movieStore.imageURL + actorImagePath,
-                                                          name: movieStore.movieCast[i].name,
-                                                          favorite: false,
-                                                          subtitle: movieStore.movieCast[i].character)
-                                                
+//                                                    NavigationLink(destination: Home()) {
+                                                        Actor(imageURL: movieStore.imageURL +  actorImagePath,
+                                                              name: movieStore.movieCast[i].name,
+                                                              favorite: false,
+                                                              subtitle: movieStore.movieCast[i].character)
+                                                            
+//                                                    } // nav link
+                                                    
                                                 } // if let
-
-                                                
                                             } // if actor index is less than 9
-                                            
                                         } // ForEach
-                                    
                                     } // if movieCast != 0
-                                    
-                                } // HSTack
+                                }   // HSTack
                             } .padding() // actors scroll view
                             
                             
@@ -135,16 +133,13 @@ struct MovieDetail: View {
                                                             movieOverview: movieStore.recommendedMovies[i].overview,
                                                             posterPath: movieStore.recommendedMovies[i].poster_path ?? "" )) {
                                                 // link label
-                                                Poster(urlString: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""), title: movieStore.recommendedMovies[i].title)
+                                                MoviePoster(urlString: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
                                             } // Nav Label
                                         } // if poster != nil
                                     } // ForEach
                                 } .padding()  // HS
-                            } // actors scroll view
-                            
-                            
-                            
-                        }
+                            } // suggested movie scroll view
+                        } // V stack
                         
                         
                             
