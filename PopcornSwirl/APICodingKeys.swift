@@ -21,7 +21,7 @@ struct PopularMovie: Codable {
     var overview: String
     var release_date: String
     var id: Int
-//    var genre_ids
+    var genre_ids: [Int]
     var original_title: String
     var original_language: String
     var title: String
@@ -41,6 +41,7 @@ struct PopMovie: Codable, Identifiable {
     public var overview: String
     public var poster_path: String
     public var vote_average: Double
+    public var genre_ids: [Int]
 }
 
 
@@ -164,4 +165,20 @@ struct ActorSchema: Codable {
 struct ActorImageProfile: Codable {
     var file_path: String?
     var vote_average: Double
+}
+
+
+// MARK: - GENRES
+struct Genres: Codable, Hashable {
+    var id: Int
+    var name: String
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+struct GenreArray: Codable {
+    var genres: [Genres]
+
 }

@@ -20,6 +20,7 @@
 		617BA0CE25804F5800E1209A /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617BA0CD25804F5800E1209A /* ImageCache.swift */; };
 		61905FD9256C59690077DDC6 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 61905FD8256C59690077DDC6 /* Alamofire */; };
 		619BE26925684ABA0067ABEB /* APICodingKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619BE26825684ABA0067ABEB /* APICodingKeys.swift */; };
+		61B500C9258FAA9400D88EAD /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B500C8258FAA9400D88EAD /* RemoteImage.swift */; };
 		61C83ED9251A3DF50012019F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C83ED8251A3DF50012019F /* AppDelegate.swift */; };
 		61C83EDB251A3DF50012019F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C83EDA251A3DF50012019F /* SceneDelegate.swift */; };
 		61C83EDE251A3DF50012019F /* PopcornSwirl.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 61C83EDC251A3DF50012019F /* PopcornSwirl.xcdatamodeld */; };
@@ -54,6 +55,7 @@
 		617B6E15251AA0C300BCF757 /* Star.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Star.swift; sourceTree = "<group>"; };
 		617BA0CD25804F5800E1209A /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		619BE26825684ABA0067ABEB /* APICodingKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICodingKeys.swift; sourceTree = "<group>"; };
+		61B500C8258FAA9400D88EAD /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
 		61C83ED5251A3DF50012019F /* PopcornSwirl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PopcornSwirl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61C83ED8251A3DF50012019F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		61C83EDA251A3DF50012019F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				61D9C6CD257EA96D0047869A /* ActorStore.swift */,
 				6165AD0125804C9000191828 /* ImageManager.swift */,
 				617BA0CD25804F5800E1209A /* ImageCache.swift */,
+				61B500C8258FAA9400D88EAD /* RemoteImage.swift */,
 			);
 			name = MovieDB;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				617B6E14251A937500BCF757 /* Colors+EXT.swift in Sources */,
 				617B6E12251A625900BCF757 /* MovieDetail.swift in Sources */,
 				61C83ED9251A3DF50012019F /* AppDelegate.swift in Sources */,
+				61B500C9258FAA9400D88EAD /* RemoteImage.swift in Sources */,
 				61322946251D637A00A84C62 /* SavedMovies.swift in Sources */,
 				61322942251D26EF00A84C62 /* Buttons.swift in Sources */,
 				617B6E10251A5D7000BCF757 /* Menu.swift in Sources */,

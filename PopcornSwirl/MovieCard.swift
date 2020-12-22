@@ -244,16 +244,13 @@ struct Actor: View {
     @ObservedObject var actorImage: URLImageModel
     var name: String
     var subtitle: String
-    var favorite: Bool
+    @Binding var favorite: Bool
     
-    init(imageURL: String?, name: String, favorite: Bool, subtitle: String) {
+    init(imageURL: String?, name: String, subtitle: String, favorite: Binding<Bool>) {
         actorImage = URLImageModel(url: imageURL)
         self.name = name
+        self._favorite = favorite
         self.subtitle = subtitle
-        
-        self.favorite = favorite
-        
-        
     }
     
     var body: some View {
@@ -279,6 +276,7 @@ struct Actor: View {
                 .overlay(
                     
                     Button(action: {
+                        self.favorite.toggle()
                         print("favorite button tapped")
                     }, label: {
                         Image(systemName: favorite ? "heart.fill": "heart")
@@ -325,7 +323,8 @@ struct MovieCard_Previews: PreviewProvider {
             
             ActorCard3(color: .coral)
             
-            Actor(imageURL: nil, name: "Actor Name", favorite: false, subtitle: "Subtitle")
+            Actor(imageURL: nil, name: "Actor Name", subtitle: "Subtitle", favorite: .constant(true))
+            
             
         }.previewLayout(.sizeThatFits)
     }

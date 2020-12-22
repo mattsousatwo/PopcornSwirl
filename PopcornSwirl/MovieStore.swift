@@ -15,19 +15,18 @@ class MovieStore: ObservableObject {
     // Movie Stores
     @Published var popularMovies = [PopMovie]() // all popular movies
     @Published var movieCast = [MovieCast]() // cast for movie
-    @Published var recommendedMovies = [RecommendedMovie]() // all recommended movies by movie id
+    @Published var recommendedMovies = [RecommendedMovie]() // all recommended movies by movie ID
     @Published var movieSearchResults = [MovieSearchResults]()
     @Published var upcomingMovies = [UpcomingMovie]()
-    @Published var actorImageProfiles = [Int : String]()
+    @Published var actorImageProfiles = [Int : String]() // Stores actor images by ID
+    @Published var genreDictionary = [Int: String]() // Stores genres
+    @Published var genreArray = [Genres]()
+    
     
     lazy var decoder = JSONDecoder() // used to decode json data
     
     lazy var imageURL = "https://image.tmdb.org/t/p/" + "original" // used as base for movie images
-        /// Need base_url, file_size and file_path to retrieve images
-    
-    
-    // API Key
-    lazy var apiKey = "ebccbee67fef37cc7a99378c44af7d33"
+    lazy var apiKey = "ebccbee67fef37cc7a99378c44af7d33" // API Key
     
     // Initalizer
     init() {
@@ -56,6 +55,9 @@ extension MovieStore {
                 self.popularMovies = decodedMovies.results
                 for i in 0..<self.popularMovies.count {
                     print("title: \(self.popularMovies[i].title), \n   overview: \(self.popularMovies[i].overview) \n   poster_path: \(self.popularMovies[i].poster_path) \n    vote avg: \(self.popularMovies[i].vote_average)" )
+                    for x in 0..<self.popularMovies[i].genre_ids.count {
+                        print("GenreID: \(self.popularMovies[i].genre_ids[x]) ")
+                    }
                 }
                 
             } catch {
@@ -255,8 +257,7 @@ extension MovieStore {
             } catch {
                 print(error)
             }
-            
-            
+
         }
         
     }
@@ -265,10 +266,72 @@ extension MovieStore {
     func fetchResultsForActor(query: String) {
         
     }
+    
 }
 
 
 // MARK: POST :: DELETE
 extension MovieStore {
+    
+}
+
+// MARK: GET Genres
+extension MovieStore {
+    
+    func getGenres() {
+        let genreRequest = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(apiKey)&language=en-US"
+        
+        AF.request( genreRequest ).responseJSON { response in
+            
+            guard let json = response.data else {
+                print("Genre List not found")
+                return
+            }
+            do {
+                let results = try self.decoder.decode(GenreArray.self, from: json)
+                
+                self.genreArray = results.genres
+                
+                for genre in results.genres {
+                    
+                    self.genreDictionary[genre.id] = genre.name
+                }
+
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func extractGenres(from IDs: [Int]) -> [String] {
+        var genreNames = [String]()
+        print("T1: " + "\(IDs)")
+        for id in IDs {
+            print("T1: ID = \(id)")
+            print("T1: genreDict[\(id)] = \(genreDictionary[id] ?? "nil") " )
+            if let genre = genreDictionary[id] {
+                print(genreDictionary[id])
+                genreNames.append(genre)
+            }
+            
+            
+//            for genre in genreArray {
+//
+//                if id == genre.id {
+//                    print(genre.name)
+//                    genreNames.append(genre.name)
+//                }
+//            }
+            
+        }
+        print(#function)
+        for name in genreNames {
+            print("T1" + name)
+        }
+        return genreNames
+    }
+    
+    
+    
     
 }

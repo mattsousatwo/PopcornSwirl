@@ -16,10 +16,19 @@ struct MovieDetail: View {
     
     var movieID = Int()
     var movieTitle = String()
-//    var genre = String()
+    var genreIDs = [Int]()
+    
+    private var genres: [String] {
+        let genreArray = movieStore.extractGenres(from: genreIDs)
+        print("T1: genreArray = \(genreArray.count)")
+        return genreArray
+    }
+    
+    
     var movieOverview = String()
     var posterPath = String()
     var rating = Double()
+
     
     var body: some View {
        
@@ -36,36 +45,31 @@ struct MovieDetail: View {
                         VStack(alignment: .leading) {
                             HStack(alignment: .bottom) {
                                 // Movie Poster
-                                MoviePoster(urlString: movieStore.imageURL + posterPath)
+                                RemotePoster(url: movieStore.imageURL + posterPath)
+//                                MoviePoster(urlString: movieStore.imageURL + posterPath)
                                     .padding()
                                 VStack(alignment: .leading, spacing: 10) {
                                     // Movie Title
                                     Text(movieTitle).font(.system(.largeTitle)).multilineTextAlignment(.leading).lineLimit(3).frame(width: geometry.size.width/2, height: 200, alignment: .bottomLeading)
                                     // Genre
-                                    Text("Action / Adventure").foregroundColor(.gray)
+                                    ForEach(0..<genres.count, id: \.self) { i in
+                                        Text(genres[i]).foregroundColor(.gray)
+                                        
+                                    }
+//
+//                                    Text("Action / Adventure").foregroundColor(.gray)
                                     // Rating
                                     StarBar(value: rating)
-
+                                        .frame(width: geometry.size.width / 2, height: 25 )
                                         .padding(.vertical, 4)
                                 }
                             }
                             
                             // Description
-
-                            Button(action: {
-                                self.showDesription.toggle()
-                            }) {
-                                switch showDesription{
-                                case true: // show
-                                    
-                                    Text("A really long description of the movie would go here. Probably 3 - 4 lines of text.")
-                                case false: // hide
-                                    Text(movieOverview)
-                                }
-                            }
-                            .foregroundColor(.black)
-                            .animation(.default)
-                            .padding()
+                            Text(movieOverview)
+                                .foregroundColor(.black)
+                                .animation(.default)
+                                .padding()
 
                             
                             
@@ -90,10 +94,12 @@ struct MovieDetail: View {
                                                 if let actorImagePath = movieStore.actorImageProfiles[movieStore.movieCast[i].id] {
                                                     
 //                                                    NavigationLink(destination: Home()) {
-                                                        Actor(imageURL: movieStore.imageURL +  actorImagePath,
-                                                              name: movieStore.movieCast[i].name,
-                                                              favorite: false,
-                                                              subtitle: movieStore.movieCast[i].character)
+                                                    
+                                                        RemoteActor(url: movieStore.imageURL + actorImagePath)
+//                                                        Actor(imageURL: movieStore.imageURL +  actorImagePath,
+//                                                              name: movieStore.movieCast[i].name,
+//                                                              subtitle: movieStore.movieCast[i].character,
+//                                                              favorite: .constant(true))
                                                             
 //                                                    } // nav link
                                                     
@@ -131,9 +137,13 @@ struct MovieDetail: View {
                                                             movieID: movieStore.recommendedMovies[i].id,
                                                             movieTitle: movieStore.recommendedMovies[i].title,
                                                             movieOverview: movieStore.recommendedMovies[i].overview,
-                                                            posterPath: movieStore.recommendedMovies[i].poster_path ?? "" )) {
+                                                            posterPath: movieStore.recommendedMovies[i].poster_path ?? "",
+                                                            rating: movieStore.recommendedMovies[i].vote_average))
+                                            {
                                                 // link label
-                                                MoviePoster(urlString: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
+                                                RemotePoster(url: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
+                                                
+//                                                MoviePoster(urlString: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
                                             } // Nav Label
                                         } // if poster != nil
                                     } // ForEach
@@ -187,6 +197,7 @@ struct MovieDetail: View {
             print( "Movie Title: \(movieTitle)"  )
             print( "Movie Overview: \(movieOverview)"  )
             print( "Path: \(movieStore.imageURL + posterPath)" )
+            print( "GenreIDs: \(genreIDs)" )
             
             
             

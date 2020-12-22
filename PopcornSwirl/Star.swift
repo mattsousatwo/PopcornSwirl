@@ -14,7 +14,7 @@ struct Star: View {
         Image(systemName: status.rawValue).resizable()
 //            .foregroundColor(.lightYellow)
             .foregroundColor(.pGray3)
-            .frame(width: 25, height: 25)
+            .frame(width: 20, height: 20)
     }
 }
 
@@ -63,7 +63,7 @@ struct StarBar: View {
             ForEach(status, id: \.self) { x in
                 Star(status: x)
             }
-            Text("\(value, specifier: "%.1f")").font(.system(size: 20)).bold()
+            Text("\(value, specifier: "%.1F")").font(.system(size: 20)).bold()
             .foregroundColor(.pGray3)
         }
     }
@@ -78,6 +78,7 @@ struct Star_Previews: PreviewProvider {
                 .previewLayout(.sizeThatFits)
             
             StarBar(value: 9.8)
+                .frame(width: 300, height: 20)
                 .previewLayout(.sizeThatFits)
             
             Star(status: StarStatus.empty)
