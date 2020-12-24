@@ -35,7 +35,7 @@ struct Menu: View {
             })
             
             
-            NavigationLink(destination: SavedMovies(bindingString:.constant("") ),
+            NavigationLink(destination: SavedMovies( ),
                            isActive: $saved,
                            label: { // Icon
                 VStack {

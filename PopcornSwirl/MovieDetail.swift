@@ -19,8 +19,24 @@ struct MovieDetail: View {
     var genreIDs = [Int]()
     
     private var genres: [String] {
-        let genreArray = movieStore.extractGenres(from: genreIDs)
+        var genreArray: [String] = []
         print("T1: genreArray = \(genreArray.count)")
+        
+        for id in genreIDs {
+            for genre in movieStore.genreArray {
+             
+                if genre.id == id {
+                    print("Confirmed: \(genre.id), \(genre.name)")
+                    genreArray.append(genre.name)
+                } else {
+                    genreArray.append("Object")
+                }
+                
+            }
+        }
+        
+        
+        
         return genreArray
     }
     
@@ -68,10 +84,9 @@ struct MovieDetail: View {
                             // Description
                             Text(movieOverview)
                                 .foregroundColor(.black)
-                                .animation(.default)
                                 .padding()
 
-                            
+                            GenreBar(genres: genreIDs)
                             
                             // Actors scroll view
                             HStack {

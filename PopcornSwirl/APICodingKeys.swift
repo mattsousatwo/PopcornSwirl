@@ -42,6 +42,8 @@ struct PopMovie: Codable, Identifiable {
     public var poster_path: String
     public var vote_average: Double
     public var genre_ids: [Int]
+    public var release_date: String
+    public var backdrop_path: String
 }
 
 

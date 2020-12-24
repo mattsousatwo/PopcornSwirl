@@ -309,19 +309,21 @@ extension MovieStore {
         for id in IDs {
             print("T1: ID = \(id)")
             print("T1: genreDict[\(id)] = \(genreDictionary[id] ?? "nil") " )
-            if let genre = genreDictionary[id] {
-                print(genreDictionary[id])
-                genreNames.append(genre)
-            }
-            
-            
-//            for genre in genreArray {
-//
-//                if id == genre.id {
-//                    print(genre.name)
-//                    genreNames.append(genre.name)
-//                }
+//            if let genre = genreDictionary[id] {
+//                print(genreDictionary[id] ?? "is empty ")
+//                genreNames.append(genre)
 //            }
+//
+            
+            for genre in genreArray {
+
+                if id == genre.id {
+                    print(genre.name)
+                    genreNames.append(genre.name)
+                } else {
+                    genreNames.append("Object")
+                }
+            }
             
         }
         print(#function)

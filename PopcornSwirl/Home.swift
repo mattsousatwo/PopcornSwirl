@@ -38,15 +38,28 @@ struct Home: View {
                             ForEach(0..<movieStore.popularMovies.count, id: \.self ) { i in
                                     
                                 if movieStore.popularMovies.count != 0 {
-                                    NavigationLink(destination: MovieDetail(
-                                            movieID: movieStore.popularMovies[i].id,
-                                            movieTitle: movieStore.popularMovies[i].title,
-                                            genreIDs: movieStore.popularMovies[i].genre_ids,
-                                            movieOverview: movieStore.popularMovies[i].overview,
-                                            posterPath: movieStore.popularMovies[i].poster_path,
-                                            rating: movieStore.popularMovies[i].vote_average)) {
+                                    NavigationLink(destination:
+//                                                    MovieDetail(
+//                                            movieID: movieStore.popularMovies[i].id,
+//                                            movieTitle: movieStore.popularMovies[i].title,
+//                                            genreIDs: movieStore.popularMovies[i].genre_ids,
+//                                            movieOverview: movieStore.popularMovies[i].overview,
+//                                            posterPath: movieStore.popularMovies[i].poster_path,
+//                                            rating: movieStore.popularMovies[i].vote_average))
+                                                    MovieView(movieID: movieStore.popularMovies[i].id ,
+                                                            title: movieStore.popularMovies[i].title,
+                                                              overview: movieStore.popularMovies[i].overview,
+                                                              rating: movieStore.popularMovies[i].vote_average,
+                                                              genres: movieStore.popularMovies[i].genre_ids,
+                                                              posterURL: movieStore.popularMovies[i].backdrop_path) )
+                                    {
                                         RemotePoster(url: movieStore.imageURL + movieStore.popularMovies[i].poster_path)
-//                                            Poster(urlString: movieStore.imageURL + movieStore.popularMovies[i].poster_path,
+
+                                        
+                                        
+                                        
+                                        
+                                        //                                            Poster(urlString: movieStore.imageURL + movieStore.popularMovies[i].poster_path,
 //                                                   title: "\(movieStore.popularMovies[i].title) \(i)")
                                     }
                                         

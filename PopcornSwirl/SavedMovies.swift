@@ -11,8 +11,6 @@ import SwiftUI
 struct SavedMovies: View {
     
     
-    @Binding var bindingString: String // PLACEHOLDER
-    
     var body: some View {
         
         GeometryReader { _ in
@@ -36,9 +34,10 @@ struct SavedRow: View {
     @ObservedObject var movieStore = MovieStore()
     
     @Binding var search: String
-
     
     private var elementsArray: [[MovieSearchResults]] {
+        
+        movieStore.fetchResultsForMovie(query: search)
         
         var newArray: [[MovieSearchResults]] = []
 
@@ -47,13 +46,28 @@ struct SavedRow: View {
         if dividedCount >= 1 {
             newArray = movieStore.movieSearchResults.divided(into: 2)
         }
-        
+        print("ElementsArray: \(newArray.count)")
         return newArray
+    }
+    
+    private var showResults: Bool {
+        
+        switch elementsArray.count {
+        case 0:
+            return false
+        default:
+            return true
+        }
     }
     
     var body: some View {
         
+        
+        
         GeometryReader { geometry in
+            if showResults == true {
+                
+                
             ScrollView {
                 VStack {
                 
@@ -76,21 +90,29 @@ struct SavedRow: View {
                     
                 } // VStack
             } // Scroll
+                
+            .animation(.default)
+            } else { // show results
+                
+                Text("No Results Found").padding()
+            }
+            
+            
         } // Geo
         
-        .padding(.bottom)
+            .padding(.bottom)
         
-//        .onChange(of: search) { (_) in
-//            movieStore.fetchResultsForMovie(query: search)
-//        }
-   
+        
+
+        
     }
+    
     
 }
 
 struct SavedMovies_Previews: PreviewProvider {
     static var previews: some View {
-        SavedMovies(bindingString: .constant(""))
+        SavedMovies()
         
         SavedRow(search: .constant("String")).previewLayout(.sizeThatFits)
     }

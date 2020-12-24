@@ -35,9 +35,23 @@ struct SearchMovie: View {
 
 
                         Button(action: {
+                            
+                            
                             movieStore.fetchResultsForMovie(query: searchTag)
+                            
+                            
+                            
                         }) {
-                            Text("button")
+                            Text("Search")
+                                .foregroundColor(.white)
+                                .background( RoundedRectangle(cornerRadius: 12.0)
+                                                .foregroundColor(.blue)
+                                                .frame(width: 70,
+                                                       height: 40)
+                                                .shadow(radius: 3)
+                                )
+                                .padding()
+                            
                         }
                             
                     }
@@ -47,8 +61,9 @@ struct SearchMovie: View {
                             .shadow(radius: 8))
 
                 .frame(width: UIScreen.main.bounds.width,
-                       height: 40)
+                       height: 50)
                     
+            
             SavedRow(search: $searchTag)
             
             
