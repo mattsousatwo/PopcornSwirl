@@ -29,18 +29,13 @@ struct SearchMovie: View {
                         TextField("Search", text: $searchTag).font(.title2)
                             .padding(.trailing)
 
-                        
-//                            .onChange(of: searchTag, perform: { _ in
-//
-//                                movieStore.fetchResultsForMovie(query: searchTag)
-//
-//                            })
-                        
+                   
                         Button(action: {
                             
                             print(" ~ Search Button Pressed ~")
                             movieStore.fetchResultsForMovie(query: searchTag)
                             self.showResults.toggle()
+                            self.hideKeyboard()
                             
                         }) {
                             Text("Search")
