@@ -62,18 +62,23 @@ struct MovieDetail: View {
                             HStack(alignment: .bottom) {
                                 // Movie Poster
                                 RemotePoster(url: movieStore.imageURL + posterPath)
-//                                MoviePoster(urlString: movieStore.imageURL + posterPath)
+                                    .overlay(
+                                        Button(action: {
+                                            
+                                        }, label: {
+                                            Image(systemName: "heart") // CoreData.isFavorite ? "heart.fill" : "heart"
+                                                .frame(width: 35, height: 35)
+                                                .padding()
+                                                .foregroundColor(.pGray3)
+                                        })
+                                        , alignment: .bottomTrailing)
+
                                     .padding()
                                 VStack(alignment: .leading, spacing: 10) {
                                     // Movie Title
                                     Text(movieTitle).font(.system(.largeTitle)).multilineTextAlignment(.leading).lineLimit(3).frame(width: geometry.size.width/2, height: 200, alignment: .bottomLeading)
-                                    // Genre
-                                    ForEach(0..<genres.count, id: \.self) { i in
-                                        Text(genres[i]).foregroundColor(.gray)
-                                        
-                                    }
-//
-//                                    Text("Action / Adventure").foregroundColor(.gray)
+   
+                                     
                                     // Rating
                                     StarBar(value: rating)
                                         .frame(width: geometry.size.width / 2, height: 25 )
@@ -175,26 +180,8 @@ struct MovieDetail: View {
                         
                             
                 } // z stack
-                    
-
-                    .overlay(
-                        
-                            // Trailer button
-                        HStack {
  
-                            WatchedButton()
-                            BookmarkButton()
-                            
-                            PlayButton(pressed: false)
-                                
-                            
-
-                        }
-                        .padding(.vertical)
-                        .padding(.horizontal, 5)
-//                            .offset(x: -10,
-//                                    y: -145)
-                            , alignment: .topTrailing)
+                    
 
                 } // scroll
             

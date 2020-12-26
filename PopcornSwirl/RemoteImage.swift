@@ -101,8 +101,11 @@ struct RemoteActor: View {
     
     
     
+    
     var body: some View {
         VStack(alignment: .leading) {
+            
+            
             
             RemoteImage(url: url).clipShape( RoundedRectangle(cornerRadius: 12) )
                 .aspectRatio(contentMode: .fit)
