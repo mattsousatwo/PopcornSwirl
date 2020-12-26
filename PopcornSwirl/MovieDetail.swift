@@ -110,7 +110,13 @@ struct MovieDetail: View {
                                                     
 //                                                    NavigationLink(destination: Home()) {
                                                     
-                                                        RemoteActor(url: movieStore.imageURL + actorImagePath)
+                                                        RemoteActor(url: movieStore.imageURL + actorImagePath,
+                                                                    name: movieStore.movieCast[i].name,
+                                                                    subtitle: movieStore.movieCast[i].character,
+                                                                    isFavorite: false)
+                                                        
+                                                        
+                                                        
 //                                                        Actor(imageURL: movieStore.imageURL +  actorImagePath,
 //                                                              name: movieStore.movieCast[i].name,
 //                                                              subtitle: movieStore.movieCast[i].character,
@@ -189,11 +195,8 @@ struct MovieDetail: View {
 //                            .offset(x: -10,
 //                                    y: -145)
                             , alignment: .topTrailing)
-                        
-                
-                
-                
-            } // scroll
+
+                } // scroll
             
             } // ZStack
             

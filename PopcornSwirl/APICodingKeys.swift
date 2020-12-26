@@ -61,7 +61,10 @@ struct FindResults: Codable {
 struct FindMovieResults: Codable {
     var poster_path: String?
     var title: String
-    var id: Int 
+    var id: Int
+    var vote_average: Double
+    var genre_ids: [Int]
+    var overview: String 
 }
 
 struct FindPersonResults: Codable {
@@ -133,6 +136,7 @@ struct MovieSearchResults: Codable, Hashable {
     var backdrop_path: String?
     var popularity: Double
     var vote_average: Double
+    var genre_ids: [Int]
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

@@ -14,11 +14,13 @@ struct SearchMovie: View {
     
     @ObservedObject var movieStore = MovieStore()
     
+    @State private var showResults: Bool = false
+    
     var body: some View {
         
         VStack {
-
-                    HStack {
+        
+                HStack {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(.gray)
                             .font(.system(size: 20))
@@ -26,20 +28,19 @@ struct SearchMovie: View {
                             
                         TextField("Search", text: $searchTag).font(.title2)
                             .padding(.trailing)
-//
+
+                        
 //                            .onChange(of: searchTag, perform: { _ in
 //
 //                                movieStore.fetchResultsForMovie(query: searchTag)
 //
 //                            })
-
-
+                        
                         Button(action: {
                             
-                            
+                            print(" ~ Search Button Pressed ~")
                             movieStore.fetchResultsForMovie(query: searchTag)
-                            
-                            
+                            self.showResults.toggle()
                             
                         }) {
                             Text("Search")
@@ -64,9 +65,13 @@ struct SearchMovie: View {
                        height: 50)
                     
             
-            SavedRow(search: $searchTag)
-            
-            
+            // MARK: animation doesnt solve search looping issue && Bool doesnt work to show results 
+            if showResults == true {
+                SavedRow(search: $searchTag)
+                    .animation(.default)
+            } else {
+                Spacer()
+            }
             
         }
         .background(Color.pGray)

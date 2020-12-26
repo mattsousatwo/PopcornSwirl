@@ -78,7 +78,7 @@ struct RemoteImage_Previews: PreviewProvider {
     }
 }
 
-
+// View to display movie posters
 struct RemotePoster: View {
     let url: String
     
@@ -92,15 +92,49 @@ struct RemotePoster: View {
     }
 }
 
+// View to display movie actors 
 struct RemoteActor: View {
     let url: String
+    var name: String
+    var subtitle: String
+    @State var isFavorite: Bool
+    
+    
     
     var body: some View {
         VStack(alignment: .leading) {
+            
             RemoteImage(url: url).clipShape( RoundedRectangle(cornerRadius: 12) )
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 150, height: 250)
                 .shadow(radius: 5)
+            
+                .overlay(
+                    Button(action: {
+                        self.isFavorite.toggle() 
+                    }, label: {
+                        Image(systemName: isFavorite ? "heart.fill" : "heart")
+                            .frame(width: 35, height: 35)
+                            .padding()
+                            .foregroundColor(.pGray3)
+                    })
+                    , alignment: .bottomTrailing )
+            VStack {
+                Text(name)
+                    .font(.title2)
+                    .multilineTextAlignment(.center)
+                
+                    
+                Text(subtitle)
+                    .foregroundColor(.gray)
+            
+            }
+            .frame(width: 140, height: 40, alignment: .center)
         }
     }
+    
+    
+    
+    
 }
+ 

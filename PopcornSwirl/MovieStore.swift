@@ -262,6 +262,45 @@ extension MovieStore {
         
     }
     
+    
+    // Get results from movie search
+    func fetchResultsFromMovie(search: String) -> [MovieSearchResults] {
+        
+        var movieSearchResults = [MovieSearchResults]()
+        
+        let searchMovieRequest = "https://api.themoviedb.org/3/search/movie?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&query=\(search)&page=1&include_adult=false"
+        
+        AF.request( searchMovieRequest ).responseJSON { response in
+            
+            guard let json = response.data else { return }
+            
+            do {
+                
+                let searchResults = try self.decoder.decode(MovieSearch.self, from: json)
+                
+                guard let results = searchResults.results else {
+                    print("No movie results found")
+                    return }
+                
+                movieSearchResults = results
+                
+                print("Movie Query Result Count:  \(self.movieSearchResults.count)")
+                for movie in self.movieSearchResults {
+                    print(movie.title)
+                    
+                }
+                
+            } catch {
+                print(error)
+            }
+
+        }
+        
+        return movieSearchResults
+        
+    }
+    
+    
     // MARK: GET Search Results (ACTOR)
     func fetchResultsForActor(query: String) {
         

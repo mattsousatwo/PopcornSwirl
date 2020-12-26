@@ -64,7 +64,10 @@ struct MovieView: View {
                                             
                                             if let actorImagePath = movie.actorImageProfiles[movie.movieCast[index].id] {
                                                 
-                                                RemoteActor(url: movie.imageURL + actorImagePath)
+                                                RemoteActor(url: movie.imageURL + actorImagePath,
+                                                            name: movie.movieCast[index].name,
+                                                            subtitle: movie.movieCast[index].character,
+                                                            isFavorite: false)
                                                 
                                                 
                                                 

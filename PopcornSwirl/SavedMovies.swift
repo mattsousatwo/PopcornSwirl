@@ -39,6 +39,8 @@ struct SavedRow: View {
         
         movieStore.fetchResultsForMovie(query: search)
         
+//        let searchArray = movieStore.fetchResultsFromMovie(search: search)
+        
         var newArray: [[MovieSearchResults]] = []
 
         let dividedCount = movieStore.movieSearchResults.count / 2
@@ -46,6 +48,7 @@ struct SavedRow: View {
         if dividedCount >= 1 {
             newArray = movieStore.movieSearchResults.divided(into: 2)
         }
+//        print("SearchArray: \(searchArray.count)")
         print("ElementsArray: \(newArray.count)")
         return newArray
     }
@@ -59,7 +62,7 @@ struct SavedRow: View {
             return true
         }
     }
-    
+
     var body: some View {
         
         
@@ -69,29 +72,45 @@ struct SavedRow: View {
                 
                 
             ScrollView {
-                VStack {
+                VStack(alignment: .center) {
                 
                     ForEach(elementsArray, id: \.self) { array in
                         HStack {
-                            Spacer()
+//                            Spacer()
                             ForEach(array, id: \.self) { movie in
                                 
-                                Poster(urlString: self.movieStore.imageURL + (movie.poster_path ?? "" ),
-                                       title: movie.title)
+//                                Poster(urlString: self.movieStore.imageURL + (movie.poster_path ?? "" ),
+//                                       title: movie.title)
+                                NavigationLink(destination: MovieDetail(movieID: movie.id,
+                                                                        movieTitle: movie.title,
+                                                                        genreIDs: movie.genre_ids,
+                                                                        movieOverview: movie.overview,
+                                                                        posterPath: (movie.poster_path ?? ""),
+                                                                        rating: movie.vote_average), label: {
+                                RemoteImage(url: self.movieStore.imageURL + (movie.poster_path ?? "") ).aspectRatio(contentMode: .fill)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12.0))
+                                    .frame(width: (geometry.size.width / 3)  ,
+                                           height: 100,
+                                           alignment: .center)
+                                })
+                                
                             } // ForEach(array)
-                            .padding(.horizontal, 15)
+                            .padding(.horizontal)
                             Spacer()
                         } // HStack
                         .frame(width: geometry.size.width,
-                               height: 300,
+                               height: 200,
                                alignment: .center)
                         .padding()
                     } // ForEach(elementsArray)
+                    .padding()
                     
                 } // VStack
             } // Scroll
-                
+            
             .animation(.default)
+                
+            
             } else { // show results
                 
                 Text("No Results Found").padding()
@@ -100,7 +119,8 @@ struct SavedRow: View {
             
         } // Geo
         
-            .padding(.bottom)
+        
+            .padding(.bottom, 30)
         
         
 
