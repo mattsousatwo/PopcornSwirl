@@ -17,8 +17,13 @@ struct SearchMovie: View {
     @State private var showResults: Bool = false
     
     var body: some View {
-        
-        VStack {
+        ZStack {
+           LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]),
+                                       startPoint: .top,
+                                       endPoint: .bottom)
+                .ignoresSafeArea(edges: .vertical)
+            
+            VStack {
         
                 HStack {
                         Image(systemName: "magnifyingglass")
@@ -68,9 +73,10 @@ struct SearchMovie: View {
                 Spacer()
             }
             
-        }
-        .background(Color.pGray)
-        .edgesIgnoringSafeArea(.bottom)
+        } // VStack
+//        .background(Color.pGray)
+    } // ZStack
+//        .edgesIgnoringSafeArea(.top)
         
     }
 }

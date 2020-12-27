@@ -40,23 +40,25 @@ struct RemoteImage: View {
     }
     
     @StateObject private var loader: Loader
-    var loading: Image
-    var failure: Image
+    var loading: UIImage
+    var failure: UIImage
+    
     
     var body: some View {
-        selectedImage()
-            .resizable()
+        Image(uiImage: selectedImage()).resizable()
     }
     
     init(url: String,
-         loading: Image = Image(systemName: "photo"),
-         failure: Image = Image(systemName: "multiply.circle")) {
+         loading: UIImage = UIImage(systemName: "photo")!,
+         failure: UIImage = UIImage(systemName: "multiply.circle")!) {
+        
         _loader = StateObject(wrappedValue: Loader(url: url))
         self.loading = loading
         self.failure = failure
+        
     }
     
-    private func selectedImage() -> Image {
+    private func selectedImage() -> UIImage {
         switch loader.state {
         case .loading:
             return loading
@@ -64,7 +66,7 @@ struct RemoteImage: View {
             return failure
         default:
             if let image = UIImage(data: loader.data) {
-                return Image(uiImage: image)
+                return image
             } else {
                 return failure
             }
@@ -81,13 +83,28 @@ struct RemoteImage_Previews: PreviewProvider {
 // View to display movie posters
 struct RemotePoster: View {
     let url: String
+    @State var isFavorite: Bool = false
     
     var body: some View {
         VStack(alignment: .leading) {
             RemoteImage(url: url).clipShape( RoundedRectangle(cornerRadius: 12) )
-                .aspectRatio(contentMode: .fit)
+//                .aspectRatio(contentMode: .fil)
                 .frame(width: 150, height: 250)
                 .shadow(radius: 5)
+                .overlay(
+                    Button(action: {
+                        self.isFavorite.toggle()
+                    }, label: {
+                        Image(systemName: isFavorite ? "heart.fill" : "heart")
+                            .frame(width: 35, height: 35)
+                            .padding()
+                            .foregroundColor(.lightBlue)
+                            .shadow(radius: 5.0)
+                            .opacity(0.8)
+                    })
+                
+                    , alignment: .bottomTrailing)
+            
         }
     }
 }
@@ -108,7 +125,7 @@ struct RemoteActor: View {
             
             
             RemoteImage(url: url).clipShape( RoundedRectangle(cornerRadius: 12) )
-                .aspectRatio(contentMode: .fit)
+//                .aspectRatio(contentMode: .fit)
                 .frame(width: 150, height: 250)
                 .shadow(radius: 5)
             
@@ -119,20 +136,22 @@ struct RemoteActor: View {
                         Image(systemName: isFavorite ? "heart.fill" : "heart")
                             .frame(width: 35, height: 35)
                             .padding()
-                            .foregroundColor(.pGray3)
+                            .foregroundColor(.lightBlue)
                     })
                     , alignment: .bottomTrailing )
             VStack {
                 Text(name)
                     .font(.title2)
                     .multilineTextAlignment(.center)
+                    .frame(width: 140,
+                           height: 40)
                 
                     
                 Text(subtitle)
                     .foregroundColor(.gray)
             
             }
-            .frame(width: 140, height: 40, alignment: .center)
+            .frame(width: 140, height: 60, alignment: .center)
         }
     }
     

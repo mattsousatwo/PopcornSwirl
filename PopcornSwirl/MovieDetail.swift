@@ -53,15 +53,18 @@ struct MovieDetail: View {
             ZStack {
                 // Background
                 LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .top, endPoint: .bottom)
-                    .ignoresSafeArea(edges: .top)
+                    .ignoresSafeArea(edges: .vertical)
                 // Content
                 ScrollView {
                 
                 ZStack {
                         VStack(alignment: .leading) {
                             HStack(alignment: .bottom) {
+                                
+                                VStack {
                                 // Movie Poster
                                 RemotePoster(url: movieStore.imageURL + posterPath)
+                                    
                                     .overlay(
                                         Button(action: {
                                             
@@ -69,15 +72,34 @@ struct MovieDetail: View {
                                             Image(systemName: "heart") // CoreData.isFavorite ? "heart.fill" : "heart"
                                                 .frame(width: 35, height: 35)
                                                 .padding()
-                                                .foregroundColor(.pGray3)
+                                                .foregroundColor(.lightBlue )
                                         })
                                         , alignment: .bottomTrailing)
 
                                     .padding()
+                                
+                                    Button(action: {
+                                        print("add Comment")
+                                    }, label: {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .frame(width: 150, height: 40)
+                                            .foregroundColor(.darkBlue)
+                                            .opacity(0.6)
+                                            .overlay(
+                                                Text("Comment")
+                                                    .foregroundColor(.pGray3)
+                                                    .opacity(0.8)
+                                            )
+                                            
+                                    })
+
+                                    
+                                } // v stack
+                                
                                 VStack(alignment: .leading, spacing: 10) {
                                     // Movie Title
-                                    Text(movieTitle).font(.system(.largeTitle)).multilineTextAlignment(.leading).lineLimit(3).frame(width: geometry.size.width/2, height: 200, alignment: .bottomLeading)
-   
+                                    Text(movieTitle).font(.system(.largeTitle)).multilineTextAlignment(.leading).lineLimit(3).frame(width: geometry.size.width/2, height: 200, alignment: .topLeading).padding(.top).foregroundColor(.white)
+                                    Spacer()
                                      
                                     // Rating
                                     StarBar(value: rating)
@@ -113,21 +135,19 @@ struct MovieDetail: View {
 
                                                 if let actorImagePath = movieStore.actorImageProfiles[movieStore.movieCast[i].id] {
                                                     
-//                                                    NavigationLink(destination: Home()) {
+                                                    NavigationLink(destination:
+                                                        ActorDetail(image: movieStore.imageURL + actorImagePath,
+                                                                    actorID: movieStore.movieCast[i].id,
+                                                                    name: movieStore.movieCast[i].name,
+                                                                    isFavorite: false)
+                                                    ) {
                                                     
                                                         RemoteActor(url: movieStore.imageURL + actorImagePath,
                                                                     name: movieStore.movieCast[i].name,
                                                                     subtitle: movieStore.movieCast[i].character,
                                                                     isFavorite: false)
-                                                        
-                                                        
-                                                        
-//                                                        Actor(imageURL: movieStore.imageURL +  actorImagePath,
-//                                                              name: movieStore.movieCast[i].name,
-//                                                              subtitle: movieStore.movieCast[i].character,
-//                                                              favorite: .constant(true))
                                                             
-//                                                    } // nav link
+                                                    } // nav link
                                                     
                                                 } // if let
                                             } // if actor index is less than 9
@@ -180,9 +200,8 @@ struct MovieDetail: View {
                         
                             
                 } // z stack
- 
-                    
 
+                    
                 } // scroll
             
             } // ZStack
@@ -191,7 +210,7 @@ struct MovieDetail: View {
         
         
         .background(Color.pGray)
-        .edgesIgnoringSafeArea(.bottom)
+//        .edgesIgnoringSafeArea(.bottom)
         
         .navigationBarBackButtonHidden(false )
         

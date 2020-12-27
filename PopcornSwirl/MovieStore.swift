@@ -21,7 +21,9 @@ class MovieStore: ObservableObject {
     @Published var actorImageProfiles = [Int : String]() // Stores actor images by ID
     @Published var genreDictionary = [Int: String]() // Stores genres
     @Published var genreArray = [Genres]()
+    @Published var actorCredits = [ActorCreditsCast]()
     
+    @Published var actorDetails = [ActorDetails]()
     
     lazy var decoder = JSONDecoder() // used to decode json data
     
@@ -63,9 +65,7 @@ extension MovieStore {
             } catch {
                 print(error)
             } // do / catch
-            
-            
-            
+
         } // request
         
     } // fetchPopularMovies
@@ -212,16 +212,56 @@ extension MovieStore {
                 } catch {
                     print(error)
                 }
-                
-                    
-                
             }
         }
-        
-        
-        
     }
 
+    // MARK: GET Movie & TV Credits for Actor
+    func fetchCreditsFor(actor: Int) {
+        
+        let creditsRequest = "https://api.themoviedb.org/3/person/\(actor)/combined_credits?api_key=\(apiKey)&language=en-US"
+        AF.request( creditsRequest ).responseJSON { response in
+            guard let json = response.data else { return }
+            do {
+                // decode credits 
+                let decodedCredits = try self.decoder.decode(ActorCredits.self, from: json)
+                
+                self.actorCredits = decodedCredits.cast
+                
+                print("ActorCredits")
+                for z in decodedCredits.cast {
+                    print(z.title ?? "")
+                    print(z.name ?? "")
+                    print(z.media_type) 
+                }
+                
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    // MARK: GET Details for Actor
+    func fetchDetailsForActor(id: Int ) {
+        // https://developers.themoviedb.org/3/people/get-person-details
+        
+        let detailsRequest = "https://api.themoviedb.org/3/person/\(id)?api_key=\(apiKey)&language=en-US"
+        
+        AF.request( detailsRequest ).responseJSON { response in
+            guard let json = response.data else { return }
+            do {
+                let details = try self.decoder.decode(ActorDetails.self, from: json)
+                
+       
+                self.actorDetails.append(details)
+                    
+ 
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
     
 }
 

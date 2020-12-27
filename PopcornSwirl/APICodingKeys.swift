@@ -173,6 +173,57 @@ struct ActorImageProfile: Codable {
     var vote_average: Double
 }
 
+// MARK: - ACTOR CREDITS
+struct ActorCredits: Codable {
+    var cast: [ActorCreditsCast]
+    var id: Int
+}
+
+struct ActorCreditsCast: Codable, Hashable {
+    var id: Int
+    var overview: String
+    var genre_ids: [Int]
+    var name: String?
+    var media_type: String
+    var poster_path: String?
+    var vote_average: Double
+    var character: String
+    var title: String?
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+
+// MARK: -
+
+
+
+// MARK: - ACTOR DETAILS
+struct ActorDetails: Codable, Hashable {
+    var birthday: String?
+    var known_for_department: String
+    var deathday: String?
+    var id: Int
+    var name: String
+    var also_known_as: [String]
+    var gender: Int
+    var biography: String
+    var popularity: Double
+    var place_of_birth: String?
+    var profile_path: String?
+    var imdb_id: String
+    var homepage: String?
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+
+// MARK: -
+
 
 // MARK: - GENRES
 struct Genres: Codable, Hashable {
