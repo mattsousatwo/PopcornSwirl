@@ -40,14 +40,51 @@ class MovieRatingStore {
             do {
                 let requestResults = try context.fetch(request)
                 ratings = requestResults
+
             } catch {
                 print(error)
             }
         }
     }
     
+    // Fetch Rating for Movie
+    func fetchRatingsForMovie(id: Int) -> MovieRating? {
+        
+        for rating in ratings {
+            if rating.id != id { // if id is not in ratings\
+                let request : NSFetchRequest<MovieRating> = MovieRating.fetchRequest()
+                request.predicate = NSPredicate(format: "id = %@", id)
+                request.predicate = NSPredicate(format: "type = %@", MovieRatingKey.movie.rawValue)
+                do {
+                    let requestResults = try context.fetch(request)
+                    if requestResults.count != 0 {
+                        for rating in requestResults {
+                            return rating
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            } else {
+                let newRating = MovieRating()
+                newRating.type = MovieRatingKey.movie.rawValue
+                newRating.id = id
+                self.ratings.append(newRating)
+                saveContext()
+                return newRating
+            }
+        }
+        
+        return nil
+    }
     
     
     
+}
+
+enum MovieRatingKey: String {
+    case movie = "movie"
+    case tv = "tv"
+    case actor = "actor"
 }
 

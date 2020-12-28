@@ -17,6 +17,22 @@ struct MovieDetail: View {
     var movieID = Int()
     var movieTitle = String()
     var genreIDs = [Int]()
+    var movieOverview = String()
+    var posterPath = String()
+    var rating = Double()
+
+    var movieRatings = MovieRatingStore()
+    
+    private var movieRating : MovieRating {
+        var newRating = MovieRating()
+        if let rating = movieRatings.fetchRatingsForMovie(id: movieID) {
+            newRating = rating
+        } else {
+            newRating.id = movieID
+            newRating.type = MovieRatingKey.movie.rawValue
+        }
+        return newRating
+    }
     
     private var genres: [String] {
         var genreArray: [String] = []
@@ -40,12 +56,6 @@ struct MovieDetail: View {
         return genreArray
     }
     
-    
-    var movieOverview = String()
-    var posterPath = String()
-    var rating = Double()
-
-    
     var body: some View {
        
         GeometryReader { geometry in
@@ -66,9 +76,10 @@ struct MovieDetail: View {
                                     
                                     .overlay(
                                         Button(action: {
-                                            
+                                            movieRating.isFavorite.toggle()
+                                            movieRatings.saveContext() 
                                         }, label: {
-                                            Image(systemName: "heart") // CoreData.isFavorite ? "heart.fill" : "heart"
+                                            Image(systemName: movieRating.isFavorite ? "heart.fill" : "heart" ) // CoreData.isFavorite ? "heart.fill" : "heart"
                                                 .frame(width: 35, height: 35)
                                                 .padding()
                                                 .foregroundColor(.lightBlue )

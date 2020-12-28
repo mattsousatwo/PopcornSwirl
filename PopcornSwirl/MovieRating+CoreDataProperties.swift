@@ -17,6 +17,8 @@ extension MovieRating {
         return NSFetchRequest<MovieRating>(entityName: "MovieRating")
     }
 
+    @NSManaged public var id: Int
+    @NSManaged public var type: String 
     @NSManaged public var isFavorite: Bool
     @NSManaged public var comment: String?
     @NSManaged public var rating: Double
