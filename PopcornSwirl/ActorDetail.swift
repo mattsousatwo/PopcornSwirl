@@ -54,7 +54,7 @@ struct ActorDetail: View {
     }
     
     private var imageGradient: LinearGradient {
-        return LinearGradient(gradient: Gradient(colors: [Color.clear, Color.blue.opacity(0.3)]),
+        return LinearGradient(gradient: Gradient(colors: [Color.clear, Color.blue.opacity(0.2)]),
                        startPoint: .top,
                        endPoint: .bottom)
     }
@@ -72,38 +72,58 @@ struct ActorDetail: View {
                 // Content
                 ScrollView(.vertical, showsIndicators: false) {
                     
-                    VStack(alignment: .center) {
+                    VStack(alignment: .leading) {
                         
-                            
+                        HStack(alignment: .center) {
+                        Spacer()
                         RemoteImage(url: image)
                             .clipShape( RoundedRectangle(cornerRadius: 12) )
-                            .frame(width: geometry.size.width)
-                                     
+                            .frame(width: geometry.size.width / 2,
+                                   height: 250,
+                                   alignment: .center)
                             .shadow(radius: 5.0)
+                            .padding()
                             
                             .overlay(
                                 imageGradient
                             )
-                        
                             .overlay(
-                                Text(name).font(.title2).bold().foregroundColor(.white)
-                                    .padding()
-                                , alignment: .bottom)
+                                Button(action: {
+                                    print("Favorite Button Pressed ")
+                                }, label: {
+                                    Image(systemName: "heart").aspectRatio(contentMode: .fit)
+                                        .frame(width: 35, height: 35)
+                                        .padding()
+                                        .foregroundColor(.lightBlue)
+                                    
+                                })
+                                
+                                , alignment: .bottomTrailing)
+                            .padding()
+                            
+                            Spacer()
+                        }
                         
+                        Text(name).font(.title).bold().foregroundColor(.white)
+                            .padding(.horizontal)
+                            .padding(.bottom, 5)
+                             
                         
                         VStack(alignment: .leading ) {
                             ForEach(movie.actorDetails, id: \.self) { details in
-                                Text("Birth Place:")
-                                if details.deathday != "" {
+                                Text("Birth Place:").font(.title2).bold()
+                                if details.deathday == "" {
                                     Text("\(details.birthday ?? "" ) - \(details.deathday ?? "" )")
                                 } else {
                                     Text( "\(details.birthday ?? "") (\((details.place_of_birth ?? ""))) " )
                                 }
                             }
-                        } .padding()
-                        .foregroundColor(.pGray3)
-                        
-                        
+                            
+                        }
+                        .padding(.horizontal)
+                        .padding(.bottom, 5)
+                        .foregroundColor(.white)
+
                         Text("Biography").font(.title2).bold()
                             .foregroundColor(.white)
                             .padding(.horizontal)
@@ -118,24 +138,26 @@ struct ActorDetail: View {
                             })
                         }
                         
-                            
-                        
+
                         if movies.count != 0 {
                             VStack(alignment: .leading) {
-//                                HStack {
-//                                    Text("Movies").font(.system(.title2)).bold()
-//                                    Spacer()
-//                                    if movies.count >= 10 {
-//                                        Button(action: {
-//                                            print("See All Movies")
-//                                        },
-//                                        label: {
-//                                            Text("See All").foregroundColor(.black)
-//                                        })
-//                                    }
-//                                }
-//                                .padding(.horizontal)
-//                                .padding(.top)
+                                
+                                HStack {
+                                    Text("Movies").font(.system(.title2)).bold()
+                                    Spacer()
+                                    if movies.count >= 10 {
+                                        Button(action: {
+                                            print("See All Movies")
+                                        },
+                                        label: {
+                                            Text("See All").foregroundColor(.black)
+                                        })
+                                    }
+                                }
+                                .padding(.horizontal)
+                                .padding(.top)
+                                
+                                
                                 
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     HStack {
@@ -160,6 +182,9 @@ struct ActorDetail: View {
                                 .animation(.default)
                         } // if movies.count != 0
                         
+                        
+                        
+                        
                         if tv.count != 0 {
                             VStack(alignment: .leading) {
                                 
@@ -179,6 +204,7 @@ struct ActorDetail: View {
                                 .padding(.top)
                                 
                                 ScrollView(.horizontal, showsIndicators: false) {
+                                    
                                     HStack {
                                     
                                         ForEach(0..<tv.count, id: \.self) { i in

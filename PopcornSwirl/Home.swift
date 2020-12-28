@@ -29,6 +29,7 @@ struct Home: View {
                     HStack {
                         Text("Popular Movies").font(.system(.title, design: .rounded)).bold()
                             .padding(.horizontal)
+                            .padding(.top)
                         Spacer()
                     } // HStack - Popular Movies Title
                     ScrollView(.horizontal, showsIndicators:  false) {
