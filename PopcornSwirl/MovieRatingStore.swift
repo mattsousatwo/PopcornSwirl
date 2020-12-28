@@ -70,7 +70,7 @@ class MovieRatingStore {
                     print(error)
                 }
             } else {
-                let newRating = MovieRating()
+                let newRating = MovieRating(context: context)
                 newRating.type = MovieRatingKey.movie.rawValue
                 newRating.id = id
                 self.ratings.append(newRating)

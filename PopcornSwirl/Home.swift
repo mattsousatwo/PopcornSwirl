@@ -11,6 +11,8 @@ import Alamofire
 
 
 struct Home: View {
+    
+    var movieRatings = MovieRatingStore()
 
     @ObservedObject var movieStore = MovieStore()
 
@@ -104,6 +106,7 @@ struct Home: View {
         movieStore.fetchPopularMovies()
         movieStore.fetchUpcomingMovies()
         
+        movieRatings.fetchAllRatings()
     }
         
     } // body
