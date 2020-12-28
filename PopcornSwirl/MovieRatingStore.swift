@@ -53,8 +53,12 @@ class MovieRatingStore {
         for rating in ratings {
             if rating.id != id { // if id is not in ratings\
                 let request : NSFetchRequest<MovieRating> = MovieRating.fetchRequest()
-                request.predicate = NSPredicate(format: "id = %@", id)
-                request.predicate = NSPredicate(format: "type = %@", MovieRatingKey.movie.rawValue)
+                let idPredicate = NSPredicate(format: "id = %@", id)
+                let typePredicate = NSPredicate(format: "type = %@", MovieRatingKey.movie.rawValue)
+                
+                let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [idPredicate, typePredicate] )
+                
+                request.predicate = compoundPredicate
                 do {
                     let requestResults = try context.fetch(request)
                     if requestResults.count != 0 {
