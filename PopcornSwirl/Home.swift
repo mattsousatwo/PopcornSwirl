@@ -107,6 +107,7 @@ struct Home: View {
         movieStore.fetchUpcomingMovies()
         
         movieRatings.fetchAllRatings()
+//        movieRatings.fetchRatingsForMovie(id: 25)
     }
         
     } // body

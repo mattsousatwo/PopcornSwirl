@@ -45,13 +45,15 @@ class MovieRatingStore {
                 print(error)
             }
         }
+        
+        print(#function + " ratings count: \(ratings.count)")
     }
     
     // Fetch Rating for Movie
     func fetchRatingsForMovie(id: Int) -> MovieRating? {
         
         for rating in ratings {
-            if rating.id != id { // if id is not in ratings\
+            if rating.id != Double(id) { // if id is not in ratings\
                 let request : NSFetchRequest<MovieRating> = MovieRating.fetchRequest()
                 let idPredicate = NSPredicate(format: "id = %@", id)
                 let typePredicate = NSPredicate(format: "type = %@", MovieRatingKey.movie.rawValue)
@@ -72,7 +74,7 @@ class MovieRatingStore {
             } else {
                 let newRating = MovieRating(context: context)
                 newRating.type = MovieRatingKey.movie.rawValue
-                newRating.id = id
+                newRating.id = Double(id)
                 self.ratings.append(newRating)
                 saveContext()
                 return newRating

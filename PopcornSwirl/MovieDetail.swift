@@ -25,12 +25,16 @@ struct MovieDetail: View {
 
     private var movieRating : MovieRating {
         var newRating = MovieRating(context: movieRatings.context)
-        if let rating = movieRatings.fetchRatingsForMovie(id: movieID) {
-            newRating = rating
-        } else {
-            newRating.id = movieID
-            newRating.type = MovieRatingKey.movie.rawValue
-        }
+//        if let rating = movieRatings.fetchRatingsForMovie(id: movieID) {
+//            newRating = rating
+//        } else {
+//            newRating.id = movieID
+//            newRating.type = MovieRatingKey.movie.rawValue
+//        }
+        newRating.id = Double(movieID)
+        newRating.type = MovieRatingKey.movie.rawValue
+        newRating.comment = "New rating comment here for testing"
+        movieRatings.saveContext()
         return newRating
     }
 
