@@ -16,12 +16,13 @@ class MovieRatingStore {
     var context: NSManagedObjectContext
     var entity: NSEntityDescription?
     var ratings: [MovieRating] = []
-    
+    var selectedMovieRating = MovieRating()
     
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         context = appDelegate.persistentContainer.viewContext
         entity = NSEntityDescription.entity(forEntityName: entityName, in: context)!
+        
     }
     
     // Save
@@ -35,7 +36,7 @@ class MovieRatingStore {
     
     // Get all ratings if context hasChanges
     func fetchAllRatings() {
-        if context.hasChanges {
+//        if context.hasChanges {
             let request: NSFetchRequest<MovieRating> = MovieRating.fetchRequest()
             do {
                 let requestResults = try context.fetch(request)
@@ -44,7 +45,7 @@ class MovieRatingStore {
             } catch {
                 print(error)
             }
-        }
+//        }
         
         print(#function + " ratings count: \(ratings.count)")
     }
@@ -56,7 +57,7 @@ class MovieRatingStore {
             if rating.id != Double(id) { // if id is not in ratings\
                 let request : NSFetchRequest<MovieRating> = MovieRating.fetchRequest()
                 let idPredicate = NSPredicate(format: "id = %@", id)
-                let typePredicate = NSPredicate(format: "type = %@", MovieRatingKey.movie.rawValue)
+                let typePredicate = NSPredicate(format: "type = %@", RatingKeys.movie.rawValue)
                 
                 let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [idPredicate, typePredicate] )
                 
@@ -65,6 +66,7 @@ class MovieRatingStore {
                     let requestResults = try context.fetch(request)
                     if requestResults.count != 0 {
                         for rating in requestResults {
+                            print( "rating: \(rating)"  )
                             return rating
                         }
                     }
@@ -73,10 +75,11 @@ class MovieRatingStore {
                 }
             } else {
                 let newRating = MovieRating(context: context)
-                newRating.type = MovieRatingKey.movie.rawValue
+                newRating.type = RatingKeys.movie.rawValue
                 newRating.id = Double(id)
                 self.ratings.append(newRating)
                 saveContext()
+                print( "rating: \(newRating)"  )
                 return newRating
             }
         }
@@ -84,13 +87,50 @@ class MovieRatingStore {
         return nil
     }
     
+    // Fetch Rating for Movie
+    func searchForRatingsFromMovie(id: Int) {
+    
+        for rating in ratings {
+            
+            switch rating.id {
+            case Double(id): // if id is in ratings
+                selectedMovieRating = rating
+                print( "rating: \(rating)"  )
+            default: // if id is NOT in ratings
+                let newRating = MovieRating(context: context)
+//
+//
+                newRating.setValue(RatingKeys.movie.rawValue,
+                                   forKey: RatingKeys.type.rawValue)
+                newRating.setValue(Double(id),
+                                   forKey: RatingKeys.id.rawValue)
+                newRating.setValue(false,
+                                   forKey: RatingKeys.isFavorite.rawValue)
+
+//                newRating.type = RatingKeys.movie.rawValue
+//                newRating.id = Double(id)
+//                newRating.isFavorite = false
+                self.ratings.append(newRating)
+                selectedMovieRating = rating
+                saveContext()
+                print( "rating: \(rating)"  )
+            }
+        }
+        
+    }
+    
     
     
 }
 
-enum MovieRatingKey: String {
+enum RatingKeys: String {
     case movie = "movie"
     case tv = "tv"
     case actor = "actor"
+    case comment = "comment"
+    case id = "id"
+    case isFavorite = "isFavorite"
+    case rating = "rating"
+    case type = "type"
 }
 

@@ -16,6 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        // MARK: - Print URL to Coredata database
+            let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            print(urls[urls.count-1] as URL )
+        // MARK: -
+        
+        
         return true
     }
 
