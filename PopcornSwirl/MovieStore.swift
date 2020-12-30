@@ -355,7 +355,7 @@ extension MovieStore {
 }
 
 // MARK: GET Genres
-extension MovieStore {
+extension MovieStore { 
     
     func getGenres() {
         let genreRequest = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(apiKey)&language=en-US"
@@ -403,6 +403,28 @@ extension MovieStore {
         return genreNames
     }
     
+    func pullGenresFromServer() -> [Genre] {
+        var fetchedGenres: [Genre] = []
+        let genreRequest = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(apiKey)&language=en-US"
         
+        AF.request( genreRequest ).responseJSON { response in
+            
+            guard let json = response.data else {
+                print("Genre List not found")
+                return
+            }
+            do {
+                let results = try self.decoder.decode(GenreArray.self, from: json)
+
+                fetchedGenres = results.genres
+                
+            } catch {
+                print(error)
+            }
+            
+        }
+        
+        return fetchedGenres
+    }
     
 }

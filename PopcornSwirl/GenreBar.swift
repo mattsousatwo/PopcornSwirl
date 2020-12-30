@@ -23,12 +23,18 @@ struct GenreBar: View {
     
     @ObservedObject private var movie = MovieStore()
     
+    @ObservedObject private var genreStore = GenreStore()
+    
     var genres: [Int]
     
     private var genreList: [String] {
-        movie.getGenres()
+        
+//        movie.getGenres()
+        
         var genreNames: [String] = []
-        genreNames = movie.extractGenres(from: genres)
+//        genreNames = movie.extractGenres(from: genres)
+        
+        genreNames = genreStore.extractGenreFrom(ids: genres)
         return genreNames
     }
     

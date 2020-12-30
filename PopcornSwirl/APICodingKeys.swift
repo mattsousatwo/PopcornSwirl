@@ -159,6 +159,7 @@ struct UpcomingMovie: Codable {
     var backdrop_path: String?
     var popularity: Double
     var vote_average: Double
+    var genre_ids: [Int]
 }
 
 
@@ -226,7 +227,7 @@ struct ActorDetails: Codable, Hashable {
 
 
 // MARK: - GENRES
-struct Genres: Codable, Hashable {
+struct Genre: Codable, Hashable {
     var id: Int
     var name: String
     
@@ -236,6 +237,6 @@ struct Genres: Codable, Hashable {
 }
 
 struct GenreArray: Codable {
-    var genres: [Genres]
+    var genres: [Genre]
 
 }

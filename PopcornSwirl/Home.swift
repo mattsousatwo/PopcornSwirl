@@ -13,6 +13,7 @@ import Alamofire
 struct Home: View {
     
     var movieRatings = MovieRatingStore()
+    @ObservedObject private var genreStore = GenreStore()
 
     @ObservedObject var movieStore = MovieStore()
 
@@ -74,6 +75,7 @@ struct Home: View {
                                     NavigationLink(destination: MovieDetail(
                                             movieID: movieStore.upcomingMovies[i].id,
                                             movieTitle: movieStore.upcomingMovies[i].title,
+                                            genreIDs: movieStore.upcomingMovies[i].genre_ids,
                                             movieOverview: movieStore.upcomingMovies[i].overview,
                                             posterPath: (movieStore.upcomingMovies[i].poster_path ?? ""),
                                             rating: movieStore.upcomingMovies[i].vote_average
@@ -108,6 +110,10 @@ struct Home: View {
         
         movieRatings.fetchAllRatings()
 //        movieRatings.fetchRatingsForMovie(id: 25)
+        
+        
+        genreStore.setGenreDictionary()
+        
     }
         
     } // body

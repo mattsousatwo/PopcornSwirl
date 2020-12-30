@@ -1,0 +1,98 @@
+//
+//  GenreStore.swift
+//  PopcornSwirl
+//
+//  Created by Matthew Sousa on 12/29/20.
+//  Copyright © 2020 Matthew Sousa. All rights reserved.
+//
+
+import Foundation
+import UIKit
+import CoreData
+import SwiftUI
+
+class GenreStore: ObservableObject {
+    
+    @ObservedObject private var movie = MovieStore()
+    
+    var context: NSManagedObjectContext
+    var entity: NSEntityDescription?
+    
+    @Published var genres = [Genres]()
+    
+    init() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        context = appDelegate.persistentContainer.viewContext
+        entity = NSEntityDescription.entity(forEntityName: GenreKeys.entity.rawValue, in: context)!
+    }
+    
+    func saveContext() {
+        do {
+            try context.save()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func fetchAllGenres() {
+        let request: NSFetchRequest<Genres> = Genres.fetchRequest()
+        do {
+            let requestResults = try context.fetch(request)
+            genres = requestResults
+        } catch {
+            print(error)
+        }
+    }
+    
+    
+    // Extract genres from id tags
+    func extractGenreFrom(ids: [Int]) -> [String] {
+        var extractedArray: [String] = []
+        if genres.isEmpty {
+            setGenreDictionary()
+        }
+        if genres.count != 0 {
+            for genre in genres {
+                for id in ids {
+                    if genre.id == Int16(id) {
+                        
+                        if let name = genre.name {
+                            extractedArray.append(name)
+                        }
+                        
+                    }
+                }
+            }
+        }
+        
+        return extractedArray
+    }
+    
+    // Fetch all genres, if genres.isEmpty pull genres from server and create new genre for each genre
+    func setGenreDictionary() {
+        fetchAllGenres()
+        if genres.isEmpty {
+            let pulledGenres = movie.pullGenresFromServer()
+            
+            for genre in pulledGenres {
+                
+                let newGenre = Genres(context: context)
+                
+                newGenre.id = Int16(genre.id)
+                newGenre.name = genre.name
+                
+                genres.append(newGenre)
+                saveContext()
+
+            }
+            
+        }
+    }
+    
+}
+
+enum GenreKeys: String {
+    case entity = "Genres"
+    case id = "id"
+    case name = "name"
+}
