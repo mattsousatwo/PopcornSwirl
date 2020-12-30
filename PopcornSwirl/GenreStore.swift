@@ -49,7 +49,7 @@ class GenreStore: ObservableObject {
     func extractGenreFrom(ids: [Int]) -> [String] {
         var extractedArray: [String] = []
         if genres.isEmpty {
-            setGenreDictionary()
+            fetchAllGenres()
         }
         if genres.count != 0 {
             for genre in genres {
@@ -66,27 +66,6 @@ class GenreStore: ObservableObject {
         }
         
         return extractedArray
-    }
-    
-    // Fetch all genres, if genres.isEmpty pull genres from server and create new genre for each genre
-    func setGenreDictionary() {
-        fetchAllGenres()
-        if genres.isEmpty {
-            let pulledGenres = movie.pullGenresFromServer()
-            
-            for genre in pulledGenres {
-                
-                let newGenre = Genres(context: context)
-                
-                newGenre.id = Int16(genre.id)
-                newGenre.name = genre.name
-                
-                genres.append(newGenre)
-                saveContext()
-
-            }
-            
-        }
     }
     
 }

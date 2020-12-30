@@ -112,7 +112,7 @@ struct Home: View {
 //        movieRatings.fetchRatingsForMovie(id: 25)
         
         
-        genreStore.setGenreDictionary()
+        genreStore.fetchAllGenres()
         
     }
         

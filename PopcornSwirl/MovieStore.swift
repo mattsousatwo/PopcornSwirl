@@ -406,7 +406,6 @@ extension MovieStore {
     func pullGenresFromServer() -> [Genre] {
         var fetchedGenres: [Genre] = []
         let genreRequest = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(apiKey)&language=en-US"
-        
         AF.request( genreRequest ).responseJSON { response in
             
             guard let json = response.data else {
@@ -423,7 +422,7 @@ extension MovieStore {
             }
             
         }
-        
+
         return fetchedGenres
     }
     
