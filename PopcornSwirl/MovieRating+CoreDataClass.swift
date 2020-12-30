@@ -12,5 +12,5 @@ import CoreData
 
 @objc(MovieRating)
 public class MovieRating: NSManagedObject {
-
+    
 }

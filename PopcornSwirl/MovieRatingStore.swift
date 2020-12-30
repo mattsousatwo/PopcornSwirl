@@ -10,13 +10,13 @@ import Foundation
 import UIKit
 import CoreData
 
-class MovieRatingStore {
+class MovieRatingStore : ObservableObject {
     
     var entityName = "MovieRating"
     var context: NSManagedObjectContext
     var entity: NSEntityDescription?
-    var ratings: [MovieRating] = []
-    var selectedMovieRating = MovieRating()
+    @Published var ratings: [MovieRating] = []
+    @Published var selectedMovieRating = MovieRating()
     
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -117,6 +117,29 @@ class MovieRatingStore {
             }
         }
         
+    }
+    
+    
+    func getRatings(id: Int) -> MovieRating {
+    
+        let rating = MovieRating(context: context)
+        
+        rating.id = Double(id)
+        rating.isFavorite = true
+        rating.type = RatingKeys.movie.rawValue
+        rating.comment = "This Rating is a test"
+        saveContext()
+        
+        ratings.append(rating)
+        
+        print("* movieRating: \(rating)")
+        return rating
+        
+    }
+    
+    func toggleFavorite(for object: MovieRating) {
+        object.isFavorite.toggle()
+        saveContext()
     }
     
     

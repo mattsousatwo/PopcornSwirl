@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import SwiftUI
+import Combine
 
 class MovieStore: ObservableObject {
     
@@ -20,7 +21,6 @@ class MovieStore: ObservableObject {
     @Published var upcomingMovies = [UpcomingMovie]()
     @Published var actorImageProfiles = [Int : String]() // Stores actor images by ID
     @Published var genreDictionary = [Int: String]() // Stores genres
-    @Published var genreArray = [Genres]()
     @Published var actorCredits = [ActorCreditsCast]()
     
     @Published var actorDetails = [ActorDetails]()
@@ -32,7 +32,7 @@ class MovieStore: ObservableObject {
     
     // Initalizer
     init() {
-        
+
     }
     
 }
@@ -369,8 +369,6 @@ extension MovieStore {
             do {
                 let results = try self.decoder.decode(GenreArray.self, from: json)
                 
-                self.genreArray = results.genres
-                
                 for genre in results.genres {
                     
                     self.genreDictionary[genre.id] = genre.name
@@ -379,6 +377,7 @@ extension MovieStore {
             } catch {
                 print(error)
             }
+            
         }
     }
     
@@ -388,31 +387,22 @@ extension MovieStore {
         for id in IDs {
             print("T1: ID = \(id)")
             print("T1: genreDict[\(id)] = \(genreDictionary[id] ?? "nil") " )
-//            if let genre = genreDictionary[id] {
-//                print(genreDictionary[id] ?? "is empty ")
-//                genreNames.append(genre)
-//            }
-//
             
-            for genre in genreArray {
-
-                if id == genre.id {
-                    print(genre.name)
-                    genreNames.append(genre.name)
-                } else {
-                    genreNames.append("Object")
-                }
+            if let genre = genreDictionary[id] {
+                print(genreDictionary[id] ?? "is empty ")
+                genreNames.append(genre)
             }
-            
+
         }
+        
         print(#function)
+        
         for name in genreNames {
             print("T1" + name)
         }
         return genreNames
     }
     
-    
-    
+        
     
 }

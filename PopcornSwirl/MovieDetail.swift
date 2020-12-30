@@ -7,12 +7,13 @@
 //
 
 import SwiftUI
+import Combine
 
 struct MovieDetail: View {
     
     @State private var showDesription: Bool = false
     
-    @ObservedObject var movieStore = MovieStore()
+    @ObservedObject private var movieStore = MovieStore()
     
     var movieID = Int()
     var movieTitle = String()
@@ -23,33 +24,16 @@ struct MovieDetail: View {
 
     var movieRatings = MovieRatingStore()
     
-    private var movieRating: MovieRating {
-        let x = movieRatings.selectedMovieRating
+    
+    @State private var isFavorite: Bool = false
+    
+    
+    private var movieRating : MovieRating {
         
-        print("MovieDetail.movieRating: \(x)")
+        let x = movieRatings.getRatings(id: movieID)
+        isFavorite = x.isFavorite
+    
         return x
-    }
-
-    private var genres: [String] {
-        var genreArray: [String] = []
-        print("T1: genreArray = \(genreArray.count)")
-        
-        for id in genreIDs {
-            for genre in movieStore.genreArray {
-             
-                if genre.id == id {
-                    print("Confirmed: \(genre.id), \(genre.name)")
-                    genreArray.append(genre.name)
-                } else {
-                    genreArray.append("Object")
-                }
-                
-            }
-        }
-        
-        
-        
-        return genreArray
     }
     
     var body: some View {
@@ -72,10 +56,13 @@ struct MovieDetail: View {
                                     
                                     .overlay(
                                         Button(action: {
-                                            movieRating.isFavorite.toggle()
-                                            movieRatings.saveContext() 
+                                            print("Favorite Button Pressed")
+                                            self.isFavorite.toggle()
+
+                                            movieRatings.toggleFavorite(for: movieRating)
+                                            
                                         }, label: {
-                                            Image(systemName: movieRating.isFavorite ? "heart.fill" : "heart" )
+                                            Image(systemName: self.isFavorite ? "heart.fill" : "heart" )
 //                                             Image(systemName: "heart")
                                                 .frame(width: 35, height: 35)
                                                 .padding()
@@ -87,6 +74,9 @@ struct MovieDetail: View {
                                 
                                     Button(action: {
                                         print("add Comment")
+                                        
+                                        movieRating.comment = "Added Comment to rating \(movieID)"
+                                        movieRatings.saveContext()
                                     }, label: {
                                         RoundedRectangle(cornerRadius: 10)
                                             .frame(width: 150, height: 40)
@@ -121,6 +111,7 @@ struct MovieDetail: View {
                                 .padding()
 
                             GenreBar(genres: genreIDs)
+                            
                             
                             // Actors scroll view
                             HStack {
@@ -235,7 +226,9 @@ struct MovieDetail: View {
             
             movieStore.fetchRecommendedMoviesForMovie(id: movieID)
             
-            movieRatings.searchForRatingsFromMovie(id: movieID)
+//            movieRatings.searchForRatingsFromMovie(id: movieID)
+            
+//            movieStore.getGenres()
             
         }
         
