@@ -14,26 +14,7 @@ struct Popular: Codable {
     public var page: Int
     public var results: [PopMovie]
 }
-
-struct PopularMovie: Codable {
-    var poster_path: String
-    var adult: Bool
-    var overview: String
-    var release_date: String
-    var id: Int
-    var genre_ids: [Int]
-    var original_title: String
-    var original_language: String
-    var title: String
-    var backdrop_path: String
-    var popularity: Double
-    var vote_count: Int
-    var video: Bool
-    var vote_average: Double
-}
-
-
-
+ 
 
 struct PopMovie: Codable, Identifiable {
     public var id: Int
