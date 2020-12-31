@@ -186,7 +186,7 @@ struct MovieDetail: View {
                                             {
                                                 // link label
                                                 RemotePoster(url: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
-                                                
+                                                    
 //                                                MoviePoster(urlString: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
                                             } // Nav Label
                                         } // if poster != nil

@@ -81,7 +81,7 @@ struct Poster: View {
 }
 
 
-struct Actor: View {
+struct ActorCard: View {
 
     @ObservedObject var actorImage: URLImageModel
     var name: String
@@ -159,7 +159,7 @@ struct MovieCard_Previews: PreviewProvider {
             
             Poster(urlString: nil, title: "")
             
-            Actor(imageURL: nil, name: "Actor Name", subtitle: "Subtitle", favorite: .constant(true))
+            ActorCard(imageURL: nil, name: "Actor Name", subtitle: "Subtitle", favorite: .constant(true))
             
             
         }.previewLayout(.sizeThatFits)
