@@ -13,10 +13,13 @@ import SwiftUI
 
 class ActorsStore: ObservableObject {
     
+    @ObservedObject var movie = MovieStore()
+    
     var context: NSManagedObjectContext
     var entity: NSEntityDescription
     
     @Published var actors = [Actor]()
+    @Published var actorsForMovie = [Actor]()
     
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -46,6 +49,33 @@ class ActorsStore: ObservableObject {
     //// use MovieStore.fetchMovieCreditsFroMovie(id: Int) to get MovieCast
     //// MovieStore.movieCast holds All actors
     
+    func fetchActorsForMovie(id: Int) {
+        
+//        if actors.isEmpty {
+//
+//        }
+//
+//        movie.fetchMovieCreditsForMovie(id: id)
+//
+//        let actorsForMovie: [MovieCast] = movie.movieCast
+//
+//
+        
+    }
+    
+    
+    func fetchActorWith(id: Double) -> [Actor] {
+        var actorsArray: [Actor] = []
+        let request: NSFetchRequest<Actor> = Actor.fetchRequest()
+        request.predicate = NSPredicate(format: "id = %@", id)
+        do {
+            actorsArray = try context.fetch(request)
+        } catch {
+            print(error)
+        }
+        return actorsArray
+        
+    }
     
 }
 
