@@ -147,13 +147,14 @@ class MovieRatingStore : ObservableObject {
 }
 
 enum RatingKeys: String {
+    case type = "type"
     case movie = "movie"
     case tv = "tv"
     case actor = "actor"
+    
     case comment = "comment"
     case id = "id"
     case isFavorite = "isFavorite"
     case rating = "rating"
-    case type = "type"
 }
 

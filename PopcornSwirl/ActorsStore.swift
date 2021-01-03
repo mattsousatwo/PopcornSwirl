@@ -64,7 +64,7 @@ class ActorsStore: ObservableObject {
     }
     
     
-    func fetchActorWith(id: Double) -> [Actor] {
+    func fetchActorWith(id: Double) -> Actor {
         var actorsArray: [Actor] = []
         let request: NSFetchRequest<Actor> = Actor.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", id)
@@ -73,7 +73,13 @@ class ActorsStore: ObservableObject {
         } catch {
             print(error)
         }
-        return actorsArray
+        
+        var actor = Actor(context: context)
+        if actorsArray.count != 0 && actorsArray.count == 1 {
+            actor = actorsArray.first!
+        }
+        
+        return actor
         
     }
     

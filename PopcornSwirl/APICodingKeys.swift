@@ -141,6 +141,7 @@ struct UpcomingMovie: Codable {
     var popularity: Double
     var vote_average: Double
     var genre_ids: [Int]
+    var release_date: String
 }
 
 

@@ -145,10 +145,12 @@ struct RemoteActor: View {
                     .multilineTextAlignment(.center)
                     .frame(width: 140,
                            height: 40)
+                    .foregroundColor(.pGray3)
                 
                     
                 Text(subtitle)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.pGray3)
+                    .opacity(0.7)
             
             }
             .frame(width: 140, height: 60, alignment: .center)

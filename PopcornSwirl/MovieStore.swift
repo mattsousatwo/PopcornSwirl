@@ -16,6 +16,7 @@ class MovieStore: ObservableObject {
     // Movie Stores
     @Published var popularMovies = [PopMovie]() // all popular movies
     @Published var movieCast = [MovieCast]() // cast for movie
+    @Published var director = String() // crew for movie - director
     @Published var recommendedMovies = [RecommendedMovie]() // all recommended movies by movie ID
     @Published var movieSearchResults = [MovieSearchResults]()
     @Published var upcomingMovies = [UpcomingMovie]()
@@ -162,6 +163,14 @@ extension MovieStore {
                     print("KnownFor: " + x.known_for_department)
                     print("ID: " + "\(x.id)")
                     print("\n")
+                }
+                
+                
+                for x in movieCredits.crew {
+                    if x.job == "Director" {
+                        print("Crew - name: \(x.name), job: \(x.job)")
+                        self.director = x.name
+                    }
                 }
                 
             } catch {

@@ -10,10 +10,11 @@ import SwiftUI
 
 struct GenreBar_Previews: PreviewProvider {
     static var previews: some View {
-        
-            GenreBar(genres: [12, 50]).previewLayout(.sizeThatFits)
+        Group {
+
+//            GenreBar(genres: [12, 50]).previewLayout(.sizeThatFits)
             
-            
+        }
         
     }
 }

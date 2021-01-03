@@ -21,6 +21,7 @@ struct MovieDetail: View {
     var movieOverview = String()
     var posterPath = String()
     var rating = Double()
+    var releaseDate = String()
 
     var movieRatings = MovieRatingStore()
     
@@ -62,11 +63,13 @@ struct MovieDetail: View {
                                             movieRatings.toggleFavorite(for: movieRating)
                                             
                                         }, label: {
+
                                             Image(systemName: self.isFavorite ? "heart.fill" : "heart" )
-//                                             Image(systemName: "heart")
                                                 .frame(width: 35, height: 35)
                                                 .padding()
                                                 .foregroundColor(.lightBlue )
+
+                                            
                                         })
                                         , alignment: .bottomTrailing)
 
@@ -95,9 +98,27 @@ struct MovieDetail: View {
                                 
                                 VStack(alignment: .leading, spacing: 10) {
                                     // Movie Title
-                                    Text(movieTitle).font(.system(.largeTitle)).multilineTextAlignment(.leading).lineLimit(3).frame(width: geometry.size.width/2, height: 200, alignment: .topLeading).padding(.top).foregroundColor(.white)
-                                    Spacer()
-                                     
+                                    Text(movieTitle).font(.system(.largeTitle)).bold().multilineTextAlignment(.leading).lineLimit(3)
+                                        .frame(width: geometry.size.width/2, height: 200, alignment: .leading)
+                                        .padding(.top).padding(.horizontal)
+                                        .foregroundColor(.white)
+                                    
+                                    
+                                    // Director
+                                    Text("Director:").bold()
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal)
+                                    Text("\(movieStore.director)")
+                                        .foregroundColor(.pGray3)
+                                        .padding(.horizontal)
+                                    // Release Date
+                                    Text("Release Date:").bold()
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal)
+                                    Text(releaseDate)
+                                        .foregroundColor(.pGray3)
+                                        .padding(.horizontal)
+                                    
                                     // Rating
                                     StarBar(value: rating)
                                         .frame(width: geometry.size.width / 2, height: 25 )
@@ -107,46 +128,46 @@ struct MovieDetail: View {
                             
                             // Description
                             Text(movieOverview)
-                                .foregroundColor(.black)
+                                .foregroundColor(.pGray3)
                                 .padding()
-
+                            
+                            // Genres
                             GenreBar(genres: genreIDs)
                             
                             
                             // Actors scroll view
                             HStack {
                                 Text("Actors").font(.system(.title2)).bold()
+                                    .foregroundColor(.pGray3)
                                 Spacer()
-                                Text("See All")
+                                if movieStore.actorImageProfiles.count >= 9 {
+                                    Button(action: {
+                                        print("See All Actors")
+                                    }, label: {
+                                        Text("See All")
+                                            .foregroundColor(.pGray3)
+                                    })
+                                }
                             }
                                 .padding(.horizontal)
                                 .padding(.top)
                             
                             ScrollView(.horizontal, showsIndicators:  false) {
                                 HStack {
-
                                     if movieStore.actorImageProfiles.count != 0  {
-                                        
                                         ForEach(0..<movieStore.actorImageProfiles.count, id: \.self ) { i in
-                                        
                                             if i <= 9 {
-
                                                 if let actorImagePath = movieStore.actorImageProfiles[movieStore.movieCast[i].id] {
-                                                    
                                                     NavigationLink(destination:
                                                         ActorDetail(image: movieStore.imageURL + actorImagePath,
                                                                     actorID: movieStore.movieCast[i].id,
                                                                     name: movieStore.movieCast[i].name,
-                                                                    isFavorite: false)
-                                                    ) {
-                                                    
+                                                                    isFavorite: false) ) {
                                                         RemoteActor(url: movieStore.imageURL + actorImagePath,
                                                                     name: movieStore.movieCast[i].name,
                                                                     subtitle: movieStore.movieCast[i].character,
                                                                     isFavorite: false)
-                                                            
                                                     } // nav link
-                                                    
                                                 } // if let
                                             } // if actor index is less than 9
                                         } // ForEach
@@ -167,8 +188,17 @@ struct MovieDetail: View {
                             // MARK: - Suggested Movies
                             HStack {
                                 Text("Suggested Movies").font(.system(.title2)).bold()
+                                    .foregroundColor(.pGray3)
                                 Spacer()
-                                Text("See All")
+                                if movieStore.recommendedMovies.count >= 9 {
+                                    Button(action: {
+                                        print("See All Suggested Movies")
+                                    }, label: {
+                                        Text("See All")
+                                            .foregroundColor(.pGray3)
+                                    })
+                                }
+
                             }
                                 .padding(.horizontal)
                                 .padding(.top)
@@ -182,12 +212,10 @@ struct MovieDetail: View {
                                                             movieTitle: movieStore.recommendedMovies[i].title,
                                                             movieOverview: movieStore.recommendedMovies[i].overview,
                                                             posterPath: movieStore.recommendedMovies[i].poster_path ?? "",
-                                                            rating: movieStore.recommendedMovies[i].vote_average))
-                                            {
+                                                            rating: movieStore.recommendedMovies[i].vote_average)
+                                            ) {
                                                 // link label
                                                 RemotePoster(url: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
-                                                    
-//                                                MoviePoster(urlString: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
                                             } // Nav Label
                                         } // if poster != nil
                                     } // ForEach
@@ -208,9 +236,9 @@ struct MovieDetail: View {
         
         
         .background(Color.pGray)
-//        .edgesIgnoringSafeArea(.bottom)
+
         
-        .navigationBarBackButtonHidden(false )
+
         
         
         .onAppear() {
@@ -241,3 +269,48 @@ struct MovieDetail_Previews: PreviewProvider {
         MovieDetail(movieTitle: "Long movie title goes here ")
     }
 }
+
+
+
+    
+struct SomethingElse: View {
+    
+    @ObservedObject var movieStore = MovieStore()
+    var title: String
+    
+    
+    var body: some View {
+        // MARK: - Suggested Movies
+        HStack {
+            Text(title).font(.system(.title2)).bold()
+            Spacer()
+            Text("See All")
+        }
+            .padding(.horizontal)
+            .padding(.top)
+        
+        ScrollView(.horizontal, showsIndicators:  false) {
+            HStack {
+                ForEach(0..<movieStore.recommendedMovies.count, id: \.self ) { i in
+                    if movieStore.recommendedMovies[i].poster_path != nil {
+                        NavigationLink(destination: MovieDetail(
+                                        movieID: movieStore.recommendedMovies[i].id,
+                                        movieTitle: movieStore.recommendedMovies[i].title,
+                                        movieOverview: movieStore.recommendedMovies[i].overview,
+                                        posterPath: movieStore.recommendedMovies[i].poster_path ?? "",
+                                        rating: movieStore.recommendedMovies[i].vote_average))
+                        {
+                            // link label
+                            RemotePoster(url: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
+
+                        } // Nav Label
+                    } // if poster != nil
+                } // ForEach
+            } .padding()  // HS
+        } // suggested movie scroll view
+    }
+    
+}
+    
+    
+

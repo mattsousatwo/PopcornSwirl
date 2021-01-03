@@ -56,7 +56,12 @@ class GenreStore: ObservableObject {
                 for id in ids {
                     if genre.id == Int16(id) {
                         
-                        if let name = genre.name {
+                        if var name = genre.name {
+                            
+                            if name == "Science Fiction" {
+                                name = "Sci-Fi"
+                            }
+                            
                             extractedArray.append(name)
                         }
                         

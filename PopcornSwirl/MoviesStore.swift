@@ -49,6 +49,10 @@ class MoviesStore: ObservableObject {
         
     }
     
+    func fetchFavoriteMovies() {
+        // filter through movie list for movies that are favorited
+    }
+    
     
 }
 

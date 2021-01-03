@@ -49,7 +49,8 @@ struct Home: View {
                                             genreIDs: movieStore.popularMovies[i].genre_ids,
                                             movieOverview: movieStore.popularMovies[i].overview,
                                             posterPath: movieStore.popularMovies[i].poster_path,
-                                            rating: movieStore.popularMovies[i].vote_average)) {
+                                            rating: movieStore.popularMovies[i].vote_average,
+                                            releaseDate: movieStore.popularMovies[i].release_date) ) {
                                         RemotePoster(url: movieStore.imageURL + movieStore.popularMovies[i].poster_path)
                                     }
                                         
@@ -78,8 +79,9 @@ struct Home: View {
                                             genreIDs: movieStore.upcomingMovies[i].genre_ids,
                                             movieOverview: movieStore.upcomingMovies[i].overview,
                                             posterPath: (movieStore.upcomingMovies[i].poster_path ?? ""),
-                                            rating: movieStore.upcomingMovies[i].vote_average
-                                    )) {
+                                            rating: movieStore.upcomingMovies[i].vote_average,
+                                            releaseDate: movieStore.upcomingMovies[i].release_date)
+                                    ) {
                                         RemotePoster(url: movieStore.imageURL + (movieStore.upcomingMovies[i].poster_path ?? ""))
 //                                            Poster(urlString: movieStore.imageURL + (movieStore.upcomingMovies[i].poster_path ?? ""),
 //                                                   title: movieStore.upcomingMovies[i].title)
