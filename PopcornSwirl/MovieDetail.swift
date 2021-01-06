@@ -54,24 +54,24 @@ struct MovieDetail: View {
                                 VStack {
                                 // Movie Poster
                                 RemotePoster(url: movieStore.imageURL + posterPath)
-                                    
-                                    .overlay(
-                                        Button(action: {
-                                            print("Favorite Button Pressed")
-                                            self.isFavorite.toggle()
-
-                                            movieRatings.toggleFavorite(for: movieRating)
-                                            
-                                        }, label: {
-
-                                            Image(systemName: self.isFavorite ? "heart.fill" : "heart" )
-                                                .frame(width: 35, height: 35)
-                                                .padding()
-                                                .foregroundColor(.lightBlue )
-
-                                            
-                                        })
-                                        , alignment: .bottomTrailing)
+//
+//                                    .overlay(
+//                                        Button(action: {
+//                                            print("Favorite Button Pressed")
+//                                            self.isFavorite.toggle()
+//
+//                                            movieRatings.toggleFavorite(for: movieRating)
+//
+//                                        }, label: {
+//
+//                                            Image(systemName: self.isFavorite ? "heart.fill" : "heart" )
+//                                                .frame(width: 35, height: 35)
+//                                                .padding()
+//                                                .foregroundColor(.lightBlue )
+//
+//
+//                                        })
+//                                        , alignment: .bottomTrailing)
 
                                     .padding()
                                 
@@ -129,7 +129,8 @@ struct MovieDetail: View {
                             // Description
                             Text(movieOverview)
                                 .foregroundColor(.pGray3)
-                                .padding()
+                                .padding(.horizontal)
+                                
                             
                             // Genres
                             GenreBar(genres: genreIDs)

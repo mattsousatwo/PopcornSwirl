@@ -13,7 +13,9 @@ struct HeartButton: View {
     
     @State var type: HeartType
     
-    private let gradient = LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .top, endPoint: .bottom)
+    private let gradient = LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]),
+                                          startPoint: .top, endPoint: .bottom)
+    
     var body: some View {
         
         Button( action: {
@@ -26,7 +28,8 @@ struct HeartButton: View {
         }, label: {
             gradient.mask(
                 Image(systemName: type.rawValue).resizable() )
-                .shadow(radius: 3)
+//                .shadow(radius: 3)
+                .shadow(color: .gray, radius: 3, x: 1, y: 2)
         })
         
         .animation(.default)
@@ -45,7 +48,7 @@ struct HeartButton_Previews: PreviewProvider {
             HeartButton(type: .fill)
             HeartButton(type: .empty)
             
-        }
+        }.previewLayout(.sizeThatFits)
         .frame(width: 100,
                height: 100)
         

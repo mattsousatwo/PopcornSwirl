@@ -95,12 +95,11 @@ struct RemotePoster: View {
                     Button(action: {
                         self.isFavorite.toggle()
                     }, label: {
-                        Image(systemName: isFavorite ? "heart.fill" : "heart")
-                            .frame(width: 35, height: 35)
+                        HeartButton(type: isFavorite ? .fill : .empty)
+                            .frame(width: 25, height: 25)
                             .padding()
-                            .foregroundColor(.lightBlue)
+
                             .shadow(radius: 5.0)
-                            .opacity(0.8)
                     })
                 
                     , alignment: .bottomTrailing)
@@ -116,6 +115,9 @@ struct RemoteActor: View {
     var subtitle: String
     @State var isFavorite: Bool
     
+    private var s : Bool {
+        return true
+    }
     
     
     
@@ -133,10 +135,10 @@ struct RemoteActor: View {
                     Button(action: {
                         self.isFavorite.toggle() 
                     }, label: {
-                        Image(systemName: isFavorite ? "heart.fill" : "heart")
-                            .frame(width: 35, height: 35)
+                        HeartButton(type: isFavorite ? .fill : .empty)
+                            .frame(width: 25, height: 25)
                             .padding()
-                            .foregroundColor(.lightBlue)
+
                     })
                     , alignment: .bottomTrailing )
             VStack {

@@ -13,7 +13,6 @@ struct ActorDetail: View {
     var image: String
     var actorID: Int
     var name: String
-//    var biography: String
     @State var isFavorite: Bool
     
     @State private var showFullBio: Bool = false
@@ -79,7 +78,7 @@ struct ActorDetail: View {
                         RemoteImage(url: image)
                             .clipShape( RoundedRectangle(cornerRadius: 12) )
                             .frame(width: geometry.size.width / 2,
-                                   height: 250,
+                                   height: 300,
                                    alignment: .center)
                             .shadow(radius: 5.0)
                             .padding()
@@ -174,6 +173,7 @@ struct ActorDetail: View {
                                                 } // If Let
                                             } // If Index is less than
                                         } // ForEach
+                                        
                                     } // HStack
                                     .padding()
                                 } // Scroll
@@ -210,12 +210,31 @@ struct ActorDetail: View {
                                         ForEach(0..<tv.count, id: \.self) { i in
                                         
                                             if i <= 9 {
-                                                VStack {
-                                                    RemotePoster(url: self.movie.imageURL + (tv[i].poster_path ?? "" ))
-                                                    Text(tv[i].name ?? "").font(.system(.title3)).bold()
-                                                    Text(tv[i].character)
-                                                }
-                                                .frame(width: 150)
+                                                
+                                                    NavigationLink(destination: MovieDetail(movieID: tv[i].id,
+                                                                                            movieTitle: tv[i].title ?? "TITLE NOT FOUND",
+                                                                                            genreIDs: tv[i].genre_ids,
+                                                                                            movieOverview: tv[i].overview,
+                                                                                            posterPath: tv[i].poster_path ?? "" ,
+                                                                                            rating: tv[i].vote_average,
+                                                                                            releaseDate: "- RELEASE DATE -")) {
+                                                        VStack {
+                                                            RemotePoster(url: self.movie.imageURL + (tv[i].poster_path ?? "" ))
+                                                            Text(tv[i].name ?? "").font(.system(.title3)).bold()
+                                                            Text(tv[i].character)
+                                                        }
+                                                        .frame(width: 150)
+                                                    }
+                                                
+//                                                VStack {
+//                                                    RemotePoster(url: self.movie.imageURL + (tv[i].poster_path ?? "" ))
+//                                                    Text(tv[i].name ?? "").font(.system(.title3)).bold()
+//                                                    Text(tv[i].character)
+//                                                }
+//                                                .frame(width: 150)
+                                                
+                                               
+                                                
                                             }
                                         }
                                         
