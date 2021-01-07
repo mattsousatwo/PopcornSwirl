@@ -70,6 +70,20 @@ extension MovieStore {
         } // request
         
     } // fetchPopularMovies
+    
+    func extractPopularMovies() -> [PopMovie] {
+        var movies = [PopMovie]()
+        
+        if popularMovies.count == 0 {
+            fetchPopularMovies()
+        }
+        
+        for movie in popularMovies {
+            movies.append(movie)
+        }
+
+        return movies
+    } // fetchPopularMovies
  
     // MARK: Get Reccomended Movies for movie
     func fetchRecommendedMoviesForMovie(id: Int) {

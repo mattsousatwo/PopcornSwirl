@@ -99,6 +99,9 @@ struct RecommendedMovie: Codable {
     var popularity: Double
     var id: Int
     var vote_average: Double
+    var genre_ids: [Int]
+    var release_date: String
+    
 }
 
 
