@@ -67,39 +67,46 @@ struct Home: View {
 //                    } // scroll - Popular Movies
 
                     // MARK: - UPCOMING MOVIES STACK
-                    HStack {
-                        Text("Upcoming Movies").font(.system(.title, design: .rounded)).bold()
-                            .padding(.horizontal)
-                        Spacer()
-                    }
-                    // Horizontal Scroll
-                    ScrollView(.horizontal, showsIndicators:  false) {
-                        HStack(spacing: 15) {
-                            ForEach(0..<movieStore.upcomingMovies.count, id: \.self ) { i in
-
-                                if movieStore.upcomingMovies.count != 0 {
-                                    NavigationLink(destination: MovieDetail(
-                                            movieID: movieStore.upcomingMovies[i].id,
-                                            movieTitle: movieStore.upcomingMovies[i].title,
-                                            genreIDs: movieStore.upcomingMovies[i].genre_ids,
-                                            movieOverview: movieStore.upcomingMovies[i].overview,
-                                            posterPath: (movieStore.upcomingMovies[i].poster_path ?? ""),
-                                            rating: movieStore.upcomingMovies[i].vote_average,
-                                            releaseDate: movieStore.upcomingMovies[i].release_date)
-                                    ) {
-                                        RemotePoster(url: movieStore.imageURL + (movieStore.upcomingMovies[i].poster_path ?? ""))
-//                                            Poster(urlString: movieStore.imageURL + (movieStore.upcomingMovies[i].poster_path ?? ""),
-//                                                   title: movieStore.upcomingMovies[i].title)
-                                    }
-                                        
-                                }
-                                
-                            }
-                            
-                        }.padding()
                         
-                    } // scroll - Upcoming Movies
-
+                        ScrollBar(type: .upcommingMovie)
+                        
+//                    HStack {
+//                        Text("Upcoming Movies").font(.system(.title, design: .rounded)).bold()
+//                            .padding(.horizontal)
+//                        Spacer()
+//                    }
+//                    // Horizontal Scroll
+//                    ScrollView(.horizontal, showsIndicators:  false) {
+//                        HStack(spacing: 15) {
+//                            ForEach(0..<movieStore.upcomingMovies.count, id: \.self ) { i in
+//
+//                                if movieStore.upcomingMovies.count != 0 {
+//                                    NavigationLink(destination: MovieDetail(
+//                                            movieID: movieStore.upcomingMovies[i].id,
+//                                            movieTitle: movieStore.upcomingMovies[i].title,
+//                                            genreIDs: movieStore.upcomingMovies[i].genre_ids,
+//                                            movieOverview: movieStore.upcomingMovies[i].overview,
+//                                            posterPath: (movieStore.upcomingMovies[i].poster_path ?? ""),
+//                                            rating: movieStore.upcomingMovies[i].vote_average,
+//                                            releaseDate: movieStore.upcomingMovies[i].release_date)
+//                                    ) {
+//                                        RemotePoster(url: movieStore.imageURL + (movieStore.upcomingMovies[i].poster_path ?? ""))
+////                                            Poster(urlString: movieStore.imageURL + (movieStore.upcomingMovies[i].poster_path ?? ""),
+////                                                   title: movieStore.upcomingMovies[i].title)
+//                                    }
+//
+//                                }
+//
+//                            }
+//
+//                        }.padding()
+//
+//                    } // scroll - Upcoming Movies
+//
+//
+                    // MARK: - UPCOMING MOVIES STACK - end
+                        
+                        
                 } // VStack
 
                     .navigationBarTitle("Home", displayMode: .inline)

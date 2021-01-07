@@ -135,46 +135,51 @@ struct MovieDetail: View {
                             // Genres
                             GenreBar(genres: genreIDs)
                             
+                            // MARK: - Actors Scroll
                             
-                            // Actors scroll view
-                            HStack {
-                                Text("Actors").font(.system(.title2)).bold()
-                                    .foregroundColor(.pGray3)
-                                Spacer()
-                                if movieStore.actorImageProfiles.count >= 9 {
-                                    Button(action: {
-                                        print("See All Actors")
-                                    }, label: {
-                                        Text("See All")
-                                            .foregroundColor(.pGray3)
-                                    })
-                                }
-                            }
-                                .padding(.horizontal)
-                                .padding(.top)
+                            ScrollBar(type: .actors, id: movieID)
+//                            // Actors scroll view
+//                            HStack {
+//                                Text("Actors").font(.system(.title2)).bold()
+//                                    .foregroundColor(.pGray3)
+//                                Spacer()
+//                                if movieStore.actorImageProfiles.count >= 9 {
+//                                    Button(action: {
+//                                        print("See All Actors")
+//                                    }, label: {
+//                                        Text("See All")
+//                                            .foregroundColor(.pGray3)
+//                                    })
+//                                }
+//                            }
+//                                .padding(.horizontal)
+//                                .padding(.top)
+//
+//                            ScrollView(.horizontal, showsIndicators:  false) {
+//                                HStack {
+//                                    if movieStore.actorImageProfiles.count != 0  {
+//                                        ForEach(0..<movieStore.actorImageProfiles.count, id: \.self ) { i in
+//                                            if i <= 9 {
+//                                                if let actorImagePath = movieStore.actorImageProfiles[movieStore.movieCast[i].id] {
+//                                                    NavigationLink(destination:
+//                                                        ActorDetail(image: movieStore.imageURL + actorImagePath,
+//                                                                    actorID: movieStore.movieCast[i].id,
+//                                                                    name: movieStore.movieCast[i].name,
+//                                                                    isFavorite: false) ) {
+//                                                        RemoteActor(url: movieStore.imageURL + actorImagePath,
+//                                                                    name: movieStore.movieCast[i].name,
+//                                                                    subtitle: movieStore.movieCast[i].character,
+//                                                                    isFavorite: false)
+//                                                    } // nav link
+//                                                } // if let
+//                                            } // if actor index is less than 9
+//                                        } // ForEach
+//                                    } // if movieCast != 0
+//                                }   // HSTack
+//                            } .padding() // actors scroll view
+//
+                            // MARK: Actors Scroll -
                             
-                            ScrollView(.horizontal, showsIndicators:  false) {
-                                HStack {
-                                    if movieStore.actorImageProfiles.count != 0  {
-                                        ForEach(0..<movieStore.actorImageProfiles.count, id: \.self ) { i in
-                                            if i <= 9 {
-                                                if let actorImagePath = movieStore.actorImageProfiles[movieStore.movieCast[i].id] {
-                                                    NavigationLink(destination:
-                                                        ActorDetail(image: movieStore.imageURL + actorImagePath,
-                                                                    actorID: movieStore.movieCast[i].id,
-                                                                    name: movieStore.movieCast[i].name,
-                                                                    isFavorite: false) ) {
-                                                        RemoteActor(url: movieStore.imageURL + actorImagePath,
-                                                                    name: movieStore.movieCast[i].name,
-                                                                    subtitle: movieStore.movieCast[i].character,
-                                                                    isFavorite: false)
-                                                    } // nav link
-                                                } // if let
-                                            } // if actor index is less than 9
-                                        } // ForEach
-                                    } // if movieCast != 0
-                                }   // HSTack
-                            } .padding() // actors scroll view
                             
                             
                             RoundedRectangle(cornerRadius: 12)

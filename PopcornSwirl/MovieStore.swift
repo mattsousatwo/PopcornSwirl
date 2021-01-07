@@ -155,12 +155,19 @@ extension MovieStore {
                 print(error)
             }
             
-            
-            
-            
         }
-        
-        
+    }
+    
+    // Get All Upcoming Movies after movies have been fetched 
+    func extractUpcomingMovies() -> [UpcomingMovie] {
+        var movies = [UpcomingMovie]()
+        if upcomingMovies.count == 0 {
+            fetchUpcomingMovies()
+        }
+        for movie in upcomingMovies {
+            movies.append(movie)
+        }
+        return movies
     }
     
     
@@ -214,6 +221,19 @@ extension MovieStore {
         
     }
     
+    // MARK: Extract Movie Cast after they have been fetched
+    func extractMovieCast(id: Int) -> [MovieCast] {
+        var actors = [MovieCast]()
+        if movieCast.count == 0 {
+            fetchMovieCreditsForMovie(id: id)
+        }
+        for actor in movieCast {
+            actors.append(actor)
+        }
+        print("Test 3 - actors: \(actors.count)")
+        return actors
+    }
+    
     
     // Get Images for Actor
     func getImagesForActor() {
@@ -255,6 +275,22 @@ extension MovieStore {
             }
         }
     }
+    
+    // MARK: Extract Actor Images after image paths have been fetched
+    func extractActorImageProfiles(id: Int) -> [Int : String] {
+        var imageDict = [Int : String]()
+        if actorImageProfiles.count == 0 {
+            fetchMovieCreditsForMovie(id: id)
+            getImagesForActor()
+        }
+        for (id, path) in actorImageProfiles {
+            
+            imageDict[id] = path
+        }
+//        print("Test 3 - imageDict: \(imageDict.count)")
+        return imageDict
+    }
+    
 
     // MARK: GET Movie & TV Credits for Actor
     func fetchCreditsFor(actor: Int) {

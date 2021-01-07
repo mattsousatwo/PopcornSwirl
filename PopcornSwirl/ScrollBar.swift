@@ -13,8 +13,9 @@ import SwiftUI
 enum ScrollBarType: String  {
     case popularMovie = "Popular"
     case upcommingMovie = "Upcomming"
-    case recommendedMovie = "Recommended"
-    case actors = "Actors"
+    case recommendedMovie = "Recommended" // Need to access movie ID
+    case actors = "Actors" // Need to access movie ID
+    // case tv = "TV"
 }
 
 
@@ -90,7 +91,7 @@ struct bar: View {
     
     var id: Int // used to fetch recomended movies
     
-    private var popMovies : [PopMovie] {
+    private var popularMovies : [PopMovie] {
         return movieStore.extractPopularMovies()
     }
     
@@ -98,6 +99,22 @@ struct bar: View {
         
         return movieStore.extractRecomendedMovies(id: id)
     }
+    
+    private var upcomingMovies: [UpcomingMovie] {
+        return movieStore.extractUpcomingMovies()
+    }
+    
+    private var cast: [MovieCast] {
+        print("Test 3 - Cast Closure ")
+        return movieStore.extractMovieCast(id: id)
+    }
+    
+    private var actorImages: [Int : String ] {
+        return movieStore.extractActorImageProfiles(id: id)
+    }
+        
+    
+    
     
     
     @ObservedObject var movieStore = MovieStore()
@@ -107,20 +124,20 @@ struct bar: View {
         
         switch type {
         case .actors:
-            if movieStore.actorImageProfiles.count != 0 {
-                ForEach(0..<movieStore.actorImageProfiles.count, id: \.self) { i in
+            if actorImages.count != 0 {
+                ForEach(0..<actorImages.count, id: \.self) { i in
                     if i <= 9 {
-                        if let imagePath = movieStore.actorImageProfiles[ movieStore.movieCast[i].id ] {
+                        if let imagePath = actorImages[ cast[i].id ] {
                             
                             NavigationLink(
                                 destination: ActorDetail(image: movieStore.imageURL + imagePath,
-                                                         actorID: movieStore.movieCast[i].id,
-                                                         name: movieStore.movieCast[i].name,
+                                                         actorID: cast[i].id,
+                                                         name: cast[i].name,
                                                          isFavorite: false),   // Get Coredata Rating
                                 label: {
                                     RemoteActor(url: movieStore.imageURL + imagePath,
-                                                name: movieStore.movieCast[i].name,
-                                                subtitle: movieStore.movieCast[i].character,
+                                                name: cast[i].name,
+                                                subtitle: cast[i].character,
                                                 isFavorite: false)
                                 })
                             
@@ -134,36 +151,36 @@ struct bar: View {
             
             // Changed to closure array instead of movieStore property 
             
-            ForEach(0..<popMovies.count, id: \.self) { i in
-                if popMovies.count != 0 {
+            ForEach(0..<popularMovies.count, id: \.self) { i in
+                if popularMovies.count != 0 {
                     
-                    NavigationLink(destination: MovieDetail(movieID: popMovies[i].id,
-                                                            movieTitle: popMovies[i].title,
-                                                            genreIDs: popMovies[i].genre_ids,
-                                                            movieOverview: popMovies[i].overview,
-                                                            posterPath: popMovies[i].poster_path,
-                                                            rating: popMovies[i].vote_average,
-                                                            releaseDate: popMovies[i].release_date)  ) {
+                    NavigationLink(destination: MovieDetail(movieID: popularMovies[i].id,
+                                                            movieTitle: popularMovies[i].title,
+                                                            genreIDs: popularMovies[i].genre_ids,
+                                                            movieOverview: popularMovies[i].overview,
+                                                            posterPath: popularMovies[i].poster_path,
+                                                            rating: popularMovies[i].vote_average,
+                                                            releaseDate: popularMovies[i].release_date)  ) {
                         // Label
-                        RemotePoster(url: movieStore.imageURL + popMovies[i].poster_path)
+                        RemotePoster(url: movieStore.imageURL + popularMovies[i].poster_path)
                     }
                 }
             }
             
             .animation(.default)
         case .upcommingMovie:
-            ForEach(0..<movieStore.upcomingMovies.count, id: \.self) { i in
-                if movieStore.upcomingMovies.count != 0 {
+            ForEach(0..<upcomingMovies.count, id: \.self) { i in
+                if upcomingMovies.count != 0 {
                     
-                    NavigationLink(destination: MovieDetail(movieID: movieStore.upcomingMovies[i].id,
-                                                            movieTitle: movieStore.upcomingMovies[i].title,
-                                                            genreIDs: movieStore.upcomingMovies[i].genre_ids,
-                                                            movieOverview: movieStore.upcomingMovies[i].overview,
-                                                            posterPath: movieStore.upcomingMovies[i].poster_path ?? "",
-                                                            rating: movieStore.upcomingMovies[i].vote_average,
-                                                            releaseDate: movieStore.upcomingMovies[i].release_date)  ) {
+                    NavigationLink(destination: MovieDetail(movieID: upcomingMovies[i].id,
+                                                            movieTitle: upcomingMovies[i].title,
+                                                            genreIDs: upcomingMovies[i].genre_ids,
+                                                            movieOverview: upcomingMovies[i].overview,
+                                                            posterPath: upcomingMovies[i].poster_path ?? "",
+                                                            rating: upcomingMovies[i].vote_average,
+                                                            releaseDate: upcomingMovies[i].release_date)  ) {
                         // Label
-                        RemotePoster(url: movieStore.imageURL + (movieStore.upcomingMovies[i].poster_path ?? "") )
+                        RemotePoster(url: movieStore.imageURL + (upcomingMovies[i].poster_path ?? "") )
                     }
                 }
             }
