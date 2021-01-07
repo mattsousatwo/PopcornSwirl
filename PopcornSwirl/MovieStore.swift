@@ -71,6 +71,7 @@ extension MovieStore {
         
     } // fetchPopularMovies
     
+    // Get movies after fetchPopularMovies is finished retrieving data
     func extractPopularMovies() -> [PopMovie] {
         var movies = [PopMovie]()
         
@@ -83,7 +84,7 @@ extension MovieStore {
         }
 
         return movies
-    } // fetchPopularMovies
+    } // extractPopularMovies
  
     // MARK: Get Reccomended Movies for movie
     func fetchRecommendedMoviesForMovie(id: Int) {
@@ -114,6 +115,22 @@ extension MovieStore {
         }
         
     }
+    
+    // Get movies after fetchPopularMovies is finished retrieving data
+    func extractRecomendedMovies(id: Int) -> [RecommendedMovie] {
+        var movies = [RecommendedMovie]()
+        
+        if recommendedMovies.count == 0 {
+            fetchRecommendedMoviesForMovie(id: id)
+        }
+
+        for movie in recommendedMovies {
+            movies.append(movie)
+        }
+
+        return movies
+    } // fetchPopularMovies
+    
     
     // MARK: FETCH Upcoming Movies
     func fetchUpcomingMovies() {

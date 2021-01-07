@@ -186,42 +186,49 @@ struct MovieDetail: View {
                                         .foregroundColor(.pGray2)
                                     
                                 )
-                            // MARK: - Suggested Movies
-                            HStack {
-                                Text("Suggested Movies").font(.system(.title2)).bold()
-                                    .foregroundColor(.pGray3)
-                                Spacer()
-                                if movieStore.recommendedMovies.count >= 9 {
-                                    Button(action: {
-                                        print("See All Suggested Movies")
-                                    }, label: {
-                                        Text("See All")
-                                            .foregroundColor(.pGray3)
-                                    })
-                                }
-
-                            }
-                                .padding(.horizontal)
-                                .padding(.top)
                             
-                            ScrollView(.horizontal, showsIndicators:  false) {
-                                HStack {
-                                    ForEach(0..<movieStore.recommendedMovies.count, id: \.self ) { i in
-                                        if movieStore.recommendedMovies[i].poster_path != nil {
-                                            NavigationLink(destination: MovieDetail(
-                                                            movieID: movieStore.recommendedMovies[i].id,
-                                                            movieTitle: movieStore.recommendedMovies[i].title,
-                                                            movieOverview: movieStore.recommendedMovies[i].overview,
-                                                            posterPath: movieStore.recommendedMovies[i].poster_path ?? "",
-                                                            rating: movieStore.recommendedMovies[i].vote_average)
-                                            ) {
-                                                // link label
-                                                RemotePoster(url: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
-                                            } // Nav Label
-                                        } // if poster != nil
-                                    } // ForEach
-                                } .padding()  // HS
-                            } // suggested movie scroll view
+                            
+                            
+                            ScrollBar(type: .recommendedMovie, id: movieID)
+//                            // MARK: - Suggested Movies
+//                            HStack {
+//                                Text("Suggested Movies").font(.system(.title2)).bold()
+//                                    .foregroundColor(.pGray3)
+//                                Spacer()
+//                                if movieStore.recommendedMovies.count >= 9 {
+//                                    Button(action: {
+//                                        print("See All Suggested Movies")
+//                                    }, label: {
+//                                        Text("See All")
+//                                            .foregroundColor(.pGray3)
+//                                    })
+//                                }
+//
+//                            }
+//                                .padding(.horizontal)
+//                                .padding(.top)
+//
+//                            ScrollView(.horizontal, showsIndicators:  false) {
+//                                HStack {
+//                                    ForEach(0..<movieStore.recommendedMovies.count, id: \.self ) { i in
+//                                        if movieStore.recommendedMovies[i].poster_path != nil {
+//                                            NavigationLink(destination: MovieDetail(
+//                                                            movieID: movieStore.recommendedMovies[i].id,
+//                                                            movieTitle: movieStore.recommendedMovies[i].title,
+//                                                            movieOverview: movieStore.recommendedMovies[i].overview,
+//                                                            posterPath: movieStore.recommendedMovies[i].poster_path ?? "",
+//                                                            rating: movieStore.recommendedMovies[i].vote_average)
+//                                            ) {
+//                                                // link label
+//                                                RemotePoster(url: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
+//                                            } // Nav Label
+//                                        } // if poster != nil
+//                                    } // ForEach
+//                                } .padding()  // HS
+//                            } // suggested movie scroll view
+//
+//
+                            
                         } // V stack
                         
                         

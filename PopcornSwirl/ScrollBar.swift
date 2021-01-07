@@ -10,8 +10,11 @@ import Foundation
 import SwiftUI
 
 
-enum ScrollBarType {
-    case popularMovie, upcommingMovie, reccomendedMovie, actors
+enum ScrollBarType: String  {
+    case popularMovie = "Popular"
+    case upcommingMovie = "Upcomming"
+    case recommendedMovie = "Recommended"
+    case actors = "Actors"
 }
 
 
@@ -21,33 +24,22 @@ struct ScrollBar: View {
     
     var type: ScrollBarType
     
-    var maxCardCount = 10
+    var id: Int = 0
     
     var body: some View {
         
-        VStack(spacing: 20) {
+        VStack(spacing: 10) {
             HStack {
                 
-                // Title
-                switch type {
-                    case .popularMovie:
-                        Text("Popular Movies").font(.system(.title, design: .rounded)).bold()
-                            .padding()
-                    case .upcommingMovie:
-                        Text("Upcommming Movies").font(.system(.title, design: .rounded)).bold()
-                            .padding()
-                    case .reccomendedMovie:
-                        Text("Reccomended").font(.system(.title, design: .rounded)).bold()
-                            .padding()
-                    case .actors:
-                        Text("Actors").font(.system(.title, design: .rounded)).bold()
-                            .padding()
-                }
+                
+                Text(type.rawValue).font(.system(.title, design: .rounded)).bold()
+                    .foregroundColor(.pGray3)
+                    .padding()
                 
                 Spacer()
                 
                 // SeeAll Button
-                if type == .reccomendedMovie {
+                if type == .recommendedMovie {
                     if movieStore.recommendedMovies.count >= 9 {
                         Button(action: {
                             print("See All Reccomended Movies")
@@ -76,13 +68,13 @@ struct ScrollBar: View {
                 
                 HStack(spacing: 15) {
                     
-                    bar(type: type)
+                    bar(type: type, id: id)
 
                 } .padding() // HStack
   
             } // ScrollView - Content
 
-        } // VStack
+        } // VStack - end
         
         
         
@@ -94,13 +86,22 @@ struct ScrollBar: View {
 
 struct bar: View {
     
+    var type: ScrollBarType
+    
+    var id: Int // used to fetch recomended movies
     
     private var popMovies : [PopMovie] {
         return movieStore.extractPopularMovies()
     }
     
+    private var recommendedMovies: [RecommendedMovie] {
+        
+        return movieStore.extractRecomendedMovies(id: id)
+    }
+    
+    
     @ObservedObject var movieStore = MovieStore()
-    var type: ScrollBarType
+    
     
     var body: some View {
         
@@ -167,19 +168,19 @@ struct bar: View {
                 }
             }
             .animation(.default)
-        case .reccomendedMovie:
-            ForEach(0..<movieStore.recommendedMovies.count, id: \.self) { i in
-                if movieStore.recommendedMovies.count != 0 {
+        case .recommendedMovie:
+            ForEach(0..<recommendedMovies.count, id: \.self) { i in
+                if recommendedMovies.count != 0 {
                     
-                    NavigationLink(destination: MovieDetail(movieID: movieStore.recommendedMovies[i].id,
-                                                            movieTitle: movieStore.recommendedMovies[i].title,
-                                                            genreIDs: movieStore.recommendedMovies[i].genre_ids,
-                                                            movieOverview: movieStore.recommendedMovies[i].overview,
-                                                            posterPath: movieStore.recommendedMovies[i].poster_path ?? "",
-                                                            rating: movieStore.recommendedMovies[i].vote_average,
-                                                            releaseDate: movieStore.recommendedMovies[i].release_date)  ) {
+                    NavigationLink(destination: MovieDetail(movieID: recommendedMovies[i].id,
+                                                            movieTitle: recommendedMovies[i].title,
+                                                            genreIDs: recommendedMovies[i].genre_ids,
+                                                            movieOverview: recommendedMovies[i].overview,
+                                                            posterPath: recommendedMovies[i].poster_path ?? "",
+                                                            rating: recommendedMovies[i].vote_average,
+                                                            releaseDate: recommendedMovies[i].release_date)  ) {
                         // Label
-                        RemotePoster(url: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? "") )
+                        RemotePoster(url: movieStore.imageURL + (recommendedMovies[i].poster_path ?? "") )
                     }
                 }
             }
