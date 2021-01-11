@@ -28,6 +28,8 @@ struct MovieDetail: View {
     
     @State private var isFavorite: Bool = false
     
+    @State private var showFullOverview = false
+    
     
     private var movieRating : MovieRating {
         
@@ -109,11 +111,27 @@ struct MovieDetail: View {
                             }
                             
                             // Description
-                            Text(movieOverview)
+                            
+//
+//                            Button(action: {
+//                                self.showFullOverview.toggle()
+//
+//                            }, label: {
+//                                Text(movieOverview).lineLimit(showFullOverview ? nil : 6 )
+//                                    .foregroundColor(.pGray3)
+//                                    .padding(.horizontal)
+//                                    .padding(.trailing, 8)
+//                            })657l//
+                    
+                    
+
+                            Text(movieOverview).lineLimit(nil)
                                 .foregroundColor(.pGray3)
                                 .padding(.horizontal)
-                                
+                                .padding(.trailing, 8)
                             
+
+
                             // Genres
                             GenreBar(genres: genreIDs)
                             
@@ -121,7 +139,7 @@ struct MovieDetail: View {
                             
                             ScrollBar(type: .actors, id: movieID)
                             
-                            // MARK: Actors Scroll -
+                            // Actors Scroll
                             
                             
                             
@@ -148,7 +166,7 @@ struct MovieDetail: View {
                 } // scroll
             
             } // ZStack
-            
+            .animation(.default)
         } // geo
         
         
@@ -181,48 +199,4 @@ struct MovieDetail_Previews: PreviewProvider {
         MovieDetail(movieTitle: "Long movie title goes here ")
     }
 }
-
-
-
-    
-struct SomethingElse: View {
-    
-    @ObservedObject var movieStore = MovieStore()
-    var title: String
-    
-    
-    var body: some View {
-        // MARK: - Suggested Movies
-        HStack {
-            Text(title).font(.system(.title2)).bold()
-            Spacer()
-            Text("See All")
-        }
-            .padding(.horizontal)
-            .padding(.top)
-        
-        ScrollView(.horizontal, showsIndicators:  false) {
-            HStack {
-                ForEach(0..<movieStore.recommendedMovies.count, id: \.self ) { i in
-                    if movieStore.recommendedMovies[i].poster_path != nil {
-                        NavigationLink(destination: MovieDetail(
-                                        movieID: movieStore.recommendedMovies[i].id,
-                                        movieTitle: movieStore.recommendedMovies[i].title,
-                                        movieOverview: movieStore.recommendedMovies[i].overview,
-                                        posterPath: movieStore.recommendedMovies[i].poster_path ?? "",
-                                        rating: movieStore.recommendedMovies[i].vote_average))
-                        {
-                            // link label
-                            RemotePoster(url: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
-
-                        } // Nav Label
-                    } // if poster != nil
-                } // ForEach
-            } .padding()  // HS
-        } // suggested movie scroll view
-    }
-    
-}
-    
-    
 

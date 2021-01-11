@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-class ImageCache {
+class OldImageCache {
     
     var cache = NSCache<NSString, UIImage>()
     
@@ -23,9 +23,9 @@ class ImageCache {
     
 }
 
-extension ImageCache {
-    private static var imageCache = ImageCache()
-    static func getImageCache() -> ImageCache {
+extension OldImageCache {
+    private static var imageCache = OldImageCache()
+    static func getImageCache() -> OldImageCache {
         return imageCache
     }
 }

@@ -17,7 +17,7 @@ class URLImageModel: ObservableObject {
     
     @Published var image: UIImage?
     
-    var imageCache = ImageCache.getImageCache()
+    var imageCache = OldImageCache.getImageCache()
     
     var urlString: String?
     

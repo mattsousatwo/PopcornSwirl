@@ -15,6 +15,7 @@ enum ScrollBarType: String  {
     case upcommingMovie = "Upcomming"
     case recommendedMovie = "Recommended" // Need to access movie ID
     case actors = "Actors" // Need to access movie ID
+    case testing = "Testing"
     // case tv = "TV"
 }
 
@@ -121,6 +122,16 @@ struct bar: View {
     var body: some View {
         
         switch type {
+        case .testing:
+            
+            AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/original//pThyQovXQrw2m0s9x82twj48Jq4.jpg")!,
+                       placeholder: { Color.purple },
+                       image: { Image(uiImage: $0).resizable() }
+            ) .frame(width: 200, height: 200, alignment: .center)
+            
+            
+            
+            
         case .actors:
             if actorImages.count != 0 {
                 ForEach(0..<actorImages.count, id: \.self) { i in
