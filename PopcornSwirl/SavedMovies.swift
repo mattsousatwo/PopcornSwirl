@@ -35,27 +35,43 @@ struct SavedRow: View {
     
     @Binding var search: String
     
-    private var elementsArray: [[MovieSearchResults]] {
-        
-        movieStore.fetchResultsForMovie(query: search)
-        
-//        let searchArray = movieStore.fetchResultsFromMovie(search: search)
+//    private var elementsArray: [[MovieSearchResults]] {
+//
+//        movieStore.fetchResultsForMovie(query: search)
+//
+////        let searchArray = movieStore.fetchResultsFromMovie(search: search)
+//
+//        var newArray: [[MovieSearchResults]] = []
+//
+//        let dividedCount = movieStore.movieSearchResults.count / 2
+//
+//        if dividedCount >= 1 {
+//            newArray = movieStore.movieSearchResults.divided(into: 2)
+//        }
+////        print("SearchArray: \(searchArray.count)")
+//        print("ElementsArray: \(newArray.count)")
+//        return newArray
+//    }
+//
+    
+    
+    // MARK: - swapped elements array with movie array - retrieving movie results after they are called and put them into an array - NOT WORKING
+    private var movieArray: [[MovieSearchResults]] {
+        let results = movieStore.extractMovieSearchResults()
         
         var newArray: [[MovieSearchResults]] = []
-
-        let dividedCount = movieStore.movieSearchResults.count / 2
-        
+        let dividedCount = results.count / 2
         if dividedCount >= 1 {
-            newArray = movieStore.movieSearchResults.divided(into: 2)
+            newArray = results.divided(into: 2)
         }
-//        print("SearchArray: \(searchArray.count)")
-        print("ElementsArray: \(newArray.count)")
+        print("Test 5 - results: \(results.count)")
         return newArray
     }
     
+    
     private var showResults: Bool {
         
-        switch elementsArray.count {
+        switch movieArray.count {
         case 0:
             return false
         default:
@@ -74,7 +90,7 @@ struct SavedRow: View {
             ScrollView {
                 VStack(alignment: .center) {
                 
-                    ForEach(elementsArray, id: \.self) { array in
+                    ForEach(movieArray, id: \.self) { array in
                         HStack {
 //                            Spacer()
                             ForEach(array, id: \.self) { movie in

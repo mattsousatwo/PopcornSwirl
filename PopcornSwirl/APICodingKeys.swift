@@ -225,3 +225,44 @@ struct GenreArray: Codable {
     var genres: [Genre]
 
 }
+
+
+
+// MARK: - Movie Links
+
+struct MovieLink: Codable {
+    var id: Int
+    var result: [MovieLinkResult]
+}
+
+struct MovieLinkResult: Codable {
+    var country: [String]
+}
+
+struct MovieLinkPurchase: Codable {
+    var link: String
+}
+
+struct MovieLinkFlatrate: Codable {
+    var display_priorty: Int
+    var logo_path: String
+    var provider_id: Int
+    var provider_name: String
+}
+
+struct MovieLinkRent: Codable {
+    var display_priorty: Int
+    var logo_path: String
+    var provider_id: Int
+    var provider_name: String
+}
+
+struct MovieLinkBuy: Codable {
+    var display_priorty: Int
+    var logo_path: String
+    var provider_id: Int
+    var provider_name: String
+}
+
+
+// MARK: -

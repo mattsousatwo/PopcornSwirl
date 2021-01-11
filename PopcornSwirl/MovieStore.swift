@@ -26,6 +26,12 @@ class MovieStore: ObservableObject {
     
     @Published var actorDetails = [ActorDetails]()
     
+    
+    @Published var ml = [MovieLink]()
+    @Published var movieLinks = [MovieLinkResult]()
+    
+    
+    
     lazy var decoder = JSONDecoder() // used to decode json data
     
     lazy var imageURL = "https://image.tmdb.org/t/p/" + "original" // used as base for movie images
@@ -379,6 +385,16 @@ extension MovieStore {
     }
     
     
+    
+    func extractMovieSearchResults() -> [MovieSearchResults] {
+        var searchResults = [MovieSearchResults]()
+        for movie in self.movieSearchResults {
+            searchResults.append(movie)
+        }
+        return searchResults
+    }
+    
+    
     // Get results from movie search
     func fetchResultsFromMovie(search: String) -> [MovieSearchResults] {
         
@@ -503,3 +519,58 @@ extension MovieStore {
     }
     
 }
+
+
+// MARK: - Purchase Movie Links
+extension MovieStore {
+    
+    
+    // Not picking up any results yet request is working 
+    func fetchPurchaseMovieLinks(id: Int) {
+        
+        let request = "https://api.themoviedb.org/3/movie/\(id)/watch/providers?api_key=\(apiKey)"
+        
+        AF.request( request ).responseJSON { response in
+            
+            guard let json = response.data else {
+                print("No Links for Movie Purchase Found")
+                return
+            }
+            
+            do {
+                print("Test 4 - FetchPurchaseMovieLinks() ")
+                let results = try self.decoder.decode(MovieLink.self, from: json)
+                
+                
+                self.ml = [results]
+                
+                for x in self.ml {
+                    print("Test 4 - \(x)")
+                }
+                
+                
+                
+                // MovieLinkResults
+                let country = results.result
+                
+                self.movieLinks = results.result
+                
+                for object in country {
+                    print("Test 4 - \(object.country)")
+                }
+                
+                for object in self.movieLinks {
+                    print("Test 4 - \(object.country)")
+                }
+                
+            } catch {
+                print(error)
+            }
+
+            
+        }
+    }
+    
+    
+}
+

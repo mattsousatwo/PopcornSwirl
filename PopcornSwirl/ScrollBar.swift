@@ -87,16 +87,16 @@ struct ScrollBar: View {
 
 struct bar: View {
     
+    
     var type: ScrollBarType
     
     var id: Int // used to fetch recomended movies
     
-    private var popularMovies : [PopMovie] {
+    var popularMovies : [PopMovie] {
         return movieStore.extractPopularMovies()
     }
     
     private var recommendedMovies: [RecommendedMovie] {
-        
         return movieStore.extractRecomendedMovies(id: id)
     }
     
@@ -105,15 +105,13 @@ struct bar: View {
     }
     
     private var cast: [MovieCast] {
-        print("Test 3 - Cast Closure ")
         return movieStore.extractMovieCast(id: id)
     }
     
     private var actorImages: [Int : String ] {
         return movieStore.extractActorImageProfiles(id: id)
     }
-        
-    
+
     
     
     

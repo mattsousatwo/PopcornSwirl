@@ -54,24 +54,6 @@ struct MovieDetail: View {
                                 VStack {
                                 // Movie Poster
                                 RemotePoster(url: movieStore.imageURL + posterPath)
-//
-//                                    .overlay(
-//                                        Button(action: {
-//                                            print("Favorite Button Pressed")
-//                                            self.isFavorite.toggle()
-//
-//                                            movieRatings.toggleFavorite(for: movieRating)
-//
-//                                        }, label: {
-//
-//                                            Image(systemName: self.isFavorite ? "heart.fill" : "heart" )
-//                                                .frame(width: 35, height: 35)
-//                                                .padding()
-//                                                .foregroundColor(.lightBlue )
-//
-//
-//                                        })
-//                                        , alignment: .bottomTrailing)
 
                                     .padding()
                                 
@@ -138,46 +120,7 @@ struct MovieDetail: View {
                             // MARK: - Actors Scroll
                             
                             ScrollBar(type: .actors, id: movieID)
-//                            // Actors scroll view
-//                            HStack {
-//                                Text("Actors").font(.system(.title2)).bold()
-//                                    .foregroundColor(.pGray3)
-//                                Spacer()
-//                                if movieStore.actorImageProfiles.count >= 9 {
-//                                    Button(action: {
-//                                        print("See All Actors")
-//                                    }, label: {
-//                                        Text("See All")
-//                                            .foregroundColor(.pGray3)
-//                                    })
-//                                }
-//                            }
-//                                .padding(.horizontal)
-//                                .padding(.top)
-//
-//                            ScrollView(.horizontal, showsIndicators:  false) {
-//                                HStack {
-//                                    if movieStore.actorImageProfiles.count != 0  {
-//                                        ForEach(0..<movieStore.actorImageProfiles.count, id: \.self ) { i in
-//                                            if i <= 9 {
-//                                                if let actorImagePath = movieStore.actorImageProfiles[movieStore.movieCast[i].id] {
-//                                                    NavigationLink(destination:
-//                                                        ActorDetail(image: movieStore.imageURL + actorImagePath,
-//                                                                    actorID: movieStore.movieCast[i].id,
-//                                                                    name: movieStore.movieCast[i].name,
-//                                                                    isFavorite: false) ) {
-//                                                        RemoteActor(url: movieStore.imageURL + actorImagePath,
-//                                                                    name: movieStore.movieCast[i].name,
-//                                                                    subtitle: movieStore.movieCast[i].character,
-//                                                                    isFavorite: false)
-//                                                    } // nav link
-//                                                } // if let
-//                                            } // if actor index is less than 9
-//                                        } // ForEach
-//                                    } // if movieCast != 0
-//                                }   // HSTack
-//                            } .padding() // actors scroll view
-//
+                            
                             // MARK: Actors Scroll -
                             
                             
@@ -192,47 +135,8 @@ struct MovieDetail: View {
                                     
                                 )
                             
-                            
-                            
+                            // MARK: - Suggested Movies
                             ScrollBar(type: .recommendedMovie, id: movieID)
-//                            // MARK: - Suggested Movies
-//                            HStack {
-//                                Text("Suggested Movies").font(.system(.title2)).bold()
-//                                    .foregroundColor(.pGray3)
-//                                Spacer()
-//                                if movieStore.recommendedMovies.count >= 9 {
-//                                    Button(action: {
-//                                        print("See All Suggested Movies")
-//                                    }, label: {
-//                                        Text("See All")
-//                                            .foregroundColor(.pGray3)
-//                                    })
-//                                }
-//
-//                            }
-//                                .padding(.horizontal)
-//                                .padding(.top)
-//
-//                            ScrollView(.horizontal, showsIndicators:  false) {
-//                                HStack {
-//                                    ForEach(0..<movieStore.recommendedMovies.count, id: \.self ) { i in
-//                                        if movieStore.recommendedMovies[i].poster_path != nil {
-//                                            NavigationLink(destination: MovieDetail(
-//                                                            movieID: movieStore.recommendedMovies[i].id,
-//                                                            movieTitle: movieStore.recommendedMovies[i].title,
-//                                                            movieOverview: movieStore.recommendedMovies[i].overview,
-//                                                            posterPath: movieStore.recommendedMovies[i].poster_path ?? "",
-//                                                            rating: movieStore.recommendedMovies[i].vote_average)
-//                                            ) {
-//                                                // link label
-//                                                RemotePoster(url: movieStore.imageURL + (movieStore.recommendedMovies[i].poster_path ?? ""))
-//                                            } // Nav Label
-//                                        } // if poster != nil
-//                                    } // ForEach
-//                                } .padding()  // HS
-//                            } // suggested movie scroll view
-//
-//
                             
                         } // V stack
                         
@@ -263,13 +167,8 @@ struct MovieDetail: View {
             print( "GenreIDs: \(genreIDs)" )
             
             
-            movieStore.fetchMovieCreditsForMovie(id: movieID)
-            
-            movieStore.fetchRecommendedMoviesForMovie(id: movieID)
-            
-//            movieRatings.searchForRatingsFromMovie(id: movieID)
-            
-//            movieStore.getGenres()
+
+//            movieStore.fetchPurchaseMovieLinks(id: movieID) // Makes loading Details
             
         }
         

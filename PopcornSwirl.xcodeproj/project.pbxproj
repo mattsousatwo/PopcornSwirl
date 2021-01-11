@@ -128,11 +128,11 @@
 			isa = PBXGroup;
 			children = (
 				61C83EDC251A3DF50012019F /* PopcornSwirl.xcdatamodeld */,
-				601D0D3225996D21005A0B1B /* MovieRatingStore.swift */,
-				60C87E48259C14A5001AF3D2 /* GenreStore.swift */,
 				60CB9147259D4BE9009BD9B4 /* ActorsStore.swift */,
-				60CB914B259D80BE009BD9B4 /* MoviesStore.swift */,
 				60CB9155259E41D5009BD9B4 /* CastStore.swift */,
+				60C87E48259C14A5001AF3D2 /* GenreStore.swift */,
+				601D0D3225996D21005A0B1B /* MovieRatingStore.swift */,
+				60CB914B259D80BE009BD9B4 /* MoviesStore.swift */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";

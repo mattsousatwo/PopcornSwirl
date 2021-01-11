@@ -14,7 +14,7 @@ struct SearchMovie: View {
     
     @ObservedObject var movieStore = MovieStore()
     
-    @State private var showResults: Bool = false
+    
     
     var body: some View {
         ZStack {
@@ -39,7 +39,7 @@ struct SearchMovie: View {
                             
                             print(" ~ Search Button Pressed ~")
                             movieStore.fetchResultsForMovie(query: searchTag)
-                            self.showResults.toggle()
+                            
                             self.hideKeyboard()
                             
                         }) {
@@ -66,12 +66,12 @@ struct SearchMovie: View {
                     
             
             // MARK: animation doesnt solve search looping issue && Bool doesnt work to show results 
-            if showResults == true {
+            
                 SavedRow(search: $searchTag)
                     .animation(.default)
-            } else {
-                Spacer()
-            }
+            
+                
+            
             
         } // VStack
 //        .background(Color.pGray)

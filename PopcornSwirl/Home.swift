@@ -32,6 +32,7 @@ struct Home: View {
                     VStack(spacing: 20) {
                         
                     ScrollBar(type: .popularMovie)
+                        
                     
 
 //                    HStack {
