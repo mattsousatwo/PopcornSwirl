@@ -171,7 +171,9 @@ struct bar: View {
                                                             rating: popularMovies[i].vote_average,
                                                             releaseDate: popularMovies[i].release_date)  ) {
                         // Label
-                        RemotePoster(url: movieStore.imageURL + popularMovies[i].poster_path)
+                        MovieCard(url: URL(string: movieStore.imageURL + popularMovies[i].poster_path)!)
+                        
+//                        RemotePoster(url: movieStore.imageURL + popularMovies[i].poster_path)
                     }
                 }
             }
