@@ -55,7 +55,8 @@ struct MovieDetail: View {
                                 
                                 VStack {
                                 // Movie Poster
-                                RemotePoster(url: movieStore.imageURL + posterPath)
+//                                RemotePoster(url: movieStore.imageURL + posterPath)
+                                    MovieCard(url: URL(string: movieStore.imageURL + posterPath) )
 
                                     .padding()
                                 

@@ -115,17 +115,9 @@ struct RemoteActor: View {
     var subtitle: String
     @State var isFavorite: Bool
     
-    private var s : Bool {
-        return true
-    }
-    
-    
-    
     var body: some View {
         VStack(alignment: .leading) {
-            
-            
-            
+ 
             RemoteImage(url: url).clipShape( RoundedRectangle(cornerRadius: 12) )
 //                .aspectRatio(contentMode: .fit)
                 .frame(width: 150, height: 250)

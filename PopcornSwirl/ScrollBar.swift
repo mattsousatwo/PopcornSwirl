@@ -144,10 +144,15 @@ struct bar: View {
                                                          name: cast[i].name,
                                                          isFavorite: false),   // Get Coredata Rating
                                 label: {
-                                    RemoteActor(url: movieStore.imageURL + imagePath,
-                                                name: cast[i].name,
-                                                subtitle: cast[i].character,
-                                                isFavorite: false)
+                                    
+                                    ActorCard(url: URL(string: movieStore.imageURL + imagePath),
+                                              name: cast[i].name,
+                                              subtitle: cast[i].character)
+                                    
+//                                    RemoteActor(url: movieStore.imageURL + imagePath,
+//                                                name: cast[i].name,
+//                                                subtitle: cast[i].character,
+//                                                isFavorite: false)
                                 })
                             
                         } // imagePath
@@ -171,7 +176,7 @@ struct bar: View {
                                                             rating: popularMovies[i].vote_average,
                                                             releaseDate: popularMovies[i].release_date)  ) {
                         // Label
-                        MovieCard(url: URL(string: movieStore.imageURL + popularMovies[i].poster_path)!)
+                        MovieCard(url: URL(string: movieStore.imageURL + popularMovies[i].poster_path) )
                         
 //                        RemotePoster(url: movieStore.imageURL + popularMovies[i].poster_path)
                     }
@@ -191,7 +196,9 @@ struct bar: View {
                                                             rating: upcomingMovies[i].vote_average,
                                                             releaseDate: upcomingMovies[i].release_date)  ) {
                         // Label
-                        RemotePoster(url: movieStore.imageURL + (upcomingMovies[i].poster_path ?? "") )
+                        MovieCard(url: URL(string: movieStore.imageURL + (upcomingMovies[i].poster_path ?? "") ))
+                                  
+//                        RemotePoster(url: movieStore.imageURL + (upcomingMovies[i].poster_path ?? "") )
                     }
                 }
             }
@@ -208,7 +215,8 @@ struct bar: View {
                                                             rating: recommendedMovies[i].vote_average,
                                                             releaseDate: recommendedMovies[i].release_date)  ) {
                         // Label
-                        RemotePoster(url: movieStore.imageURL + (recommendedMovies[i].poster_path ?? "") )
+                        MovieCard(url: URL(string: movieStore.imageURL + (recommendedMovies[i].poster_path ?? "") ))
+//                        RemotePoster(url: movieStore.imageURL + (recommendedMovies[i].poster_path ?? "") )
                     }
                 }
             }
