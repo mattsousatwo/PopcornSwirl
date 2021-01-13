@@ -22,7 +22,6 @@ class MovieRatingStore : ObservableObject {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         context = appDelegate.persistentContainer.viewContext
         entity = NSEntityDescription.entity(forEntityName: entityName, in: context)!
-        
     }
     
     // Save
@@ -98,8 +97,8 @@ class MovieRatingStore : ObservableObject {
                 print( "rating: \(rating)"  )
             default: // if id is NOT in ratings
                 let newRating = MovieRating(context: context)
-//
-//
+
+
                 newRating.setValue(RatingKeys.movie.rawValue,
                                    forKey: RatingKeys.type.rawValue)
                 newRating.setValue(Double(id),

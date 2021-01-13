@@ -61,6 +61,7 @@ struct ActorCard: View {
                             HeartButton(type: isFavorite ? .fill : .empty)
                                 .frame(width: 25, height: 25)
                                 .padding()
+                                .shadow(radius: 5.0)
                         }) , alignment: .bottomTrailing)
                 // Labels
                 VStack {
@@ -83,16 +84,58 @@ struct ActorCard: View {
                 
             } // VStack(alignment: .leading)
             
-            
         } // If let
     } // Body
     
 }
 
 
+// View to display a Large Card for Actor
+struct LargeActorCard: View {
+    let url: URL?
+    @State var isFavorite: Bool = false
+    
+    var body: some View {
+        
+        if let url = url {
+        AsyncImage(url: url,
+                   placeholder: { Color.purple },
+                   image: { Image(uiImage: $0).resizable() })
+            .clipShape( RoundedRectangle(cornerRadius: 12) )
+            .frame(width: UIScreen.main.bounds.width / 2,
+                   height: 300,
+                   alignment: .center)
+            .shadow(radius: 5.0)
+            .padding()
+            .overlay(
+                Button(action: {
+                    self.isFavorite.toggle()
+                },
+                label: {
+                    HeartButton(type: isFavorite ? .fill : .empty)
+                        .frame(width: 25, height: 25)
+                        .padding()
+                        
+                        .shadow(radius: 5.0)
+                })
+                , alignment: .bottomTrailing)
+            
+            
+            
+            
+            
+        } // if let
+        
+    } // body
+}
+
+
 struct ImageCard_Previews: PreviewProvider {
     static var previews: some View {
-        Text("")
+        Group {
+            ActorCard(url: URL(string: ""), name: "Name", subtitle: "Subtitle")
+        LargeActorCard(url: URL(string: "") ).previewLayout(.sizeThatFits)
+        }
     }
 }
  

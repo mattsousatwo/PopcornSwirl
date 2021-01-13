@@ -126,7 +126,8 @@ struct Home: View {
         
         movieRatings.fetchAllRatings()
 //        movieRatings.fetchRatingsForMovie(id: 25)
-        
+        let castStore = CastStore()
+        castStore.deleteAll()
         
         genreStore.fetchAllGenres()
         

@@ -74,41 +74,15 @@ struct ActorDetail: View {
                     VStack(alignment: .leading) {
                         
                         HStack(alignment: .center) {
-                        Spacer()
-//                        RemoteImage(url: image)
-                            if let imageURL = URL(string: image) {
-                                AsyncImage(url: imageURL ,
-                                           placeholder: { Color.purple },
-                                           image: {Image(uiImage: $0).resizable() })
-                                .clipShape( RoundedRectangle(cornerRadius: 12) )
-                                .frame(width: geometry.size.width / 2,
-                                       height: 300,
-                                       alignment: .center)
-                                .shadow(radius: 5.0)
-                                .padding()
+                            
+                            Spacer()
+                            
+                            LargeActorCard(url: URL(string: image) )
 
-                                .overlay(
-                                    imageGradient
-                                )
-                                    
-                                .overlay(
-                                    Button(action: {
-                                        print("Favorite Button Pressed ")
-                                    }, label: {
-                                        HeartButton(type: .fill)
-                                            .frame(width: 25, height: 25)
-                                            .padding()
-                                            
-                                        
-                                    })
-                                    
-                                    , alignment: .bottomTrailing)
-                                .padding()
-                                
-                                Spacer()
-                            }
+                            Spacer()
+
                         
-                        } // if let ImageURL
+                        }
                         
                         Text(name).font(.title).bold().foregroundColor(.white)
                             .padding(.horizontal)

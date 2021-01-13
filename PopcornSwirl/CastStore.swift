@@ -65,21 +65,54 @@ extension CastStore {
 
 // MARK: - Create
 extension CastStore {
-    
-    func createCastMember(actorID: Double, movieID: Double) {
+    // MARK: - Creates doubles
+    func createCastMember(actorID: Double, movieID: Double) {  // Currently Creates 4 duplicates
         
-        for actor in castMembers {
-            if actor.actorID != actorID {
-                let newCastMember = Cast(context: context)
-                newCastMember.actorID = actorID
-                newCastMember.movieID = movieID
-                saveContext()
-                castMembers.append(newCastMember)
+        let actorsInMovie = castMembers.filter { $0.movieID == movieID }
+        
+        if actorsInMovie.count <= 24 {
+            
+            // fetchEntries if castmembers is empty
+            if castMembers.isEmpty == true {
+                print("castMembers.isEmpty == true")
+                fetchAllCastEntities()
             }
+                    
+            if castMembers.isEmpty == true { // if there are no entries create inital entry
+                let firstActor = Cast(context: context)
+                firstActor.actorID = actorID
+                firstActor.movieID = movieID
+                saveContext()
+                castMembers.append(firstActor)
+                print("CreateCastMember(id: \(actorID), movie: \(movieID) -- FIRST MEMBER SAVED)")
+            }
+
+            // Check if actorID is already in castMembers
+            var memberID: Double = 0
+            for member in castMembers {
+                if member.movieID == movieID && member.actorID == actorID {
+                    memberID = actorID
+                    print("MATCH - inCast: \(member.actorID)\n         newID: \(actorID)")
+                }
+            }
+            // add new cast member if not double
+            switch memberID {
+            case actorID: // double
+                break
+            default: // not double
+                let actor = Cast(context: context)
+                actor.actorID = actorID
+                actor.movieID = movieID
+                saveContext()
+                castMembers.append(actor)
+                print("New Cast Member - ID: \(actorID), movie: \(movieID)")
+            }
+            print("CastMemberCount: \(castMembers.count)")
         }
         
-        
-    }
+        print("Movie already saved: \(movieID)")
+    } // func
+    
     
 }
 
@@ -101,6 +134,22 @@ extension CastStore {
 
 // MARK: - Delete
 extension CastStore {
+    
+    func deleteAll() {
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: CastKeys.entity.rawValue)
+//        request.predicate = NSPredicate(format: "goal_UID = %@", tag)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
+        do {
+            try context.execute(deleteRequest)
+        } catch {
+            print(error)
+        }
+        saveContext()
+        
+    }
+
+    
     
 }
 

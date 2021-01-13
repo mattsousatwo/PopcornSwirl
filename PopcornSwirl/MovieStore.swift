@@ -13,6 +13,10 @@ import Combine
 
 class MovieStore: ObservableObject {
     
+    // Coredata
+    let castStore = CastStore() // used to manage cast dict
+    
+    
     // Movie Stores
     @Published var popularMovies = [PopMovie]() // all popular movies
     @Published var movieCast = [MovieCast]() // cast for movie
@@ -62,12 +66,6 @@ extension MovieStore {
                 
                 
                 self.popularMovies = decodedMovies.results
-                for i in 0..<self.popularMovies.count {
-                    print("title: \(self.popularMovies[i].title), \n   overview: \(self.popularMovies[i].overview) \n   poster_path: \(self.popularMovies[i].poster_path) \n    vote avg: \(self.popularMovies[i].vote_average)" )
-                    for x in 0..<self.popularMovies[i].genre_ids.count {
-                        print("GenreID: \(self.popularMovies[i].genre_ids[x]) ")
-                    }
-                }
                 
             } catch {
                 print(error)
@@ -106,13 +104,6 @@ extension MovieStore {
                 let recomendations = try self.decoder.decode(Recommendation.self, from: json)
                 
                 self.recommendedMovies = recomendations.results
-                for x in self.recommendedMovies {
-                    print("Movie: \(x.title)")
-                    print("Overview: \(x.overview)")
-                    print("Poster Path: \(x.poster_path ?? "is empty")")
-                    print("\n")
-                }
-                
                 
             } catch {
                 print(error)
@@ -199,23 +190,20 @@ extension MovieStore {
                 
                 self.movieCast = movieCredits.cast
                 print("cast count: \(self.movieCast.count)")
-                for x in self.movieCast {
-                    print("Actor: \(x)")
-                    print(x.name)
-                    print("Character: " + x.character)
-                    print("Popularity: " + "\(x.popularity)")
-                    print("KnownFor: " + x.known_for_department)
-                    print("ID: " + "\(x.id)")
-                    print("\n")
-                }
-                
                 
                 for x in movieCredits.crew {
                     if x.job == "Director" {
-                        print("Crew - name: \(x.name), job: \(x.job)")
                         self.director = x.name
                     }
                 }
+                
+                
+                // save to coredata
+//                if self.movieCast.count != 0 {
+//                    for actor in self.movieCast {
+//                        self.castStore.createCastMember(actorID: Double(actor.id), movieID: Double(id))
+//                    }
+//                }
                 
             } catch {
                 print(error)
@@ -233,10 +221,12 @@ extension MovieStore {
         if movieCast.count == 0 {
             fetchMovieCreditsForMovie(id: id)
         }
-        for actor in movieCast {
-            actors.append(actor)
+        for i in 0..<movieCast.count {
+            if i <= 24 {
+                actors.append(movieCast[i])
+                self.castStore.createCastMember(actorID: Double(movieCast[i].id), movieID: Double(id))
+            }
         }
-        print("Test 3 - actors: \(actors.count)")
         return actors
     }
     
@@ -274,7 +264,7 @@ extension MovieStore {
                         }
                             
                     }
-                    print("profile in actorImageProfile count = \(self.actorImageProfiles.count)")
+                    
                 } catch {
                     print(error)
                 }
@@ -309,13 +299,7 @@ extension MovieStore {
                 let decodedCredits = try self.decoder.decode(ActorCredits.self, from: json)
                 
                 self.actorCredits = decodedCredits.cast
-                
-                print("ActorCredits")
-                for z in decodedCredits.cast {
-                    print(z.title ?? "")
-                    print(z.name ?? "")
-                    print(z.media_type) 
-                }
+
                 
             } catch {
                 print(error)

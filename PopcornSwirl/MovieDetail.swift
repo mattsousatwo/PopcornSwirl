@@ -32,10 +32,8 @@ struct MovieDetail: View {
     
     
     private var movieRating : MovieRating {
-        
         let x = movieRatings.getRatings(id: movieID)
         isFavorite = x.isFavorite
-    
         return x
     }
     
@@ -75,7 +73,6 @@ struct MovieDetail: View {
                                                     .foregroundColor(.pGray3)
                                                     .opacity(0.8)
                                             )
-                                            
                                     })
 
                                     

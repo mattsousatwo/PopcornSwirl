@@ -13,7 +13,7 @@ import SwiftUI
 
 class ActorsStore: ObservableObject {
     
-    @ObservedObject var movie = MovieStore()
+//    @ObservedObject var movie = MovieStore()
     
     var context: NSManagedObjectContext
     var entity: NSEntityDescription
