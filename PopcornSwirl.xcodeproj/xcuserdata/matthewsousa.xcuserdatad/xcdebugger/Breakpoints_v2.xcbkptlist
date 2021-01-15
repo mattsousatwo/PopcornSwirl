@@ -3,4 +3,86 @@
    uuid = "D2E34552-4B2F-4B29-AAEF-421839D8653D"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D4395D5F-2C28-496E-BF41-BD327B369B12"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PopcornSwirl/ActorsStore.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "ActorsStore"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "59928389-195C-4ABA-AB2B-05372EF5846D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PopcornSwirl/MovieDetail.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "movieRating"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "39581490-9FCF-4371-ADA0-E8B03E5462C2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PopcornSwirl/MovieRatingStore.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "searchForRatingsFromMovie(id:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "39581490-9FCF-4371-ADA0-E8B03E5462C2 - e86ac4d639baeec6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PopcornSwirl.MovieRatingStore.searchForRatingsFromMovie(id: Swift.Int) -&gt; PopcornSwirl.MovieRating"
+                  moduleName = "PopcornSwirl"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewsousa/Documents/Developer/XCode%20DB%202020/PopcornSwirl/PopcornSwirl/MovieRatingStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "117"
+                  endingLineNumber = "117"
+                  offsetFromSymbolStart = "100">
+               </Location>
+               <Location
+                  uuid = "39581490-9FCF-4371-ADA0-E8B03E5462C2 - 39db752774092eb0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (PopcornSwirl.MovieRating) -&gt; Swift.Bool in PopcornSwirl.MovieRatingStore.searchForRatingsFromMovie(id: Swift.Int) -&gt; PopcornSwirl.MovieRating"
+                  moduleName = "PopcornSwirl"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewsousa/Documents/Developer/XCode%20DB%202020/PopcornSwirl/PopcornSwirl/MovieRatingStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "117"
+                  endingLineNumber = "117"
+                  offsetFromSymbolStart = "36">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

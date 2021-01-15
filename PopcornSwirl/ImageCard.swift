@@ -12,6 +12,7 @@ import SwiftUI
 // Card to hold movie posters
 struct MovieCard: View {
     var url: URL?
+    var rating: MovieRating?
     @State var isFavorite: Bool = false 
     
     var body: some View {
@@ -25,6 +26,12 @@ struct MovieCard: View {
             .overlay(
                 Button(action: {
                     self.isFavorite.toggle() // HeartButton is inside a Button to access CoreData.isFavorite
+                    
+                    if let rating = rating { // Not working properly
+                        rating.isFavorite = self.isFavorite
+                        print("Rating: \(rating.id), isFav: \(rating.isFavorite)")
+                    }
+                    
                 }, label: {
                     HeartButton(type: isFavorite ? .fill : .empty)
                         .frame(width: 25, height: 25)

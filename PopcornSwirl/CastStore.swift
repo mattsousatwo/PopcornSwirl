@@ -35,17 +35,26 @@ class CastStore: ObservableObject {
 // MARK: - Fetch
 extension CastStore {
     
-    // Use Movie ID to fetch cast of movie
-    func fetchMovieCastWith(id: Double) {
+    // Use Movie ID to fetch Actors of movie
+    func fetchActorsInMovieCastWith(id: Double) {
         actorsForMovie.removeAll()
-        for actor in castMembers {
-            if actor.movieID == id {
-                
-                let newActor = actorsStore.fetchActorWith(id:  actor.actorID)
-                actorsForMovie.append(newActor)
+        if castMembers.contains(where: { $0.movieID == id }) == false {
+            fetchCastForMovie(id: id)
+            for actor in castMembers {
+                if actor.movieID == id {
+                    let newActor = actorsStore.fetchActorWith(id:  actor.actorID)
+                    actorsForMovie.append(newActor)
+                }
+            }
+
+        } else {
+            for actor in castMembers {
+                if actor.movieID == id {
+                    let newActor = actorsStore.fetchActorWith(id:  actor.actorID)
+                    actorsForMovie.append(newActor)
+                }
             }
         }
-        
         
     }
     
@@ -59,6 +68,20 @@ extension CastStore {
         }
     }
     
+    // Get cast for a specific movie and add to castMembers
+    func fetchCastForMovie(id: Double) {
+        let request : NSFetchRequest<Cast> = Cast.fetchRequest()
+        let moviePredicate = NSPredicate(format: "movieID = %ld", id)
+        request.predicate = moviePredicate
+        do {
+            let results = try context.fetch(request)
+            
+            castMembers.append(contentsOf: results)
+        } catch {
+            print(error)
+        }
+
+    }
     
 }
 
@@ -66,7 +89,7 @@ extension CastStore {
 // MARK: - Create
 extension CastStore {
     // MARK: - Creates doubles
-    func createCastMember(actorID: Double, movieID: Double) {  // Currently Creates 4 duplicates
+    func createCastMember(actorID: Double, movieID: Double) {  
         
         let actorsInMovie = castMembers.filter { $0.movieID == movieID }
         
@@ -75,7 +98,7 @@ extension CastStore {
             // fetchEntries if castmembers is empty
             if castMembers.isEmpty == true {
                 print("castMembers.isEmpty == true")
-                fetchAllCastEntities()
+                fetchAllCastEntities()   // MARK: Can change this to fetchCastFrom(movieID: )
             }
                     
             if castMembers.isEmpty == true { // if there are no entries create inital entry

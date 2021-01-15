@@ -13,6 +13,8 @@ import Alamofire
 struct Home: View {
     
     var movieRatings = MovieRatingStore()
+//    var movieRatings : MovieRatingStore?
+    
     @ObservedObject private var genreStore = GenreStore()
 
     @ObservedObject var movieStore = MovieStore()
@@ -120,16 +122,31 @@ struct Home: View {
     } // Nav
         
     .onAppear() {
+        
+        // TMDB
         movieStore.getGenres()
         movieStore.fetchPopularMovies()
         movieStore.fetchUpcomingMovies()
         
-        movieRatings.fetchAllRatings()
-//        movieRatings.fetchRatingsForMovie(id: 25)
+        // CoreData
+        genreStore.fetchAllGenres()
+        
+        
+        
+        
+//        movieRatings.deleteAllMovieRatings()
+            movieRatings.fetchAllRatings()
+        guard let s = movieRatings.fetchRatingsForMovie(id: 1) else { return }
+        
+        
+        
+        let actorsStore = ActorsStore()
+        actorsStore.deleteAllSavedActors() 
+        
         let castStore = CastStore()
         castStore.deleteAll()
         
-        genreStore.fetchAllGenres()
+        
         
     }
         

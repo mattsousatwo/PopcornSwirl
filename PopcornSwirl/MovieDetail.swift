@@ -32,9 +32,13 @@ struct MovieDetail: View {
     
     
     private var movieRating : MovieRating {
-        let x = movieRatings.getRatings(id: movieID)
-        isFavorite = x.isFavorite
-        return x
+        
+        
+        return movieRatings.searchForRatingsFromMovie(id: movieID)
+ 
+//        let x = movieRatings.getRatings(id: movieID)
+//        isFavorite = x.isFavorite
+//        return x
     }
     
     var body: some View {
@@ -54,7 +58,7 @@ struct MovieDetail: View {
                                 VStack {
                                 // Movie Poster
 //                                RemotePoster(url: movieStore.imageURL + posterPath)
-                                    MovieCard(url: URL(string: movieStore.imageURL + posterPath) )
+                                    MovieCard(url: URL(string: movieStore.imageURL + posterPath) ,rating: movieRating)
 
                                     .padding()
                                 

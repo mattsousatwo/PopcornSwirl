@@ -15,6 +15,7 @@ class MovieStore: ObservableObject {
     
     // Coredata
     let castStore = CastStore() // used to manage cast dict
+    let actorsStore = ActorsStore() // used to manage the actors within cast list
     
     
     // Movie Stores
@@ -225,6 +226,11 @@ extension MovieStore {
             if i <= 24 {
                 actors.append(movieCast[i])
                 self.castStore.createCastMember(actorID: Double(movieCast[i].id), movieID: Double(id))
+                self.actorsStore.createActor(name: movieCast[i].name,
+                                             bio: nil,
+                                             id: Double(movieCast[i].id),
+                                             image: nil)
+                
             }
         }
         return actors
