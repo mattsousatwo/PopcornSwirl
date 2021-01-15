@@ -12,7 +12,7 @@ import CoreData
 
 
 extension Rating {
-
+ 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Rating> {
         return NSFetchRequest<Rating>(entityName: "Rating")
     }
