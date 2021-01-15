@@ -134,17 +134,17 @@ struct Home: View {
         
         
         
-//        movieRatings.deleteAllMovieRatings()
-            movieRatings.fetchAllRatings()
-        guard let s = movieRatings.fetchRatingsForMovie(id: 1) else { return }
-        
-        
         
         let actorsStore = ActorsStore()
-        actorsStore.deleteAllSavedActors() 
+        actorsStore.deleteAllSavedActors()
         
         let castStore = CastStore()
         castStore.deleteAll()
+        
+        
+//        movieRatings.deleteAllMovieRatings()
+            movieRatings.fetchAllRatings()
+        guard let s = movieRatings.fetchRatingsForMovie(id: 1) else { return }
         
         
         

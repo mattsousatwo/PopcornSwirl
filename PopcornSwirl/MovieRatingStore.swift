@@ -12,11 +12,11 @@ import CoreData
 
 class MovieRatingStore : ObservableObject {
     
-    var entityName = "MovieRating"
+    var entityName = "Rating"
     var context: NSManagedObjectContext
     var entity: NSEntityDescription?
-    @Published var ratings: [MovieRating] = []
-    @Published var selectedMovieRating: MovieRating?
+    @Published var ratings: [Rating] = []
+    @Published var selectedMovieRating: Rating?
     
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -36,7 +36,7 @@ class MovieRatingStore : ObservableObject {
     // Get all ratings if context hasChanges
     func fetchAllRatings() {
 //        if context.hasChanges {
-            let request: NSFetchRequest<MovieRating> = MovieRating.fetchRequest()
+            let request: NSFetchRequest<Rating> = Rating.fetchRequest()
             do {
                 let requestResults = try context.fetch(request)
                 ratings = requestResults
@@ -54,29 +54,15 @@ class MovieRatingStore : ObservableObject {
     
     
     // Fetch Rating for Movie
-    func fetchRatingsForMovie(id: Int) -> MovieRating? {
+    func fetchRatingsForMovie(id: Int) -> Rating? {
 
         for rating in ratings {
             if rating.id != Double(id) { // if id is not in ratings\
-                let request : NSFetchRequest<MovieRating> = MovieRating.fetchRequest()
-                // MARK: Throws Errors if rating.id == id
-                    // Will work if set to 0 (default number for id)
-                    // Error: if id == IDNotAssignedToRating
-                
-// MARK: -      Predicates = [ID, type]
-                let idPredicate = NSPredicate(format: "id = %ld", id)
-                let typePredicate = NSPredicate(format: "type = %@", MovieRatingType.movie.rawValue)
-                let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [idPredicate, typePredicate] )
-                print("fetchRatingsForMovie(\(id))")
-                request.predicate = compoundPredicate
-// MARK: -
-                
-                
+                let request : NSFetchRequest<Rating> = Rating.fetchRequest()
+
                 // Predicate = AND - ID, type
-//                request.predicate = NSPredicate(format: "id == %@ AND type == %@", Double(id), RatingKeys.movie.rawValue)
+                request.predicate = NSPredicate(format: "id == %ld AND type == %@", Double(id), MovieRatingType.movie.rawValue)
                 
-                // Predicate = type
-//                request.predicate = NSPredicate(format: "type = %@", RatingKeys.movie.rawValue)
                 do {
                     let requestResults = try context.fetch(request)
                     if requestResults.count != 0 {
@@ -89,7 +75,7 @@ class MovieRatingStore : ObservableObject {
                     print(error)
                 }
             } else { // if ID is in ratings array 
-                let newRating = MovieRating(context: context)
+                let newRating = Rating(context: context)
                 newRating.type = MovieRatingType.movie.rawValue
                 newRating.id = Double(id)
                 self.ratings.append(newRating)
@@ -105,63 +91,62 @@ class MovieRatingStore : ObservableObject {
     
     
     
-    
-    
-    
-    
-    
     // Search for movie in Ratings
-    func searchForRatingsFromMovie(id: Int) -> MovieRating {
-        
-        var rating : MovieRating
+    func searchForRatingsFromMovie(id: Int) -> Rating {
+        var rating: Rating
         let ratingIsLoaded = ratings.contains(where: { $0.id == Double(id) })
-        
-        if ratingIsLoaded == false {
-            let request: NSFetchRequest<MovieRating> = MovieRating.fetchRequest()
-            request.predicate = NSPredicate(format: "id = %ld", Double(id) )
-            do {
-                let result = try context.fetch(request)
-                ratings.append(contentsOf: result )
-            } catch {
-                print(error)
-            }
-
-            
-        }
-        
-        
-        
+        print("rating is loaded: \(ratingIsLoaded)")
         switch ratingIsLoaded {
-        case true : // Value is in ratings - return
-            rating = ratings.first(where: {$0.id == Double(id) })!
-        case false : // Value is not in ratings - create
-            rating =  createNewRating(id: id)
+        case true: // Value is in ratings
+            rating = ratings.first(where: { $0.id == Double(id) })!
+        case false: // Value is not found - search || create
+            let d = findMovieRating(id: id)
+            rating = d!
         }
-
         return rating
-        
     }
     
-    // Create a new Rating
-    func createNewRating(id: Int, isFavorite: Bool = false, type: MovieRatingType = .movie, comment: String = "") -> MovieRating {
     
-        let rating = MovieRating(context: context)
+    // fetch for specific rating
+    func findMovieRating(id: Int) -> Rating? {
+        var rating: Rating?
+        
+        let request: NSFetchRequest<Rating> = Rating.fetchRequest()
+//        request.predicate = NSPredicate(format: "id = %ld AND type = %@", Double(id), MovieRatingType.movie.rawValue)
+        request.predicate = NSPredicate(format: "id = %ld", Double(id))
+        do {
+            let result = try context.fetch(request)
+            ratings.append(contentsOf: result )
+            if result.count != 0 && result.count == 1 {
+                rating = result[0]
+            }
+        } catch {
+            print(error)
+        }
+        
+        if rating == nil {
+            rating = createNewRating(id: id)
+        }
+        
+        return rating
+    }
+    
+    
+    
+    
+    
+    // Create a new Rating
+    func createNewRating(id: Int, isFavorite: Bool = false, type: MovieRatingType = .movie, comment: String = "") -> Rating {
+    
+        let rating = Rating(context: context)
         
         rating.id = Double(id)
         rating.isFavorite = isFavorite
         
-        var ratingType = ""
-        switch type {
-        case .actor:
-            ratingType = MovieRatingType.actor.rawValue
-        case .movie:
-            ratingType = MovieRatingType.movie.rawValue
-        case .tv:
-            ratingType = MovieRatingType.tv.rawValue
-        }
-        rating.type = ratingType
+        rating.type = type.rawValue
         
-        rating.comment = comment
+//        rating.comment = comment
+        rating.comment = "Testing Comment"
         
         saveContext()
         
@@ -172,7 +157,7 @@ class MovieRatingStore : ObservableObject {
         
     }
     
-    func toggleFavorite(for object: MovieRating) {
+    func toggleFavorite(for object: Rating) {
         object.isFavorite.toggle()
         saveContext()
     }
@@ -208,7 +193,7 @@ enum RatingKeys: String {
     case isFavorite = "isFavorite"
     case rating = "rating"
     
-    case entity = "MovieRating"
+    case entity = "Rating"
 }
 
 enum MovieRatingType: String {

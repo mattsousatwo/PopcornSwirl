@@ -57,7 +57,7 @@ class GenreStore: ObservableObject {
                     if genre.id == Int16(id) {
                         
                         if var name = genre.name {
-                            
+                            // Configure Names
                             if name == "Science Fiction" {
                                 name = "Sci-Fi"
                             }

@@ -12,33 +12,38 @@ import SwiftUI
 // Card to hold movie posters
 struct MovieCard: View {
     var url: URL?
-    var rating: MovieRating?
-    @State var isFavorite: Bool = false 
+    var rating: Rating?
+    @State var isFavorite: Bool = false
+    var movieRatings: MovieRatingStore?
     
     var body: some View {
         if let url = url {
-        AsyncImage(url: url,
-                   placeholder: { Color.purple.opacity(0.8) },
-                   image: { Image(uiImage: $0).resizable() })
-            .clipShape( RoundedRectangle(cornerRadius: 12) )
-            .frame(width: 150, height: 250)
-            .shadow(radius: 5)
-            .overlay(
-                Button(action: {
-                    self.isFavorite.toggle() // HeartButton is inside a Button to access CoreData.isFavorite
-                    
-                    if let rating = rating { // Not working properly
+            AsyncImage(url: url,
+                       placeholder: { Color.purple.opacity(0.8) },
+                       image: { Image(uiImage: $0).resizable() })
+                .clipShape( RoundedRectangle(cornerRadius: 12) )
+                .frame(width: 150, height: 250)
+                .shadow(radius: 5)
+                .overlay(
+                    Button(action: {
+                        self.isFavorite.toggle()
+                        print("HeartButton Pressed")
+                        
+                        // Attempting to update MovieRating but button is not being responsive
+                        guard let rating = rating else { return }
                         rating.isFavorite = self.isFavorite
+                        guard let movieRatings = movieRatings else { return }
+                        movieRatings.saveContext()
                         print("Rating: \(rating.id), isFav: \(rating.isFavorite)")
-                    }
-                    
-                }, label: {
-                    HeartButton(type: isFavorite ? .fill : .empty)
-                        .frame(width: 25, height: 25)
-                        .padding()
-                        .shadow(radius: 5.0)
-                })
-                , alignment: .bottomTrailing)
+                        
+                        
+                    }, label: {
+                        HeartButton(type: isFavorite ? .fill : .empty)
+                            .frame(width: 25, height: 25)
+                            .padding()
+                            .shadow(radius: 5.0)
+                    })
+                    , alignment: .bottomTrailing)
         }
     } // Body
     

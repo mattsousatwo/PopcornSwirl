@@ -10,7 +10,7 @@
 import Foundation
 import CoreData
 
-@objc(MovieRating)
-public class MovieRating: NSManagedObject {
+@objc(Rating)
+public class Rating: NSManagedObject {
     
 }

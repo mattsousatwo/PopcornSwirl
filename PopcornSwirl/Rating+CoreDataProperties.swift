@@ -11,10 +11,10 @@ import Foundation
 import CoreData
 
 
-extension MovieRating {
+extension Rating {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<MovieRating> {
-        return NSFetchRequest<MovieRating>(entityName: "MovieRating")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<Rating> {
+        return NSFetchRequest<Rating>(entityName: "Rating")
     }
 
     @NSManaged public var comment: String?
@@ -25,6 +25,6 @@ extension MovieRating {
 
 }
 
-extension MovieRating : Identifiable {
+extension Rating : Identifiable {
 
 }

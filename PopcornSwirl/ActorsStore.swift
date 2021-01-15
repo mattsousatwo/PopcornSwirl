@@ -139,9 +139,7 @@ extension ActorsStore {
     
     // Delete All
     func deleteAllSavedActors() {
-        
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ActorKeys.entity.rawValue)
-//        request.predicate = NSPredicate(format: "goal_UID = %@", tag)
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
         do {
             try context.execute(deleteRequest)

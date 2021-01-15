@@ -31,7 +31,7 @@ struct MovieDetail: View {
     @State private var showFullOverview = false
     
     
-    private var movieRating : MovieRating {
+    private var movieRating : Rating {
         
         
         return movieRatings.searchForRatingsFromMovie(id: movieID)
@@ -63,10 +63,13 @@ struct MovieDetail: View {
                                     .padding()
                                 
                                     Button(action: {
-                                        print("add Comment")
                                         
+                                        movieRating.isFavorite.toggle()
+                                        print("oldComment: \(movieRating.comment ?? "isEmpty")")
                                         movieRating.comment = "Added Comment to rating \(movieID)"
                                         movieRatings.saveContext()
+                                        print("newComment: \(movieRating.comment ?? "isEmpty")")
+                                        print(movieRating)
                                     }, label: {
                                         RoundedRectangle(cornerRadius: 10)
                                             .frame(width: 150, height: 40)
