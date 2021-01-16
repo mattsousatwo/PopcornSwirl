@@ -93,7 +93,7 @@ extension CastStore {
         
         let actorsInMovie = castMembers.filter { $0.movieID == movieID }
         
-        if actorsInMovie.count <= 24 {
+        if actorsInMovie.count <= 24 {  // If actors count == full
             
             // fetchEntries if castmembers is empty
             if castMembers.isEmpty == true {

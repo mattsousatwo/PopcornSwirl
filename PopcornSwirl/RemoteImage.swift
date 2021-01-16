@@ -95,7 +95,7 @@ struct RemotePoster: View {
                     Button(action: {
                         self.isFavorite.toggle()
                     }, label: {
-                        HeartButton(type: isFavorite ? .fill : .empty)
+                        HeartButton(rating: nil)
                             .frame(width: 25, height: 25)
                             .padding()
 
@@ -127,7 +127,7 @@ struct RemoteActor: View {
                     Button(action: {
                         self.isFavorite.toggle() 
                     }, label: {
-                        HeartButton(type: isFavorite ? .fill : .empty)
+                        HeartButton(rating: nil)
                             .frame(width: 25, height: 25)
                             .padding()
 

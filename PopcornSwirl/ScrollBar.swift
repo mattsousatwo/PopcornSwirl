@@ -96,31 +96,31 @@ struct bar: View {
     var popularMovies : [PopMovie] {
         return movieStore.extractPopularMovies()
     }
-    
+
     private var recommendedMovies: [RecommendedMovie] {
         return movieStore.extractRecomendedMovies(id: id)
     }
-    
+
     private var upcomingMovies: [UpcomingMovie] {
         return movieStore.extractUpcomingMovies()
     }
-    
+
     private var cast: [MovieCast] {
         return movieStore.extractMovieCast(id: id)
     }
-    
+
     private var actorImages: [Int : String ] {
         return movieStore.extractActorImageProfiles(id: id)
     }
 
-    
-    
-    
+
     @ObservedObject var movieStore = MovieStore()
+    
+        
     
     
     var body: some View {
-        
+    
         switch type {
         case .testing:
             
@@ -131,8 +131,9 @@ struct bar: View {
             
             
             
-            
+        // MARK: ACTORS
         case .actors:
+            
             if actorImages.count != 0 {
                 ForEach(0..<actorImages.count, id: \.self) { i in
                     if i <= 9 {
@@ -160,13 +161,18 @@ struct bar: View {
                 } // for
                 .animation(.default)
             } // if
+        
             
+            
+        // MARK: POPULAR MOVIE
         case .popularMovie:
             
             // Changed to closure array instead of movieStore property 
             
             ForEach(0..<popularMovies.count, id: \.self) { i in
                 if popularMovies.count != 0 {
+                    
+                    
                     
                     NavigationLink(destination: MovieDetail(movieID: popularMovies[i].id,
                                                             movieTitle: popularMovies[i].title,
@@ -184,6 +190,8 @@ struct bar: View {
             }
             
             .animation(.default)
+            
+        // MARK: UPCOMMING MOVIE
         case .upcommingMovie:
             ForEach(0..<upcomingMovies.count, id: \.self) { i in
                 if upcomingMovies.count != 0 {
@@ -203,6 +211,8 @@ struct bar: View {
                 }
             }
             .animation(.default)
+            
+        // MARK: RECOMMENDED MOVIE
         case .recommendedMovie:
             ForEach(0..<recommendedMovies.count, id: \.self) { i in
                 if recommendedMovies.count != 0 {
@@ -224,6 +234,8 @@ struct bar: View {
         } // switch
         
     }
+    
+    
     
     
 }

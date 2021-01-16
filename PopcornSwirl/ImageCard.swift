@@ -9,6 +9,34 @@
 import Foundation
 import SwiftUI
 
+
+// General Image Card
+struct ImageCard: View {
+    var url: URL?
+    var width: CGFloat = 150
+    var height: CGFloat = 250
+    var cornerRadius: CGFloat = 12
+    var shadowRadius: CGFloat = 5
+    
+    var body: some View {
+        if let url = url {
+            AsyncImage(url: url,
+                       placeholder: { Color.purple.opacity(0.8) },
+                       image: { Image(uiImage: $0).resizable() })
+                .clipShape( RoundedRectangle(cornerRadius: cornerRadius) )
+                .frame(width: width, height: height)
+                .shadow(radius: shadowRadius)
+        } else {
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .frame(width: width, height: height)
+                .foregroundColor(Color.purple.opacity(0.8) )
+                .shadow(radius: shadowRadius)
+        }
+        
+    }
+    
+}
+
 // Card to hold movie posters
 struct MovieCard: View {
     var url: URL?
@@ -17,34 +45,53 @@ struct MovieCard: View {
     var movieRatings: MovieRatingStore?
     
     var body: some View {
-        if let url = url {
-            AsyncImage(url: url,
-                       placeholder: { Color.purple.opacity(0.8) },
-                       image: { Image(uiImage: $0).resizable() })
-                .clipShape( RoundedRectangle(cornerRadius: 12) )
-                .frame(width: 150, height: 250)
-                .shadow(radius: 5)
+        if let rating = rating { // Has Rating - update coredata in Button
+            ImageCard(url: url)
                 .overlay(
-                    Button(action: {
-                        self.isFavorite.toggle()
-                        print("HeartButton Pressed")
-                        
-                        // Attempting to update MovieRating but button is not being responsive
-                        guard let rating = rating else { return }
-                        rating.isFavorite = self.isFavorite
-                        guard let movieRatings = movieRatings else { return }
-                        movieRatings.saveContext()
-                        print("Rating: \(rating.id), isFav: \(rating.isFavorite)")
-                        
-                        
-                    }, label: {
-                        HeartButton(type: isFavorite ? .fill : .empty)
-                            .frame(width: 25, height: 25)
-                            .padding()
-                            .shadow(radius: 5.0)
-                    })
+                    HeartButton(rating: rating)
+                        .frame(width: 25, height: 25)
+                        .padding()
+                        .shadow(radius: 5.0)
                     , alignment: .bottomTrailing)
+            
+        } else { // - No Rating - Toggle Button
+            ImageCard(url: url)
+                .overlay(
+                    HeartButton(rating: nil)
+                        .frame(width: 25, height: 25)
+                        .padding()
+                        .shadow(radius: 5.0)
+                    ,alignment: .bottomTrailing)
         }
+        
+//        ImageCard(url: url)
+//
+//
+//                    .overlay(
+//
+//                        HeartButton(type: rating.isFavorite ?  .fill : .empty )
+//                                            Button(action: {
+//                                                self.isFavorite.toggle()
+//                                                print("HeartButton Pressed")
+//
+//                                                // Attempting to update MovieRating but button is not being responsive
+//                                                guard let rating = rating else { return }
+//                                                rating.isFavorite = self.isFavorite
+//                                                guard let movieRatings = movieRatings else { return }
+//                                                movieRatings.saveContext()
+//                                                print("Rating: \(rating.id), isFav: \(rating.isFavorite)")
+//
+//
+//                                            }, label: {
+//                                                HeartButton(type: isFavorite ? .fill : .empty)
+//                                                    .frame(width: 25, height: 25)
+//                                                    .padding()
+//                                                    .shadow(radius: 5.0)
+//                                            })
+//
+//                        , alignment: .bottomTrailing)
+//
+        
     } // Body
     
 }
@@ -54,6 +101,7 @@ struct ActorCard: View {
     let url: URL?
     var name: String
     var subtitle: String
+    var rating: Rating?
     @State var isFavorite: Bool = false
     
     var body: some View {
@@ -70,7 +118,7 @@ struct ActorCard: View {
                         Button(action: {
                             self.isFavorite.toggle()
                         }, label: {
-                            HeartButton(type: isFavorite ? .fill : .empty)
+                            HeartButton(rating: rating)
                                 .frame(width: 25, height: 25)
                                 .padding()
                                 .shadow(radius: 5.0)
@@ -105,6 +153,7 @@ struct ActorCard: View {
 // View to display a Large Card for Actor
 struct LargeActorCard: View {
     let url: URL?
+    var rating: Rating?
     @State var isFavorite: Bool = false
     
     var body: some View {
@@ -124,7 +173,7 @@ struct LargeActorCard: View {
                     self.isFavorite.toggle()
                 },
                 label: {
-                    HeartButton(type: isFavorite ? .fill : .empty)
+                    HeartButton(rating: rating)
                         .frame(width: 25, height: 25)
                         .padding()
                         

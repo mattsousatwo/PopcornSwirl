@@ -54,8 +54,8 @@ struct ActorDetail: View {
     
     private var imageGradient: LinearGradient {
         return LinearGradient(gradient: Gradient(colors: [Color.clear, Color.blue.opacity(0.2)]),
-                       startPoint: .top,
-                       endPoint: .bottom)
+                              startPoint: .top,
+                              endPoint: .bottom)
     }
     
     var body: some View {
@@ -66,7 +66,7 @@ struct ActorDetail: View {
                 LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]),
                                startPoint: .top,
                                endPoint: .bottom)
-                .ignoresSafeArea(edges: .vertical)
+                    .ignoresSafeArea(edges: .vertical)
                 
                 // Content
                 ScrollView(.vertical, showsIndicators: false) {
@@ -78,16 +78,16 @@ struct ActorDetail: View {
                             Spacer()
                             
                             LargeActorCard(url: URL(string: image) )
-
+                            
                             Spacer()
-
-                        
+                            
+                            
                         }
                         
                         Text(name).font(.title).bold().foregroundColor(.white)
                             .padding(.horizontal)
                             .padding(.bottom, 5)
-                             
+                        
                         
                         VStack(alignment: .leading ) {
                             ForEach(movie.actorDetails, id: \.self) { details in
@@ -103,7 +103,7 @@ struct ActorDetail: View {
                         .padding(.horizontal)
                         .padding(.bottom, 5)
                         .foregroundColor(.white)
-
+                        
                         Text("Biography").font(.title2).bold()
                             .foregroundColor(.white)
                             .padding(.horizontal)
@@ -118,7 +118,7 @@ struct ActorDetail: View {
                             })
                         }
                         
-
+                        
                         if movies.count != 0 {
                             VStack(alignment: .leading) {
                                 
@@ -160,7 +160,7 @@ struct ActorDetail: View {
                                 } // Scroll
                                 
                             } // VStack - Title + Scroll
-                                .animation(.default)
+                            .animation(.default)
                         } // if movies.count != 0
                         
                         
@@ -179,7 +179,7 @@ struct ActorDetail: View {
                                             Text("See All")
                                         }
                                     }
-
+                                    
                                 }
                                 .padding(.horizontal)
                                 .padding(.top)
@@ -187,48 +187,41 @@ struct ActorDetail: View {
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     
                                     HStack {
-                                    
-                                        ForEach(0..<tv.count, id: \.self) { i in
                                         
+                                        ForEach(0..<tv.count, id: \.self) { i in
+                                            
                                             if i <= 9 {
                                                 
-                                                    NavigationLink(destination: MovieDetail(movieID: tv[i].id,
-                                                                                            movieTitle: tv[i].title ?? "TITLE NOT FOUND",
-                                                                                            genreIDs: tv[i].genre_ids,
-                                                                                            movieOverview: tv[i].overview,
-                                                                                            posterPath: tv[i].poster_path ?? "" ,
-                                                                                            rating: tv[i].vote_average,
-                                                                                            releaseDate: "- RELEASE DATE -")) {
-                                                        VStack {
-                                                            RemotePoster(url: self.movie.imageURL + (tv[i].poster_path ?? "" ))
-                                                            Text(tv[i].name ?? "").font(.system(.title3)).bold()
-                                                            Text(tv[i].character)
-                                                        }
-                                                        .frame(width: 150)
+                                                NavigationLink(destination: MovieDetail(movieID: tv[i].id,
+                                                                                        movieTitle: tv[i].title ?? "TITLE NOT FOUND",
+                                                                                        genreIDs: tv[i].genre_ids,
+                                                                                        movieOverview: tv[i].overview,
+                                                                                        posterPath: tv[i].poster_path ?? "" ,
+                                                                                        rating: tv[i].vote_average,
+                                                                                        releaseDate: "- RELEASE DATE -")) {
+                                                    VStack {
+                                                        RemotePoster(url: self.movie.imageURL + (tv[i].poster_path ?? "" ))
+                                                        Text(tv[i].name ?? "").font(.system(.title3)).bold()
+                                                        Text(tv[i].character)
                                                     }
+                                                    .frame(width: 150)
+                                                }
                                                 
-//                                                VStack {
-//                                                    RemotePoster(url: self.movie.imageURL + (tv[i].poster_path ?? "" ))
-//                                                    Text(tv[i].name ?? "").font(.system(.title3)).bold()
-//                                                    Text(tv[i].character)
-//                                                }
-//                                                .frame(width: 150)
                                                 
-                                               
                                                 
                                             }
                                         }
                                         
                                     } // HStack
-                                        .padding()
+                                    .padding()
                                 } // Scroll
                             } // VStack - Title + Scroll
                             .animation(.default)
                         } // if tv.count != 0
                         
-  
+                        
                     } // VStack
-
+                    
                 } // Scroll View
             } // ZStack
         } // GeometryReader

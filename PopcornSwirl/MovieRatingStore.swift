@@ -103,6 +103,7 @@ class MovieRatingStore : ObservableObject {
             let d = findMovieRating(id: id)
             rating = d!
         }
+        print("SearchForRating -> \(rating)")
         return rating
     }
     
@@ -117,8 +118,14 @@ class MovieRatingStore : ObservableObject {
         do {
             let result = try context.fetch(request)
             ratings.append(contentsOf: result )
-            if result.count != 0 && result.count == 1 {
-                rating = result[0]
+            
+            if result.count != 0 {
+                for result in result {
+                    if result.type == MovieRatingType.movie.rawValue &&
+                        result.id == Double(id) {
+                        rating = result
+                    }
+                }
             }
         } catch {
             print(error)

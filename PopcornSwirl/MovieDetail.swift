@@ -31,15 +31,16 @@ struct MovieDetail: View {
     @State private var showFullOverview = false
     
     
-    private var movieRating : Rating {
-        
-        
-        return movieRatings.searchForRatingsFromMovie(id: movieID)
- 
-//        let x = movieRatings.getRatings(id: movieID)
-//        isFavorite = x.isFavorite
-//        return x
-    }
+    @State private var movieRating : Rating?
+//    {
+//
+//
+//        return movieRatings.searchForRatingsFromMovie(id: movieID)
+//
+////        let x = movieRatings.getRatings(id: movieID)
+////        isFavorite = x.isFavorite
+////        return x
+//    }
     
     var body: some View {
        
@@ -63,13 +64,14 @@ struct MovieDetail: View {
                                     .padding()
                                 
                                     Button(action: {
-                                        
-                                        movieRating.isFavorite.toggle()
-                                        print("oldComment: \(movieRating.comment ?? "isEmpty")")
-                                        movieRating.comment = "Added Comment to rating \(movieID)"
-                                        movieRatings.saveContext()
-                                        print("newComment: \(movieRating.comment ?? "isEmpty")")
-                                        print(movieRating)
+                                        if let rating = movieRating {
+                                            rating.isFavorite.toggle()
+                                            print("oldComment: \(rating.comment ?? "isEmpty")")
+                                            rating.comment = "Added Comment to rating \(movieID)"
+                                            movieRatings.saveContext()
+                                            print("newComment: \(rating.comment ?? "isEmpty")")
+                                            print(rating)
+                                        }
                                     }, label: {
                                         RoundedRectangle(cornerRadius: 10)
                                             .frame(width: 150, height: 40)
@@ -126,7 +128,7 @@ struct MovieDetail: View {
 //                                    .foregroundColor(.pGray3)
 //                                    .padding(.horizontal)
 //                                    .padding(.trailing, 8)
-//                            })657l//
+//                            })
                     
                     
 
@@ -190,7 +192,7 @@ struct MovieDetail: View {
             print( "GenreIDs: \(genreIDs)" )
             
             
-
+            movieRating = movieRatings.searchForRatingsFromMovie(id: movieID) 
 //            movieStore.fetchPurchaseMovieLinks(id: movieID) // Makes loading Details
             
         }
