@@ -27,8 +27,9 @@ class MovieStore: ObservableObject {
     @Published var upcomingMovies = [UpcomingMovie]()
     @Published var actorImageProfiles = [Int : String]() // Stores actor images by ID
     @Published var genreDictionary = [Int: String]() // Stores genres
-    @Published var actorCredits = [ActorCreditsCast]()
     
+    // ActorDetail
+    @Published var actorCredits = [ActorCreditsCast]()
     @Published var actorDetails = [ActorDetails]()
     
     
@@ -313,6 +314,34 @@ extension MovieStore {
         }
     }
     
+    // Used to extract actor credits depending on type
+    enum CreditExtractionType {
+        case movie, tv
+    }
+    
+    // Extract all credits depending on type
+    func extractCreditsFor(actorID: Int, type: CreditExtractionType) -> [ActorCreditsCast] {
+        var credits: [ActorCreditsCast] = []
+        if actorCredits.isEmpty == true {
+            fetchCreditsFor(actor: actorID)
+        }
+        switch type {
+        case .movie:
+            for movie in actorCredits {
+                if movie.media_type == "movie" {
+                    credits.append(movie)
+                }
+            }
+        case .tv:
+            for series in actorCredits {
+                if series.media_type == "tv" {
+                    credits.append(series)
+                }
+            }
+        }
+        return credits
+    }
+    
     // MARK: GET Details for Actor
     func fetchDetailsForActor(id: Int ) {
         // https://developers.themoviedb.org/3/people/get-person-details
@@ -563,4 +592,3 @@ extension MovieStore {
     
     
 }
-

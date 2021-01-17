@@ -175,6 +175,7 @@ struct ActorCreditsCast: Codable, Hashable {
     var vote_average: Double
     var character: String
     var title: String?
+    var release_date: String?
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

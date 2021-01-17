@@ -11,16 +11,16 @@ import SwiftUI
 
 struct HeartButton: View {
     
-    var rating: Rating?
+    var rating: Rating? // only optional because we need to update other views to use rating instead of type
+    var width: CGFloat = 25
+    var height: CGFloat = 25
+    
     @State private var type: HeartType = .empty
     private let movieRatingStore = MovieRatingStore()
-    
     private let gradient = LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]),
                                           startPoint: .top, endPoint: .bottom)
     
     var body: some View {
-        
-        
         Button( action: {
             if let rating = rating {
                 switch rating.isFavorite {
@@ -49,6 +49,7 @@ struct HeartButton: View {
         }, label: {
             gradient.mask(
                 Image(systemName: type.rawValue).resizable() )
+                .frame(width: width, height: height)
 //                .shadow(radius: 3)
                 .shadow(color: .gray, radius: 3, x: 1, y: 2)
         })

@@ -15,6 +15,7 @@ struct ImageCard: View {
     var url: URL?
     var width: CGFloat = 150
     var height: CGFloat = 250
+    var alignment: Alignment = .center
     var cornerRadius: CGFloat = 12
     var shadowRadius: CGFloat = 5
     
@@ -24,7 +25,7 @@ struct ImageCard: View {
                        placeholder: { Color.purple.opacity(0.8) },
                        image: { Image(uiImage: $0).resizable() })
                 .clipShape( RoundedRectangle(cornerRadius: cornerRadius) )
-                .frame(width: width, height: height)
+                .frame(width: width, height: height, alignment: alignment)
                 .shadow(radius: shadowRadius)
         } else {
             RoundedRectangle(cornerRadius: cornerRadius)
@@ -49,7 +50,6 @@ struct MovieCard: View {
             ImageCard(url: url)
                 .overlay(
                     HeartButton(rating: rating)
-                        .frame(width: 25, height: 25)
                         .padding()
                         .shadow(radius: 5.0)
                     , alignment: .bottomTrailing)
@@ -58,93 +58,75 @@ struct MovieCard: View {
             ImageCard(url: url)
                 .overlay(
                     HeartButton(rating: nil)
-                        .frame(width: 25, height: 25)
                         .padding()
                         .shadow(radius: 5.0)
-                    ,alignment: .bottomTrailing)
+                    , alignment: .bottomTrailing)
         }
-        
-//        ImageCard(url: url)
-//
-//
-//                    .overlay(
-//
-//                        HeartButton(type: rating.isFavorite ?  .fill : .empty )
-//                                            Button(action: {
-//                                                self.isFavorite.toggle()
-//                                                print("HeartButton Pressed")
-//
-//                                                // Attempting to update MovieRating but button is not being responsive
-//                                                guard let rating = rating else { return }
-//                                                rating.isFavorite = self.isFavorite
-//                                                guard let movieRatings = movieRatings else { return }
-//                                                movieRatings.saveContext()
-//                                                print("Rating: \(rating.id), isFav: \(rating.isFavorite)")
-//
-//
-//                                            }, label: {
-//                                                HeartButton(type: isFavorite ? .fill : .empty)
-//                                                    .frame(width: 25, height: 25)
-//                                                    .padding()
-//                                                    .shadow(radius: 5.0)
-//                                            })
-//
-//                        , alignment: .bottomTrailing)
-//
-        
+
     } // Body
-    
+     
 }
 
 // Card to hold actor posters
-struct ActorCard: View {
+struct LabeledMovieCard: View {
     let url: URL?
-    var name: String
-    var subtitle: String
+    var title: String?
+    var subtitle: String?
     var rating: Rating?
     @State var isFavorite: Bool = false
+    @State var titlesAreShown: Bool = false
+    
     
     var body: some View {
-        if let url = url {
+        
             VStack(alignment: .leading) {
                 // Image
-                AsyncImage(url: url,
-                           placeholder: { Color.purple.opacity(0.8) },
-                           image: {Image(uiImage: $0).resizable() })
-                    .clipShape( RoundedRectangle(cornerRadius: 12) )
-                    .frame(width: 150, height: 250)
-                    .shadow(radius: 5)
-                    .overlay(
-                        Button(action: {
-                            self.isFavorite.toggle()
-                        }, label: {
+                if let rating = rating {
+                    ImageCard(url: url)
+                        .overlay(
                             HeartButton(rating: rating)
-                                .frame(width: 25, height: 25)
                                 .padding()
                                 .shadow(radius: 5.0)
-                        }) , alignment: .bottomTrailing)
+                            , alignment: .bottomTrailing )
+                } else {
+                    ImageCard(url: url)
+                        .overlay(
+                            HeartButton(rating: rating)
+                                .padding()
+                                .shadow(radius: 5.0)
+                            ,alignment: .bottomTrailing)
+                }
                 // Labels
                 VStack {
-                    Text(name)
-                        .font(.title2)
-                        .multilineTextAlignment(.center)
-                        .frame(width: 140,
-                               height: 40)
-                        .foregroundColor(.pGray3)
-                    
-                    Text(subtitle)
-                        .foregroundColor(.pGray3)
-                        .opacity(0.7)
-                        .frame(width: 140, height: 20)
-                    
+                    if let title = title {
+                        Text(title)
+                            .font(.title2)
+                            .multilineTextAlignment(.center)
+                            .frame(width: 140,
+                                   height: 40)
+                            .foregroundColor(.pGray3)
+                    }
+                    if let subtitle = subtitle {
+                        Text(subtitle)
+                            .foregroundColor(.pGray3)
+                            .opacity(0.7)
+                            .frame(width: 140, height: 20)
+                    }
                     
                 } // Labels VStack
-                .frame(width: 140, height: 60, alignment: .center)
-                .padding(.vertical, 4)
+                .frame(width: titlesAreShown ? 140 : nil, height: titlesAreShown ? 60 : nil , alignment: .center)
+                .padding(.vertical, titlesAreShown ? 4 : 0)
+                
+                .onAppear(perform: {
+                    if title != nil || subtitle != nil {
+                        self.titlesAreShown = true
+                    }
+                    
+                })
                 
             } // VStack(alignment: .leading)
             
-        } // If let
+        
     } // Body
     
 }
@@ -152,40 +134,39 @@ struct ActorCard: View {
 
 // View to display a Large Card for Actor
 struct LargeActorCard: View {
-    let url: URL?
+    var url: URL?
     var rating: Rating?
     @State var isFavorite: Bool = false
     
+    private var width: CGFloat = UIScreen.main.bounds.width / 2
+    private var height: CGFloat = 300
+    init(url: URL?, rating: Rating?) {
+        self.url = url
+        self.rating = rating 
+    }
+    
     var body: some View {
-        
-        if let url = url {
-        AsyncImage(url: url,
-                   placeholder: { Color.purple },
-                   image: { Image(uiImage: $0).resizable() })
-            .clipShape( RoundedRectangle(cornerRadius: 12) )
-            .frame(width: UIScreen.main.bounds.width / 2,
-                   height: 300,
-                   alignment: .center)
-            .shadow(radius: 5.0)
-            .padding()
-            .overlay(
-                Button(action: {
-                    self.isFavorite.toggle()
-                },
-                label: {
-                    HeartButton(rating: rating)
-                        .frame(width: 25, height: 25)
-                        .padding()
-                        
-                        .shadow(radius: 5.0)
-                })
-                , alignment: .bottomTrailing)
-            
-            
-            
-            
-            
-        } // if let
+        if let rating = rating {
+            ImageCard(url: url,
+                      width: width,
+                      height: height,
+                      alignment: .center)
+                .overlay(
+                        HeartButton(rating: rating)
+                            .padding()
+                            .shadow(radius: 5.0)
+                    , alignment: .bottomTrailing)
+        } else {
+            ImageCard(url: url,
+                      width: width,
+                      height: height,
+                      alignment: .center)
+                .overlay(
+                        HeartButton(rating: nil)
+                            .padding()
+                            .shadow(radius: 5.0)
+                    , alignment: .bottomTrailing)
+        }
         
     } // body
 }
@@ -194,8 +175,8 @@ struct LargeActorCard: View {
 struct ImageCard_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ActorCard(url: URL(string: ""), name: "Name", subtitle: "Subtitle")
-        LargeActorCard(url: URL(string: "") ).previewLayout(.sizeThatFits)
+            LabeledMovieCard(url: URL(string: ""), title: "Name", subtitle: "Subtitle")
+            .previewLayout(.sizeThatFits)
         }
     }
 }

@@ -15,7 +15,8 @@ enum ScrollBarType: String  {
     case upcommingMovie = "Upcomming"
     case recommendedMovie = "Recommended" // Need to access movie ID
     case actors = "Actors" // Need to access movie ID
-    case testing = "Testing"
+    case actorMovie = "Movies"
+    case actorTV = "TV"
     // case tv = "TV"
 }
 
@@ -113,21 +114,65 @@ struct bar: View {
         return movieStore.extractActorImageProfiles(id: id)
     }
 
+    // TV
+    private var actorMovies: [ActorCreditsCast] {
+        return movieStore.extractCreditsFor(actorID: id, type: .movie)
+    }
+    private var actorTVSeries: [ActorCreditsCast] {
+        return movieStore.extractCreditsFor(actorID: id, type: .tv)
+    }
 
     @ObservedObject var movieStore = MovieStore()
-    
-        
-    
-    
+
     var body: some View {
     
         switch type {
-        case .testing:
+        case .actorMovie:
+            ForEach(0..<actorMovies.count, id: \.self) { i in
+                if i <= 9 {
+                    if let moviePosterPath = actorMovies[i].poster_path,
+                       let movieTitle = actorMovies[i].title {
+
+                            
+                        NavigationLink(destination: MovieDetail(movieID: actorMovies[i].id,
+                                                                movieTitle: movieTitle,
+                                                                genreIDs: actorMovies[i].genre_ids,
+                                                                movieOverview: actorMovies[i].overview,
+                                                                posterPath: moviePosterPath,
+                                                                rating: actorMovies[i].vote_average,
+                                                                releaseDate: actorMovies[i].release_date ?? ""),
+                                       label: {
+                                        LabeledMovieCard(url: URL(string: movieStore.imageURL + moviePosterPath),
+                                                  title: actorMovies[i].character)
+                                       })
+                    } // if let
+                } // if i
+            } // For
             
-            AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/original//pThyQovXQrw2m0s9x82twj48Jq4.jpg")!,
-                       placeholder: { Color.purple },
-                       image: { Image(uiImage: $0).resizable() }
-            ) .frame(width: 200, height: 200, alignment: .center)
+        case .actorTV:
+            
+            if actorTVSeries.count != 0 {
+                ForEach(0..<actorTVSeries.count, id: \.self) { i in
+                    if i <= 9 {
+                        
+                        
+                        NavigationLink(destination: MovieDetail(movieID: actorTVSeries[i].id,
+                                                                movieTitle: actorTVSeries[i].title ?? "No Title",
+                                                                genreIDs: actorTVSeries[i].genre_ids,
+                                                                movieOverview: actorTVSeries[i].overview,
+                                                                posterPath: actorTVSeries[i].poster_path ?? "",
+                                                                rating: actorTVSeries[i].vote_average,
+                                                                releaseDate: actorTVSeries[i].release_date ?? ""),
+                                       label: {
+                                        
+                                        MovieCard(url: URL(string: movieStore.imageURL + (actorTVSeries[i].poster_path ?? "") ))
+//                                        LabeledMovieCard(url: URL(string: movieStore.imageURL + (actorTVSeries[i].poster_path ?? "")),
+//                                                         subtitle: actorTVSeries[i].character)
+                                       })
+                        
+                    }
+                }
+            }
             
             
             
@@ -146,14 +191,9 @@ struct bar: View {
                                                          isFavorite: false),   // Get Coredata Rating
                                 label: {
                                     
-                                    ActorCard(url: URL(string: movieStore.imageURL + imagePath),
-                                              name: cast[i].name,
+                                    LabeledMovieCard(url: URL(string: movieStore.imageURL + imagePath),
+                                              title: cast[i].name,
                                               subtitle: cast[i].character)
-                                    
-//                                    RemoteActor(url: movieStore.imageURL + imagePath,
-//                                                name: cast[i].name,
-//                                                subtitle: cast[i].character,
-//                                                isFavorite: false)
                                 })
                             
                         } // imagePath

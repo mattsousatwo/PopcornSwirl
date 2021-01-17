@@ -77,11 +77,10 @@ struct ActorDetail: View {
                             
                             Spacer()
                             
-                            LargeActorCard(url: URL(string: image) )
+                            LargeActorCard(url: URL(string: image), rating: nil )
                             
                             Spacer()
-                            
-                            
+
                         }
                         
                         Text(name).font(.title).bold().foregroundColor(.white)
@@ -118,107 +117,11 @@ struct ActorDetail: View {
                             })
                         }
                         
+                        // MARK: Movies
+                        ScrollBar(type: .actorMovie, id: actorID)
                         
-                        if movies.count != 0 {
-                            VStack(alignment: .leading) {
-                                
-                                HStack {
-                                    Text("Movies").font(.system(.title2)).bold()
-                                    Spacer()
-                                    if movies.count >= 10 {
-                                        Button(action: {
-                                            print("See All Movies")
-                                        },
-                                        label: {
-                                            Text("See All").foregroundColor(.black)
-                                        })
-                                    }
-                                }
-                                .padding(.horizontal)
-                                .padding(.top)
-                                
-                                
-                                
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack {
-                                        ForEach(0..<movies.count, id: \.self) { i in
-                                            if i <= 9 {
-                                                if let moviePosterPath = movies[i].poster_path,
-                                                   let movieTitle = movies[i].title {
-                                                    VStack {
-                                                        RemotePoster(url: self.movie.imageURL + moviePosterPath)
-                                                        Text(movieTitle).font(.system(.title3)).bold().lineLimit(nil)
-                                                        Text(movies[i].character)
-                                                    } // Vstack
-                                                    .frame(width: 150)
-                                                } // If Let
-                                            } // If Index is less than
-                                        } // ForEach
-                                        
-                                    } // HStack
-                                    .padding()
-                                } // Scroll
-                                
-                            } // VStack - Title + Scroll
-                            .animation(.default)
-                        } // if movies.count != 0
-                        
-                        
-                        
-                        
-                        if tv.count != 0 {
-                            VStack(alignment: .leading) {
-                                
-                                HStack {
-                                    Text("TV").font(.system(.title2)).bold()
-                                    Spacer()
-                                    if tv.count >= 10 {
-                                        Button {
-                                            print("See All TV Credits")
-                                        } label: {
-                                            Text("See All")
-                                        }
-                                    }
-                                    
-                                }
-                                .padding(.horizontal)
-                                .padding(.top)
-                                
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    
-                                    HStack {
-                                        
-                                        ForEach(0..<tv.count, id: \.self) { i in
-                                            
-                                            if i <= 9 {
-                                                
-                                                NavigationLink(destination: MovieDetail(movieID: tv[i].id,
-                                                                                        movieTitle: tv[i].title ?? "TITLE NOT FOUND",
-                                                                                        genreIDs: tv[i].genre_ids,
-                                                                                        movieOverview: tv[i].overview,
-                                                                                        posterPath: tv[i].poster_path ?? "" ,
-                                                                                        rating: tv[i].vote_average,
-                                                                                        releaseDate: "- RELEASE DATE -")) {
-                                                    VStack {
-                                                        RemotePoster(url: self.movie.imageURL + (tv[i].poster_path ?? "" ))
-                                                        Text(tv[i].name ?? "").font(.system(.title3)).bold()
-                                                        Text(tv[i].character)
-                                                    }
-                                                    .frame(width: 150)
-                                                }
-                                                
-                                                
-                                                
-                                            }
-                                        }
-                                        
-                                    } // HStack
-                                    .padding()
-                                } // Scroll
-                            } // VStack - Title + Scroll
-                            .animation(.default)
-                        } // if tv.count != 0
-                        
+                        // MARK: TVSeries 
+                        ScrollBar(type: .actorTV, id: actorID)
                         
                     } // VStack
                     
