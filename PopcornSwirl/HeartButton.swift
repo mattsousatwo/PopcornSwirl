@@ -34,6 +34,7 @@ struct HeartButton: View {
             switch type {
             case .empty:
                 self.type = .fill
+                print("Like Button Pressed")
                 guard let rating = rating else { return }
                 rating.isFavorite = true
                 rating.comment = "Heart Button - pressed @ 3:37"
@@ -41,6 +42,7 @@ struct HeartButton: View {
                 print("HeartButton - id: \(rating.id), isFavorite: \(rating.isFavorite)")
             case .fill:
                 self.type = .empty
+                print("Unlike Button Pressed")
                 guard let rating = rating else { return }
                 rating.isFavorite = false
                 movieRatingStore.saveContext()

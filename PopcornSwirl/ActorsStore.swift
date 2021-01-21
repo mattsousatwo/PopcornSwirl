@@ -41,7 +41,7 @@ class ActorsStore: ObservableObject {
 // MARK: Create
 extension ActorsStore {
     
-    func createActor(name: String, bio: String?, id: Double, image: Image?) {
+    func createActor(name: String, bio: String?, id: Double, image: UIImage?) {
         let actor = fetchActorWith(id: id)
         
 //        let actor = Actor(context: context)
@@ -51,9 +51,13 @@ extension ActorsStore {
         default:
             actor.name = name
             actor.id = id
-//            if let image = image {
-//                actor.image = image  // Find out how to store Image as Data
-//            }
+            if let image = image {
+//                let asUIImage: UIImage = image.convertToUIImage()
+//                let imageAsData = asUIImage.jpegData(compressionQuality: 1.0)
+                
+                let imageAsData = image.jpegData(compressionQuality: 1.0)
+                actor.image = imageAsData  // Find out how to store Image as Data
+            }
             if let bio = bio {
                 actor.biography = bio
             }

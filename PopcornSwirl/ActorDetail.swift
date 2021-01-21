@@ -78,6 +78,7 @@ struct ActorDetail: View {
                             Spacer()
                             
                             LargeActorCard(url: URL(string: image), rating: nil )
+                                .padding()
                             
                             Spacer()
 

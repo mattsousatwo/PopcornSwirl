@@ -24,7 +24,7 @@ struct PopMovie: Codable, Identifiable {
     public var vote_average: Double
     public var genre_ids: [Int]
     public var release_date: String
-    public var backdrop_path: String
+    public var backdrop_path: String?
 }
 
 
@@ -100,7 +100,7 @@ struct RecommendedMovie: Codable {
     var id: Int
     var vote_average: Double
     var genre_ids: [Int]
-    var release_date: String
+    var release_date: String?
     
 }
 
@@ -232,37 +232,54 @@ struct GenreArray: Codable {
 // MARK: - Movie Links
 
 struct MovieLink: Codable {
-    var id: Int
-    var result: [MovieLinkResult]
+    var id: Int?
+    var results: [String? : [MovieLinkResult?]? ]?
+        
+    
 }
 
 struct MovieLinkResult: Codable {
-    var country: [String]
+    var country: [MoviePurchaseDict]?
+    
+    enum CodingKeys: String, CodingKey {
+        case country = "US"
+    }
 }
 
+struct MoviePurchaseDict: Codable {
+    var link: String?
+    var rent: [MovieLinkRent]?
+    var buy: [MovieLinkBuy]?
+    var flatrate: [MovieLinkFlatrate]?
+}
+
+
+
+
+
 struct MovieLinkPurchase: Codable {
-    var link: String
+    var link: String?
 }
 
 struct MovieLinkFlatrate: Codable {
-    var display_priorty: Int
-    var logo_path: String
-    var provider_id: Int
-    var provider_name: String
+    var display_priorty: Int?
+    var logo_path: String?
+    var provider_id: Int?
+    var provider_name: String?
 }
 
 struct MovieLinkRent: Codable {
-    var display_priorty: Int
-    var logo_path: String
-    var provider_id: Int
-    var provider_name: String
+    var display_priorty: Int?
+    var logo_path: String?
+    var provider_id: Int?
+    var provider_name: String?
 }
 
 struct MovieLinkBuy: Codable {
-    var display_priorty: Int
-    var logo_path: String
-    var provider_id: Int
-    var provider_name: String
+    var display_priorty: Int?
+    var logo_path: String?
+    var provider_id: Int?
+    var provider_name: String?
 }
 
 

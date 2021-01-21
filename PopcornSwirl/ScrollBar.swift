@@ -17,7 +17,6 @@ enum ScrollBarType: String  {
     case actors = "Actors" // Need to access movie ID
     case actorMovie = "Movies"
     case actorTV = "TV"
-    // case tv = "TV"
 }
 
 
@@ -95,6 +94,8 @@ struct bar: View {
     var id: Int // used to fetch recomended movies
     
     var popularMovies : [PopMovie] {
+        let y = movieStore.extractPopularMovies()
+        print("popularMovie count = \(y.count)")
         return movieStore.extractPopularMovies()
     }
 
@@ -256,17 +257,18 @@ struct bar: View {
         case .recommendedMovie:
             ForEach(0..<recommendedMovies.count, id: \.self) { i in
                 if recommendedMovies.count != 0 {
-                    
-                    NavigationLink(destination: MovieDetail(movieID: recommendedMovies[i].id,
-                                                            movieTitle: recommendedMovies[i].title,
-                                                            genreIDs: recommendedMovies[i].genre_ids,
-                                                            movieOverview: recommendedMovies[i].overview,
-                                                            posterPath: recommendedMovies[i].poster_path ?? "",
-                                                            rating: recommendedMovies[i].vote_average,
-                                                            releaseDate: recommendedMovies[i].release_date)  ) {
-                        // Label
-                        MovieCard(url: URL(string: movieStore.imageURL + (recommendedMovies[i].poster_path ?? "") ))
-//                        RemotePoster(url: movieStore.imageURL + (recommendedMovies[i].poster_path ?? "") )
+                    if let releaseDate = recommendedMovies[i].release_date {
+                        NavigationLink(destination: MovieDetail(movieID: recommendedMovies[i].id,
+                                                                movieTitle: recommendedMovies[i].title,
+                                                                genreIDs: recommendedMovies[i].genre_ids,
+                                                                movieOverview: recommendedMovies[i].overview,
+                                                                posterPath: recommendedMovies[i].poster_path ?? "",
+                                                                rating: recommendedMovies[i].vote_average,
+                                                                releaseDate: releaseDate)  ) {
+                            // Label
+                            MovieCard(url: URL(string: movieStore.imageURL + (recommendedMovies[i].poster_path ?? "") ))
+                            //                        RemotePoster(url: movieStore.imageURL + (recommendedMovies[i].poster_path ?? "") )
+                    }
                     }
                 }
             }

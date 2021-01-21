@@ -227,11 +227,24 @@ extension MovieStore {
             if i <= 24 {
                 actors.append(movieCast[i])
                 self.castStore.createCastMember(actorID: Double(movieCast[i].id), movieID: Double(id))
-                self.actorsStore.createActor(name: movieCast[i].name,
-                                             bio: nil,
-                                             id: Double(movieCast[i].id),
-                                             image: nil)
-                
+//                self.actorsStore.createActor(name: movieCast[i].name,
+//                                             bio: nil,
+//                                             id: Double(movieCast[i].id),
+//                                             image: nil )
+//
+                if let profilePath = movieCast[i].profile_path {
+                    if let url = URL(string: imageURL + profilePath) {
+                        let loader = ImageLoader(url: url)
+                        if let loadedImage = loader.image {
+                                
+                            self.actorsStore.createActor(name: movieCast[i].name,
+                                                         bio: nil,
+                                                         id: Double(movieCast[i].id),
+                                                         image:  loadedImage)
+                                      
+                        }
+                    }
+                }
             }
         }
         return actors
@@ -547,7 +560,8 @@ extension MovieStore {
     // Not picking up any results yet request is working 
     func fetchPurchaseMovieLinks(id: Int) {
         
-        let request = "https://api.themoviedb.org/3/movie/\(id)/watch/providers?api_key=\(apiKey)"
+//        let request = "https://api.themoviedb.org/3/movie/\(id)/watch/providers?api_key=\(apiKey)"
+        let request = "https://api.themoviedb.org/3/movie/\(id)/watch/providers?api_key=\(apiKey)&watch_region=US"
         
         AF.request( request ).responseJSON { response in
             
@@ -562,6 +576,7 @@ extension MovieStore {
                 
                 
                 self.ml = [results]
+                print("Test 4 - results.count = \(results)")
                 
                 for x in self.ml {
                     print("Test 4 - \(x)")
@@ -570,17 +585,34 @@ extension MovieStore {
                 
                 
                 // MovieLinkResults
-                let country = results.result
+                guard let linkResults = results.results else { return }
+                guard let usLinks = linkResults["US"] else { return }
+                guard let links = usLinks else { return }
                 
-                self.movieLinks = results.result
                 
-                for object in country {
-                    print("Test 4 - \(object.country)")
+                
+                for link in links {
+                    
+                    print( "Test 4 - \(print(link))" )
                 }
                 
-                for object in self.movieLinks {
-                    print("Test 4 - \(object.country)")
-                }
+                
+                
+//                let country  = results.results["US"]
+                
+                
+//                self.movieLinks = results.result
+//                if let country = country {
+//                    for object in country {
+//                        print("Test 4 - \(object)")
+//                    }
+//                }
+                
+//                for object in self.movieLinks {
+//                    print("Test 4 - \(object.country ?? "")")
+//                }
+//
+                
                 
             } catch {
                 print(error)
