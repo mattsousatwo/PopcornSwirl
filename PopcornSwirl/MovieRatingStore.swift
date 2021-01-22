@@ -33,63 +33,53 @@ class MovieRatingStore : ObservableObject {
         }
     }
     
+}
+
+// MARK: Create
+extension MovieRatingStore {
+    
+    // Create a new Rating
+    func createNewRating(id: Int, isFavorite: Bool = false, type: MovieRatingType = .movie, comment: String = "") -> Rating {
+        
+        let rating = Rating(context: context)
+        
+        rating.id = Double(id)
+        rating.isFavorite = isFavorite
+        
+        rating.type = type.rawValue
+        
+        //        rating.comment = comment
+        rating.comment = "Testing Comment"
+        
+        saveContext()
+        
+        ratings.append(rating)
+        
+        print("* movieRating: \(rating)")
+        return rating
+        
+    }
+    
+}
+
+// MARK: Fetching
+extension MovieRatingStore {
+    
     // Get all ratings if context hasChanges
     func fetchAllRatings() {
-//        if context.hasChanges {
-            let request: NSFetchRequest<Rating> = Rating.fetchRequest()
-            do {
-                let requestResults = try context.fetch(request)
-                ratings = requestResults
-
-            } catch {
-                print(error)
-            }
-//        }
+        //        if context.hasChanges {
+        let request: NSFetchRequest<Rating> = Rating.fetchRequest()
+        do {
+            let requestResults = try context.fetch(request)
+            ratings = requestResults
+            
+        } catch {
+            print(error)
+        }
+        //        }
         
         print(#function + " ratings count: \(ratings.count)")
     }
-    
-    
-    
-    
-    
-    // Fetch Rating for Movie
-    func fetchRatingsForMovie(id: Int) -> Rating? {
-
-        for rating in ratings {
-            if rating.id != Double(id) { // if id is not in ratings\
-                let request : NSFetchRequest<Rating> = Rating.fetchRequest()
-
-                // Predicate = AND - ID, type
-                request.predicate = NSPredicate(format: "id == %ld AND type == %@", Double(id), MovieRatingType.movie.rawValue)
-                
-                do {
-                    let requestResults = try context.fetch(request)
-                    if requestResults.count != 0 {
-                        for rating in requestResults {
-                            print( "rating: \(rating)"  )
-                            return rating
-                        }
-                    }
-                } catch {
-                    print(error)
-                }
-            } else { // if ID is in ratings array 
-                let newRating = Rating(context: context)
-                newRating.type = MovieRatingType.movie.rawValue
-                newRating.id = Double(id)
-                self.ratings.append(newRating)
-                saveContext()
-                print( "rating: \(newRating)"  )
-                return newRating
-            }
-            
-        }
-        
-        return nil
-    }
-    
-    
     
     // Search for movie in Ratings
     func searchForRatingsFromMovie(id: Int) -> Rating {
@@ -107,13 +97,12 @@ class MovieRatingStore : ObservableObject {
         return rating
     }
     
-    
     // fetch for specific rating
     func findMovieRating(id: Int) -> Rating? {
         var rating: Rating?
         
         let request: NSFetchRequest<Rating> = Rating.fetchRequest()
-//        request.predicate = NSPredicate(format: "id = %ld AND type = %@", Double(id), MovieRatingType.movie.rawValue)
+        //        request.predicate = NSPredicate(format: "id = %ld AND type = %@", Double(id), MovieRatingType.movie.rawValue)
         request.predicate = NSPredicate(format: "id = %ld", Double(id))
         do {
             let result = try context.fetch(request)
@@ -139,39 +128,33 @@ class MovieRatingStore : ObservableObject {
     }
     
     
-    
-    
-    
-    // Create a new Rating
-    func createNewRating(id: Int, isFavorite: Bool = false, type: MovieRatingType = .movie, comment: String = "") -> Rating {
-    
-        let rating = Rating(context: context)
+    // Fetch Ratings for an array of movieIDs
+    func fetchAllRatingsUsingIDs(in movieIDs: [Int]) -> [Rating] {
+        var ratingArray: [Rating] = []
+        let request: NSFetchRequest<Rating> = Rating.fetchRequest()
         
-        rating.id = Double(id)
-        rating.isFavorite = isFavorite
-        
-        rating.type = type.rawValue
-        
-//        rating.comment = comment
-        rating.comment = "Testing Comment"
-        
-        saveContext()
-        
-        ratings.append(rating)
-        
-        print("* movieRating: \(rating)")
-        return rating
-        
-    }
-    
-    func toggleFavorite(for object: Rating) {
-        object.isFavorite.toggle()
-        saveContext()
+        for id in movieIDs {
+            request.predicate = NSPredicate(format: "id = %ld", id)
+            do {
+                let result = try context.fetch(request)
+                if result.isEmpty == true {
+                    let newRating = createNewRating(id: id)
+                    ratingArray.append(newRating)
+                } else {
+                    ratingArray.append(contentsOf: result)
+                }
+            } catch {
+                print(error)
+            }
+        }
+        return ratingArray
     }
     
     
     
 }
+
+
 
 // MARK: Delete
 extension MovieRatingStore {

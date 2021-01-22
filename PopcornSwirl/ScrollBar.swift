@@ -28,6 +28,8 @@ struct ScrollBar: View {
     
     var id: Int = 0
     
+    var ratings: [Rating]?
+    
     var body: some View {
         
         VStack(spacing: 10) {
@@ -80,7 +82,6 @@ struct ScrollBar: View {
         
         
         
-        
     }
     
 }
@@ -93,9 +94,13 @@ struct bar: View {
     
     var id: Int // used to fetch recomended movies
     
+    @State var ratings: [Rating]?
+    var ratingStore = MovieRatingStore()
+    
+    
+    
+
     var popularMovies : [PopMovie] {
-        let y = movieStore.extractPopularMovies()
-        print("popularMovie count = \(y.count)")
         return movieStore.extractPopularMovies()
     }
 
@@ -126,14 +131,13 @@ struct bar: View {
     @ObservedObject var movieStore = MovieStore()
 
     var body: some View {
-    
+        
         switch type {
         case .actorMovie:
             ForEach(0..<actorMovies.count, id: \.self) { i in
                 if i <= 9 {
                     if let moviePosterPath = actorMovies[i].poster_path,
                        let movieTitle = actorMovies[i].title {
-
                             
                         NavigationLink(destination: MovieDetail(movieID: actorMovies[i].id,
                                                                 movieTitle: movieTitle,
@@ -145,10 +149,19 @@ struct bar: View {
                                        label: {
                                         LabeledMovieCard(url: URL(string: movieStore.imageURL + moviePosterPath),
                                                   title: actorMovies[i].character)
+                                        
                                        })
+                        
+                        
+                        
+                        
                     } // if let
                 } // if i
             } // For
+            .onAppear {
+                let actorMovieIDs = actorMovies.map({ $0.id })
+                ratings = ratingStore.fetchAllRatingsUsingIDs(in: actorMovieIDs)
+            }
             
         case .actorTV:
             
@@ -173,11 +186,16 @@ struct bar: View {
                         
                     }
                 }
+                .onAppear {
+                    let actorTVSeriesIDs = actorTVSeries.map{( $0.id )}
+                    ratings = ratingStore.fetchAllRatingsUsingIDs(in: actorTVSeriesIDs)
+                }
+                .animation(.default)
             }
             
             
             
-        // MARK: ACTORS
+        // MARK: ACTORS -
         case .actors:
             
             if actorImages.count != 0 {
@@ -200,21 +218,23 @@ struct bar: View {
                         } // imagePath
                     } // i <= 9
                 } // for
+                
+                .onAppear(perform: {
+                    let actorIDs = actorImages.map({ $0.key })
+                    ratings = ratingStore.fetchAllRatingsUsingIDs(in: actorIDs)
+                    
+                })
                 .animation(.default)
             } // if
         
             
             
-        // MARK: POPULAR MOVIE
+        // MARK: POPULAR MOVIE -
         case .popularMovie:
-            
-            // Changed to closure array instead of movieStore property 
             
             ForEach(0..<popularMovies.count, id: \.self) { i in
                 if popularMovies.count != 0 {
-                    
-                    
-                    
+
                     NavigationLink(destination: MovieDetail(movieID: popularMovies[i].id,
                                                             movieTitle: popularMovies[i].title,
                                                             genreIDs: popularMovies[i].genre_ids,
@@ -223,16 +243,22 @@ struct bar: View {
                                                             rating: popularMovies[i].vote_average,
                                                             releaseDate: popularMovies[i].release_date)  ) {
                         // Label
+                        
                         MovieCard(url: URL(string: movieStore.imageURL + popularMovies[i].poster_path) )
                         
-//                        RemotePoster(url: movieStore.imageURL + popularMovies[i].poster_path)
                     }
                 }
             }
             
+            .onAppear(perform: {
+                let popularMovieIDs = popularMovies.map({ $0.id })
+                ratings = ratingStore.fetchAllRatingsUsingIDs(in: popularMovieIDs)
+                
+            })
+            
             .animation(.default)
             
-        // MARK: UPCOMMING MOVIE
+        // MARK: UPCOMMING MOVIE -
         case .upcommingMovie:
             ForEach(0..<upcomingMovies.count, id: \.self) { i in
                 if upcomingMovies.count != 0 {
@@ -246,14 +272,17 @@ struct bar: View {
                                                             releaseDate: upcomingMovies[i].release_date)  ) {
                         // Label
                         MovieCard(url: URL(string: movieStore.imageURL + (upcomingMovies[i].poster_path ?? "") ))
-                                  
-//                        RemotePoster(url: movieStore.imageURL + (upcomingMovies[i].poster_path ?? "") )
                     }
                 }
             }
-            .animation(.default)
             
-        // MARK: RECOMMENDED MOVIE
+            .onAppear(perform: {
+                let upcommingMovieIDs = upcomingMovies.map({ $0.id })
+                ratings = ratingStore.fetchAllRatingsUsingIDs(in: upcommingMovieIDs)
+            })
+            .animation(.default)
+             
+        // MARK: RECOMMENDED MOVIE -
         case .recommendedMovie:
             ForEach(0..<recommendedMovies.count, id: \.self) { i in
                 if recommendedMovies.count != 0 {
@@ -272,8 +301,15 @@ struct bar: View {
                     }
                 }
             }
+            
+            .onAppear(perform: {
+                let recommendedMovieIDs = recommendedMovies.map({ $0.id })
+                ratings = ratingStore.fetchAllRatingsUsingIDs(in: recommendedMovieIDs)
+            })
             .animation(.default)
         } // switch
+        
+        
         
     }
     

@@ -31,11 +31,10 @@ class MovieStore: ObservableObject {
     // ActorDetail
     @Published var actorCredits = [ActorCreditsCast]()
     @Published var actorDetails = [ActorDetails]()
+
     
-    
-    @Published var ml = [MovieLink]()
-    @Published var movieLinks = [MovieLinkResult]()
-    
+    // WatchProviders
+    @Published var watchProviders = PurchaseLink()
     
     
     lazy var decoder = JSONDecoder() // used to decode json data
@@ -417,7 +416,7 @@ extension MovieStore {
     }
     
     
-    
+    // Return array of results for movie search
     func extractMovieSearchResults() -> [MovieSearchResults] {
         var searchResults = [MovieSearchResults]()
         for movie in self.movieSearchResults {
@@ -473,10 +472,6 @@ extension MovieStore {
 }
 
 
-// MARK: POST :: DELETE
-extension MovieStore {
-    
-}
 
 // MARK: GET Genres
 extension MovieStore { 
@@ -560,7 +555,7 @@ extension MovieStore {
     // Not picking up any results yet request is working 
     func fetchPurchaseMovieLinks(id: Int) {
         
-//        let request = "https://api.themoviedb.org/3/movie/\(id)/watch/providers?api_key=\(apiKey)"
+        //        let request = "https://api.themoviedb.org/3/movie/\(id)/watch/providers?api_key=\(apiKey)"
         let request = "https://api.themoviedb.org/3/movie/\(id)/watch/providers?api_key=\(apiKey)&watch_region=US"
         
         AF.request( request ).responseJSON { response in
@@ -571,53 +566,20 @@ extension MovieStore {
             }
             
             do {
-                print("Test 4 - FetchPurchaseMovieLinks() ")
-                let results = try self.decoder.decode(MovieLink.self, from: json)
                 
+                let results = try self.decoder.decode(WatchProviders.self, from: json)
                 
-                self.ml = [results]
-                print("Test 4 - results.count = \(results)")
+                guard let resultsResponse = results.results else { return }
+                guard let usWatchProviders = resultsResponse.us else { return }
                 
-                for x in self.ml {
-                    print("Test 4 - \(x)")
-                }
+                print("USProviders: \(usWatchProviders)")
                 
-                
-                
-                // MovieLinkResults
-                guard let linkResults = results.results else { return }
-                guard let usLinks = linkResults["US"] else { return }
-                guard let links = usLinks else { return }
-                
-                
-                
-                for link in links {
-                    
-                    print( "Test 4 - \(print(link))" )
-                }
-                
-                
-                
-//                let country  = results.results["US"]
-                
-                
-//                self.movieLinks = results.result
-//                if let country = country {
-//                    for object in country {
-//                        print("Test 4 - \(object)")
-//                    }
-//                }
-                
-//                for object in self.movieLinks {
-//                    print("Test 4 - \(object.country ?? "")")
-//                }
-//
+                self.watchProviders = usWatchProviders 
                 
                 
             } catch {
                 print(error)
             }
-
             
         }
     }

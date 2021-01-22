@@ -13,11 +13,9 @@ import Alamofire
 struct Home: View {
     
     var movieRatings = MovieRatingStore()
-//    var movieRatings : MovieRatingStore?
-    
     @ObservedObject private var genreStore = GenreStore()
-
     @ObservedObject var movieStore = MovieStore()
+    
 
     var body: some View {
                 
@@ -56,13 +54,12 @@ struct Home: View {
         
         // TMDB
         movieStore.getGenres()
-        movieStore.fetchPopularMovies()
-        movieStore.fetchUpcomingMovies()
-        
+
         // CoreData
-        genreStore.fetchAllGenres()
+        genreStore.loadAllGenres()
         
         
+
         
         
         
@@ -73,15 +70,18 @@ struct Home: View {
         castStore.deleteAll()
         
         
+        // MARK: Can put below in a test -
+        
 //        movieRatings.deleteAllMovieRatings()
             movieRatings.fetchAllRatings()
-//        guard let s = movieRatings.fetchRatingsForMovie(id: 1) else { return }
         let search = movieRatings.searchForRatingsFromMovie(id: 1)
         
         search.comment = "Comment @ 11:12AM"
         search.rating = 5.0
         search.isFavorite = true
         movieRatings.saveContext()
+        
+        
         
         
         

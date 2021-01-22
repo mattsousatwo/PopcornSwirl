@@ -192,7 +192,7 @@ struct MovieDetail: View {
                 })
             }
             
-            StarSlider(value: 0.0, dismiss: showStarSlider, width: showStarSlider ? UIScreen.main.bounds.width - 40 : 0 , height: showStarSlider ? 200 : 0)
+            StarSlider(value: 0.0, width: showStarSlider ? UIScreen.main.bounds.width - 40 : 0 , height: showStarSlider ? 210 : 0) 
                 .cornerRadius(12.0)
                 .animation(.easeIn)
             

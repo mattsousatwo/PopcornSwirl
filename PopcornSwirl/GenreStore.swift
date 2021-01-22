@@ -44,6 +44,13 @@ class GenreStore: ObservableObject {
         }
     }
     
+    // Check if genres are loaded before fetching 
+    func loadAllGenres() {
+        if genres.isEmpty == true {
+            fetchAllGenres()
+        }
+    }
+    
     
     // Extract genres from id tags
     func extractGenreFrom(ids: [Int]) -> [String] {

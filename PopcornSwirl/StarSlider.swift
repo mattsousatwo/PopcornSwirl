@@ -11,14 +11,17 @@ import SwiftUI
 
 struct StarSlider: View {
     
-    @State var value: Double = 0
-    @State var dismiss: Bool = false
+    var rating: Rating?
+    
+    @State var value: Double = 0 // Change to rating.rating
     
     var width: CGFloat = 200
     var height: CGFloat = 100
-    var accent = Color.blue
-    var gradient = LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]),
+    var accent = Color.red
+    var gradient = LinearGradient(gradient: Gradient(colors: [Color.pPurple, Color.pPurple]),
                                   startPoint: .top, endPoint: .bottom)
+    
+    var onDismiss: () 
     
     var body: some View {
         
@@ -30,8 +33,10 @@ struct StarSlider: View {
                 VStack {
                     
                     StarSliderTextView(value: $value)
+                        .padding(.top)
                     StarSliderView(value: $value, accent: accent)
-                    StarSliderButtons(dismiss: $dismiss)
+                        .padding(.horizontal)
+                    StarSliderButtons(rating: rating, value: $value)
                     
                 }
                 
@@ -103,7 +108,7 @@ struct StarSliderView: View {
                     Image(systemName: "minus.circle").resizable()
                         .frame(width: 25, height: 25, alignment: .center)
                         .font(Font.title.weight(.light))
-                        .foregroundColor(accent)
+                        .foregroundColor(.pGray3)
                    })
             
             Slider(value: $value, in: 0...5, step: 0.5)
@@ -117,7 +122,7 @@ struct StarSliderView: View {
                 Image(systemName: "plus.circle").resizable()
                     .frame(width: 25, height: 25, alignment: .center)
                     .font(Font.title.weight(.light))
-                    .foregroundColor(accent)
+                    .foregroundColor(.pGray3)
             })
         }
         .padding(.horizontal, 5)
@@ -131,18 +136,19 @@ struct StarSliderView: View {
 // Action buttons for view
 struct StarSliderButtons: View {
     
-    @Binding var dismiss: Bool
+    var ratingStore = MovieRatingStore()
+    var rating: Rating?
+    @Binding var value: Double
     
     var body: some View {
-        
-        
         
         HStack {
             
             // Cancel
             Button(action: {
                 print("Cancel")
-                self.dismiss.toggle()
+                
+//                self.dismiss.toggle()
             }, label: {
                 RoundedRectangle(cornerRadius: 12)
                     .foregroundColor(Color.lightBlue)
@@ -158,7 +164,13 @@ struct StarSliderButtons: View {
             Button(action: {
                 print("Submit")
                 
-                self.dismiss.toggle()
+                guard let rating = rating else {
+                    print("No Rating")
+                    return }
+                rating.rating = value
+                print("Submit - Rating.rating = \(rating.rating)")
+                ratingStore.saveContext()
+                
             }, label: {
                 RoundedRectangle(cornerRadius: 12)
                     .foregroundColor(Color.lightBlue)
