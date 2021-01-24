@@ -147,7 +147,7 @@ struct bar: View {
                                                                 rating: actorMovies[i].vote_average,
                                                                 releaseDate: actorMovies[i].release_date ?? ""),
                                        label: {
-                                        LabeledMovieCard(url: URL(string: movieStore.imageURL + moviePosterPath),
+                                        LabeledMovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + moviePosterPath),
                                                   title: actorMovies[i].character)
                                         
                                        })
@@ -179,7 +179,7 @@ struct bar: View {
                                                                 releaseDate: actorTVSeries[i].release_date ?? ""),
                                        label: {
                                         
-                                        MovieCard(url: URL(string: movieStore.imageURL + (actorTVSeries[i].poster_path ?? "") ))
+                                        MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (actorTVSeries[i].poster_path ?? "") ))
 //                                        LabeledMovieCard(url: URL(string: movieStore.imageURL + (actorTVSeries[i].poster_path ?? "")),
 //                                                         subtitle: actorTVSeries[i].character)
                                        })
@@ -204,13 +204,13 @@ struct bar: View {
                         if let imagePath = actorImages[ cast[i].id ] {
                             
                             NavigationLink(
-                                destination: ActorDetail(image: movieStore.imageURL + imagePath,
+                                destination: ActorDetail(image: MovieStoreKey.imageURL.rawValue + imagePath,
                                                          actorID: cast[i].id,
                                                          name: cast[i].name,
                                                          isFavorite: false),   // Get Coredata Rating
                                 label: {
                                     
-                                    LabeledMovieCard(url: URL(string: movieStore.imageURL + imagePath),
+                                    LabeledMovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + imagePath),
                                               title: cast[i].name,
                                               subtitle: cast[i].character)
                                 })
@@ -244,7 +244,7 @@ struct bar: View {
                                                             releaseDate: popularMovies[i].release_date)  ) {
                         // Label
                         
-                        MovieCard(url: URL(string: movieStore.imageURL + popularMovies[i].poster_path) )
+                        MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + popularMovies[i].poster_path) )
                         
                     }
                 }
@@ -271,7 +271,7 @@ struct bar: View {
                                                             rating: upcomingMovies[i].vote_average,
                                                             releaseDate: upcomingMovies[i].release_date)  ) {
                         // Label
-                        MovieCard(url: URL(string: movieStore.imageURL + (upcomingMovies[i].poster_path ?? "") ))
+                        MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (upcomingMovies[i].poster_path ?? "") ))
                     }
                 }
             }
@@ -295,7 +295,7 @@ struct bar: View {
                                                                 rating: recommendedMovies[i].vote_average,
                                                                 releaseDate: releaseDate)  ) {
                             // Label
-                            MovieCard(url: URL(string: movieStore.imageURL + (recommendedMovies[i].poster_path ?? "") ))
+                            MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (recommendedMovies[i].poster_path ?? "") ))
                             //                        RemotePoster(url: movieStore.imageURL + (recommendedMovies[i].poster_path ?? "") )
                     }
                     }

@@ -304,6 +304,7 @@ struct PurchaseLink: Codable {
         case rent = "rent"
         case flatrate = "flatrate"
     }
+    
 }
 
 // MARK: - Buy

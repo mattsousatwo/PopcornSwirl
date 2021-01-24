@@ -2,8 +2,8 @@
 //  Actor+CoreDataClass.swift
 //  PopcornSwirl
 //
-//  Created by Matthew Sousa on 12/30/20.
-//  Copyright © 2020 Matthew Sousa. All rights reserved.
+//  Created by Matthew Sousa on 1/24/21.
+//  Copyright © 2021 Matthew Sousa. All rights reserved.
 //
 //
 

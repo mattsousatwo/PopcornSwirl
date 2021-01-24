@@ -55,7 +55,7 @@ struct Home: View {
         // TMDB
         movieStore.getGenres()
 
-        // CoreData
+        //MARK: CoreData -
         genreStore.loadAllGenres()
         
         

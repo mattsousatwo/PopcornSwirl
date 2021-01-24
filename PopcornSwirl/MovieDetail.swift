@@ -63,7 +63,7 @@ struct MovieDetail: View {
                             
                             VStack {
                                 // Movie Poster
-                                MovieCard(url: URL(string: movieStore.imageURL + posterPath), rating: movieRating)
+                                MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), rating: movieRating)
                                     
                                     .padding(.horizontal)
                                 
@@ -171,6 +171,12 @@ struct MovieDetail: View {
                         // MARK: - Suggested Movies
                         ScrollBar(type: .recommendedMovie, id: movieID)
                         
+                        
+                        
+                        PurchaseLinkBar(movieID: movieID)
+                        
+                        
+                        PurchaseLinkButton(movieID: movieID)
                     } // V stack
                     
                     
@@ -207,7 +213,7 @@ struct MovieDetail: View {
             print( "Movie ID: \(movieID)"  )
             print( "Movie Title: \(movieTitle)"  )
             print( "Movie Overview: \(movieOverview)"  )
-            print( "Path: \(movieStore.imageURL + posterPath)" )
+            print( "Path: \(MovieStoreKey.imageURL.rawValue + posterPath)" ) 
             print( "GenreIDs: \(genreIDs)" )
             
             

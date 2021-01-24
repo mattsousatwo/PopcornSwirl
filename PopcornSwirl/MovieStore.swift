@@ -39,9 +39,6 @@ class MovieStore: ObservableObject {
     
     lazy var decoder = JSONDecoder() // used to decode json data
     
-    lazy var imageURL = "https://image.tmdb.org/t/p/" + "original" // used as base for movie images
-    lazy var apiKey = "ebccbee67fef37cc7a99378c44af7d33" // API Key
-    
     // Initalizer
     init() {
 
@@ -94,7 +91,7 @@ extension MovieStore {
     // MARK: Get Reccomended Movies for movie
     func fetchRecommendedMoviesForMovie(id: Int) {
         
-        let recommendedRequest = "https://api.themoviedb.org/3/movie/\(id)/recommendations?api_key=\(apiKey)&language=en-US&page=1"
+        let recommendedRequest = "https://api.themoviedb.org/3/movie/\(id)/recommendations?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US&page=1"
         
         AF.request( recommendedRequest ).responseJSON { response in
             
@@ -133,7 +130,7 @@ extension MovieStore {
     // MARK: FETCH Upcoming Movies
     func fetchUpcomingMovies() {
         
-        let upcomingMovieRequest = "https://api.themoviedb.org/3/movie/upcoming?api_key=\(apiKey)&language=en-US&page=1"
+        let upcomingMovieRequest = "https://api.themoviedb.org/3/movie/upcoming?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US&page=1"
         
         AF.request( upcomingMovieRequest ).responseJSON { response in
             
@@ -179,7 +176,7 @@ extension MovieStore {
     // Get the credits for a movie to fill up the actors view
     func fetchMovieCreditsForMovie(id: Int) {
         
-        let creditsRequest = "https://api.themoviedb.org/3/movie/\(id)/credits?api_key=\(apiKey)&language=en-US"
+        let creditsRequest = "https://api.themoviedb.org/3/movie/\(id)/credits?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
         
         AF.request( creditsRequest ).responseJSON { response in
             
@@ -226,24 +223,12 @@ extension MovieStore {
             if i <= 24 {
                 actors.append(movieCast[i])
                 self.castStore.createCastMember(actorID: Double(movieCast[i].id), movieID: Double(id))
-//                self.actorsStore.createActor(name: movieCast[i].name,
-//                                             bio: nil,
-//                                             id: Double(movieCast[i].id),
-//                                             image: nil )
-//
-                if let profilePath = movieCast[i].profile_path {
-                    if let url = URL(string: imageURL + profilePath) {
-                        let loader = ImageLoader(url: url)
-                        if let loadedImage = loader.image {
-                                
-                            self.actorsStore.createActor(name: movieCast[i].name,
-                                                         bio: nil,
-                                                         id: Double(movieCast[i].id),
-                                                         image:  loadedImage)
-                                      
-                        }
-                    }
-                }
+                
+                self.actorsStore.createActor(name: movieCast[i].name,
+                                             bio: nil,
+                                             id: Double(movieCast[i].id),
+                                             imagePath:  movieCast[i].profile_path)
+                
             }
         }
         return actors
@@ -310,7 +295,7 @@ extension MovieStore {
     // MARK: GET Movie & TV Credits for Actor
     func fetchCreditsFor(actor: Int) {
         
-        let creditsRequest = "https://api.themoviedb.org/3/person/\(actor)/combined_credits?api_key=\(apiKey)&language=en-US"
+        let creditsRequest = "https://api.themoviedb.org/3/person/\(actor)/combined_credits?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
         AF.request( creditsRequest ).responseJSON { response in
             guard let json = response.data else { return }
             do {
@@ -358,7 +343,7 @@ extension MovieStore {
     func fetchDetailsForActor(id: Int ) {
         // https://developers.themoviedb.org/3/people/get-person-details
         
-        let detailsRequest = "https://api.themoviedb.org/3/person/\(id)?api_key=\(apiKey)&language=en-US"
+        let detailsRequest = "https://api.themoviedb.org/3/person/\(id)?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
         
         AF.request( detailsRequest ).responseJSON { response in
             guard let json = response.data else { return }
@@ -431,7 +416,7 @@ extension MovieStore {
         
         var movieSearchResults = [MovieSearchResults]()
         
-        let searchMovieRequest = "https://api.themoviedb.org/3/search/movie?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&query=\(search)&page=1&include_adult=false"
+        let searchMovieRequest = "https://api.themoviedb.org/3/search/movie?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&query=\(MovieStoreKey.apiKey.rawValue)&page=1&include_adult=false"
         
         AF.request( searchMovieRequest ).responseJSON { response in
             
@@ -477,7 +462,7 @@ extension MovieStore {
 extension MovieStore { 
     
     func getGenres() {
-        let genreRequest = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(apiKey)&language=en-US"
+        let genreRequest = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
         
         AF.request( genreRequest ).responseJSON { response in
             
@@ -524,7 +509,7 @@ extension MovieStore {
     
     func pullGenresFromServer() -> [Genre] {
         var fetchedGenres: [Genre] = []
-        let genreRequest = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(apiKey)&language=en-US"
+        let genreRequest = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
         AF.request( genreRequest ).responseJSON { response in
             
             guard let json = response.data else {
@@ -556,7 +541,7 @@ extension MovieStore {
     func fetchPurchaseMovieLinks(id: Int) {
         
         //        let request = "https://api.themoviedb.org/3/movie/\(id)/watch/providers?api_key=\(apiKey)"
-        let request = "https://api.themoviedb.org/3/movie/\(id)/watch/providers?api_key=\(apiKey)&watch_region=US"
+        let request = "https://api.themoviedb.org/3/movie/\(id)/watch/providers?api_key=\(MovieStoreKey.apiKey.rawValue)&watch_region=US"
         
         AF.request( request ).responseJSON { response in
             
@@ -584,5 +569,23 @@ extension MovieStore {
         }
     }
     
+    // Fetch and return an array of watch provider links
+    func extractWatchProvidersFor(id movieID: Int) -> PurchaseLink {
+        var links: PurchaseLink
+         
+        fetchPurchaseMovieLinks(id: movieID)
+        
+        
+        links = watchProviders
+        
+        return links
+    }
     
+    
+}
+
+
+enum MovieStoreKey: String {
+    case apiKey = "ebccbee67fef37cc7a99378c44af7d33" // API Key
+    case imageURL = "https://image.tmdb.org/t/p/original" // used as base for movie images
 }

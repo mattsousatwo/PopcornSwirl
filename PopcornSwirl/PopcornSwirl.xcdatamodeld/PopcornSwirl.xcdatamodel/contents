@@ -3,7 +3,7 @@
     <entity name="Actor" representedClassName="Actor" syncable="YES">
         <attribute name="biography" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="image" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="imagePath" optional="YES" attributeType="String" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
     <entity name="Cast" representedClassName="Cast" syncable="YES">
