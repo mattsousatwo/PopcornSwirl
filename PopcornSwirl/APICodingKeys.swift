@@ -16,7 +16,7 @@ struct Popular: Codable {
 }
  
 
-struct PopMovie: Codable, Identifiable {
+class PopMovie: Codable, Identifiable {
     public var id: Int
     public var title: String
     public var overview: String

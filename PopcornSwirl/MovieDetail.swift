@@ -11,10 +11,19 @@ import Combine
 
 struct MovieDetail: View {
     
-    @State private var showDesription: Bool = false
-    
+    // TMDB
     @ObservedObject private var movieStore = MovieStore()
     
+    // CoreData
+    var movieRatings = MovieRatingStore()
+    @State private var movieRating : Rating?
+
+    // Animation
+    @State private var showStarSlider: Bool = false
+    @State private var showFullOverview = false
+    @State private var showDesription: Bool = false
+    
+    // MovieDetail Properties
     var movieID = Int()
     var movieTitle = String()
     var genreIDs = [Int]()
@@ -23,31 +32,8 @@ struct MovieDetail: View {
     var rating = Double()
     var releaseDate = String()
 
-    var movieRatings = MovieRatingStore()
-    
-    
-    @State private var isFavorite: Bool = false
-    
-    @State private var showFullOverview = false
-    
-    
-    @State private var movieRating : Rating?
-    
-    @State private var showStarSlider: Bool = false
-    
-//    {
-//
-//
-//        return movieRatings.searchForRatingsFromMovie(id: movieID)
-//
-////        let x = movieRatings.getRatings(id: movieID)
-////        isFavorite = x.isFavorite
-////        return x
-//    }
-    
     var body: some View {
        
-        
         ZStack(alignment: .center) {
             // Background
             LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .top, endPoint: .bottom)
@@ -58,12 +44,17 @@ struct MovieDetail: View {
                 
                 ZStack {
                     
+                    
+                    
                     VStack(alignment: .leading) {
                         HStack(alignment: .bottom) {
                             
                             VStack {
+//                                Text("fetchItems: \(fetchItems.count)")
+                                
                                 // Movie Poster
                                 MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), rating: movieRating)
+
                                     
                                     .padding(.horizontal)
                                 
@@ -175,8 +166,6 @@ struct MovieDetail: View {
                         
                         PurchaseLinkBar(movieID: movieID)
                         
-                        
-                        PurchaseLinkButton(movieID: movieID)
                     } // V stack
                     
                     
@@ -226,9 +215,11 @@ struct MovieDetail: View {
     } // body
 } // Movie
 
-struct MovieDetail_Previews: PreviewProvider {
-    static var previews: some View {
-        MovieDetail(movieTitle: "Long movie title goes here ")
-    }
-}
+
+//
+//struct MovieDetail_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MovieDetail(movieTitle: "Long movie title goes here ")
+//    }
+//}
 

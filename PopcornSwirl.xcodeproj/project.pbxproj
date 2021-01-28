@@ -16,7 +16,6 @@
 		6071DBC325BDD69900521D4E /* Actor+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6071DBC125BDD69900521D4E /* Actor+CoreDataClass.swift */; };
 		6071DBC425BDD69900521D4E /* Actor+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6071DBC225BDD69900521D4E /* Actor+CoreDataProperties.swift */; };
 		6071DCE525A626ED00B948FD /* ScrollBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6071DCE425A626ED00B948FD /* ScrollBar.swift */; };
-		607F165825B61F01009A633C /* UIView+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607F165725B61F01009A633C /* UIView+EXT.swift */; };
 		60AB77C625BD16FB00D7F9F5 /* Image+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AB77C525BD16FB00D7F9F5 /* Image+EXT.swift */; };
 		60AB77CC25BD23F600D7F9F5 /* PurchaseLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AB77CB25BD23F600D7F9F5 /* PurchaseLinkButton.swift */; };
 		60B404AC25A161A500DD44F6 /* HeartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B404AB25A161A500DD44F6 /* HeartButton.swift */; };
@@ -76,7 +75,6 @@
 		6071DBC125BDD69900521D4E /* Actor+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Actor+CoreDataClass.swift"; sourceTree = "<group>"; };
 		6071DBC225BDD69900521D4E /* Actor+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Actor+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		6071DCE425A626ED00B948FD /* ScrollBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollBar.swift; sourceTree = "<group>"; };
-		607F165725B61F01009A633C /* UIView+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+EXT.swift"; sourceTree = "<group>"; };
 		60AB77C525BD16FB00D7F9F5 /* Image+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+EXT.swift"; sourceTree = "<group>"; };
 		60AB77CB25BD23F600D7F9F5 /* PurchaseLinkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseLinkButton.swift; sourceTree = "<group>"; };
 		60B404AB25A161A500DD44F6 /* HeartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartButton.swift; sourceTree = "<group>"; };
@@ -210,7 +208,6 @@
 			children = (
 				615524F92596C2150079D4EC /* View+EXT.swift */,
 				617B6E13251A937500BCF757 /* Colors+EXT.swift */,
-				607F165725B61F01009A633C /* UIView+EXT.swift */,
 				60AB77C525BD16FB00D7F9F5 /* Image+EXT.swift */,
 			);
 			name = "Extensions ";
@@ -427,7 +424,6 @@
 				617B6E16251AA0C300BCF757 /* Star.swift in Sources */,
 				6132294C251DAB7F00A84C62 /* SearchMovie.swift in Sources */,
 				60B404AC25A161A500DD44F6 /* HeartButton.swift in Sources */,
-				607F165825B61F01009A633C /* UIView+EXT.swift in Sources */,
 				617B6E14251A937500BCF757 /* Colors+EXT.swift in Sources */,
 				617B6E12251A625900BCF757 /* MovieDetail.swift in Sources */,
 				61C83ED9251A3DF50012019F /* AppDelegate.swift in Sources */,

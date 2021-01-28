@@ -52,11 +52,7 @@ extension ActorsStore {
             actor.name = name
             actor.id = id
             if let imagePath = imagePath {
-//                let asUIImage: UIImage = image.convertToUIImage()
-//                let imageAsData = asUIImage.jpegData(compressionQuality: 1.0)
-                
-                
-//                actor.image = imagePath
+                actor.imagePath = imagePath
             }
             if let bio = bio {
                 actor.biography = bio

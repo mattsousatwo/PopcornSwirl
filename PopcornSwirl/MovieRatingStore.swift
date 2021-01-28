@@ -49,13 +49,13 @@ extension MovieRatingStore {
         rating.type = type.rawValue
         
         //        rating.comment = comment
-        rating.comment = "Testing Comment"
+        rating.comment = "MovieID: \(id)"
         
         saveContext()
         
         ratings.append(rating)
         
-        print("* movieRating: \(rating)")
+        print(" * NEW MOVIE RATING * : \(rating)")
         return rating
         
     }
@@ -83,18 +83,29 @@ extension MovieRatingStore {
     
     // Search for movie in Ratings
     func searchForRatingsFromMovie(id: Int) -> Rating {
-        var rating: Rating
-        let ratingIsLoaded = ratings.contains(where: { $0.id == Double(id) })
-        print("rating is loaded: \(ratingIsLoaded)")
-        switch ratingIsLoaded {
-        case true: // Value is in ratings
-            rating = ratings.first(where: { $0.id == Double(id) })!
-        case false: // Value is not found - search || create
-            let d = findMovieRating(id: id)
-            rating = d!
+        
+//        fetchAllRatings()
+        var rating: Rating?
+        
+        rating = findMovieRating(id: id)
+        
+        if rating == nil {
+            print("SearchForRating: rating is not found")
+        } else {
+            print("SearchForRating: rating is FOUND")
         }
-        print("SearchForRating -> \(rating)")
-        return rating
+        
+        
+        
+        guard let unwrappedRating = rating else {
+            let newRating = createNewRating(id: id)
+            print("SearchForRating: CreatedRating -> \(newRating)")
+            return newRating
+        }
+
+        print("SearchForRating: unwrappedRating -> \(unwrappedRating)")
+        print("searchForRating - ratings count: \(ratings.count)")
+        return unwrappedRating
     }
     
     // fetch for specific rating
@@ -102,26 +113,25 @@ extension MovieRatingStore {
         var rating: Rating?
         
         let request: NSFetchRequest<Rating> = Rating.fetchRequest()
-        //        request.predicate = NSPredicate(format: "id = %ld AND type = %@", Double(id), MovieRatingType.movie.rawValue)
-        request.predicate = NSPredicate(format: "id = %ld", Double(id))
+//                request.predicate = NSPredicate(format: "id = %ld AND type = %@", Double(id), MovieRatingType.movie.rawValue)
+//        request.predicate = NSPredicate(format: "id = %i", id)
+        request.predicate = NSPredicate(format: "id = %i", id)
+//        request.predicate = NSPredicate(format: "id = 1")
         do {
             let result = try context.fetch(request)
-            ratings.append(contentsOf: result )
             
             if result.count != 0 {
                 for result in result {
                     if result.type == MovieRatingType.movie.rawValue &&
                         result.id == Double(id) {
                         rating = result
+                        
+                        ratings.append(result)
                     }
                 }
             }
         } catch {
             print(error)
-        }
-        
-        if rating == nil {
-            rating = createNewRating(id: id)
         }
         
         return rating
@@ -134,7 +144,7 @@ extension MovieRatingStore {
         let request: NSFetchRequest<Rating> = Rating.fetchRequest()
         
         for id in movieIDs {
-            request.predicate = NSPredicate(format: "id = %ld", id)
+            request.predicate = NSPredicate(format: "id = %i", id)
             do {
                 let result = try context.fetch(request)
                 if result.isEmpty == true {

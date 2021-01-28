@@ -32,3 +32,62 @@ class PopcornSwirlTests: XCTestCase {
     }
 
 }
+
+class RatingTests: XCTestCase {
+    
+    private var ratingStore = MovieRatingStore()
+    
+    func testIfDoublesAreBeingCreatedFromFetchingAll() throws {
+        
+        ratingStore.fetchAllRatings()
+        
+    }
+    
+    // See if creating a new rating will cause doubles to be created
+    func testIfSearchingForARatingWillCauseDoubles() throws {
+        
+        // Arrange
+        ratingStore.fetchAllRatings()
+        let ratingsCount = ratingStore.ratings.count
+        
+        // Act
+        let rating = ratingStore.searchForRatingsFromMovie(id: 1) 
+        print(rating)
+        
+        // Assert
+        XCTAssertEqual(ratingStore.ratings.count, ratingsCount)
+    }
+    
+    func testPreformance() throws {
+        self.measure {
+            
+        }
+    }
+    
+    
+    
+}
+
+
+
+class CastTests: XCTestCase {
+    
+    private let castStore = CastStore()
+    
+    func fetchAllCastMembersTest() throws {
+        // Arrange
+        castStore.fetchAllCastEntities()
+        
+        // Act
+        
+        
+        // Assert
+        
+        
+        
+    }
+    
+    
+    
+    
+}

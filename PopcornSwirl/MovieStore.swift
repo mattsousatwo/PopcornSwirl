@@ -585,6 +585,35 @@ extension MovieStore {
 }
 
 
+// Get IDs for movie
+extension MovieStore {
+    
+    func extractIDsFor(_ type: ScrollBarType) -> [Int] {
+        var ids: [Int] = []
+        
+        switch type {
+        case .popularMovie:
+            if popularMovies.count == 0 {
+                fetchPopularMovies()
+            }
+            
+            for movie in popularMovies {
+                ids.append(movie.id)
+            }
+            
+        default:
+            break
+        }
+        
+         return ids
+    }
+    
+    
+    
+    
+}
+
+
 enum MovieStoreKey: String {
     case apiKey = "ebccbee67fef37cc7a99378c44af7d33" // API Key
     case imageURL = "https://image.tmdb.org/t/p/original" // used as base for movie images

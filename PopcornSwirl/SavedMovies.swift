@@ -102,7 +102,8 @@ struct SavedRow: View {
                                                                         genreIDs: movie.genre_ids,
                                                                         movieOverview: movie.overview,
                                                                         posterPath: (movie.poster_path ?? ""),
-                                                                        rating: movie.vote_average), label: {
+                                                                        rating: movie.vote_average,
+                                                                        releaseDate: ""), label: {
                                 RemoteImage(url: MovieStoreKey.imageURL.rawValue + (movie.poster_path ?? "") ).aspectRatio(contentMode: .fill)
                                     .clipShape(RoundedRectangle(cornerRadius: 12.0))
                                     .frame(width: (geometry.size.width / 3)  ,
