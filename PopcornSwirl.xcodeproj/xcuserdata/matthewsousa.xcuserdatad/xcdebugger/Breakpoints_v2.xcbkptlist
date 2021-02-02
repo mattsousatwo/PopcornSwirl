@@ -210,64 +210,49 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "CCA2192A-DC0C-4C9C-88E5-63D6070265E4"
+            uuid = "244BD590-98E0-422B-AA67-F5420D856261"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PopcornSwirl/ScrollBar.swift"
+            filePath = "PopcornSwirl/HeartButton.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "250"
-            endingLineNumber = "250"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
             landmarkName = "body"
             landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "CCA2192A-DC0C-4C9C-88E5-63D6070265E4 - dc2ded4427266e06"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #4 (Swift.Int) -&gt; Swift.Optional&lt;Swift.Optional&lt;PopcornSwirl.ScrollNavLink&gt;&gt; in PopcornSwirl.bar.body.getter : some"
-                  moduleName = "PopcornSwirl"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewsousa/Documents/Developer/XCode%20DB%202020/PopcornSwirl/PopcornSwirl/ScrollBar.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "250"
-                  endingLineNumber = "250"
-                  offsetFromSymbolStart = "340">
-               </Location>
-               <Location
-                  uuid = "CCA2192A-DC0C-4C9C-88E5-63D6070265E4 - dc2ded4427266e06"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #4 (Swift.Int) -&gt; Swift.Optional&lt;Swift.Optional&lt;PopcornSwirl.ScrollNavLink&gt;&gt; in PopcornSwirl.bar.body.getter : some"
-                  moduleName = "PopcornSwirl"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewsousa/Documents/Developer/XCode%20DB%202020/PopcornSwirl/PopcornSwirl/ScrollBar.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "250"
-                  endingLineNumber = "250"
-                  offsetFromSymbolStart = "2200">
-               </Location>
-               <Location
-                  uuid = "CCA2192A-DC0C-4C9C-88E5-63D6070265E4 - 9e96ae47095c3ab9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (PopcornSwirl.Rating) -&gt; Swift.Bool in closure #4 (Swift.Int) -&gt; Swift.Optional&lt;Swift.Optional&lt;PopcornSwirl.ScrollNavLink&gt;&gt; in PopcornSwirl.bar.body.getter : some"
-                  moduleName = "PopcornSwirl"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewsousa/Documents/Developer/XCode%20DB%202020/PopcornSwirl/PopcornSwirl/ScrollBar.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "250"
-                  endingLineNumber = "250"
-                  offsetFromSymbolStart = "48">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "84D27ACF-EAA2-4488-A9ED-B488D9687447"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PopcornSwirl/MovieStore.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "637"
+            endingLineNumber = "637"
+            landmarkName = "extractIDsFor(_:id:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E1768789-A454-48AB-BBA7-A3E05FE80311"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PopcornSwirl/MovieStore.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "642"
+            endingLineNumber = "642"
+            landmarkName = "extractIDsFor(_:id:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -16,7 +16,7 @@ class MovieStore: ObservableObject {
     // Coredata
     let castStore = CastStore() // used to manage cast dict
     let actorsStore = ActorsStore() // used to manage the actors within cast list
-    
+    let ratingsStore = MovieRatingStore()
     
     // Movie Stores
     @Published var popularMovies = [PopMovie]() // all popular movies
@@ -312,8 +312,8 @@ extension MovieStore {
     }
     
     // Used to extract actor credits depending on type
-    enum CreditExtractionType {
-        case movie, tv
+    enum CreditExtractionType: String {
+        case movie = "movie", tv = "tv"
     }
     
     // Extract all credits depending on type
@@ -325,13 +325,13 @@ extension MovieStore {
         switch type {
         case .movie:
             for movie in actorCredits {
-                if movie.media_type == "movie" {
+                if movie.media_type == CreditExtractionType.movie.rawValue {
                     credits.append(movie)
                 }
             }
         case .tv:
             for series in actorCredits {
-                if series.media_type == "tv" {
+                if series.media_type == CreditExtractionType.tv.rawValue {
                     credits.append(series)
                 }
             }
@@ -588,7 +588,8 @@ extension MovieStore {
 // Get IDs for movie
 extension MovieStore {
     
-    func extractIDsFor(_ type: ScrollBarType) -> [Int] {
+    // Getting IDs being used to then fetch Ratings with
+    func extractIDsFor(_ type: ScrollBarType, id searchID: Int = 0 ) -> [Int] {
         var ids: [Int] = []
         
         switch type {
@@ -600,14 +601,86 @@ extension MovieStore {
             for movie in popularMovies {
                 ids.append(movie.id)
             }
+        case .upcommingMovie:
+            if upcomingMovies.count == 0 {
+                fetchUpcomingMovies()
+            }
+            for movie in upcomingMovies {
+                ids.append(movie.id)
+            }
+        case .recommendedMovie:
+            if recommendedMovies.count == 0 {
+                fetchRecommendedMoviesForMovie(id: searchID)
+            }
+            for movie in recommendedMovies {
+                ids.append(movie.id)
+            }
             
-        default:
-            break
+        case .actors:
+            
+            if movieCast.count == 0 {
+                
+                
+            }
+            
+        case .actorMovie:
+            if searchID != 0 {
+                if actorCredits.count == 0 {
+                    fetchCreditsFor(actor: searchID)
+                }
+                for actor in actorCredits {
+                    if actor.media_type == CreditExtractionType.movie.rawValue {
+                        ids.append(actor.id)
+                    }
+                }
+            }
+        case .actorTV:
+            if searchID != 0 {
+                if actorCredits.count == 0 {
+                    fetchCreditsFor(actor: searchID)
+                }
+                for credit in actorCredits {
+                    if credit.media_type == CreditExtractionType.tv.rawValue {
+                        ids.append(credit.id)
+                    }
+                }
+            }
         }
         
-         return ids
+        return ids
     }
     
+    // Fetching Ratings by bar type
+    func ratingsForBar(type: ScrollBarType, id searchID: Int = 0 ) -> [Rating] {
+        var ratings: [Rating] = []
+        
+        switch type {
+        case .popularMovie:
+            let popularMovieRatingIDs = extractIDsFor(.popularMovie)
+            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: popularMovieRatingIDs)
+        case .upcommingMovie:
+            let upcomingMovieRatingIDs = extractIDsFor(.upcommingMovie)
+            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: upcomingMovieRatingIDs)
+        case .recommendedMovie:
+            let reccomendedMovieRatingIDs = extractIDsFor(.recommendedMovie, id: searchID)
+            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: reccomendedMovieRatingIDs)
+            
+        case .actors:
+            
+            break
+            
+        case .actorMovie:
+            let actorMovieIDs = extractIDsFor(.actorMovie, id: searchID)
+            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: actorMovieIDs)
+            
+        case .actorTV: // MARK: Not working 
+            let actorTVSeriesIDs = extractIDsFor(.actorTV, id: searchID)
+            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: actorTVSeriesIDs)
+        }
+        
+        return ratings
+        
+    }
     
     
     

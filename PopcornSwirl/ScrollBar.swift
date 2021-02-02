@@ -34,11 +34,19 @@ struct ScrollBar: View {
         print("PopularMovieIDs: Start")
         switch type {
         case .popularMovie:
-            let popularMovieIDs = movieStore.extractIDsFor(.popularMovie)
-            print("PopularMovieIDs: \(popularMovieIDs)")
-            return ratingsStore.fetchAllRatingsUsingIDs(in: popularMovieIDs)
-        default:
+            return movieStore.ratingsForBar(type: .popularMovie)
+        case .upcommingMovie:
+            return movieStore.ratingsForBar(type: .upcommingMovie)
+        case .recommendedMovie:
+            return movieStore.ratingsForBar(type: .recommendedMovie, id: id)
+            
+        case .actors:
             break
+            
+        case .actorMovie:
+            return movieStore.ratingsForBar(type: .actorMovie, id: id)
+        case .actorTV:
+            return movieStore.ratingsForBar(type: .actorTV, id: id)
         }
         return nil
     } 
@@ -138,7 +146,7 @@ struct bar: View {
     }
 
     @ObservedObject var movieStore = MovieStore()
-
+    
     var body: some View {
 
         
@@ -146,35 +154,28 @@ struct bar: View {
             case .actorMovie:
                 ForEach(0..<actorMovies.count, id: \.self) { i in
                     if i <= 9 {
-                        if let moviePosterPath = actorMovies[i].poster_path,
-                           let movieTitle = actorMovies[i].title {
- 
-                            
                         
-                            NavigationLink(destination: MovieDetail(movieID: actorMovies[i].id,
-                                                                    movieTitle: movieTitle,
-                                                                    genreIDs: actorMovies[i].genre_ids,
-                                                                    movieOverview: actorMovies[i].overview,
-                                                                    posterPath: moviePosterPath,
-                                                                    rating: actorMovies[i].vote_average,
-                                                                    releaseDate: actorMovies[i].release_date ?? ""),
-                                           label: {
-                                            LabeledMovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + moviePosterPath),
-                                                             title: actorMovies[i].character)
-                                            
-                                           })
-                            
-                            
-                            
-                            
-                        } // if let
+                        if let ratings = ratings {
+                            if let actorMovieRating = ratings.first(where: { $0.uuid == Double(actorMovies[i].id) }) {
+                                
+                                if let moviePosterPath = actorMovies[i].poster_path,
+                                   let movieTitle = actorMovies[i].title {
+                                    
+                                    LabeledScrollNavLink(imagePath: moviePosterPath,
+                                                         actorID: actorMovies[i].id,
+                                                         title: movieTitle,
+                                                         subtitle: actorMovies[i].character,
+                                                         rating: actorMovieRating)
+                                }
+                                
+                                
+                                
+                            }
+                        }
+                   
                     } // if i
+              
                 } // For
-            
-//                .onAppear {
-//                    let actorMovieIDs = actorMovies.map({ $0.id })
-//                    ratings = ratingStore.fetchAllRatingsUsingIDs(in: actorMovieIDs)
-//                }
                 
             case .actorTV:
                 
@@ -183,19 +184,46 @@ struct bar: View {
                         if i <= 9 {
                             
                             
-                            NavigationLink(destination: MovieDetail(movieID: actorTVSeries[i].id,
-                                                                    movieTitle: actorTVSeries[i].title ?? "No Title",
-                                                                    genreIDs: actorTVSeries[i].genre_ids,
-                                                                    movieOverview: actorTVSeries[i].overview,
-                                                                    posterPath: actorTVSeries[i].poster_path ?? "",
-                                                                    rating: actorTVSeries[i].vote_average,
-                                                                    releaseDate: actorTVSeries[i].release_date ?? ""),
-                                           label: {
-                                            
-                                            MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (actorTVSeries[i].poster_path ?? "") ))
-                                            //                                        LabeledMovieCard(url: URL(string: movieStore.imageURL + (actorTVSeries[i].poster_path ?? "")),
-                                            //                                                         subtitle: actorTVSeries[i].character)
-                                           })
+                            
+                            // MARK: Not working 
+                            if let ratings = ratings {
+                                if let actorTVSeriesRating = ratings.first(where: { $0.uuid == Double(actorTVSeries[i].id) }) {
+
+
+                                    ScrollNavLink(movieID: actorTVSeries[i].id,
+                                                  title: actorTVSeries[i].title ?? "",
+                                                  genreIDs: actorTVSeries[i].genre_ids,
+                                                  overview: actorTVSeries[i].overview,
+                                                  posterPath: actorTVSeries[i].poster_path ?? "",
+                                                  voteAverage: actorTVSeries[i].vote_average,
+                                                  releaseDate: actorTVSeries[i].release_date ?? "",
+                                                  rating: actorTVSeriesRating)
+                                }
+                            }
+
+
+
+        
+                            
+                            
+                            
+//
+//                            NavigationLink(destination: MovieDetail(movieID: actorTVSeries[i].id,
+//                                                                    movieTitle: actorTVSeries[i].title ?? "No Title",
+//                                                                    genreIDs: actorTVSeries[i].genre_ids,
+//                                                                    movieOverview: actorTVSeries[i].overview,
+//                                                                    posterPath: actorTVSeries[i].poster_path ?? "",
+//                                                                    rating: actorTVSeries[i].vote_average,
+//                                                                    releaseDate: actorTVSeries[i].release_date ?? ""),
+//                                           label: {
+//
+//                                            MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (actorTVSeries[i].poster_path ?? "") ))
+//                                            //                                        LabeledMovieCard(url: URL(string: movieStore.imageURL + (actorTVSeries[i].poster_path ?? "")),
+//                                            //                                                         subtitle: actorTVSeries[i].character)
+//                                           })
+//
+//
+                            
                             
                         }
                     }
@@ -215,6 +243,14 @@ struct bar: View {
                     ForEach(0..<actorImages.count, id: \.self) { i in
                         if i <= 9 {
                             if let imagePath = actorImages[ cast[i].id ] {
+//
+//                                LabeledScrollNavLink(imagePath: imagePath,
+//                                                     actorID: cast[i].id,
+//                                                     name: cast[i].name,
+//                                                     subtitle: cast[i].character,
+//                                                     rating: <#T##Rating?#>)
+//
+                                
                                 
                                 NavigationLink(
                                     destination: ActorDetail(image: MovieStoreKey.imageURL.rawValue + imagePath,
@@ -247,31 +283,29 @@ struct bar: View {
                 
                 ForEach(0..<popularMovies.count, id: \.self) { i in
                     if popularMovies.count != 0 {
-                        if let movieRating = ratings?.first(where: { $0.id == popularMovies[i].id } ) { 
+                        
+                        
+                        if let ratings = ratings {
+                            
+                            if let movieRating = ratings.first(where: { $0.uuid == Double(popularMovies[i].id) } ) {
+                                
+                                
+                                ScrollNavLink(movieID: popularMovies[i].id,
+                                              title: popularMovies[i].title,
+                                              genreIDs: popularMovies[i].genre_ids,
+                                              overview: popularMovies[i].overview,
+                                              posterPath: popularMovies[i].poster_path,
+                                              voteAverage: popularMovies[i].vote_average,
+                                              releaseDate: popularMovies[i].release_date,
+                                              rating: movieRating)
+                            }
                             
                             
-                            ScrollNavLink(movieID: popularMovies[i].id,
-                                          title: popularMovies[i].title,
-                                          genreIDs: popularMovies[i].genre_ids,
-                                          overview: popularMovies[i].overview,
-                                          posterPath: popularMovies[i].poster_path,
-                                          voteAverage: popularMovies[i].vote_average,
-                                          releaseDate: popularMovies[i].release_date,
-                                          rating: movieRating)
                         }
-
-                        
-                        
                         
                         
                     }
                 }
-                
-//                .onAppear(perform: {
-//                    let popularMovieIDs = popularMovies.map({ $0.id })
-//                    ratings = ratingStore.fetchAllRatingsUsingIDs(in: popularMovieIDs)
-//                })
-//
                 .animation(.default)
                 
             // MARK: UPCOMMING MOVIE -
@@ -279,55 +313,50 @@ struct bar: View {
                 ForEach(0..<upcomingMovies.count, id: \.self) { i in
                     if upcomingMovies.count != 0 {
                         
-                        NavigationLink(destination: MovieDetail(movieID: upcomingMovies[i].id,
-                                                                movieTitle: upcomingMovies[i].title,
-                                                                genreIDs: upcomingMovies[i].genre_ids,
-                                                                movieOverview: upcomingMovies[i].overview,
-                                                                posterPath: upcomingMovies[i].poster_path ?? "",
-                                                                rating: upcomingMovies[i].vote_average,
-                                                                releaseDate: upcomingMovies[i].release_date)  ) {
-                            // Label
-                            MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (upcomingMovies[i].poster_path ?? "") ))
+                        if let ratings = ratings {
+                            if let upcomingMovieRating = ratings.first(where: { $0.uuid == Double(upcomingMovies[i].id) } ) {
+                                
+                                ScrollNavLink(movieID: upcomingMovies[i].id,
+                                              title: upcomingMovies[i].title,
+                                              genreIDs: upcomingMovies[i].genre_ids,
+                                              overview: upcomingMovies[i].overview,
+                                              posterPath: upcomingMovies[i].poster_path ?? "",
+                                              voteAverage: upcomingMovies[i].vote_average,
+                                              releaseDate: upcomingMovies[i].release_date,
+                                              rating: upcomingMovieRating)
+                                
+                            }
                         }
-
+                        
                     }
                 }
                 
-//                .onAppear(perform: {
-//                    let upcommingMovieIDs = upcomingMovies.map({ $0.id })
-//                    ratings = ratingStore.fetchAllRatingsUsingIDs(in: upcommingMovieIDs)
-//                })
                 .animation(.default)
                 
             // MARK: RECOMMENDED MOVIE -
             case .recommendedMovie:
                 ForEach(0..<recommendedMovies.count, id: \.self) { i in
                     if recommendedMovies.count != 0 {
-                        if let releaseDate = recommendedMovies[i].release_date {
-                            
-                            
-                            
-                           
-                            
-                            NavigationLink(destination: MovieDetail(movieID: recommendedMovies[i].id,
-                                                                    movieTitle: recommendedMovies[i].title,
-                                                                    genreIDs: recommendedMovies[i].genre_ids,
-                                                                    movieOverview: recommendedMovies[i].overview,
-                                                                    posterPath: recommendedMovies[i].poster_path ?? "",
-                                                                    rating: recommendedMovies[i].vote_average,
-                                                                    releaseDate: releaseDate)  ) {
-                                // Label
-                                MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (recommendedMovies[i].poster_path ?? "") ))
-                                //                        RemotePoster(url: movieStore.imageURL + (recommendedMovies[i].poster_path ?? "") )
+                        
+                        if let ratings = ratings {
+                            if let reccomendedMovieRating = ratings.first(where: { $0.uuid == Double(recommendedMovies[i].id) }) {
+                                if let releaseDate = recommendedMovies[i].release_date {
+                                    ScrollNavLink(movieID: recommendedMovies[i].id,
+                                                  title: recommendedMovies[i].title,
+                                                  genreIDs: recommendedMovies[i].genre_ids,
+                                                  overview: recommendedMovies[i].overview,
+                                                  posterPath: recommendedMovies[i].poster_path ?? "",
+                                                  voteAverage: recommendedMovies[i].vote_average,
+                                                  releaseDate: releaseDate,
+                                                  rating: reccomendedMovieRating)
+                                }
                             }
                         }
+
+                        
                     }
                 }
-                
-//                .onAppear(perform: {
-//                    let recommendedMovieIDs = recommendedMovies.map({ $0.id })
-//                    ratings = ratingStore.fetchAllRatingsUsingIDs(in: recommendedMovieIDs)
-//                })
+
                 .animation(.default)
             } // switch
             
@@ -345,117 +374,6 @@ struct ScrollBar_Preview: PreviewProvider {
     }
 }
 
-
-
-struct ActorScrollBar: View {
-    var body: some View {
-        Text("Hello world")
-    }
-}
-
-enum MovieBarType: String  {
-    case popularMovie = "Popular"
-    case upcommingMovie = "Upcomming"
-    case recommendedMovie = "Recommended"
-}
-
-struct MovieScrollBar: View {
-    
-    @ObservedObject var movieStore = MovieStore()
-    
-    var type: MovieBarType
-    
-    var id: Int
-    
-    @State var ratings: [Rating]?
-    var ratingStore = MovieRatingStore()
-    
-    var popularMovies : [PopMovie] {
-        return movieStore.extractPopularMovies()
-    }
-
-    private var recommendedMovies: [RecommendedMovie] {
-        return movieStore.extractRecomendedMovies(id: id)
-    }
-
-    private var upcomingMovies: [UpcomingMovie] {
-        return movieStore.extractUpcomingMovies()
-    }
-    
-    
-    var body: some View {
-    
-        switch type {
-        case .popularMovie:
-            
-            ForEach(0..<popularMovies.count, id: \.self) { i in
-                if popularMovies.count != 0 {
-//                    if let ratings = ratings {
-//                        let aID = popularMovies[i].id
-//                        if let movieRating = ratings.first(where: { $0.id == aID }) {
-//
-//                        }
-//                    }
-                    
-                    ScrollNavLink(movieID: popularMovies[i].id,
-                                  title: popularMovies[i].title,
-                                  genreIDs: popularMovies[i].genre_ids,
-                                  overview: popularMovies[i].overview,
-                                  posterPath: popularMovies[i].poster_path,
-                                  voteAverage: popularMovies[i].vote_average,
-                                  releaseDate: popularMovies[i].release_date,
-                                  rating: nil)
-                }
-            }
-            .animation(.default)
-            .onAppear(perform: {
-                let popularMovieIDs = popularMovies.map({ $0.id })
-                ratings = ratingStore.fetchAllRatingsUsingIDs(in: popularMovieIDs)
-            })
-            
-            
-        case .upcommingMovie:
-            
-            ForEach(0..<upcomingMovies.count, id: \.self) { i in
-                if upcomingMovies.count != 0 {
-                    ScrollNavLink(movieID: upcomingMovies[i].id,
-                                  title: upcomingMovies[i].title,
-                                  genreIDs: upcomingMovies[i].genre_ids,
-                                  overview: upcomingMovies[i].overview,
-                                  posterPath: upcomingMovies[i].poster_path ?? "",
-                                  voteAverage: upcomingMovies[i].vote_average,
-                                  releaseDate: upcomingMovies[i].release_date,
-                                  rating: nil)
-                }
-            }
-            .animation(.default)
-            
-        case .recommendedMovie:
-            
-            ForEach(0..<recommendedMovies.count, id: \.self) { i in
-                if let releaseDate = recommendedMovies[i].release_date {
-                    ScrollNavLink(movieID: recommendedMovies[i].id,
-                                  title: recommendedMovies[i].title,
-                                  genreIDs: recommendedMovies[i].genre_ids,
-                                  overview: recommendedMovies[i].overview,
-                                  posterPath: recommendedMovies[i].poster_path ?? "",
-                                  voteAverage: recommendedMovies[i].vote_average,
-                                  releaseDate: releaseDate,
-                                  rating: nil)
-                    
-                    
-                }
-            }
-            .animation(.default)
-            
-        }
-        
-        
-        
-        
-        
-    }
-}
 
 
 // Navigation Link for Scroll Bar
@@ -485,6 +403,32 @@ struct ScrollNavLink: View {
                       rating: rating)
         }
         
+        
+    }
+}
+
+
+struct LabeledScrollNavLink: View {
+    
+    var imagePath: String
+    var actorID: Int
+    var title: String
+    var subtitle: String
+    var rating: Rating?
+    
+    var body: some View {
+        
+        
+        if let rating = rating {
+            
+            NavigationLink(destination: ActorDetail(image: MovieStoreKey.imageURL.rawValue + imagePath,
+                                                    actorID: actorID,
+                                                    name: title,
+                                                    isFavorite: rating.isFavorite)) {
+                LabeledMovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + imagePath),
+                                 title: title, subtitle: subtitle, rating: rating)
+            }
+        }
         
     }
 }

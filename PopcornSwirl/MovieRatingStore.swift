@@ -43,7 +43,7 @@ extension MovieRatingStore {
         
         let rating = Rating(context: context)
         
-        rating.id = Double(id)
+        rating.uuid = Double(id)
         rating.isFavorite = isFavorite
         
         rating.type = type.rawValue
@@ -115,7 +115,7 @@ extension MovieRatingStore {
         let request: NSFetchRequest<Rating> = Rating.fetchRequest()
 //                request.predicate = NSPredicate(format: "id = %ld AND type = %@", Double(id), MovieRatingType.movie.rawValue)
 //        request.predicate = NSPredicate(format: "id = %i", id)
-        request.predicate = NSPredicate(format: "id = %i", id)
+        request.predicate = NSPredicate(format: "uuid = %i", id)
 //        request.predicate = NSPredicate(format: "id = 1")
         do {
             let result = try context.fetch(request)
@@ -123,7 +123,7 @@ extension MovieRatingStore {
             if result.count != 0 {
                 for result in result {
                     if result.type == MovieRatingType.movie.rawValue &&
-                        result.id == Double(id) {
+                        result.uuid == Double(id) {
                         rating = result
                         
                         ratings.append(result)
@@ -144,7 +144,7 @@ extension MovieRatingStore {
         let request: NSFetchRequest<Rating> = Rating.fetchRequest()
         
         for id in movieIDs {
-            request.predicate = NSPredicate(format: "id = %i", id)
+            request.predicate = NSPredicate(format: "uuid = %i", id)
             do {
                 let result = try context.fetch(request)
                 if result.isEmpty == true {

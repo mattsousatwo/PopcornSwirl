@@ -18,7 +18,7 @@ extension Rating {
     }
 
     @NSManaged public var comment: String?
-    @NSManaged public var id: Double 
+    @NSManaged public var uuid: Double 
     @NSManaged public var isFavorite: Bool
     @NSManaged public var rating: Double
     @NSManaged public var type: String?

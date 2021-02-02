@@ -39,14 +39,14 @@ struct HeartButton: View {
                 rating.isFavorite = true
                 rating.comment = "Heart Button - pressed @ 3:37"
                 movieRatingStore.saveContext()
-                print("HeartButton - id: \(rating.id), isFavorite: \(rating.isFavorite)")
+                print("HeartButton - id: \(rating.uuid), isFavorite: \(rating.isFavorite)")
             case .fill:
                 self.type = .empty
                 print("Unlike Button Pressed")
                 guard let rating = rating else { return }
                 rating.isFavorite = false
                 movieRatingStore.saveContext()
-                print("HeartButton - id: \(rating.id), isFavorite: \(rating.isFavorite)")
+                print("HeartButton - id: \(rating.uuid), isFavorite: \(rating.isFavorite)")
             }
         }, label: {
             gradient.mask(
