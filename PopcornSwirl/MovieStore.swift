@@ -619,9 +619,14 @@ extension MovieStore {
         case .actors:
             
             if movieCast.count == 0 {
-                
-                
+                fetchMovieCreditsForMovie(id: searchID)
             }
+            for i in 0..<movieCast.count {
+                if i <= 24 {
+                    ids.append(movieCast[i].id)
+                }
+            }
+            
             
         case .actorMovie:
             if searchID != 0 {
@@ -667,7 +672,8 @@ extension MovieStore {
             
         case .actors:
             
-            break
+            let actorsRatingIDs = extractIDsFor(.actors, id: searchID)
+            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: actorsRatingIDs)
             
         case .actorMovie:
             let actorMovieIDs = extractIDsFor(.actorMovie, id: searchID)

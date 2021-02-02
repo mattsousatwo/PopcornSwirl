@@ -30,8 +30,7 @@ struct ScrollBar: View {
     
     var id: Int = 0
     
-    var ratings: [Rating]? {
-        print("PopularMovieIDs: Start")
+    var ratings: [Rating] {
         switch type {
         case .popularMovie:
             return movieStore.ratingsForBar(type: .popularMovie)
@@ -39,16 +38,13 @@ struct ScrollBar: View {
             return movieStore.ratingsForBar(type: .upcommingMovie)
         case .recommendedMovie:
             return movieStore.ratingsForBar(type: .recommendedMovie, id: id)
-            
         case .actors:
-            break
-            
+            return movieStore.ratingsForBar(type: .actors, id: id)
         case .actorMovie:
             return movieStore.ratingsForBar(type: .actorMovie, id: id)
         case .actorTV:
             return movieStore.ratingsForBar(type: .actorTV, id: id)
         }
-        return nil
     } 
      
     var body: some View {
@@ -183,9 +179,6 @@ struct bar: View {
                     ForEach(0..<actorTVSeries.count, id: \.self) { i in
                         if i <= 9 {
                             
-                            
-                            
-                            // MARK: Not working 
                             if let ratings = ratings {
                                 if let actorTVSeriesRating = ratings.first(where: { $0.uuid == Double(actorTVSeries[i].id) }) {
 
@@ -202,35 +195,10 @@ struct bar: View {
                             }
 
 
-
-        
-                            
-                            
-                            
-//
-//                            NavigationLink(destination: MovieDetail(movieID: actorTVSeries[i].id,
-//                                                                    movieTitle: actorTVSeries[i].title ?? "No Title",
-//                                                                    genreIDs: actorTVSeries[i].genre_ids,
-//                                                                    movieOverview: actorTVSeries[i].overview,
-//                                                                    posterPath: actorTVSeries[i].poster_path ?? "",
-//                                                                    rating: actorTVSeries[i].vote_average,
-//                                                                    releaseDate: actorTVSeries[i].release_date ?? ""),
-//                                           label: {
-//
-//                                            MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (actorTVSeries[i].poster_path ?? "") ))
-//                                            //                                        LabeledMovieCard(url: URL(string: movieStore.imageURL + (actorTVSeries[i].poster_path ?? "")),
-//                                            //                                                         subtitle: actorTVSeries[i].character)
-//                                           })
-//
-//
-                            
                             
                         }
                     }
-//                    .onAppear {
-//                        let actorTVSeriesIDs = actorTVSeries.map{( $0.id )}
-//                        ratings = ratingStore.fetchAllRatingsUsingIDs(in: actorTVSeriesIDs)
-//                    }
+
                     .animation(.default)
                 }
                 
@@ -242,37 +210,25 @@ struct bar: View {
                 if actorImages.count != 0 {
                     ForEach(0..<actorImages.count, id: \.self) { i in
                         if i <= 9 {
-                            if let imagePath = actorImages[ cast[i].id ] {
-//
-//                                LabeledScrollNavLink(imagePath: imagePath,
-//                                                     actorID: cast[i].id,
-//                                                     name: cast[i].name,
-//                                                     subtitle: cast[i].character,
-//                                                     rating: <#T##Rating?#>)
-//
-                                
-                                
-                                NavigationLink(
-                                    destination: ActorDetail(image: MovieStoreKey.imageURL.rawValue + imagePath,
-                                                             actorID: cast[i].id,
-                                                             name: cast[i].name,
-                                                             isFavorite: false),   // Get Coredata Rating
-                                    label: {
+
+                            
+                            if let ratings = ratings {
+                                if let actorRating = ratings.first(where: { $0.uuid == Double(cast[i].id) }) {
+                                    if let imagePath = actorImages[ cast[i].id ] {
                                         
-                                        LabeledMovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + imagePath),
-                                                         title: cast[i].name,
-                                                         subtitle: cast[i].character)
-                                    })
-                                
-                            } // imagePath
+                                        LabeledScrollNavLink(imagePath: imagePath,
+                                                             actorID: cast[i].id,
+                                                             title: cast[i].name,
+                                                             subtitle: cast[i].character,
+                                                             rating: actorRating)
+                                    }
+                                }
+                            }
+
+                            
                         } // i <= 9
                     } // for
-                    
-//                    .onAppear(perform: {
-//                        let actorIDs = actorImages.map({ $0.key })
-//                        ratings = ratingStore.fetchAllRatingsUsingIDs(in: actorIDs)
-//
-//                    })
+
                     .animation(.default)
                 } // if
             
@@ -407,7 +363,7 @@ struct ScrollNavLink: View {
     }
 }
 
-
+// Navigation Link with 2 labels
 struct LabeledScrollNavLink: View {
     
     var imagePath: String
