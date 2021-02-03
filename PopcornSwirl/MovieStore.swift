@@ -597,7 +597,6 @@ extension MovieStore {
             if popularMovies.count == 0 {
                 fetchPopularMovies()
             }
-            
             for movie in popularMovies {
                 ids.append(movie.id)
             }
@@ -662,26 +661,23 @@ extension MovieStore {
         switch type {
         case .popularMovie:
             let popularMovieRatingIDs = extractIDsFor(.popularMovie)
-            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: popularMovieRatingIDs)
+            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: popularMovieRatingIDs, predicate: .movie)
         case .upcommingMovie:
             let upcomingMovieRatingIDs = extractIDsFor(.upcommingMovie)
-            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: upcomingMovieRatingIDs)
+            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: upcomingMovieRatingIDs, predicate: .movie)
         case .recommendedMovie:
             let reccomendedMovieRatingIDs = extractIDsFor(.recommendedMovie, id: searchID)
-            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: reccomendedMovieRatingIDs)
+            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: reccomendedMovieRatingIDs, predicate: .movie)
             
         case .actors:
-            
             let actorsRatingIDs = extractIDsFor(.actors, id: searchID)
-            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: actorsRatingIDs)
-            
+            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: actorsRatingIDs, predicate: .actor)
         case .actorMovie:
             let actorMovieIDs = extractIDsFor(.actorMovie, id: searchID)
-            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: actorMovieIDs)
-            
+            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: actorMovieIDs, predicate: .movie)
         case .actorTV: // MARK: Not working 
             let actorTVSeriesIDs = extractIDsFor(.actorTV, id: searchID)
-            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: actorTVSeriesIDs)
+            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: actorTVSeriesIDs, predicate: .tv)
         }
         
         return ratings

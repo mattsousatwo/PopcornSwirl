@@ -163,9 +163,6 @@ struct bar: View {
                                                          subtitle: actorMovies[i].character,
                                                          rating: actorMovieRating)
                                 }
-                                
-                                
-                                
                             }
                         }
                    

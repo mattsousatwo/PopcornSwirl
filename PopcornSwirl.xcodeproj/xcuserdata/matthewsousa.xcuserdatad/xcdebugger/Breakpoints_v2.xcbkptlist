@@ -233,8 +233,8 @@
             filePath = "PopcornSwirl/MovieStore.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "642"
-            endingLineNumber = "642"
+            startingLineNumber = "641"
+            endingLineNumber = "641"
             landmarkName = "extractIDsFor(_:id:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -249,9 +249,25 @@
             filePath = "PopcornSwirl/MovieStore.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "647"
-            endingLineNumber = "647"
+            startingLineNumber = "646"
+            endingLineNumber = "646"
             landmarkName = "extractIDsFor(_:id:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3C77A803-28F5-4FC3-8E18-B55F272F047E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PopcornSwirl/MovieRatingStore.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
+            landmarkName = "fetchAllRatingsUsingIDs(in:predicate:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

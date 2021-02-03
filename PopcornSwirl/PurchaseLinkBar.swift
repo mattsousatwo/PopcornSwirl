@@ -13,23 +13,26 @@ struct PurchaseLinkBar: View {
     @ObservedObject private var store = MovieStore()
     
     // Main Purchase Link
-    private var links: PurchaseLink {
+    private var links: PurchaseLink? {
         return store.extractWatchProvidersFor(id: movieID)
     }
     // Purchase Link with flatrate: Free?
     private var flatrate: [Provider]? {
+        guard let links = links else { return nil }
         guard let rateProvider = links.flatrate else { return nil }
         print("Flatrate.count: \(rateProvider.count)")
         return rateProvider
     }
     // Purchase Link to Buy
     private var buy: [Provider]? {
+        guard let links = links else { return nil }
         guard let buyProvider = links.buy else { return nil }
         print("BuyProvider.count: \(buyProvider.count)")
         return buyProvider
     }
     // Purchase Link to rent
     private var rent: [Provider]? {
+        guard let links = links else { return nil }
         guard let rentProvider = links.rent else { return nil }
         return rentProvider
     }
@@ -38,37 +41,33 @@ struct PurchaseLinkBar: View {
     var body: some View {
         
         
-        HStack {
-            Text("Flatrate").font(.system(.title, design: .rounded)).bold()
-                .foregroundColor(.pGray3)
-                .padding()
-            
-            Spacer()
-        }
-        
         if let flatrate = flatrate {
+            HStack {
+                Text("Flatrate").font(.system(.title, design: .rounded)).bold()
+                    .foregroundColor(.pGray3)
+                    .padding(.horizontal)
+                
+                Spacer()
+            }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(0..<flatrate.count, id: \.self) { i in
                         PurchaseLinkLabel(imageAdress: flatrate[i].logoPath)
                     }
                 }
-                .padding()
+                .padding(.horizontal)
             }
         }
         
         
-        
-        
-        HStack {
-            Text("Buy").font(.system(.title, design: .rounded)).bold()
-                .foregroundColor(.pGray3)
-                .padding()
-            
-            Spacer()
-        }
-        
         if let buy = buy {
+            HStack {
+                Text("Buy").font(.system(.title, design: .rounded)).bold()
+                    .foregroundColor(.pGray3)
+                    .padding(.horizontal)
+                
+                Spacer()
+            }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(0..<buy.count, id: \.self) { i in
@@ -76,23 +75,18 @@ struct PurchaseLinkBar: View {
                         
                     }
                 }
-                .padding()
+                .padding(.horizontal)
             }
-            
         }
         
-        
-        
-        
-        HStack {
-            Text("Rent").font(.system(.title, design: .rounded)).bold()
-                .foregroundColor(.pGray3)
-                .padding()
-            
-            Spacer()
-        }
         
         if let rent = rent {
+            HStack {
+                Text("Rent").font(.system(.title, design: .rounded)).bold()
+                    .foregroundColor(.pGray3)
+                    .padding(.horizontal)
+                Spacer()
+            }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(0..<rent.count, id: \.self) { i in
@@ -100,7 +94,7 @@ struct PurchaseLinkBar: View {
                     }
                     
                 }
-                .padding()
+                .padding(.horizontal)
             }
         }
         

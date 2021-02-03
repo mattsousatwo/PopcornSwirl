@@ -16,76 +16,77 @@ struct Home: View {
     @ObservedObject private var genreStore = GenreStore()
     @ObservedObject var movieStore = MovieStore()
     
-
-    var body: some View {
-                
-        NavigationView {
     
-            ZStack {
+    var body: some View {
+        
+        NavigationView {
             
+            ZStack {
+                
                 LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .top, endPoint: .bottom).edgesIgnoringSafeArea(.vertical)
                 
                 ScrollView(.vertical, showsIndicators: false ) {
-                
-                // MARK: - POPULAR MOVIES STACK
+                    
+                    // MARK: - POPULAR MOVIES STACK
                     
                     VStack(spacing: 20) {
                         
                         
                         ScrollBar(type: .popularMovie)
-
-
-                    // MARK: - UPCOMING MOVIES STACK
+                        
+                        
+                        // MARK: - UPCOMING MOVIES STACK
                         
                         ScrollBar(type: .upcommingMovie)
                         
                         
-                } // VStack
-
+                    } // VStack
+                    
                     .navigationBarTitle("Home", displayMode: .inline)
-
-            } // scroll
+                    
+                } // scroll
+                
+            } // Z Stack
             
-        } // Z Stack
-
-    } // Nav
+        } // Nav
         
-    .onAppear() {
-        
-        // TMDB
-        movieStore.getGenres()
-
-        //MARK: CoreData -
-        genreStore.loadAllGenres()
-        
-        
-
-        
-        
-        
-        let actorsStore = ActorsStore()
-        actorsStore.deleteAllSavedActors()
-        
-        let castStore = CastStore()
-        castStore.deleteAll()
-        
-        
-        // MARK: Can put below in a test -
-        
+        .onAppear() {
+            
+            // TMDB
+            movieStore.getGenres()
+            
+            //MARK: CoreData -
+            genreStore.loadAllGenres()
+            
+            
+            
+            
+            
+            
+            let actorsStore = ActorsStore()
+            actorsStore.deleteAllSavedActors()
+            
+            let castStore = CastStore()
+            castStore.deleteAll()
+            
+            
+            // MARK: Can put below in a test -
+            
 //        movieRatings.deleteAllMovieRatings()
             movieRatings.fetchAllRatings()
-        let search = movieRatings.searchForRatingsFromMovie(id: 1)
-        
-        search.comment = "Comment @ 11:12AM"
-        search.rating = 5.0
-        search.isFavorite = true
-        movieRatings.saveContext()
-        
-        
-        
-        
-        
-    }
+            let search = movieRatings.searchForRatingsFromMovie(id: 1)
+            
+            search.comment = "Comment @ 11:12AM"
+            search.rating = 5.0
+            search.isFavorite = true
+            search.type = MovieRatingType.movie.rawValue
+            movieRatings.saveContext()
+            
+            
+            
+            
+            
+        }
         
     } // body
 }

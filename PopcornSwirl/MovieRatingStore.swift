@@ -139,16 +139,19 @@ extension MovieRatingStore {
     
     
     // Fetch Ratings for an array of movieIDs
-    func fetchAllRatingsUsingIDs(in movieIDs: [Int]) -> [Rating] {
+    func fetchAllRatingsUsingIDs(in movieIDs: [Int], predicate: MovieRatingType = .movie) -> [Rating] {
         var ratingArray: [Rating] = []
         let request: NSFetchRequest<Rating> = Rating.fetchRequest()
         
         for id in movieIDs {
-            request.predicate = NSPredicate(format: "uuid = %i", id)
+            let uuidPredicate = NSPredicate(format: "uuid = %i", id)
+            let searchTypePredicate = NSPredicate(format: "type = %@", predicate.rawValue)
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [ uuidPredicate, searchTypePredicate])
+            
             do {
                 let result = try context.fetch(request)
                 if result.isEmpty == true {
-                    let newRating = createNewRating(id: id)
+                    let newRating = createNewRating(id: id, type: predicate)
                     ratingArray.append(newRating)
                 } else {
                     ratingArray.append(contentsOf: result)
