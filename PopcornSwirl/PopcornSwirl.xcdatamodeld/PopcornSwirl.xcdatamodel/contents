@@ -14,7 +14,8 @@
         <attribute name="id" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
     </entity>
-    <entity name="Movie" representedClassName="Movie" syncable="YES" codeGenerationType="class">
+    <entity name="Movie" representedClassName="Movie" syncable="YES">
+        <attribute name="category" optional="YES" attributeType="String"/>
         <attribute name="comment" optional="YES" attributeType="String"/>
         <attribute name="director" optional="YES" attributeType="String"/>
         <attribute name="genres" optional="YES" attributeType="Transformable"/>
@@ -38,7 +39,7 @@
         <element name="Actor" positionX="-45" positionY="36" width="128" height="89"/>
         <element name="Cast" positionX="-45" positionY="45" width="128" height="59"/>
         <element name="Genres" positionX="-45" positionY="36" width="128" height="59"/>
+        <element name="Movie" positionX="-45" positionY="45" width="128" height="209"/>
         <element name="Rating" positionX="-45" positionY="0" width="128" height="104"/>
-        <element name="Movie" positionX="-45" positionY="45" width="128" height="194"/>
     </elements>
 </model>
