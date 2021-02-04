@@ -43,7 +43,7 @@ struct PurchaseLinkBar: View {
         
         if let flatrate = flatrate {
             HStack {
-                Text("Flatrate").font(.system(.title, design: .rounded)).bold()
+                Text("Subscription").font(.system(.title, design: .rounded)).bold()
                     .foregroundColor(.pGray3)
                     .padding(.horizontal)
                 

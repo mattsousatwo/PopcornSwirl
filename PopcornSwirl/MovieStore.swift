@@ -18,6 +18,8 @@ class MovieStore: ObservableObject {
     let actorsStore = ActorsStore() // used to manage the actors within cast list
     let ratingsStore = MovieRatingStore()
     
+    let movieCD = MoviesStore() // manage Movies: CoreData - to replace ratingsStore
+    
     // Movie Stores
     @Published var popularMovies = [PopMovie]() // all popular movies
     @Published var movieCast = [MovieCast]() // cast for movie
@@ -34,7 +36,7 @@ class MovieStore: ObservableObject {
 
     
     // WatchProviders
-    @Published var watchProviders = PurchaseLink()
+    @Published var watchProviders: PurchaseLink?
     
     
     lazy var decoder = JSONDecoder() // used to decode json data
@@ -507,29 +509,6 @@ extension MovieStore {
         return genreNames
     }
     
-    func pullGenresFromServer() -> [Genre] {
-        var fetchedGenres: [Genre] = []
-        let genreRequest = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
-        AF.request( genreRequest ).responseJSON { response in
-            
-            guard let json = response.data else {
-                print("Genre List not found")
-                return
-            }
-            do {
-                let results = try self.decoder.decode(GenreArray.self, from: json)
-
-                fetchedGenres = results.genres
-                
-            } catch {
-                print(error)
-            }
-            
-        }
-
-        return fetchedGenres
-    }
-    
 }
 
 
@@ -571,13 +550,15 @@ extension MovieStore {
     
     // Fetch and return an array of watch provider links
     func extractWatchProvidersFor(id movieID: Int) -> PurchaseLink {
-        var links: PurchaseLink
-         
-        fetchPurchaseMovieLinks(id: movieID)
+        var links = PurchaseLink()
         
+        if watchProviders == nil {
+            fetchPurchaseMovieLinks(id: movieID)
+        }
         
-        links = watchProviders
-        
+        if let watchProviders = watchProviders {
+            links = watchProviders
+        }
         return links
     }
     
@@ -684,8 +665,45 @@ extension MovieStore {
         
     }
     
+}
+
+
+
+// MARK: - MOVIES: COREDATA
+extension MovieStore {
     
     
+    // Get all Movies for bar type - useses extractIDsFor
+    func movieForBar(_ type: ScrollBarType, id searchID: Int = 0) -> [Movie] {
+        var movies: [Movie] = []
+        switch type {
+        case .popularMovie:
+            let popularMovieIDs = extractIDsFor(.popularMovie)
+            let ids = popularMovieIDs.map({ Double($0) })
+            movies = movieCD.fetchMovies(uuids: ids)
+        case .upcommingMovie:
+            let upcomingMovieIDs = extractIDsFor(.upcommingMovie)
+            let ids = upcomingMovieIDs.map({ Double($0) })
+            movies = movieCD.fetchMovies(uuids: ids)
+        case .recommendedMovie:
+            let reccomendedMovieIDs = extractIDsFor(.recommendedMovie)
+            let ids = reccomendedMovieIDs.map({ Double($0) })
+            movies = movieCD.fetchMovies(uuids: ids)
+        case .actors:
+            let actorIDs = extractIDsFor(.actors, id: searchID)
+            let ids = actorIDs.map({ Double($0) })
+            movies = movieCD.fetchMovies(uuids: ids)
+        case .actorMovie:
+            let actorMovieIDs = extractIDsFor(.actorMovie, id: searchID)
+            let ids = actorMovieIDs.map({ Double($0) })
+            movies = movieCD.fetchMovies(uuids: ids)
+        case .actorTV:
+            let actorTVIDs = extractIDsFor(.actorTV, id: searchID)
+            let ids = actorTVIDs.map({ Double($0) })
+            movies = movieCD.fetchMovies(uuids: ids)
+        }
+        return movies
+    }
 }
 
 

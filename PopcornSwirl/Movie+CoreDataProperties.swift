@@ -29,7 +29,8 @@ extension Movie {
     @NSManaged public var isWatched: Bool
     @NSManaged public var comment: String?
     @NSManaged public var category: String?
-
+    @NSManaged public var cast: NSObject?
+    
 }
 
 extension Movie : Identifiable {

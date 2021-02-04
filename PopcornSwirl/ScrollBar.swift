@@ -45,7 +45,7 @@ struct ScrollBar: View {
         case .actorTV:
             return movieStore.ratingsForBar(type: .actorTV, id: id)
         }
-    } 
+    }
      
     var body: some View {
         

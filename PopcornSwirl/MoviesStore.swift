@@ -40,7 +40,7 @@ extension MoviesStore {
     }
     
     // Save a new movie
-    func saveNewMovie(uuid: Double, category: MovieCategory , director: String = "", title: String = "", overview: String = "", genres: [Int] = [], releaseDate: String = "", rating: Double = 0.0, isFavorite: Bool = false, isWatched: Bool = false, comment: String = "") -> Movie {
+    func createNewMovie(uuid: Double, category: MovieCategory = .none, director: String = "", title: String = "", overview: String = "", genres: [Int] = [], cast: [Int] = [], releaseDate: String = "", rating: Double = 0.0, isFavorite: Bool = false, isWatched: Bool = false, comment: String = "") -> Movie {
         
         let movie = Movie(context: context)
         
@@ -51,6 +51,8 @@ extension MoviesStore {
         movie.title = title
         movie.overview = overview
 //        movie.genres = genres ---- CONVERT TO NSOBJECT?
+//        movie.cast
+        
         movie.releaseDate = releaseDate
         movie.rating = rating
         
@@ -70,7 +72,7 @@ extension MoviesStore {
 extension MoviesStore {
     
     // Fetch all movies
-    func fetchMovies(_ movieCategory: MovieCategory = .none) {
+    func fetchMovies(in movieCategory: MovieCategory = .none) {
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
         
         request.predicate = NSPredicate(format: "category = %@", movieCategory.rawValue)
@@ -101,10 +103,10 @@ extension MoviesStore {
             fetchMovies()
             movies.append(contentsOf: allMovies)
         case .popular:
-            fetchMovies(.popular)
+            fetchMovies(in: .popular)
             movies.append(contentsOf: popularMovies)
         case .upcoming:
-            fetchMovies(.upcoming)
+            fetchMovies(in: .upcoming)
             movies.append(contentsOf: upcomingMovies)
         }
         
@@ -112,8 +114,55 @@ extension MoviesStore {
     }
     
     
+    // Fetch an array of Movies with ID
+    func fetchMovies(uuids: [Double]) -> [Movie] {
+        var movieArray: [Movie] = []
+        let request: NSFetchRequest<Movie> = Movie.fetchRequest()
+        for id in uuids {
+            request.predicate = NSPredicate(format: "uuid = %ld", id)
+            do {
+                let result = try context.fetch(request)
+                switch result.isEmpty {
+                case true:
+                    let newMovie = createNewMovie(uuid: id)
+                    movieArray.append(newMovie)
+                case false:
+                    movieArray.append(contentsOf: result)
+                }
+            } catch {
+                print(error)
+            }
+        }
+        return movieArray
+    }
     
+    // Fetch all favorited movies
+    func fetchFavoriteMovies() -> [Movie] {
+        var movieArray: [Movie] = []
+        let request: NSFetchRequest<Movie> = Movie.fetchRequest()
+        request.predicate = NSPredicate(format: "isFavorite == @%", "true")
+        do {
+            let result = try context.fetch(request)
+            movieArray.append(contentsOf: result)
+        } catch {
+            print(error)
+        }
+        return movieArray
+    }
     
+    // Fetch all watched movies
+    func fetchWatchedMovies() -> [Movie] {
+        var movieArray: [Movie] = []
+        let request: NSFetchRequest<Movie> = Movie.fetchRequest()
+        request.predicate = NSPredicate(format: "isWatched == @%", "true")
+        do {
+            let result = try context.fetch(request)
+            movieArray.append(contentsOf: result)
+        } catch {
+            print(error)
+        }
+        return movieArray
+    }
     
     
 }
