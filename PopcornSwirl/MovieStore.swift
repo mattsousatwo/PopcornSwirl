@@ -617,7 +617,9 @@ extension MovieStore {
                 }
                 for actor in actorCredits {
                     if actor.media_type == CreditExtractionType.movie.rawValue {
-                        ids.append(actor.id)
+                        if let id = actor.id {
+                            ids.append(id)
+                        }
                     }
                 }
             }
@@ -628,7 +630,9 @@ extension MovieStore {
                 }
                 for credit in actorCredits {
                     if credit.media_type == CreditExtractionType.tv.rawValue {
-                        ids.append(credit.id)
+                        if let id = credit.id {
+                            ids.append(id)
+                        }
                     }
                 }
             }

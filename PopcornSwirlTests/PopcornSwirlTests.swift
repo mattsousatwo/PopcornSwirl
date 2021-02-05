@@ -68,6 +68,60 @@ class RatingTests: XCTestCase {
     
 }
 
+class MovieTests: XCTestCase {
+    
+    private var movieCD = MoviesStore()
+    private var movieStore = MovieStore()
+    lazy var movieID = 464052 // Wonder Woman 1984
+    lazy var actorID = 90633 // Gal Gadot
+    
+    // test if fetching movies will work
+    func testAllMovieFetching() {
+        movieCD.fetchMovies()
+        print("AllMovies: \(movieCD.allMovies.count)")
+        XCTAssertFalse(movieCD.allMovies.count == 0, "No Movies are found")
+    }
+    
+    // test if fetching by popular movie category is working
+    func testPopularMovieFetching() {
+        movieCD.fetchMovies(in: .popular)
+        XCTAssertFalse(movieCD.popularMovies.count == 0, "No Popular Movies Found")
+    }
+    
+    // Test reccomended video fetching
+    func testMovieBarForReccomended() {
+        let reccomendedMovies = movieStore.movieForBar(.recommendedMovie, id: movieID)
+        print("reccomendedMovies: \(reccomendedMovies.count)")
+        XCTAssertFalse(reccomendedMovies.count == 0, "No Movies Found")
+    }
+    
+    // Test if actors fetching is working
+    func testMovieBarForActors() {
+        let actors = movieStore.movieForBar(.actors, id: movieID)
+        print("actors Count: \(actors.count)")
+        XCTAssertFalse(actors.count == 0, "No Actors found - should update to use Actor not Movie")
+    }
+    
+    // Test if actorsTV fetching is working
+    func testMovieBarForActorTV() {
+        let tv = movieStore.movieForBar(.actorTV, id: movieID)
+        XCTAssertFalse(tv.count == 0, "No Actor TV Credits were found")
+    }
+    
+    // Test if actorsMovie fetching is working
+    func testMovieBarForActorMovie() {
+        let tv = movieStore.movieForBar(.actorMovie, id: movieID)
+        XCTAssertFalse(tv.count == 0, "No Actor Movie Credits were found")
+    }
+    
+    // Test if delete movies is working
+    func testDeleteAllMovies() {
+        movieCD.deleteAllMovie()
+        movieCD.fetchMovies()
+        XCTAssertTrue(movieCD.allMovies.count == 0, "Movies were not deleted")
+    }
+}
+
 
 
 class CastTests: XCTestCase {

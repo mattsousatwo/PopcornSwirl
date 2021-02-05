@@ -151,20 +151,20 @@ struct bar: View {
                 ForEach(0..<actorMovies.count, id: \.self) { i in
                     if i <= 9 {
                         
-                        
-                            if let actorMovie = movies.first(where: { $0.uuid == Double(actorMovies[i].id) }) {
+                        if let id = actorMovies[i].id {
+                            if let actorMovie = movies.first(where: { $0.uuid == Double(id) }) {
                                 
                                 if let moviePosterPath = actorMovies[i].poster_path,
                                    let movieTitle = actorMovies[i].title {
                                     
                                     LabeledScrollNavLink(imagePath: moviePosterPath,
-                                                         actorID: actorMovies[i].id,
+                                                         actorID: id,
                                                          title: movieTitle,
                                                          subtitle: actorMovies[i].character,
                                                          movie: actorMovie)
                                 }
                             }
-                        
+                        }
                    
                     } // if i
               
@@ -176,13 +176,10 @@ struct bar: View {
                     ForEach(0..<actorTVSeries.count, id: \.self) { i in
                         if i <= 9 {
                             
-                            
-                            if let tVSeries = movies.first(where: { $0.uuid == Double(actorTVSeries[i].id) }) {
-                          
+                            if let id = actorTVSeries[i].id {
+                                if let tVSeries = movies.first(where: { $0.uuid == Double(id) }) {
                                 
-                                
-                                
-                                ScrollNavLink(movieID: actorTVSeries[i].id,
+                                ScrollNavLink(movieID: id,
                                               title: actorTVSeries[i].title ?? "",
                                               genreIDs: actorTVSeries[i].genre_ids,
                                               overview: actorTVSeries[i].overview,
@@ -194,7 +191,7 @@ struct bar: View {
                                 
 
                             }
-                            
+                            }
                             
                             
                             

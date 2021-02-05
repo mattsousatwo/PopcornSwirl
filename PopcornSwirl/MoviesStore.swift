@@ -124,9 +124,11 @@ extension MoviesStore {
                 let result = try context.fetch(request)
                 switch result.isEmpty {
                 case true:
+                    print("Movie Not Found \(id)")
                     let newMovie = createNewMovie(uuid: id)
                     movieArray.append(newMovie)
                 case false:
+                    print("Movie Found")
                     movieArray.append(contentsOf: result)
                 }
             } catch {
@@ -146,10 +148,13 @@ extension MoviesStore {
             let result = try context.fetch(request)
             switch result.isEmpty {
             case true:
+                print("Movie Not Found \(uuid)")
                 let newMovie = createNewMovie(uuid: uuid)
                 movie = newMovie
             case false:
+                
                 for element in result {
+                    print("Movie Found: \(element.title ?? "no title")")
                     movie = element
                 }
             }

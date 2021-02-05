@@ -162,11 +162,11 @@ struct ActorImageProfile: Codable {
 // MARK: - ACTOR CREDITS
 struct ActorCredits: Codable {
     var cast: [ActorCreditsCast]
-    var id: Int
+    var id: Int?
 }
 
 struct ActorCreditsCast: Codable, Hashable {
-    var id: Int
+    var id: Int?
     var overview: String
     var genre_ids: [Int]
     var name: String?
