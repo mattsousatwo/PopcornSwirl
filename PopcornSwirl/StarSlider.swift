@@ -11,7 +11,7 @@ import SwiftUI
 
 struct StarSlider: View {
     
-    var rating: Rating?
+    var movie: Movie
     
     @State var value: Double = 0 // Change to rating.rating
     
@@ -36,7 +36,7 @@ struct StarSlider: View {
                         .padding(.top)
                     StarSliderView(value: $value, accent: accent)
                         .padding(.horizontal)
-                    StarSliderButtons(rating: rating, value: $value)
+                    StarSliderButtons(movie: movie, value: $value)
                     
                 }
                 
@@ -59,7 +59,7 @@ struct StarSlider_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             
-            StarSlider()
+//            StarSlider()
 
         }.previewLayout(.sizeThatFits)
         
@@ -137,7 +137,7 @@ struct StarSliderView: View {
 struct StarSliderButtons: View {
     
     var ratingStore = MovieRatingStore()
-    var rating: Rating?
+    var movie: Movie
     @Binding var value: Double
     
     var body: some View {
@@ -164,11 +164,8 @@ struct StarSliderButtons: View {
             Button(action: {
                 print("Submit")
                 
-                guard let rating = rating else {
-                    print("No Rating")
-                    return }
-                rating.rating = value
-                print("Submit - Rating.rating = \(rating.rating)")
+                movie.rating = value
+                print("Submit - Rating.rating = \(movie.rating)")
                 ratingStore.saveContext()
                 
             }, label: {

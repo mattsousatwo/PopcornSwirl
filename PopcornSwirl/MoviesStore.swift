@@ -136,6 +136,31 @@ extension MoviesStore {
         return movieArray
     }
     
+    // Fetch a Movie with ID
+    func fetchMovie(uuid: Double) -> Movie {
+        var movie = Movie()
+        let request: NSFetchRequest<Movie> = Movie.fetchRequest()
+        
+        request.predicate = NSPredicate(format: "uuid = %ld", uuid)
+        do {
+            let result = try context.fetch(request)
+            switch result.isEmpty {
+            case true:
+                let newMovie = createNewMovie(uuid: uuid)
+                movie = newMovie
+            case false:
+                for element in result {
+                    movie = element
+                }
+            }
+        } catch {
+            print(error)
+        }
+        
+        return movie
+    }
+
+    
     // Fetch all favorited movies
     func fetchFavoriteMovies() -> [Movie] {
         var movieArray: [Movie] = []

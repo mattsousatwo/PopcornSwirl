@@ -102,8 +102,8 @@ extension MovieStore {
             do {
                 
                 let recomendations = try self.decoder.decode(Recommendation.self, from: json)
-                
-                self.recommendedMovies = recomendations.results
+                guard let results = recomendations.results else { return }
+                self.recommendedMovies = results
                 
             } catch {
                 print(error)
@@ -593,7 +593,9 @@ extension MovieStore {
                 fetchRecommendedMoviesForMovie(id: searchID)
             }
             for movie in recommendedMovies {
-                ids.append(movie.id)
+                if let id = movie.id {
+                    ids.append(id)
+                }
             }
             
         case .actors:

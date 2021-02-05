@@ -104,8 +104,10 @@ struct SavedRow: View {
                                                                         posterPath: (movie.poster_path ?? ""),
                                                                         rating: movie.vote_average,
                                                                         releaseDate: ""), label: {
-                                RemoteImage(url: MovieStoreKey.imageURL.rawValue + (movie.poster_path ?? "") ).aspectRatio(contentMode: .fill)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12.0))
+                                                
+//                                RemoteImage(url: MovieStoreKey.imageURL.rawValue + (movie.poster_path ?? "") ).aspectRatio(contentMode: .fill)
+                                    RoundedRectangle(cornerRadius: 12.0)
+                                        .foregroundColor(.blue)
                                     .frame(width: (geometry.size.width / 3)  ,
                                            height: 100,
                                            alignment: .center)

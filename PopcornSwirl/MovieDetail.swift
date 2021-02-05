@@ -14,9 +14,12 @@ struct MovieDetail: View {
     // TMDB
     @ObservedObject private var movieStore = MovieStore()
     
+    
     // CoreData
-    var movieRatings = MovieRatingStore()
-    @State private var movieRating : Rating?
+    @ObservedObject private var movieCD = MoviesStore()
+    private var movie: Movie {
+        return movieCD.fetchMovie(uuid: Double(movieID))
+    }
 
     // Animation
     @State private var showStarSlider: Bool = false
@@ -53,20 +56,20 @@ struct MovieDetail: View {
 //                                Text("fetchItems: \(fetchItems.count)")
                                 
                                 // Movie Poster
-                                MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), rating: movieRating)
+                                MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), movie: movie)
 
                                     
                                     .padding(.horizontal)
                                 
                                 Button(action: {
-                                    if let rating = movieRating {
-                                        rating.isFavorite.toggle()
-                                        print("oldComment: \(rating.comment ?? "isEmpty")")
-                                        rating.comment = "Added Comment to rating \(movieID)"
-                                        movieRatings.saveContext()
-                                        print("newComment: \(rating.comment ?? "isEmpty")")
-                                        print(rating)
-                                    }
+                                    
+                                    movie.isFavorite.toggle()
+                                    print("oldComment: \(movie.comment ?? "isEmpty")")
+                                    movie.comment = "Added Comment to rating \(movieID)"
+                                    movieCD.saveContext()
+                                    print("newComment: \(movie.comment ?? "isEmpty")")
+                                    print(movie)
+                                    
                                 }, label: {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 150, height: 40)
@@ -187,7 +190,7 @@ struct MovieDetail: View {
                 })
             }
             
-            StarSlider(value: 0.0, width: showStarSlider ? UIScreen.main.bounds.width - 40 : 0 , height: showStarSlider ? 210 : 0) 
+            StarSlider(movie: movie, value: 0.0, width: showStarSlider ? UIScreen.main.bounds.width - 40 : 0 , height: showStarSlider ? 210 : 0) 
                 .cornerRadius(12.0)
                 .animation(.easeIn)
             
@@ -206,7 +209,7 @@ struct MovieDetail: View {
             print( "GenreIDs: \(genreIDs)" )
             
             
-            movieRating = movieRatings.searchForRatingsFromMovie(id: movieID) 
+//            movieRating = movieRatings.searchForRatingsFromMovie(id: movieID)
             movieStore.fetchPurchaseMovieLinks(id: movieID) // Makes loading Details
             
         }

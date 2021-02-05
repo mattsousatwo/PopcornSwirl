@@ -88,8 +88,8 @@ struct MovieCrew: Codable {
 
 // MARK: Recommendations
 struct Recommendation: Codable {
-    var page: Int
-    var results:  [RecommendedMovie]
+    var page: Int?
+    var results:  [RecommendedMovie]?
 }
 
 struct RecommendedMovie: Codable { 
@@ -97,7 +97,7 @@ struct RecommendedMovie: Codable {
     var poster_path: String?
     var overview: String
     var popularity: Double
-    var id: Int
+    var id: Int?
     var vote_average: Double
     var genre_ids: [Int]
     var release_date: String?
@@ -150,7 +150,7 @@ struct UpcomingMovie: Codable {
 
 // MARK: - GET ACTOR IMAGES
 struct ActorSchema: Codable {
-    var id: Int
+    var id: Int?
     var profiles: [ActorImageProfile]
 }
 

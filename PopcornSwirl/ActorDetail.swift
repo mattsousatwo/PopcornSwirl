@@ -15,6 +15,7 @@ struct ActorDetail: View {
     var name: String
     @State var isFavorite: Bool
     
+    
     @State private var showFullBio: Bool = false
     
     @ObservedObject private var movie = MovieStore()
@@ -77,7 +78,7 @@ struct ActorDetail: View {
                             
                             Spacer()
                             
-                            LargeActorCard(url: URL(string: image), rating: nil )
+                            LargeActorCard(url: URL(string: image))
                                 .padding()
                             
                             Spacer()
