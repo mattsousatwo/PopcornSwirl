@@ -37,13 +37,13 @@ struct ScrollBar: View {
         case .upcommingMovie:
             return movieStore.movieForBar(.upcommingMovie)
         case .recommendedMovie:
-            return movieStore.movieForBar(.recommendedMovie)
+            return movieStore.movieForBar(.recommendedMovie, id: id)
         case .actors:
-            return movieStore.movieForBar(.actors)
+            return movieStore.movieForBar(.actors, id: id)
         case .actorMovie:
-            return movieStore.movieForBar(.actorMovie)
+            return movieStore.movieForBar(.actorMovie, id: id)
         case .actorTV:
-            return movieStore.movieForBar(.actorTV)
+            return movieStore.movieForBar(.actorTV, id: id)
         }
     }
     
@@ -118,7 +118,9 @@ struct bar: View {
     }
 
     private var recommendedMovies: [RecommendedMovie] {
-        return movieStore.extractRecomendedMovies(id: id)
+        let movies = movieStore.extractRecomendedMovies(id: id)
+        print("ReccomendedMovies.count: \(movies.count)")
+        return movies
     }
 
     private var upcomingMovies: [UpcomingMovie] {
@@ -178,73 +180,50 @@ struct bar: View {
                             
                             if let id = actorTVSeries[i].id {
                                 if let tVSeries = movies.first(where: { $0.uuid == Double(id) }) {
-                                
-                                ScrollNavLink(movieID: id,
-                                              title: actorTVSeries[i].title ?? "",
-                                              genreIDs: actorTVSeries[i].genre_ids,
-                                              overview: actorTVSeries[i].overview,
-                                              posterPath: actorTVSeries[i].poster_path ?? "",
-                                              voteAverage: actorTVSeries[i].vote_average,
-                                              releaseDate: actorTVSeries[i].release_date ?? "",
-                                              movie: tVSeries)
-                                
-                                
-
+                                    
+                                    ScrollNavLink(movieID: id,
+                                                  title: actorTVSeries[i].title ?? "",
+                                                  genreIDs: actorTVSeries[i].genre_ids,
+                                                  overview: actorTVSeries[i].overview,
+                                                  posterPath: actorTVSeries[i].poster_path ?? "",
+                                                  voteAverage: actorTVSeries[i].vote_average,
+                                                  releaseDate: actorTVSeries[i].release_date ?? "",
+                                                  movie: tVSeries)
+                                }
                             }
-                            }
-                            
-                            
-                            
                         }
                     }
                     
                     .animation(.default)
                 }
                 
-                
-                
             // MARK: ACTORS - can change to Actor
             case .actors:
-                
                 if actorImages.count != 0 {
                     ForEach(0..<actorImages.count, id: \.self) { i in
                         if i <= 9 {
-
-                            
-                            
-                                if let actor = movies.first(where: { $0.uuid == Double(cast[i].id) }) {
-                                    if let imagePath = actorImages[ cast[i].id ] {
-                                        
-                                        LabeledScrollNavLink(imagePath: imagePath,
-                                                             actorID: cast[i].id,
-                                                             title: cast[i].name,
-                                                             subtitle: cast[i].character,
-                                                             movie: actor)
-                                    }
+                            if let actor = movies.first(where: { $0.uuid == Double(cast[i].id) }) {
+                                if let imagePath = actorImages[ cast[i].id ] {
+                                    
+                                    LabeledScrollNavLink(imagePath: imagePath,
+                                                         actorID: cast[i].id,
+                                                         title: cast[i].name,
+                                                         subtitle: cast[i].character,
+                                                         movie: actor)
                                 }
-                            
-
-                            
+                            }
                         } // i <= 9
                     } // for
-
+                    
                     .animation(.default)
                 } // if
-            
-            
-            
+
             // MARK: POPULAR MOVIE -
             case .popularMovie:
                 
                 ForEach(0..<popularMovies.count, id: \.self) { i in
                     if popularMovies.count != 0 {
-                        
-                        
-                        
-                            
                             if let movie = movies.first(where: { $0.uuid == Double(popularMovies[i].id) } ) {
-                                
-                                
                                 ScrollNavLink(movieID: popularMovies[i].id,
                                               title: popularMovies[i].title,
                                               genreIDs: popularMovies[i].genre_ids,
@@ -254,11 +233,6 @@ struct bar: View {
                                               releaseDate: popularMovies[i].release_date,
                                               movie: movie)
                             }
-                            
-                            
-                        
-                        
-                        
                     }
                 }
                 .animation(.default)
@@ -285,16 +259,27 @@ struct bar: View {
                         
                     }
                 }
-                
+
                 .animation(.default)
                 
             // MARK: RECOMMENDED MOVIE -
             case .recommendedMovie:
                 ForEach(0..<recommendedMovies.count, id: \.self) { i in
                     if recommendedMovies.count != 0 {
-                        
+                        RoundedRectangle(cornerRadius: 12.0)
+                            .frame(width: 100, height: 200)
+                            .foregroundColor(.blue)
                         if let recomendedMovieID = recommendedMovies[i].id {
+                            RoundedRectangle(cornerRadius: 12.0)
+                                .frame(width: 100, height: 200)
+                                .foregroundColor(.red)
                             if let reccomendedMovie = movies.first(where: { $0.uuid == Double(recomendedMovieID) }) {
+                                
+                                RoundedRectangle(cornerRadius: 12.0)
+                                    .frame(width: 100, height: 200)
+                                    .foregroundColor(.green)
+                                
+                                
                                 if let releaseDate = recommendedMovies[i].release_date {
                                     
                                     
@@ -313,7 +298,11 @@ struct bar: View {
                         
                     }
                 }
-
+                .onAppear(perform: {
+                    
+                    print("RecMovies: \(movies.count)")
+                    
+                })
                 .animation(.default)
             } // switch
             

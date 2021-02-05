@@ -9,30 +9,6 @@
 import XCTest
 @testable import PopcornSwirl
 
-class PopcornSwirlTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
-}
-
 class RatingTests: XCTestCase {
     
     private var ratingStore = MovieRatingStore()
@@ -72,8 +48,35 @@ class MovieTests: XCTestCase {
     
     private var movieCD = MoviesStore()
     private var movieStore = MovieStore()
-    lazy var movieID = 464052 // Wonder Woman 1984
-    lazy var actorID = 90633 // Gal Gadot
+    lazy var wonderWomanID = 464052 // Wonder Woman 1984
+    lazy var galGadotID = 90633 // Gal Gadot
+    
+    lazy var movieTestID: Double = 999
+    lazy var actorTestID = 888
+    lazy var testTitle = "Test Title"
+    
+    // Test Movie Creation
+    func testMovieCreation() {
+        // Arrange
+        let _ = movieCD.createNewMovie(uuid: movieTestID, title: testTitle)
+        // Act
+        let movieSearch = movieCD.fetchMovie(uuid: movieTestID)
+        // Assert
+        XCTAssertTrue(movieSearch.title == testTitle, "Movie is not found - \(movieSearch)")
+    }
+    
+    // Test single Movie fetching
+    func testIfFetchingSpecificMovieWorks() {
+        let movie = movieCD.fetchMovie(uuid: Double(wonderWomanID))
+        XCTAssertTrue(movie.uuid == Double(wonderWomanID), "Movie does not have matching ID")
+    }
+    
+    // Search for movie using ID after all movies are fetched
+    func testIfMovieIsThere() {
+        movieCD.fetchMovies()
+        let movie = movieCD.allMovies.first(where: { $0.uuid == Double(wonderWomanID) })
+        XCTAssertNotNil(movie, "Movie is not found")
+    }
     
     // test if fetching movies will work
     func testAllMovieFetching() {
@@ -90,27 +93,27 @@ class MovieTests: XCTestCase {
     
     // Test reccomended video fetching
     func testMovieBarForReccomended() {
-        let reccomendedMovies = movieStore.movieForBar(.recommendedMovie, id: movieID)
+        let reccomendedMovies = movieStore.movieForBar(.recommendedMovie, id: wonderWomanID)
         print("reccomendedMovies: \(reccomendedMovies.count)")
-        XCTAssertFalse(reccomendedMovies.count == 0, "No Movies Found")
+        XCTAssertFalse(reccomendedMovies.count == 0, "No Movies Found - count: \(reccomendedMovies.count)")
     }
     
     // Test if actors fetching is working
     func testMovieBarForActors() {
-        let actors = movieStore.movieForBar(.actors, id: movieID)
+        let actors = movieStore.movieForBar(.actors, id: wonderWomanID)
         print("actors Count: \(actors.count)")
         XCTAssertFalse(actors.count == 0, "No Actors found - should update to use Actor not Movie")
     }
     
     // Test if actorsTV fetching is working
     func testMovieBarForActorTV() {
-        let tv = movieStore.movieForBar(.actorTV, id: movieID)
+        let tv = movieStore.movieForBar(.actorTV, id: wonderWomanID)
         XCTAssertFalse(tv.count == 0, "No Actor TV Credits were found")
     }
     
     // Test if actorsMovie fetching is working
     func testMovieBarForActorMovie() {
-        let tv = movieStore.movieForBar(.actorMovie, id: movieID)
+        let tv = movieStore.movieForBar(.actorMovie, id: wonderWomanID)
         XCTAssertFalse(tv.count == 0, "No Actor Movie Credits were found")
     }
     
@@ -120,8 +123,35 @@ class MovieTests: XCTestCase {
         movieCD.fetchMovies()
         XCTAssertTrue(movieCD.allMovies.count == 0, "Movies were not deleted")
     }
+    
+    
+    // Test scrollBar
+    func testScrollBar() {
+        let a = movieStore.extractRecomendedMovies(id: wonderWomanID)
+        XCTAssertFalse(a.count == 0, "No actors found - \(a)")
+    }
 }
 
+
+
+class MovieStoreTests: XCTestCase {
+    
+    private var movieStore = MovieStore()
+    lazy var wonderWomanID = 464052 // Wonder Woman 1984
+    lazy var galGadotID = 90633 // Gal Gadot
+    
+    // test fetching movies
+    func testReccomendedMovieFetching() {
+        movieStore.fetchRecommendedMoviesForMovie(id: wonderWomanID)
+        XCTAssertTrue(movieStore.recommendedMovies.count != 0, "No Movies Found - \(movieStore.recommendedMovies.count)")
+    }
+    
+    func testActorFetching() {
+        movieStore.fetchMovieCreditsForMovie(id: wonderWomanID)
+        XCTAssertTrue(movieStore.movieCast.count != 0, "No Actors Found - \(movieStore.movieCast.count)")
+    }
+    
+}
 
 
 class CastTests: XCTestCase {

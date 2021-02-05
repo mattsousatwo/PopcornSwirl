@@ -20,7 +20,7 @@ struct MovieDetail: View {
     private var movie: Movie {
         return movieCD.fetchMovie(uuid: Double(movieID))
     }
-
+    
     // Animation
     @State private var showStarSlider: Bool = false
     @State private var showFullOverview = false
@@ -34,9 +34,9 @@ struct MovieDetail: View {
     var posterPath = String()
     var rating = Double()
     var releaseDate = String()
-
+    
     var body: some View {
-       
+        
         ZStack(alignment: .center) {
             // Background
             LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .top, endPoint: .bottom)
@@ -53,11 +53,11 @@ struct MovieDetail: View {
                         HStack(alignment: .bottom) {
                             
                             VStack {
-//                                Text("fetchItems: \(fetchItems.count)")
+                                //                                Text("fetchItems: \(fetchItems.count)")
                                 
                                 // Movie Poster
                                 MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), movie: movie)
-
+                                    
                                     
                                     .padding(.horizontal)
                                 
@@ -168,6 +168,7 @@ struct MovieDetail: View {
                         
                         
                         PurchaseLinkBar(movieID: movieID)
+                            .padding(.bottom)
                         
                     } // V stack
                     
@@ -199,7 +200,7 @@ struct MovieDetail: View {
         } // ZStack
         .animation(.default)
         
-
+        
         .onAppear() {
             
             print( "Movie ID: \(movieID)"  )
@@ -208,9 +209,6 @@ struct MovieDetail: View {
             print( "Path: \(MovieStoreKey.imageURL.rawValue + posterPath)" ) 
             print( "GenreIDs: \(genreIDs)" )
             
-            
-//            movieRating = movieRatings.searchForRatingsFromMovie(id: movieID)
-            movieStore.fetchPurchaseMovieLinks(id: movieID) // Makes loading Details
             
         }
         

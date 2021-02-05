@@ -692,7 +692,7 @@ extension MovieStore {
             let ids = upcomingMovieIDs.map({ Double($0) })
             movies = movieCD.fetchMovies(uuids: ids)
         case .recommendedMovie:
-            let reccomendedMovieIDs = extractIDsFor(.recommendedMovie)
+            let reccomendedMovieIDs = extractIDsFor(.recommendedMovie, id: searchID)
             let ids = reccomendedMovieIDs.map({ Double($0) })
             movies = movieCD.fetchMovies(uuids: ids)
         case .actors:
