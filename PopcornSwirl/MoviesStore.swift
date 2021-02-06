@@ -119,7 +119,7 @@ extension MoviesStore {
         var movieArray: [Movie] = []
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
         for id in uuids {
-            request.predicate = NSPredicate(format: "uuid = %ld", id)
+            request.predicate = NSPredicate(format: "uuid == %i", Int(id))
             do {
                 let result = try context.fetch(request)
                 switch result.isEmpty {
@@ -139,22 +139,22 @@ extension MoviesStore {
     }
     
     // Fetch a Movie with ID
-    func fetchMovie(uuid: Double) -> Movie {
+    func fetchMovie(uuid: Int) -> Movie {
         var movie = Movie()
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
-        
-        request.predicate = NSPredicate(format: "uuid = %ld", uuid)
+        let id = Int(uuid)
+        request.predicate = NSPredicate(format: "uuid == %i", id)
         do {
             let result = try context.fetch(request)
             switch result.isEmpty {
             case true:
                 print("Movie Not Found \(uuid)")
-                let newMovie = createNewMovie(uuid: uuid)
+                let newMovie = createNewMovie(uuid: Double(uuid))
                 movie = newMovie
             case false:
                 
                 for element in result {
-                    print("Movie Found: \(element.title ?? "no title")")
+                    print("Movie Found: \(element.title ?? "no title"), id: \(id)")
                     movie = element
                 }
             }

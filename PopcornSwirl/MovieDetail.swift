@@ -18,7 +18,7 @@ struct MovieDetail: View {
     // CoreData
     @ObservedObject private var movieCD = MoviesStore()
     private var movie: Movie {
-        return movieCD.fetchMovie(uuid: Double(movieID))
+        return movieCD.fetchMovie(uuid: movieID)
     }
     
     // Animation
@@ -45,136 +45,130 @@ struct MovieDetail: View {
             // Content
             ScrollView {
                 
-                ZStack {
-                    
-                    
-                    
-                    VStack(alignment: .leading) {
-                        HStack(alignment: .bottom) {
+                VStack(alignment: .leading) {
+                    HStack(alignment: .bottom) {
+                        
+                        VStack {
+                            //                                Text("fetchItems: \(fetchItems.count)")
                             
-                            VStack {
-                                //                                Text("fetchItems: \(fetchItems.count)")
-                                
-                                // Movie Poster
-                                MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), movie: movie)
-                                    
-                                    
-                                    .padding(.horizontal)
-                                
-                                Button(action: {
-                                    
-                                    movie.isFavorite.toggle()
-                                    print("oldComment: \(movie.comment ?? "isEmpty")")
-                                    movie.comment = "Added Comment to rating \(movieID)"
-                                    movieCD.saveContext()
-                                    print("newComment: \(movie.comment ?? "isEmpty")")
-                                    print(movie)
-                                    
-                                }, label: {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 150, height: 40)
-                                        .foregroundColor(.darkBlue)
-                                        .opacity(0.6)
-                                        .overlay(
-                                            Text("Comment")
-                                                .foregroundColor(.pGray3)
-                                                .opacity(0.8)
-                                        )
-                                })
+                            // Movie Poster
+                            MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), movie: movie)
                                 
                                 
-                            } // v stack
+                                .padding(.horizontal)
                             
-                            VStack(alignment: .leading, spacing: 10) {
-                                // Movie Title
-                                Text(movieTitle).font(.system(.largeTitle)).bold().multilineTextAlignment(.leading).lineLimit(3)
-                                    //                                        .frame(width: geometry.size.width/2, height: 200, alignment: .leading)
-                                    .frame(width: UIScreen.main.bounds.width/2, height: 200, alignment: .leading)
-                                    .padding(.top).padding(.horizontal)
-                                    .foregroundColor(.white)
+                            Button(action: {
                                 
-                                // Director
-                                Text("Director:").bold()
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal)
-                                Text("\(movieStore.director)")
-                                    .foregroundColor(.pGray3)
-                                    .padding(.horizontal)
-                                // Release Date
-                                Text("Release Date:").bold()
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal)
-                                Text(releaseDate)
-                                    .foregroundColor(.pGray3)
-                                    .padding(.horizontal )
+                                movie.isFavorite.toggle()
+                                print("oldComment: \(movie.comment ?? "isEmpty")")
+                                movie.comment = "Added Comment to rating \(movieID)"
+                                movieCD.saveContext()
+                                print("newComment: \(movie.comment ?? "isEmpty")")
+                                print(movie)
                                 
-                                // Rating
-                                Button(action: {
-                                    self.showStarSlider.toggle()
-                                }, label: {
-                                    StarBar(value: rating)
-                                        .frame(width: UIScreen.main.bounds.width/2, height: 25 )
-                                        .padding(.vertical, 4)
-                                })
-                            }
+                            }, label: {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 150, height: 40)
+                                    .foregroundColor(.darkBlue)
+                                    .opacity(0.6)
+                                    .overlay(
+                                        Text("Comment")
+                                            .foregroundColor(.pGray3)
+                                            .opacity(0.8)
+                                    )
+                            })
+                            
+                            
+                        } // v stack
+                        
+                        VStack(alignment: .leading, spacing: 10) {
+                            // Movie Title
+                            Text(movieTitle).font(.system(.largeTitle)).bold().multilineTextAlignment(.leading).lineLimit(3)
+                                //                                        .frame(width: geometry.size.width/2, height: 200, alignment: .leading)
+                                .frame(width: UIScreen.main.bounds.width/2, height: 200, alignment: .leading)
+                                .padding(.top).padding(.horizontal)
+                                .foregroundColor(.white)
+                            
+                            // Director
+                            Text("Director:").bold()
+                                .foregroundColor(.white)
+                                .padding(.horizontal)
+                            Text("\(movieStore.director)")
+                                .foregroundColor(.pGray3)
+                                .padding(.horizontal)
+                            // Release Date
+                            Text("Release Date:").bold()
+                                .foregroundColor(.white)
+                                .padding(.horizontal)
+                            Text(releaseDate)
+                                .foregroundColor(.pGray3)
+                                .padding(.horizontal )
+                            
+                            // Rating
+                            Button(action: {
+                                self.showStarSlider.toggle()
+                            }, label: {
+                                StarBar(value: rating)
+                                    .frame(width: UIScreen.main.bounds.width/2, height: 25 )
+                                    .padding(.vertical, 4)
+                            })
                         }
-                        
-                        // Description
-                        
-                        //
-                        //                            Button(action: {
-                        //                                self.showFullOverview.toggle()
-                        //
-                        //                            }, label: {
-                        //                                Text(movieOverview).lineLimit(showFullOverview ? nil : 6 )
-                        //                                    .foregroundColor(.pGray3)
-                        //                                    .padding(.horizontal)
-                        //                                    .padding(.trailing, 8)
-                        //                            })
-                        
-                        
-                        
-                        Text(movieOverview).lineLimit(nil)
-                            .foregroundColor(.pGray3)
-                            .padding(.horizontal)
-                            .padding(.trailing, 8)
-                        
-                        
-                        
-                        // Genres
-                        GenreBar(genres: genreIDs)
-                        
-                        // MARK: - Actors Scroll
-                        
-                        ScrollBar(type: .actors, id: movieID)
-                        
-                        // Actors Scroll
-                        
-                        
-                        
-                        RoundedRectangle(cornerRadius: 12)
-                            .padding(.horizontal)
-                            .frame(width: UIScreen.main.bounds.width, height: 100, alignment: .center)
-                            .foregroundColor(.darkBlue)
-                            .overlay(
-                                Text("Advertisment").font(.title)
-                                    .foregroundColor(.pGray2)
-                                
-                            )
-                        
-                        // MARK: - Suggested Movies
-                        ScrollBar(type: .recommendedMovie, id: movieID)
-                        
-                        
-                        
-                        PurchaseLinkBar(movieID: movieID)
-                            .padding(.bottom)
-                        
-                    } // V stack
+                    }
+                    
+                    // Description
+                    
+                    //
+                    //                            Button(action: {
+                    //                                self.showFullOverview.toggle()
+                    //
+                    //                            }, label: {
+                    //                                Text(movieOverview).lineLimit(showFullOverview ? nil : 6 )
+                    //                                    .foregroundColor(.pGray3)
+                    //                                    .padding(.horizontal)
+                    //                                    .padding(.trailing, 8)
+                    //                            })
                     
                     
                     
-                } // z stack
+                    Text(movieOverview).lineLimit(nil)
+                        .foregroundColor(.pGray3)
+                        .padding(.horizontal)
+                        .padding(.trailing, 8)
+                    
+                    
+                    
+                    // Genres
+                    GenreBar(genres: genreIDs)
+                    
+                    // MARK: - Actors Scroll
+                    
+                    ScrollBar(type: .actors, id: movieID)
+                    
+                    // Actors Scroll
+                    
+                    
+                    
+                    RoundedRectangle(cornerRadius: 12)
+                        .padding(.horizontal)
+                        .frame(width: UIScreen.main.bounds.width, height: 100, alignment: .center)
+                        .foregroundColor(.darkBlue)
+                        .overlay(
+                            Text("Advertisment").font(.title)
+                                .foregroundColor(.pGray2)
+                            
+                        )
+                    
+                    // MARK: - Suggested Movies
+                    ScrollBar(type: .recommendedMovie, id: movieID)
+
+                    PurchaseLinkBar(movieID: movieID)
+                        .padding(.bottom)
+                    
+                } // V stack
+                
+                
+                
+                // z stack
                 
                 
             } // scroll

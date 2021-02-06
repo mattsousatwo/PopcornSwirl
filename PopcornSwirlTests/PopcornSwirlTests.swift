@@ -60,15 +60,19 @@ class MovieTests: XCTestCase {
         // Arrange
         let _ = movieCD.createNewMovie(uuid: movieTestID, title: testTitle)
         // Act
-        let movieSearch = movieCD.fetchMovie(uuid: movieTestID)
+        let movieSearch = movieCD.fetchMovie(uuid: Int(movieTestID))
         // Assert
         XCTAssertTrue(movieSearch.title == testTitle, "Movie is not found - \(movieSearch)")
     }
     
     // Test single Movie fetching
     func testIfFetchingSpecificMovieWorks() {
-        let movie = movieCD.fetchMovie(uuid: Double(wonderWomanID))
-        XCTAssertTrue(movie.uuid == Double(wonderWomanID), "Movie does not have matching ID")
+        
+        let _ = movieCD.createNewMovie(uuid: movieTestID, director: "Matt Sousa", title: testTitle)
+        
+        let movie = movieCD.fetchMovie(uuid: Int(movieTestID))
+        
+        XCTAssertTrue(movie.uuid == Double(movieTestID), "Movie does not have matching ID")
     }
     
     // Search for movie using ID after all movies are fetched
