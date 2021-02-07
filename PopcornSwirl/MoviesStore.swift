@@ -75,7 +75,12 @@ extension MoviesStore {
     func fetchMovies(in movieCategory: MovieCategory = .none) {
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
         
-        request.predicate = NSPredicate(format: "category = %@", movieCategory.rawValue)
+        switch movieCategory {
+        case .none:
+            break
+        default:
+            request.predicate = NSPredicate(format: "category = %@", movieCategory.rawValue)
+        }
         
         do {
             let result = try context.fetch(request)

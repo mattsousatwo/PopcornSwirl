@@ -23,7 +23,7 @@ enum ScrollBarType: String  {
 struct ScrollBar: View {
     
     @ObservedObject var movieStore = MovieStore()
-    @ObservedObject var ratingsStore = MovieRatingStore()
+    @ObservedObject var actorsStore = ActorsStore()
     
     
     var type: ScrollBarType
@@ -44,6 +44,17 @@ struct ScrollBar: View {
             return movieStore.movieForBar(.actorMovie, id: id)
         case .actorTV:
             return movieStore.movieForBar(.actorTV, id: id)
+        }
+    }
+    
+    var actors: [Actor]? {
+        switch type {
+        case .actors:
+            
+            
+            return nil
+        default:
+            return nil 
         }
     }
     
@@ -89,7 +100,7 @@ struct ScrollBar: View {
                 
                 HStack(spacing: 15) {
                     
-                    bar(type: type, id: id, movies: movies)
+                    bar(type: type, id: id, movies: movies) // add actors
 
                 } .padding() // HStack
   
@@ -113,7 +124,9 @@ struct bar: View {
     
     var movies: [Movie]
     
-    var popularMovies : [PopMovie] {
+    // add actors
+    
+    private var popularMovies : [PopMovie] {
         return movieStore.extractPopularMovies()
     }
 
@@ -374,7 +387,5 @@ struct LabeledScrollNavLink: View {
                 LabeledMovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + imagePath),
                                  title: title, subtitle: subtitle, movie: movie)
             }
-        
-        
     }
 }

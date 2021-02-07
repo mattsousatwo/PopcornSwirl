@@ -79,7 +79,8 @@ class MovieTests: XCTestCase {
     func testIfMovieIsThere() {
         movieCD.fetchMovies()
         let movie = movieCD.allMovies.first(where: { $0.uuid == Double(wonderWomanID) })
-        XCTAssertNotNil(movie, "Movie is not found")
+        print("movieCount: \(movieCD.allMovies.count)")
+        XCTAssertNotNil(movie, "Movie is not found, movieCount: \(movie)")
     }
     
     // test if fetching movies will work
@@ -162,7 +163,7 @@ class CastTests: XCTestCase {
     
     private let castStore = CastStore()
     
-    func fetchAllCastMembersTest() throws {
+    func testfetchAllCastMembers() throws {
         // Arrange
         castStore.fetchAllCastEntities()
         
@@ -175,7 +176,26 @@ class CastTests: XCTestCase {
         
     }
     
+}
+
+
+
+class ActorsTests: XCTestCase {
     
+    private let actorsStore = ActorsStore()
+    lazy var titoID = 90000
+    lazy var titoName = "Tito Brophy"
     
+    // Test if fetching actor works
+    func testFetchingSpecificActor() {
+        
+        actorsStore.createActor(name: "Tito Brophy", bio: "Has dope hair", id: Double(titoID), imagePath: nil)
+        let foundActor = actorsStore.fetchActorWith(id: Double(titoID))
+        
+        XCTAssertEqual(foundActor.name, titoName, "Actor not found")
+        
+        
+        
+    }
     
 }

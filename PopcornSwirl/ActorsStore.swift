@@ -41,8 +41,8 @@ class ActorsStore: ObservableObject {
 // MARK: Create
 extension ActorsStore {
     
-    func createActor(name: String, bio: String?, id: Double, imagePath: String?) {
-        let actor = fetchActorWith(id: id)
+    func createActor(name: String, bio: String?, id: Double, imagePath: String? = nil) {
+        let actor = fetchActorWith(id: Int(id))
         
 //        let actor = Actor(context: context)
         switch actor.id {
@@ -72,7 +72,7 @@ extension ActorsStore {
 extension ActorsStore {
     
     // Get all actors
-    func fetchAllActors() {
+    func fetchAllActors() { // not used
         let request: NSFetchRequest<Actor> = Actor.fetchRequest()
         do {
             actors = try context.fetch(request)
@@ -85,7 +85,7 @@ extension ActorsStore {
     //// use MovieStore.fetchMovieCreditsFroMovie(id: Int) to get MovieCast
     //// MovieStore.movieCast holds All actors
     
-    func fetchActorsForMovie(id: Int) {
+    func fetchActorsForMovie(id: Int) { // Not used
         
         guard let movie = movie else { return }
         if movie.movieCast.isEmpty == true {
@@ -97,10 +97,19 @@ extension ActorsStore {
         
         for castMember in actorsForMovie {
             let request: NSFetchRequest<Actor> = Actor.fetchRequest()
-            request.predicate = NSPredicate(format: "id = %ld", Double(castMember.id))
+            request.predicate = NSPredicate(format: "id == %i", castMember.id)
             do {
                 let results = try context.fetch(request)
-                actorsArray.append(contentsOf: results)
+                switch results.isEmpty {
+                case true:
+                    createActor(name: castMember.name, bio: "", id: Double(castMember.id), imagePath: castMember.profile_path)
+                    let actor = actors.first(where: { $0.id == Double(castMember.id) })
+                    if let actor = actor {
+                        actorsArray.append(actor)
+                    }
+                default:
+                    actorsArray.append(contentsOf: results)
+                }
             } catch {
                 print(error)
             }
@@ -111,10 +120,11 @@ extension ActorsStore {
     }
     
     
-    func fetchActorWith(id: Double) -> Actor {
+    func fetchActorWith(id: Int) -> Actor { // used a lot
         var actorsArray: [Actor] = []
         let request: NSFetchRequest<Actor> = Actor.fetchRequest()
-        request.predicate = NSPredicate(format: "id == %ld", id)
+        
+        request.predicate = NSPredicate(format: "id == %i", id)
         do {
             actorsArray = try context.fetch(request)
         } catch {
@@ -131,6 +141,19 @@ extension ActorsStore {
         return actor
         
     }
+    
+    
+    // Return an array of actors with search id
+    func fetchActorsWith(ids: [Int]) -> [Actor] {
+        var actors: [Actor] = []
+        for id in ids {
+            let fetchedActor = fetchActorWith(id: id)
+            actors.append(fetchedActor)
+        }
+        return actors
+    }
+    
+    
     
 }
 

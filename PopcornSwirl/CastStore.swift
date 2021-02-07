@@ -42,7 +42,7 @@ extension CastStore {
             fetchCastForMovie(id: id)
             for actor in castMembers {
                 if actor.movieID == id {
-                    let newActor = actorsStore.fetchActorWith(id:  actor.actorID)
+                    let newActor = actorsStore.fetchActorWith(id:  Int(actor.actorID))
                     actorsForMovie.append(newActor)
                 }
             }
@@ -50,7 +50,7 @@ extension CastStore {
         } else {
             for actor in castMembers {
                 if actor.movieID == id {
-                    let newActor = actorsStore.fetchActorWith(id:  actor.actorID)
+                    let newActor = actorsStore.fetchActorWith(id:  Int(actor.actorID))
                     actorsForMovie.append(newActor)
                 }
             }

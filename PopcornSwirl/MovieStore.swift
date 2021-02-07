@@ -113,6 +113,7 @@ extension MovieStore {
         
     }
     
+    
     // Get movies after fetchPopularMovies is finished retrieving data
     func extractRecomendedMovies(id: Int) -> [RecommendedMovie] {
         var movies = [RecommendedMovie]()
@@ -679,7 +680,7 @@ extension MovieStore {
 extension MovieStore {
     
     
-    // Get all Movies for bar type - useses extractIDsFor
+    // Get all Movies for bar type - use extractIDsFor
     func movieForBar(_ type: ScrollBarType, id searchID: Int = 0) -> [Movie] {
         var movies: [Movie] = []
         switch type {
@@ -695,7 +696,8 @@ extension MovieStore {
             let reccomendedMovieIDs = extractIDsFor(.recommendedMovie, id: searchID)
             let ids = reccomendedMovieIDs.map({ Double($0) })
             movies = movieCD.fetchMovies(uuids: ids)
-        case .actors:
+            
+        case .actors: // Change to Actors 
             let actorIDs = extractIDsFor(.actors, id: searchID)
             let ids = actorIDs.map({ Double($0) })
             movies = movieCD.fetchMovies(uuids: ids)
