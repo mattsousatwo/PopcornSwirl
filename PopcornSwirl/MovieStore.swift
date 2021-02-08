@@ -45,8 +45,37 @@ class MovieStore: ObservableObject {
     init() {
 
     }
+}
+
+
+extension MovieStore {
+    
+    // MARK: FETCH Popular Movies
+    /// Test: Should change to decode any data put into it 
+    func decodePopularMoviesAsString() -> String {
+        var rawJSONString = ""
+        
+        let popMovieRequest = "https://api.themoviedb.org/3/movie/popular?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&page=1"
+        
+        AF.request( popMovieRequest ).responseJSON {
+            response in
+            
+            guard let json = response.data else { return }
+    
+                let decodedMovies = String(data: json, encoding: .utf8)
+                
+                guard let moviesString = decodedMovies else { return }
+                print(moviesString)
+                rawJSONString = moviesString
+//                self.popularMovies = decodedMovies.results
+          
+
+        } // request
+        return rawJSONString
+    } // fetchPopularMovies
     
 }
+
 
 
 // MARK: Movies
@@ -222,18 +251,38 @@ extension MovieStore {
         if movieCast.count == 0 {
             fetchMovieCreditsForMovie(id: id)
         }
-        for i in 0..<movieCast.count {
-            if i <= 24 {
-                actors.append(movieCast[i])
-                self.castStore.createCastMember(actorID: Double(movieCast[i].id), movieID: Double(id))
-                
-                self.actorsStore.createActor(name: movieCast[i].name,
-                                             bio: nil,
-                                             id: Double(movieCast[i].id),
-                                             imagePath:  movieCast[i].profile_path)
-                
-            }
+        var movieCount = false
+        if movieCast.count > 25 {
+            movieCount = true
+        } else {
+            movieCount = false
         }
+        for i in (movieCount ? 0..<25 : 0..<movieCast.count) {
+            actors.limited(append: movieCast[i])
+//            actorsStore.createActor(name: movieCast[i].name,
+//                                    bio: nil,
+//                                    id: Double(movieCast[i].id),
+//                                    imagePath: movieCast[i].profile_path)
+        }
+        
+//        actorsStore.saveActorsIn(actors)
+        
+        
+        
+//        for i in 0..<24 {
+//            print("extractMovieCast() : for \(i) in 0..<24")
+//            if i <= 24 {
+//                actors.append(movieCast[i])
+////                self.castStore.createCastMember(actorID: Double(movieCast[i].id), movieID: Double(id))
+//                print("extractMovieCast() : loop { \(i) }")
+////                self.actorsStore.createActor(name: movieCast[i].name,
+////                                             bio: nil,
+////                                             id: Double(movieCast[i].id),
+////                                             imagePath:  movieCast[i].profile_path)
+//
+//            }
+//        }
+        print("extractedMovieCast.count: \(actors.count)")
         return actors
     }
     

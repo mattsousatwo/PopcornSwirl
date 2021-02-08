@@ -40,7 +40,7 @@ extension MoviesStore {
     }
     
     // Save a new movie
-    func createNewMovie(uuid: Double, category: MovieCategory = .none, director: String = "", title: String = "", overview: String = "", genres: [Int] = [], cast: [Int] = [], releaseDate: String = "", rating: Double = 0.0, isFavorite: Bool = false, isWatched: Bool = false, comment: String = "") -> Movie {
+    func createNewMovie(uuid: Double, category: MovieCategory = .none, director: String = "", title: String = "", overview: String = "", genres: [Int] = [], cast: String = "", releaseDate: String = "", rating: Double = 0.0, isFavorite: Bool = false, isWatched: Bool = false, comment: String = "") -> Movie {
         
         let movie = Movie(context: context)
         
@@ -51,8 +51,9 @@ extension MoviesStore {
         movie.title = title
         movie.overview = overview
 //        movie.genres = genres ---- CONVERT TO NSOBJECT?
-//        movie.cast
-        
+//        if cast != "" {
+//            movie.cast = cast
+//        }
         movie.releaseDate = releaseDate
         movie.rating = rating
         
@@ -61,9 +62,66 @@ extension MoviesStore {
         movie.comment = comment
         
         saveContext()
-        
         return movie
     }
+    
+    
+    
+    func saveMovie(cast json: Data, forMovie movieID: Int) {
+        let movie = allMovies.first(where: { $0.uuid == Double(movieID) })
+        let castAsString = String(data: json, encoding: .utf8)
+        guard let cast = castAsString else { return }
+        if let movie = movie {
+//            movie.cast = cast
+            saveContext()
+        } else {
+            var _ = createNewMovie(uuid: Double(movieID), cast: cast)
+        }
+    }
+    
+    /// Update given movie properties
+    func update(movie: Movie, uuid: Double? = nil, category: MovieCategory? = nil, director: String? = nil, title: String? = nil, overview: String? = nil, genres: [Int]? = nil, cast: String? = nil, releaseDate: String? = nil, rating: Double? = nil, isFavorite: Bool? = nil, isWatched: Bool? = nil, comment: String? = nil) {
+        
+        if let uuid = uuid {
+            movie.uuid = uuid
+        }
+        if let category = category {
+            movie.category = category.rawValue
+        }
+        if let director = director {
+            movie.director = director
+        }
+        if let title = title {
+            movie.title = title
+        }
+        if let overview = overview {
+            movie.overview = overview
+        }
+//        if let genres = genres {
+//            movie.genres = genres
+//        }
+//        if let cast = cast {
+//            movie.cast = cast
+//        }
+        if let releaseDate = releaseDate {
+            movie.releaseDate = releaseDate
+        }
+        if let rating = rating {
+            movie.rating = rating
+        }
+        if let isFavorite = isFavorite {
+            movie.isFavorite = isFavorite
+        }
+        if let isWatched = isWatched {
+            movie.isWatched = isWatched
+        }
+        if let comment = comment {
+            movie.comment = comment
+        }
+        saveContext()
+    }
+    
+    
     
 }
 

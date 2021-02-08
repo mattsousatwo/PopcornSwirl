@@ -39,6 +39,15 @@ struct ScrollBar: View {
         case .recommendedMovie:
             return movieStore.movieForBar(.recommendedMovie, id: id)
         case .actors:
+            
+//            let actorIDs = movieStore.extractIDsFor(.actors, id: id)
+//            let movieActors = actorsStore.fetchActorsWith(ids: actorIDs)
+//            print("Actors for Movie \(id)")
+//            for actor in movieActors {
+//                print("actor: \(actor.name ?? "empty name")")
+//            }
+//            
+            
             return movieStore.movieForBar(.actors, id: id)
         case .actorMovie:
             return movieStore.movieForBar(.actorMovie, id: id)
@@ -100,7 +109,7 @@ struct ScrollBar: View {
                 
                 HStack(spacing: 15) {
                     
-                    bar(type: type, id: id, movies: movies) // add actors
+                    bar(type: type, id: id, movies: movies, actors: actors) // add actors
 
                 } .padding() // HStack
   
@@ -125,6 +134,7 @@ struct bar: View {
     var movies: [Movie]
     
     // add actors
+    var actors: [Actor]?
     
     private var popularMovies : [PopMovie] {
         return movieStore.extractPopularMovies()
@@ -237,6 +247,7 @@ struct bar: View {
                 ForEach(0..<popularMovies.count, id: \.self) { i in
                     if popularMovies.count != 0 {
                             if let movie = movies.first(where: { $0.uuid == Double(popularMovies[i].id) } ) {
+                                
                                 ScrollNavLink(movieID: popularMovies[i].id,
                                               title: popularMovies[i].title,
                                               genreIDs: popularMovies[i].genre_ids,
@@ -279,23 +290,11 @@ struct bar: View {
             case .recommendedMovie:
                 ForEach(0..<recommendedMovies.count, id: \.self) { i in
                     if recommendedMovies.count != 0 {
-                        RoundedRectangle(cornerRadius: 12.0)
-                            .frame(width: 100, height: 200)
-                            .foregroundColor(.blue)
+
                         if let recomendedMovieID = recommendedMovies[i].id {
-                            RoundedRectangle(cornerRadius: 12.0)
-                                .frame(width: 100, height: 200)
-                                .foregroundColor(.red)
                             if let reccomendedMovie = movies.first(where: { $0.uuid == Double(recomendedMovieID) }) {
-                                
-                                RoundedRectangle(cornerRadius: 12.0)
-                                    .frame(width: 100, height: 200)
-                                    .foregroundColor(.green)
-                                
-                                
                                 if let releaseDate = recommendedMovies[i].release_date {
-                                    
-                                    
+
                                     ScrollNavLink(movieID: recomendedMovieID,
                                                   title: recommendedMovies[i].title,
                                                   genreIDs: recommendedMovies[i].genre_ids,
@@ -347,7 +346,9 @@ struct ScrollNavLink: View {
     var releaseDate: String
     var movie: Movie
     
-    
+    func ss() {
+        
+    }
     var body: some View {
         
         NavigationLink(destination: MovieDetail(movieID: movieID,
@@ -361,7 +362,7 @@ struct ScrollNavLink: View {
             MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath),
                       movie: movie)
         }
-        
+
         
     }
 }
@@ -374,6 +375,7 @@ struct LabeledScrollNavLink: View {
     var title: String
     var subtitle: String
     var movie: Movie
+    var actor: Actor?
     
     var body: some View {
         

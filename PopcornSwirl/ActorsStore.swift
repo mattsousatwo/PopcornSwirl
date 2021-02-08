@@ -42,9 +42,34 @@ class ActorsStore: ObservableObject {
 extension ActorsStore {
     
     func createActor(name: String, bio: String?, id: Double, imagePath: String? = nil) {
-        let actor = fetchActorWith(id: Int(id))
+        let actor = Actor(context: context) 
         
-//        let actor = Actor(context: context)
+//        switch actors.isEmpty {
+//        case true: // If actors is empty - fetch for actor
+//            actor = fetchActorWith(id: Int(id))
+//        default: // else if actors contains actor
+//            switch actors.contains(where: { $0.id == id }) {
+//            case true: // has actor? break
+//                break
+//            default: // else create actor
+//                actor.name = name
+//                actor.id = id
+//                if let imagePath = imagePath {
+//                    actor.imagePath = imagePath
+//                }
+//                if let bio = bio {
+//                    actor.biography = bio
+//                }
+//                saveContext()
+//                actors.append(actor)
+//            }
+//        }
+//
+//
+        
+        
+        
+        
         switch actor.id {
         case id:
             break
@@ -60,6 +85,20 @@ extension ActorsStore {
             saveContext()
             actors.append(actor)
         }
+        
+    }
+    
+    
+    func saveActorsIn(_ actorArray: [MovieCast]) {
+        
+        for actor in actorArray {
+            createActor(name: actor.name,
+                        bio: nil,
+                        id: Double(actor.id),
+                        imagePath: actor.profile_path)
+        }
+        
+        
         
     }
     

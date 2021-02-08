@@ -55,6 +55,14 @@ class MovieTests: XCTestCase {
     lazy var actorTestID = 888
     lazy var testTitle = "Test Title"
     
+    
+    // Test if we can decode json to string for saving
+    func testIfdecodingToStringisWorking() {
+        let popularMovieString = movieStore.decodePopularMoviesAsString()
+        XCTAssertEqual(popularMovieString, "", "Popular Movie string is empty - \(popularMovieString)")
+    }
+    
+    
     // Test Movie Creation
     func testMovieCreation() {
         // Arrange
@@ -80,7 +88,7 @@ class MovieTests: XCTestCase {
         movieCD.fetchMovies()
         let movie = movieCD.allMovies.first(where: { $0.uuid == Double(wonderWomanID) })
         print("movieCount: \(movieCD.allMovies.count)")
-        XCTAssertNotNil(movie, "Movie is not found, movieCount: \(movie)")
+        XCTAssertNotNil(movie, "Movie is not found, movieCount: \(movieCD.allMovies.count)")
     }
     
     // test if fetching movies will work
@@ -190,12 +198,27 @@ class ActorsTests: XCTestCase {
     func testFetchingSpecificActor() {
         
         actorsStore.createActor(name: "Tito Brophy", bio: "Has dope hair", id: Double(titoID), imagePath: nil)
-        let foundActor = actorsStore.fetchActorWith(id: Double(titoID))
+        let foundActor = actorsStore.fetchActorWith(id: titoID)
         
         XCTAssertEqual(foundActor.name, titoName, "Actor not found")
         
         
         
+    }
+    
+}
+
+
+class ArrayTests: XCTestCase {
+    
+    // Tests if extention to append an array if the array is under a certain count
+    func testLimitedAppendExtention() {
+        var testArray: [Int] = []
+        for i in 0...30 {
+            testArray.limited(append: i)
+        }
+        print("testArray.count \(testArray.count)")
+        XCTAssertEqual(testArray.count, 25, ".limited(append: ) failed, array.count: \(testArray.count)")
     }
     
 }

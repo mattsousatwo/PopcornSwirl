@@ -11,7 +11,8 @@ import SwiftUI
 
 struct HeartButton: View {
     
-    var movie: Movie
+    var actor: Actor?
+    var movie: Movie?
     var width: CGFloat = 25
     var height: CGFloat = 25
     
@@ -21,40 +22,62 @@ struct HeartButton: View {
                                           startPoint: .top, endPoint: .bottom)
     
     var body: some View {
-        Button( action: {
-            
-            switch movie.isFavorite {
-            case true:
-                type = .fill
-            case false:
-                type = .empty
-            }
-            
-            
-            switch type {
-            case .empty:
-                self.type = .fill
-                print("Like Button Pressed")
-                movie.isFavorite = true
-                movie.comment = "Heart Button - pressed @ 3:37"
-                movieStore.saveContext()
-                print("HeartButton - id: \(movie.uuid), isFavorite: \(movie.isFavorite)")
-            case .fill:
-                self.type = .empty
-                print("Unlike Button Pressed")
-                movie.isFavorite = false
-                movieStore.saveContext()
-                print("HeartButton - id: \(movie.uuid), isFavorite: \(movie.isFavorite)")
-            }
-        }, label: {
-            gradient.mask(
-                Image(systemName: type.rawValue).resizable() )
-                .frame(width: width, height: height)
-//                .shadow(radius: 3)
-                .shadow(color: .gray, radius: 3, x: 1, y: 2)
-        })
         
-        .animation(.default)
+        
+        if let movie = movie {
+            Button( action: {
+                switch movie.isFavorite {
+                case true:
+                    type = .fill
+                case false:
+                    type = .empty
+                }
+                
+                
+                switch type {
+                case .empty:
+                    self.type = .fill
+                    print("Like Button Pressed")
+                    movie.isFavorite = true
+                    movie.comment = "Heart Button - pressed @ 3:37"
+                    movieStore.saveContext()
+                    print("HeartButton - id: \(movie.uuid), isFavorite: \(movie.isFavorite)")
+                case .fill:
+                    self.type = .empty
+                    print("Unlike Button Pressed")
+                    movie.isFavorite = false
+                    movieStore.saveContext()
+                    print("HeartButton - id: \(movie.uuid), isFavorite: \(movie.isFavorite)")
+                }
+            }, label: {
+                gradient.mask(
+                    Image(systemName: type.rawValue).resizable() )
+                    .frame(width: width, height: height)
+                    //                .shadow(radius: 3)
+                    .shadow(color: .gray, radius: 3, x: 1, y: 2)
+            })
+            .animation(.default)
+        } else {
+            
+//            if let actor = actor {
+//                switch actor.isFavorite {
+//                case <#pattern#>:
+//                    <#code#>
+//                default:
+//                    <#code#>
+//                }
+//
+//
+//            }
+            
+        }
+        
+        
+
+        
+        
+        
+        
     }
     enum HeartType: String {
         case empty = "heart"
