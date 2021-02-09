@@ -103,7 +103,7 @@ class MovieTests: XCTestCase {
         movieCD.fetchMovies(in: .popular)
         XCTAssertFalse(movieCD.popularMovies.count == 0, "No Popular Movies Found")
     }
-    
+   
     // Test reccomended video fetching
     func testMovieBarForReccomended() {
         let reccomendedMovies = movieStore.movieForBar(.recommendedMovie, id: wonderWomanID)

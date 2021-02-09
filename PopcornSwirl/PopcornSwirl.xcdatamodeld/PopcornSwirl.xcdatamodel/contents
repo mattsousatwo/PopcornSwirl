@@ -19,11 +19,11 @@
         <attribute name="name" attributeType="String"/>
     </entity>
     <entity name="Movie" representedClassName="Movie" syncable="YES">
-        <attribute name="cast" optional="YES" attributeType="Transformable"/>
+        <attribute name="cast" optional="YES" attributeType="String"/>
         <attribute name="category" optional="YES" attributeType="String"/>
         <attribute name="comment" optional="YES" attributeType="String"/>
         <attribute name="director" optional="YES" attributeType="String"/>
-        <attribute name="genres" optional="YES" attributeType="Transformable"/>
+        <attribute name="genres" optional="YES" attributeType="String"/>
         <attribute name="imagePath" optional="YES" attributeType="String"/>
         <attribute name="isFavorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isWatched" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>

@@ -2,7 +2,7 @@
 //  Movie+CoreDataClass.swift
 //  PopcornSwirl
 //
-//  Created by Matthew Sousa on 2/3/21.
+//  Created by Matthew Sousa on 2/8/21.
 //  Copyright © 2021 Matthew Sousa. All rights reserved.
 //
 //
