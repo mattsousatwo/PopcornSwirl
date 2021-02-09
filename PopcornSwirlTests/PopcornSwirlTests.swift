@@ -201,9 +201,17 @@ class ActorsTests: XCTestCase {
         let foundActor = actorsStore.fetchActorWith(id: titoID)
         
         XCTAssertEqual(foundActor.name, titoName, "Actor not found")
+    }
+    
+    func testIfUpdateFuncWorks() {
+        let actorID: Double = 200
+        let name = "Matt"
         
-        
-        
+        let actor = Actor(context: actorsStore.context)
+        actor.id = actorID
+        actorsStore.saveContext()
+        actorsStore.update(actor: actor, name: name)
+        XCTAssertEqual(actor.name, name, "Actor name is not equal to Matt - \(actor)")
     }
     
 }

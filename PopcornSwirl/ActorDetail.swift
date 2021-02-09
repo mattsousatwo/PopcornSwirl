@@ -13,7 +13,9 @@ struct ActorDetail: View {
     var image: String
     var actorID: Int
     var name: String
+    var actor: Actor?
     @State var isFavorite: Bool
+    @ObservedObject private var actorStore = ActorsStore()
     
     
     @State private var showFullBio: Bool = false
@@ -44,7 +46,6 @@ struct ActorDetail: View {
         }
         return tvArray
     }
-    
     
     private var details: ActorDetails? {
         if movie.actorDetails.count != 0 {
@@ -78,7 +79,7 @@ struct ActorDetail: View {
                             
                             Spacer()
                             
-                            LargeActorCard(url: URL(string: image))
+                            LargeImageCard(url: URL(string: image), actor: actor)
                                 .padding()
                             
                             Spacer()

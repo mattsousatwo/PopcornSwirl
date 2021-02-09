@@ -30,7 +30,7 @@ struct ScrollBar: View {
     
     var id: Int = 0
     
-    var movies: [Movie] {
+    var movies: [Movie]? {
         switch type {
         case .popularMovie:
             return movieStore.movieForBar(.popularMovie)
@@ -39,16 +39,7 @@ struct ScrollBar: View {
         case .recommendedMovie:
             return movieStore.movieForBar(.recommendedMovie, id: id)
         case .actors:
-            
-//            let actorIDs = movieStore.extractIDsFor(.actors, id: id)
-//            let movieActors = actorsStore.fetchActorsWith(ids: actorIDs)
-//            print("Actors for Movie \(id)")
-//            for actor in movieActors {
-//                print("actor: \(actor.name ?? "empty name")")
-//            }
-//            
-            
-            return movieStore.movieForBar(.actors, id: id)
+            return nil
         case .actorMovie:
             return movieStore.movieForBar(.actorMovie, id: id)
         case .actorTV:
@@ -59,9 +50,11 @@ struct ScrollBar: View {
     var actors: [Actor]? {
         switch type {
         case .actors:
+            let actorIDs = movieStore.extractIDsFor(.actors, id: id)
+            let y = actorsStore.fetchAllActorsWith(ids: actorIDs)
+            print("FOUND ACTORS: \(y.count)")
             
-            
-            return nil
+            return y
         default:
             return nil 
         }
@@ -108,9 +101,12 @@ struct ScrollBar: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 
                 HStack(spacing: 15) {
-                    
-                    bar(type: type, id: id, movies: movies, actors: actors) // add actors
-
+                    if let movies = movies {
+                        Bar(type: type, id: id, movies: movies) // add actors
+                    }
+                    if let actors = actors {
+                        Bar(type: type, id: id, actors: actors)
+                    }
                 } .padding() // HStack
   
             } // ScrollView - Content
@@ -124,14 +120,14 @@ struct ScrollBar: View {
 }
 
 
-struct bar: View {
+struct Bar: View {
     
     
     var type: ScrollBarType
     
     var id: Int // used to fetch recomended movies
     
-    var movies: [Movie]
+    var movies: [Movie]?
     
     // add actors
     var actors: [Actor]?
@@ -175,22 +171,22 @@ struct bar: View {
             case .actorMovie:
                 ForEach(0..<actorMovies.count, id: \.self) { i in
                     if i <= 9 {
-                        
-                        if let id = actorMovies[i].id {
-                            if let actorMovie = movies.first(where: { $0.uuid == Double(id) }) {
-                                
-                                if let moviePosterPath = actorMovies[i].poster_path,
-                                   let movieTitle = actorMovies[i].title {
+                        if let movies = movies {
+                            if let id = actorMovies[i].id {
+                                if let actorMovie = movies.first(where: { $0.uuid == Double(id) }) {
                                     
-                                    LabeledScrollNavLink(imagePath: moviePosterPath,
-                                                         actorID: id,
-                                                         title: movieTitle,
-                                                         subtitle: actorMovies[i].character,
-                                                         movie: actorMovie)
+                                    if let moviePosterPath = actorMovies[i].poster_path,
+                                       let movieTitle = actorMovies[i].title {
+                                        
+                                        LabeledScrollNavLink(imagePath: moviePosterPath,
+                                                             actorID: id,
+                                                             title: movieTitle,
+                                                             subtitle: actorMovies[i].character,
+                                                             movie: actorMovie)
+                                    }
                                 }
                             }
                         }
-                   
                     } // if i
               
                 } // For
@@ -200,8 +196,8 @@ struct bar: View {
                 if actorTVSeries.count != 0 {
                     ForEach(0..<actorTVSeries.count, id: \.self) { i in
                         if i <= 9 {
-                            
-                            if let id = actorTVSeries[i].id {
+                            if let movies = movies {
+                                if let id = actorTVSeries[i].id {
                                 if let tVSeries = movies.first(where: { $0.uuid == Double(id) }) {
                                     
                                     ScrollNavLink(movieID: id,
@@ -214,6 +210,7 @@ struct bar: View {
                                                   movie: tVSeries)
                                 }
                             }
+                            }
                         }
                     }
                     
@@ -225,27 +222,42 @@ struct bar: View {
                 if actorImages.count != 0 {
                     ForEach(0..<actorImages.count, id: \.self) { i in
                         if i <= 9 {
-                            if let actor = movies.first(where: { $0.uuid == Double(cast[i].id) }) {
-                                if let imagePath = actorImages[ cast[i].id ] {
+//                            if let actor = movies.first(where: { $0.uuid == Double(cast[i].id) }) {
+//                                if let imagePath = actorImages[ cast[i].id ] {
+//
+//                                    LabeledScrollNavLink(imagePath: imagePath,
+//                                                         actorID: cast[i].id,
+//                                                         title: cast[i].name,
+//                                                         subtitle: cast[i].character,
+//                                                         movie: actor)
                                     
-                                    LabeledScrollNavLink(imagePath: imagePath,
-                                                         actorID: cast[i].id,
-                                                         title: cast[i].name,
-                                                         subtitle: cast[i].character,
-                                                         movie: actor)
-                                }
-                            }
+                                    if let act = actors?.first(where: { $0.id == Double(cast[i].id) }) {
+                                        if let imagePath = actorImages[ cast[i].id ] {
+                                            LabeledScrollNavLink(imagePath: imagePath,
+                                                                 actorID: cast[i].id,
+                                                                 title: cast[i].name,
+                                                                 subtitle: cast[i].character,
+                                                                 movie: nil,
+                                                                 actor: act)
+
+                                        }
+                                    }
+                                    
+                                    
+//                                }
+//                            }
                         } // i <= 9
                     } // for
                     
                     .animation(.default)
                 } // if
-
+            
             // MARK: POPULAR MOVIE -
             case .popularMovie:
                 
                 ForEach(0..<popularMovies.count, id: \.self) { i in
                     if popularMovies.count != 0 {
+                        if let movies = movies {
                             if let movie = movies.first(where: { $0.uuid == Double(popularMovies[i].id) } ) {
                                 
                                 ScrollNavLink(movieID: popularMovies[i].id,
@@ -257,6 +269,7 @@ struct bar: View {
                                               releaseDate: popularMovies[i].release_date,
                                               movie: movie)
                             }
+                        }
                     }
                 }
                 .animation(.default)
@@ -266,7 +279,7 @@ struct bar: View {
                 ForEach(0..<upcomingMovies.count, id: \.self) { i in
                     if upcomingMovies.count != 0 {
                         
-                        
+                        if let movies = movies {
                             if let upcomingMovie = movies.first(where: { $0.uuid == Double(upcomingMovies[i].id) } ) {
                                 
                                 ScrollNavLink(movieID: upcomingMovies[i].id,
@@ -280,7 +293,7 @@ struct bar: View {
                                 
                             }
                         
-                        
+                        }
                     }
                 }
 
@@ -290,31 +303,28 @@ struct bar: View {
             case .recommendedMovie:
                 ForEach(0..<recommendedMovies.count, id: \.self) { i in
                     if recommendedMovies.count != 0 {
-
-                        if let recomendedMovieID = recommendedMovies[i].id {
-                            if let reccomendedMovie = movies.first(where: { $0.uuid == Double(recomendedMovieID) }) {
-                                if let releaseDate = recommendedMovies[i].release_date {
-
-                                    ScrollNavLink(movieID: recomendedMovieID,
-                                                  title: recommendedMovies[i].title,
-                                                  genreIDs: recommendedMovies[i].genre_ids,
-                                                  overview: recommendedMovies[i].overview,
-                                                  posterPath: recommendedMovies[i].poster_path ?? "",
-                                                  voteAverage: recommendedMovies[i].vote_average,
-                                                  releaseDate: releaseDate,
-                                                  movie: reccomendedMovie)
-                                }
-                            }
-                            
-                        }
                         
+                        if let movies = movies {
+                            if let recomendedMovieID = recommendedMovies[i].id {
+                                if let reccomendedMovie = movies.first(where: { $0.uuid == Double(recomendedMovieID) }) {
+                                    if let releaseDate = recommendedMovies[i].release_date {
+                                        
+                                        ScrollNavLink(movieID: recomendedMovieID,
+                                                      title: recommendedMovies[i].title,
+                                                      genreIDs: recommendedMovies[i].genre_ids,
+                                                      overview: recommendedMovies[i].overview,
+                                                      posterPath: recommendedMovies[i].poster_path ?? "",
+                                                      voteAverage: recommendedMovies[i].vote_average,
+                                                      releaseDate: releaseDate,
+                                                      movie: reccomendedMovie)
+                                    }
+                                }
+                                
+                            }
+                        }
                     }
                 }
-                .onAppear(perform: {
-                    
-                    print("RecMovies: \(movies.count)")
-                    
-                })
+
                 .animation(.default)
             } // switch
             
@@ -359,7 +369,7 @@ struct ScrollNavLink: View {
                                                 rating: voteAverage,
                                                 releaseDate: releaseDate)) {
             
-            MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath),
+            ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath),
                       movie: movie)
         }
 
@@ -374,20 +384,34 @@ struct LabeledScrollNavLink: View {
     var actorID: Int
     var title: String
     var subtitle: String
-    var movie: Movie
+    var movie: Movie?
     var actor: Actor?
     
     var body: some View {
         
+        if let actor = actor {
+            NavigationLink(destination: ActorDetail(image: MovieStoreKey.imageURL.rawValue + imagePath,
+                                                    actorID: actorID,
+                                                    name: title,
+                                                    actor: actor,
+                                                    isFavorite: actor.isFavorite)) {
+                
+                LabeledImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + imagePath),
+                                 title: title, subtitle: subtitle, actor: actor)
+            }
+        }
         
-        
-            
+        if let movie = movie {
             NavigationLink(destination: ActorDetail(image: MovieStoreKey.imageURL.rawValue + imagePath,
                                                     actorID: actorID,
                                                     name: title,
                                                     isFavorite: movie.isFavorite)) {
-                LabeledMovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + imagePath),
+                LabeledImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + imagePath),
                                  title: title, subtitle: subtitle, movie: movie)
             }
+        }
+        
+            
+
     }
 }

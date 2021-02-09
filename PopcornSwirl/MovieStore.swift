@@ -394,6 +394,7 @@ extension MovieStore {
     // MARK: GET Details for Actor
     func fetchDetailsForActor(id: Int ) {
         // https://developers.themoviedb.org/3/people/get-person-details
+        let actor = actorsStore.fetchActorWith(id: id)
         
         let detailsRequest = "https://api.themoviedb.org/3/person/\(id)?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
         
@@ -401,16 +402,27 @@ extension MovieStore {
             guard let json = response.data else { return }
             do {
                 let details = try self.decoder.decode(ActorDetails.self, from: json)
-                
-       
                 self.actorDetails.append(details)
-                    
- 
+                
+                self.actorsStore.update(actor: actor,
+                                   id: Double(id),
+                                   imagePath: details.profile_path ?? "",
+                                   name: details.name,
+                                   deathDate: details.deathday ?? nil ,
+                                   birthDate: details.birthday ?? nil,
+                                   birthPlace: details.place_of_birth ?? nil,
+                                   bio: details.biography)
+                print("updatedActor: \(actor.name ?? "nil"), \(actor.id), \(actor.imagePath ?? "nil"), \(actor.deathDate ?? "nil"), \(actor.birthDate ?? "nil"), \(actor.birthPlace ?? "nil"), \(actor.biography ?? "nil")")
             } catch {
                 print(error)
             }
         }
+
+        
+        
     }
+    
+    
     
     
 }
@@ -746,10 +758,14 @@ extension MovieStore {
             let ids = reccomendedMovieIDs.map({ Double($0) })
             movies = movieCD.fetchMovies(uuids: ids)
             
-        case .actors: // Change to Actors 
+        case .actors: // Change to Actors
+            
+            
             let actorIDs = extractIDsFor(.actors, id: searchID)
             let ids = actorIDs.map({ Double($0) })
             movies = movieCD.fetchMovies(uuids: ids)
+            
+            
         case .actorMovie:
             let actorMovieIDs = extractIDsFor(.actorMovie, id: searchID)
             let ids = actorMovieIDs.map({ Double($0) })

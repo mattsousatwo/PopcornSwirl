@@ -21,6 +21,10 @@ extension Actor {
     @NSManaged public var id: Double
     @NSManaged public var imagePath: String?
     @NSManaged public var name: String?
+    @NSManaged public var isFavorite: Bool
+    @NSManaged public var deathDate: String?
+    @NSManaged public var birthDate: String?
+    @NSManaged public var birthPlace: String?
 
 }
 

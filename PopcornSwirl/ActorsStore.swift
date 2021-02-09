@@ -106,6 +106,59 @@ extension ActorsStore {
     
 }
 
+extension ActorsStore {
+    
+    // Update actor properties
+    func update(actor: Actor, id: Double? = nil, imagePath: String? = nil, name: String? = nil, isFavorite: Bool? = nil, deathDate: String? = nil, birthDate: String? = nil, birthPlace: String? = nil, bio: String? = nil) {
+        if let id = id {
+            if actor.id != id {
+                actor.id = id
+            }
+        }
+        if let imagePath = imagePath {
+            if actor.imagePath != imagePath {
+                actor.imagePath = imagePath
+            }
+        }
+        if let name = name {
+            if actor.name != name {
+                actor.name = name
+            }
+        }
+        if let isFavorite = isFavorite {
+            if actor.isFavorite != isFavorite {
+                actor.isFavorite = isFavorite
+            }
+        }
+        if let deathDate = deathDate {
+            if actor.deathDate != deathDate {
+                actor.deathDate = deathDate
+            }
+        }
+        if let birthDate = birthDate {
+            if actor.birthDate != birthDate {
+                actor.birthDate = birthDate
+            }
+        }
+        if let birthPlace = birthPlace {
+            if actor.birthPlace != birthPlace {
+                actor.birthPlace = birthPlace
+            }
+        }
+        if let bio = bio {
+            if actor.biography != bio {
+                actor.biography = bio
+            }
+        }
+        if actor.hasChanges {
+            saveContext()
+        }
+    }
+    
+    
+}
+
+
 
 // MARK: Fetching
 extension ActorsStore {
@@ -192,6 +245,32 @@ extension ActorsStore {
         return actors
     }
     
+    
+    
+    func fetchAllActorsWith(ids: [Int]) -> [Actor] {
+        var actorsArray: [Actor] = []
+        let request: NSFetchRequest<Actor> = Actor.fetchRequest()
+        for id in ids {
+            request.predicate = NSPredicate(format: "id == %i", Int(id))
+            do {
+                let result = try context.fetch(request)
+                switch result.isEmpty {
+                case true:
+                    print("Actor Not Found \(id)")
+                    let actor = Actor(context: context)
+                    actor.id = Double(id)
+                    saveContext()
+                    actorsArray.append(actor)
+                case false:
+                    print("Actor Found")
+                    actorsArray.append(contentsOf: result)
+                }
+            } catch {
+                print(error)
+            }
+        }
+        return actorsArray
+    }
     
     
 }

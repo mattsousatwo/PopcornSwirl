@@ -18,6 +18,7 @@ struct HeartButton: View {
     
     @State private var type: HeartType = .empty
     private let movieStore = MoviesStore()
+    private let actorsStore = ActorsStore()
     private let gradient = LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]),
                                           startPoint: .top, endPoint: .bottom)
     
@@ -58,13 +59,46 @@ struct HeartButton: View {
             })
             .animation(.default)
         } else {
+            if let actor = actor {
+                Button( action: {
+                    switch actor.isFavorite {
+                    case true:
+                        type = .fill
+                    case false:
+                        type = .empty
+                    }
+                    switch type {
+                    case .empty:
+                        self.type = .fill
+                        print("Like Button Pressed")
+                        actor.isFavorite = true
+                        actorsStore.saveContext()
+                        print("HeartButton - actorID: \(actor.id), isFavorite: \(actor.isFavorite)")
+                    case .fill:
+                        self.type = .empty
+                        print("Unlike Button Pressed")
+                        actor.isFavorite = false
+                        actorsStore.saveContext()
+                        print("HeartButton - actorID: \(actor.id), isFavorite: \(actor.isFavorite)")
+                    }
+                }, label: {
+                    gradient.mask(
+                        Image(systemName: type.rawValue).resizable() )
+                        .frame(width: width, height: height)
+                        //                .shadow(radius: 3)
+                        .shadow(color: .gray, radius: 3, x: 1, y: 2)
+                })
+                .animation(.default)
+            }
+
             
+//
 //            if let actor = actor {
 //                switch actor.isFavorite {
-//                case <#pattern#>:
-//                    <#code#>
+//                case true:
+//                    type = .fill
 //                default:
-//                    <#code#>
+//                    type = .empty
 //                }
 //
 //

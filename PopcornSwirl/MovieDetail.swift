@@ -52,7 +52,7 @@ struct MovieDetail: View {
                             //                                Text("fetchItems: \(fetchItems.count)")
                             
                             // Movie Poster
-                            MovieCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), movie: movie)
+                            ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), movie: movie)
                                 
                                 
                                 .padding(.horizontal)
@@ -159,7 +159,7 @@ struct MovieDetail: View {
                         )
                     
                     // MARK: - Suggested Movies
-                    ScrollBar(type: .recommendedMovie, id: movieID)
+                     ScrollBar(type: .recommendedMovie, id: movieID)
 
                     PurchaseLinkBar(movieID: movieID)
                         .padding(.bottom)

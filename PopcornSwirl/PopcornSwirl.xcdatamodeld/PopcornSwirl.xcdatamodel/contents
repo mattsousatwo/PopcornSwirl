@@ -2,8 +2,12 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Actor" representedClassName="Actor" syncable="YES">
         <attribute name="biography" optional="YES" attributeType="String"/>
+        <attribute name="birthDate" optional="YES" attributeType="String"/>
+        <attribute name="birthPlace" optional="YES" attributeType="String"/>
+        <attribute name="deathDate" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="imagePath" optional="YES" attributeType="String" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="isFavorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
     <entity name="Cast" representedClassName="Cast" syncable="YES">
@@ -37,7 +41,7 @@
         <attribute name="uuid" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="Actor" positionX="-45" positionY="36" width="128" height="89"/>
+        <element name="Actor" positionX="-45" positionY="36" width="128" height="149"/>
         <element name="Cast" positionX="-45" positionY="45" width="128" height="59"/>
         <element name="Genres" positionX="-45" positionY="36" width="128" height="59"/>
         <element name="Movie" positionX="-45" positionY="45" width="128" height="224"/>
