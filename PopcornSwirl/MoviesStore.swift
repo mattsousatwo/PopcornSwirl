@@ -20,6 +20,8 @@ class MoviesStore: ObservableObject {
     @Published var popularMovies = [Movie]()
     @Published var upcomingMovies = [Movie]()
     
+    lazy private var decoder = JSONDecoder() // used to decode json data
+    
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         context = appDelegate.persistentContainer.viewContext
@@ -66,13 +68,13 @@ extension MoviesStore {
     }
     
     
-    
-    func saveMovie(cast json: Data, forMovie movieID: Int) {
+    /// Converting Data to String, then saving to Movie with ID
+    func convertMovie(cast json: Data, forMovie movieID: Int) {
         let movie = allMovies.first(where: { $0.uuid == Double(movieID) })
         let castAsString = String(data: json, encoding: .utf8)
         guard let cast = castAsString else { return }
         if let movie = movie {
-//            movie.cast = cast
+            movie.cast = cast
             saveContext()
         } else {
             var _ = createNewMovie(uuid: Double(movieID), cast: cast)
@@ -120,6 +122,37 @@ extension MoviesStore {
         }
         saveContext()
     }
+    
+    
+    
+}
+
+// MARK: Decoding
+extension MoviesStore {
+    
+    // Decode Cast JSON from Movie
+    func decodeCast(from movie: Movie) {
+        
+    }
+    
+   /// Encode Array of Genre ID tags to JSON Data as String for saving
+    /// Example: FetchGenreIDs -> encode(genres: ) ->  update(movie:, genres: )
+    func encode(genres: [Int]) -> String? {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        guard let data = try? encoder.encode(genres) else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+    
+    func decode(genres: String) -> [Int]? {
+        let encoder = JSONEncoder()
+        guard let data = try? encoder.encode(genres) else { return nil }
+        guard let ids = try? decoder.decode([Int].self, from: data) else { return nil }
+        return ids
+    }
+    
+
+    
     
     
     
