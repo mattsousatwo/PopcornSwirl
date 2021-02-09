@@ -61,8 +61,9 @@ struct Home: View {
             genreStore.loadAllGenres()
             
             
+            // Delete all movies
             let movieStore = MoviesStore()
-            movieStore.deleteAllMovie()
+//            movieStore.deleteAllMovie()
             
             
             
@@ -73,24 +74,7 @@ struct Home: View {
             
             let castStore = CastStore()
             castStore.deleteAll()
-            
-            
-            // MARK: Can put below in a test -
-            
-//        movieRatings.deleteAllMovieRatings()
-            movieRatings.fetchAllRatings()
-            let search = movieRatings.searchForRatingsFromMovie(id: 1)
-            
-            search.comment = "Comment @ 11:12AM"
-            search.rating = 5.0
-            search.isFavorite = true
-            search.type = MovieRatingType.movie.rawValue
-            movieRatings.saveContext()
-            
-            
-            
-            
-            
+                
         }
         
     } // body

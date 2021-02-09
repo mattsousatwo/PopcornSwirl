@@ -135,26 +135,26 @@ extension MoviesStore {
         
     }
     
+    func encode(cast: MovieCast) {
+        
+    }
+    
+    
    /// Encode Array of Genre ID tags to JSON Data as String for saving
     /// Example: FetchGenreIDs -> encode(genres: ) ->  update(movie:, genres: )
-    func encode(genres: [Int]) -> String? {
+    func encodeGenres(_ genres: [Int]) -> String? {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         guard let data = try? encoder.encode(genres) else { return nil }
         return String(data: data, encoding: .utf8)
     }
     
-    func decode(genres: String) -> [Int]? {
+    func decodeGenres(_ string: String) -> [Int]? {
         let encoder = JSONEncoder()
-        guard let data = try? encoder.encode(genres) else { return nil }
+        guard let data = try? encoder.encode(string) else { return nil }
         guard let ids = try? decoder.decode([Int].self, from: data) else { return nil }
         return ids
     }
-    
-
-    
-    
-    
     
 }
 
@@ -223,8 +223,9 @@ extension MoviesStore {
                     print("Movie Not Found \(id)")
                     let newMovie = createNewMovie(uuid: id)
                     movieArray.append(newMovie)
+                    print(" -> Movie Saved: \(newMovie.uuid) \n")
                 case false:
-                    print("Movie Found")
+                    print("Movie Found: \(id)")
                     movieArray.append(contentsOf: result)
                 }
             } catch {

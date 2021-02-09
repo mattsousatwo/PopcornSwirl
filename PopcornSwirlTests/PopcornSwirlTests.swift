@@ -144,6 +144,19 @@ class MovieTests: XCTestCase {
         XCTAssertFalse(a.count == 0, "No actors found - \(a)")
     }
     
+    
+    // Test if encoding [Int] to JSON String & decode back to [Int] will work
+    func testCodingAndDecodingGenres() {
+        let genreIDs = [23, 42, 99, 103, 33, 4]
+        guard let IDsString = movieCD.encodeGenres(genreIDs) else { return }
+        print("\n Coding&DecodingTest - \(IDsString) \n")
+        guard let decodedString = movieCD.decodeGenres(IDsString) else { return }
+        
+        
+        XCTAssertEqual(decodedString, genreIDs, "\(decodedString) is not equal to \(genreIDs)")
+        
+    }
+    
 }
 
 

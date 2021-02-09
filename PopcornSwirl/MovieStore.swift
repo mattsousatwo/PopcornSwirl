@@ -218,7 +218,11 @@ extension MovieStore {
                 
                 let movieCredits = try self.decoder.decode(MovieCredits.self, from: json)
                 
-                self.movieCast = movieCredits.cast
+//                self.movieCast = movieCredits.cast
+                
+                self.movieCast.limitedAppend(contents: movieCredits.cast)
+            
+                
                 print("cast count: \(self.movieCast.count)")
                 
                 for x in movieCredits.crew {

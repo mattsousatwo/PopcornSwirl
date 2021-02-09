@@ -217,35 +217,24 @@ struct Bar: View {
                     .animation(.default)
                 }
                 
-            // MARK: ACTORS - can change to Actor
+            // MARK: ACTORS
             case .actors:
                 if actorImages.count != 0 {
                     ForEach(0..<actorImages.count, id: \.self) { i in
                         if i <= 9 {
-//                            if let actor = movies.first(where: { $0.uuid == Double(cast[i].id) }) {
-//                                if let imagePath = actorImages[ cast[i].id ] {
-//
-//                                    LabeledScrollNavLink(imagePath: imagePath,
-//                                                         actorID: cast[i].id,
-//                                                         title: cast[i].name,
-//                                                         subtitle: cast[i].character,
-//                                                         movie: actor)
+                            
+                            if let actor = actors?.first(where: { $0.id == Double(cast[i].id) }) {
+                                if let imagePath = actorImages[ cast[i].id ] {
+                                    LabeledScrollNavLink(imagePath: imagePath,
+                                                         actorID: cast[i].id,
+                                                         title: cast[i].name,
+                                                         subtitle: cast[i].character,
+                                                         movie: nil,
+                                                         actor: actor)
                                     
-                                    if let act = actors?.first(where: { $0.id == Double(cast[i].id) }) {
-                                        if let imagePath = actorImages[ cast[i].id ] {
-                                            LabeledScrollNavLink(imagePath: imagePath,
-                                                                 actorID: cast[i].id,
-                                                                 title: cast[i].name,
-                                                                 subtitle: cast[i].character,
-                                                                 movie: nil,
-                                                                 actor: act)
-
-                                        }
-                                    }
-                                    
-                                    
-//                                }
-//                            }
+                                }
+                            }
+                            
                         } // i <= 9
                     } // for
                     
@@ -356,9 +345,6 @@ struct ScrollNavLink: View {
     var releaseDate: String
     var movie: Movie
     
-    func ss() {
-        
-    }
     var body: some View {
         
         NavigationLink(destination: MovieDetail(movieID: movieID,
