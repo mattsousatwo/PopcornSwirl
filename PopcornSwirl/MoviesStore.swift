@@ -21,6 +21,7 @@ class MoviesStore: ObservableObject {
     @Published var upcomingMovies = [Movie]()
     
     lazy private var decoder = JSONDecoder() // used to decode json data
+    lazy private var encoder = JSONEncoder()
     
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -82,7 +83,7 @@ extension MoviesStore {
     }
     
     /// Update given movie properties
-    func update(movie: Movie, uuid: Double? = nil, category: MovieCategory? = nil, director: String? = nil, title: String? = nil, overview: String? = nil, genres: [Int]? = nil, cast: String? = nil, releaseDate: String? = nil, rating: Double? = nil, isFavorite: Bool? = nil, isWatched: Bool? = nil, comment: String? = nil) {
+    func update(movie: Movie, uuid: Double? = nil, category: MovieCategory? = nil, director: String? = nil, title: String? = nil, overview: String? = nil, genres: String? = nil, cast: String? = nil, releaseDate: String? = nil, rating: Double? = nil, isFavorite: Bool? = nil, isWatched: Bool? = nil, comment: String? = nil) {
         
         if let uuid = uuid {
             movie.uuid = uuid
@@ -99,12 +100,12 @@ extension MoviesStore {
         if let overview = overview {
             movie.overview = overview
         }
-//        if let genres = genres {
-//            movie.genres = genres
-//        }
-//        if let cast = cast {
-//            movie.cast = cast
-//        }
+        if let genres = genres {
+            movie.genres = genres
+        }
+        if let cast = cast {
+            movie.cast = cast
+        }
         if let releaseDate = releaseDate {
             movie.releaseDate = releaseDate
         }
@@ -120,22 +121,27 @@ extension MoviesStore {
         if let comment = comment {
             movie.comment = comment
         }
-        saveContext()
+        if movie.hasChanges {
+            saveContext()
+        }
     }
-    
-    
     
 }
 
 // MARK: Decoding
 extension MoviesStore {
     
-    // Decode Cast JSON from Movie
-    func decodeCast(from movie: Movie) {
-        
+    func encodeCast(_ cast: [MovieCast]) -> String? {
+        encoder.outputFormatting = .prettyPrinted
+        guard let data = try? encoder.encode(cast) else { return nil }
+        return String(data: data, encoding: .utf8)
     }
     
-    func encode(cast: MovieCast) {
+    // Decode Cast JSON from Movie
+    func decodeCast(_ movieCast: String) -> [MovieCast]? {
+        guard let data = try? encoder.encode(movieCast) else { return nil }
+        guard let cast = try? decoder.decode([MovieCast].self, from: data) else { return nil }
+        return cast
         
     }
     
@@ -143,14 +149,12 @@ extension MoviesStore {
    /// Encode Array of Genre ID tags to JSON Data as String for saving
     /// Example: FetchGenreIDs -> encode(genres: ) ->  update(movie:, genres: )
     func encodeGenres(_ genres: [Int]) -> String? {
-        let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         guard let data = try? encoder.encode(genres) else { return nil }
         return String(data: data, encoding: .utf8)
     }
     
     func decodeGenres(_ string: String) -> [Int]? {
-        let encoder = JSONEncoder()
         guard let data = try? encoder.encode(string) else { return nil }
         guard let ids = try? decoder.decode([Int].self, from: data) else { return nil }
         return ids
@@ -290,6 +294,15 @@ extension MoviesStore {
         }
         return movieArray
     }
+    
+    
+    func checkIfMovieDetailsNeedToBeFetched(movie: Movie) {
+        if movie.cast == nil {
+            
+        }
+        
+    }
+    
     
     
 }

@@ -47,37 +47,6 @@ class MovieStore: ObservableObject {
     }
 }
 
-
-extension MovieStore {
-    
-    // MARK: FETCH Popular Movies
-    /// Test: Should change to decode any data put into it 
-    func decodePopularMoviesAsString() -> String {
-        var rawJSONString = ""
-        
-        let popMovieRequest = "https://api.themoviedb.org/3/movie/popular?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&page=1"
-        
-        AF.request( popMovieRequest ).responseJSON {
-            response in
-            
-            guard let json = response.data else { return }
-    
-                let decodedMovies = String(data: json, encoding: .utf8)
-                
-                guard let moviesString = decodedMovies else { return }
-                print(moviesString)
-                rawJSONString = moviesString
-//                self.popularMovies = decodedMovies.results
-          
-
-        } // request
-        return rawJSONString
-    } // fetchPopularMovies
-    
-}
-
-
-
 // MARK: Movies
 extension MovieStore {
     

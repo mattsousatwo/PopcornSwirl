@@ -157,6 +157,32 @@ class MovieTests: XCTestCase {
         
     }
     
+    // Test if encoding & decoding works for cast
+    func testCodingAndDecodingForCast() {
+        let cast = [MovieCast(id: 1,
+                              known_for_department: "movie",
+                              name: "Actor 1",
+                              popularity: 5.0,
+                              profile_path: nil,
+                              character: "Character 1",
+                              order: 1),
+                    MovieCast(id: 2,
+                              known_for_department: "movie",
+                              name: "Actor 2",
+                              popularity: 10.0,
+                              profile_path: nil,
+                              character: "Character 2",
+                              order: 2)]
+        
+        guard let movieCastString = movieCD.encodeCast(cast) else { return }
+        print(movieCastString)
+        guard let decodedMovies = movieCD.decodeCast(movieCastString) else { return }
+        
+        XCTAssertEqual(decodedMovies, cast, "decodedMovies - \(decodedMovies), cast - \(cast) : Are not equal \n")
+        
+        
+    }
+    
 }
 
 

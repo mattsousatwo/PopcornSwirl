@@ -54,7 +54,7 @@ struct Home: View {
             
             // TMDB
             movieStore.getGenres()
-//            movieStore.decodePopularMoviesAsString()
+            
             
             
             //MARK: CoreData -
@@ -62,7 +62,7 @@ struct Home: View {
             
             
             // Delete all movies
-            let movieStore = MoviesStore()
+//            let movieStore = MoviesStore()
 //            movieStore.deleteAllMovie()
             
             
