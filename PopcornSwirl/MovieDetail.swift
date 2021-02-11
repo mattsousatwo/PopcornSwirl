@@ -35,6 +35,20 @@ struct MovieDetail: View {
     var rating = Double()
     var releaseDate = String()
     
+    
+    var genres: [Int] {
+        var ids: [Int] = []
+        if let movieGenres = movie.genres {
+            print("MovieGenres: \(movieGenres)")
+            if let genreIDs = movieCD.decodeGenres(movieGenres) {
+                ids = genreIDs
+            }
+        }
+        
+        print("Genres: \(ids)")
+        return ids
+    }
+    
     var body: some View {
         
         ZStack(alignment: .center) {
@@ -93,7 +107,7 @@ struct MovieDetail: View {
                             Text("Director:").bold()
                                 .foregroundColor(.white)
                                 .padding(.horizontal)
-                            Text("\(movieStore.director)")
+                            Text("\(movie.director ?? "")")
                                 .foregroundColor(.pGray3)
                                 .padding(.horizontal)
                             // Release Date
@@ -138,7 +152,8 @@ struct MovieDetail: View {
                     
                     
                     // Genres
-                    GenreBar(genres: genreIDs)
+//                    GenreBar(genres: genreIDs)
+                    GenreBar(genres: genres)
                     
                     // MARK: - Actors Scroll
                     
@@ -201,7 +216,7 @@ struct MovieDetail: View {
             print( "Movie Title: \(movieTitle)"  )
             print( "Movie Overview: \(movieOverview)"  )
             print( "Path: \(MovieStoreKey.imageURL.rawValue + posterPath)" ) 
-            print( "GenreIDs: \(genreIDs)" )
+            print( "GenreIDs: \(genres)" )
             
             
         }

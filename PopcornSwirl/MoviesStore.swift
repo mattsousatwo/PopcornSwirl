@@ -83,7 +83,7 @@ extension MoviesStore {
     }
     
     /// Update given movie properties
-    func update(movie: Movie, uuid: Double? = nil, category: MovieCategory? = nil, director: String? = nil, title: String? = nil, overview: String? = nil, genres: String? = nil, cast: String? = nil, releaseDate: String? = nil, rating: Double? = nil, isFavorite: Bool? = nil, isWatched: Bool? = nil, comment: String? = nil) {
+    func update(movie: Movie, uuid: Double? = nil, category: MovieCategory? = nil, director: String? = nil, title: String? = nil, overview: String? = nil, imagePath: String? = nil, genres: String? = nil, cast: String? = nil, releaseDate: String? = nil, rating: Double? = nil, isFavorite: Bool? = nil, isWatched: Bool? = nil, comment: String? = nil) {
         
         if let uuid = uuid {
             movie.uuid = uuid
@@ -99,6 +99,9 @@ extension MoviesStore {
         }
         if let overview = overview {
             movie.overview = overview
+        }
+        if let imagePath = imagePath {
+            movie.imagePath = imagePath
         }
         if let genres = genres {
             movie.genres = genres
@@ -160,6 +163,8 @@ extension MoviesStore {
         return ids
     }
     
+    
+    
 }
 
 
@@ -167,7 +172,7 @@ extension MoviesStore {
 extension MoviesStore {
     
     // Fetch all movies
-    func fetchMovies(in movieCategory: MovieCategory = .none) {
+    func fetchMovies(_ movieCategory: MovieCategory = .none) {
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
         
         switch movieCategory {
@@ -203,10 +208,10 @@ extension MoviesStore {
             fetchMovies()
             movies.append(contentsOf: allMovies)
         case .popular:
-            fetchMovies(in: .popular)
+            fetchMovies(.popular)
             movies.append(contentsOf: popularMovies)
         case .upcoming:
-            fetchMovies(in: .upcoming)
+            fetchMovies( .upcoming)
             movies.append(contentsOf: upcomingMovies)
         }
         
@@ -302,8 +307,6 @@ extension MoviesStore {
         }
         
     }
-    
-    
     
 }
 

@@ -55,14 +55,6 @@ class MovieTests: XCTestCase {
     lazy var actorTestID = 888
     lazy var testTitle = "Test Title"
     
-    
-    // Test if we can decode json to string for saving
-    func testIfdecodingToStringisWorking() {
-        let popularMovieString = movieStore.decodePopularMoviesAsString()
-        XCTAssertEqual(popularMovieString, "", "Popular Movie string is empty - \(popularMovieString)")
-    }
-    
-    
     // Test Movie Creation
     func testMovieCreation() {
         // Arrange

@@ -179,6 +179,9 @@ extension MovieStore {
         
         let creditsRequest = "https://api.themoviedb.org/3/movie/\(id)/credits?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
         
+        let movie = movieCD.fetchMovie(uuid: id)
+        var director: String?
+        
         AF.request( creditsRequest ).responseJSON { response in
             
             guard let json = response.data else { return }
@@ -187,30 +190,34 @@ extension MovieStore {
                 
                 let movieCredits = try self.decoder.decode(MovieCredits.self, from: json)
                 
-//                self.movieCast = movieCredits.cast
-                
                 self.movieCast.limitedAppend(contents: movieCredits.cast)
             
                 
+                
                 print("cast count: \(self.movieCast.count)")
                 
-                for x in movieCredits.crew {
-                    if x.job == "Director" {
-                        self.director = x.name
+                for member in movieCredits.crew {
+                    if member.job == "Director" {
+                        director = member.name
+                        
+                        // MARK: - Can Delete
+                        self.director = member.name
+                        // MARK: -
+                        
+                        
                     }
                 }
-                
-                
-                // save to coredata
-//                if self.movieCast.count != 0 {
-//                    for actor in self.movieCast {
-//                        self.castStore.createCastMember(actorID: Double(actor.id), movieID: Double(id))
-//                    }
-//                }
                 
             } catch {
                 print(error)
             }
+            
+            guard let movieCastAsString = self.movieCD.encodeCast(self.movieCast) else { return }
+            guard let director = director else { return }
+            self.movieCD.update(movie: movie, director: director, cast: movieCastAsString)
+            
+            print("\n Fetch Movie Credits: movie.cast == \(movie.cast ?? "isEmpty") \n")
+            
             
             
             self.getImagesForActor()
@@ -291,7 +298,7 @@ extension MovieStore {
                                 self.actorImageProfiles[actor.id] = imagePath
                             }
                         }
-                            
+                        
                     }
                     
                 } catch {
@@ -341,7 +348,8 @@ extension MovieStore {
         case movie = "movie", tv = "tv"
     }
     
-    // Extract all credits depending on type
+    // MARK: Can add actors TV & Movie credits here 
+    // Extract all credits depending on type  
     func extractCreditsFor(actorID: Int, type: CreditExtractionType) -> [ActorCreditsCast] {
         var credits: [ActorCreditsCast] = []
         if actorCredits.isEmpty == true {
@@ -592,6 +600,38 @@ extension MovieStore {
 // Get IDs for movie
 extension MovieStore {
     
+    
+    /// Check if movie in category is still in the Movie DBs category of the same type
+    func removeOldMovies(from type: MovieCategory) {
+
+        switch type {
+        case .popular:
+            let popularIDs = popularMovies.map({ $0.id })
+            movieCD.fetchMovies(.popular)
+            let savedPopularMovies = movieCD.popularMovies.map({ $0.uuid })
+            for i in 0..<savedPopularMovies.count {
+                if popularIDs.contains( Int(savedPopularMovies[i]) ) == false {
+                    let movie = movieCD.fetchMovie(uuid: Int(savedPopularMovies[i]))
+                    movieCD.update(movie: movie, category: MovieCategory.none)
+                }
+            }
+        case .upcoming:
+            let upcomingIDs = upcomingMovies.map({ $0.id })
+            movieCD.fetchMovies(.upcoming)
+            let savedUpcomingMovies = movieCD.upcomingMovies.map({ Int($0.uuid) })
+            for i in 0..<savedUpcomingMovies.count {
+                if upcomingIDs.contains( savedUpcomingMovies[i] ) == false {
+                    let movie = movieCD.fetchMovie(uuid: savedUpcomingMovies[i] )
+                    movieCD.update(movie: movie, category: MovieCategory.none)
+                }
+            }
+
+        default:
+            break
+        }
+    }
+    
+    
     // Getting IDs being used to then fetch Ratings with
     func extractIDsFor(_ type: ScrollBarType, id searchID: Int = 0 ) -> [Int] {
         var ids: [Int] = []
@@ -603,13 +643,48 @@ extension MovieStore {
             }
             for movie in popularMovies {
                 ids.append(movie.id)
+                
+                let fetchedMovie = movieCD.fetchMovie(uuid: movie.id)
+                let genresString = movieCD.encodeGenres(movie.genre_ids)
+                
+                
+                movieCD.update(movie: fetchedMovie,
+                               category: .popular,
+                               title: movie.title,
+                               overview: movie.overview,
+                               imagePath: movie.poster_path,
+                               genres: genresString,
+                               releaseDate: movie.release_date,
+                               isFavorite: false,
+                               isWatched: false)
+                
+                
             }
+            removeOldMovies(from: .popular)
+            
+            
         case .upcommingMovie:
             if upcomingMovies.count == 0 {
                 fetchUpcomingMovies()
             }
             for movie in upcomingMovies {
                 ids.append(movie.id)
+                
+                let fetchedMovie = movieCD.fetchMovie(uuid: movie.id)
+                let genresString = movieCD.encodeGenres(movie.genre_ids)
+                
+                movieCD.update(movie: fetchedMovie,
+                               category: .upcoming,
+                               title: movie.title,
+                               overview: movie.overview,
+                               imagePath: movie.poster_path,
+                               genres: genresString,
+                               releaseDate: movie.release_date,
+                               isFavorite: false,
+                               isWatched: false)
+                
+                removeOldMovies(from: .upcoming)
+                
             }
         case .recommendedMovie:
             if recommendedMovies.count == 0 {
@@ -663,37 +738,7 @@ extension MovieStore {
         
         return ids
     }
-    
-    // Fetching Ratings by bar type
-    func ratingsForBar(type: ScrollBarType, id searchID: Int = 0 ) -> [Rating] {
-        var ratings: [Rating] = []
-        
-        switch type {
-        case .popularMovie:
-            let popularMovieRatingIDs = extractIDsFor(.popularMovie)
-            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: popularMovieRatingIDs, predicate: .movie)
-        case .upcommingMovie:
-            let upcomingMovieRatingIDs = extractIDsFor(.upcommingMovie)
-            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: upcomingMovieRatingIDs, predicate: .movie)
-        case .recommendedMovie:
-            let reccomendedMovieRatingIDs = extractIDsFor(.recommendedMovie, id: searchID)
-            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: reccomendedMovieRatingIDs, predicate: .movie)
-            
-        case .actors:
-            let actorsRatingIDs = extractIDsFor(.actors, id: searchID)
-            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: actorsRatingIDs, predicate: .actor)
-        case .actorMovie:
-            let actorMovieIDs = extractIDsFor(.actorMovie, id: searchID)
-            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: actorMovieIDs, predicate: .movie)
-        case .actorTV: // MARK: Not working 
-            let actorTVSeriesIDs = extractIDsFor(.actorTV, id: searchID)
-            ratings = ratingsStore.fetchAllRatingsUsingIDs(in: actorTVSeriesIDs, predicate: .tv)
-        }
-        
-        return ratings
-        
-    }
-    
+     
 }
 
 
