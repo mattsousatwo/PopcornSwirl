@@ -49,6 +49,17 @@ struct MovieDetail: View {
         return ids
     }
     
+    var movieCast: [MovieCast]? {
+        if let movieCastString = movie.cast {
+            if let decodedMovieCast = movieCD.decodeCast(movieCastString) {
+                return decodedMovieCast
+            }
+        }
+        
+        return nil
+    }
+    
+    
     var body: some View {
         
         ZStack(alignment: .center) {
@@ -66,10 +77,17 @@ struct MovieDetail: View {
                             //                                Text("fetchItems: \(fetchItems.count)")
                             
                             // Movie Poster
-                            ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), movie: movie)
+//                            ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), movie: movie)
+                            if let poster = movie.imagePath {
+                                ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + poster), movie: movie)
+                                    .padding(.horizontal)
+                            } else {
+                                ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), movie: movie)
+                            }
+                            
                                 
                                 
-                                .padding(.horizontal)
+                                
                             
                             Button(action: {
                                 
@@ -157,7 +175,7 @@ struct MovieDetail: View {
                     
                     // MARK: - Actors Scroll
                     
-                    ScrollBar(type: .actors, id: movieID)
+                    ScrollBar(type: .actors, id: movieID, movieCast: movieCast)
                     
                     // Actors Scroll
                     

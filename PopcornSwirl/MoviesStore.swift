@@ -142,8 +142,11 @@ extension MoviesStore {
     
     // Decode Cast JSON from Movie
     func decodeCast(_ movieCast: String) -> [MovieCast]? {
-        guard let data = try? encoder.encode(movieCast) else { return nil }
+//        guard let data = try? encoder.encode(movieCast) else { return nil }
+        guard let data = movieCast.data(using: .utf8) else { return nil }
         guard let cast = try? decoder.decode([MovieCast].self, from: data) else { return nil }
+
+        
         return cast
         
     }
@@ -152,15 +155,16 @@ extension MoviesStore {
    /// Encode Array of Genre ID tags to JSON Data as String for saving
     /// Example: FetchGenreIDs -> encode(genres: ) ->  update(movie:, genres: )
     func encodeGenres(_ genres: [Int]) -> String? {
-        encoder.outputFormatting = .prettyPrinted
+//        encoder.outputFormatting = .prettyPrinted
         guard let data = try? encoder.encode(genres) else { return nil }
         return String(data: data, encoding: .utf8)
     }
     
     func decodeGenres(_ string: String) -> [Int]? {
-        guard let data = try? encoder.encode(string) else { return nil }
+        guard let data = string.data(using: .utf8) else { return nil }
         guard let ids = try? decoder.decode([Int].self, from: data) else { return nil }
         return ids
+        
     }
     
     

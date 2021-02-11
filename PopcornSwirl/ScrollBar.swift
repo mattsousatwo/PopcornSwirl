@@ -60,6 +60,8 @@ struct ScrollBar: View {
         }
     }
     
+    var movieCast: [MovieCast]?
+    
     var body: some View {
         
         VStack(spacing: 10) {
@@ -105,7 +107,7 @@ struct ScrollBar: View {
                         Bar(type: type, id: id, movies: movies) // add actors
                     }
                     if let actors = actors {
-                        Bar(type: type, id: id, actors: actors)
+                        Bar(type: type, id: id, actors: actors, movieCast: movieCast)
                     }
                 } .padding() // HStack
   
@@ -132,6 +134,8 @@ struct Bar: View {
     // add actors
     var actors: [Actor]?
     
+    var movieCast: [MovieCast]?
+    
     private var popularMovies : [PopMovie] {
         return movieStore.extractPopularMovies()
     }
@@ -147,7 +151,9 @@ struct Bar: View {
     }
 
     private var cast: [MovieCast] {
-        return movieStore.extractMovieCast(id: id)
+        let c = movieStore.extractMovieCast(id: id)
+        print("Cast: \(c) ")
+        return c
     }
 
     private var actorImages: [Int : String ] {
@@ -224,14 +230,25 @@ struct Bar: View {
                         if i <= 9 {
                             
                             if let actor = actors?.first(where: { $0.id == Double(cast[i].id) }) {
-                                if let imagePath = actorImages[ cast[i].id ] {
-                                    LabeledScrollNavLink(imagePath: imagePath,
-                                                         actorID: cast[i].id,
-                                                         title: cast[i].name,
-                                                         subtitle: cast[i].character,
-                                                         movie: nil,
-                                                         actor: actor)
-                                    
+                                if let movieCast = movieCast { 
+                                    if let imagePath = actorImages[ movieCast[i].id ] {
+                                        LabeledScrollNavLink(imagePath: imagePath,
+                                                             actorID: movieCast[i].id,
+                                                             title: movieCast[i].name,
+                                                             subtitle: movieCast[i].character,
+                                                             movie: nil,
+                                                             actor: actor)
+                                        
+                                    }
+                                } else {
+                                    if let imagePath = actorImages[ cast[i].id ] {
+                                        LabeledScrollNavLink(imagePath: imagePath,
+                                                             actorID: cast[i].id,
+                                                             title: cast[i].name,
+                                                             subtitle: cast[i].character,
+                                                             movie: nil,
+                                                             actor: actor)
+                                    }
                                 }
                             }
                             

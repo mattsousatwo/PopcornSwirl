@@ -62,7 +62,7 @@ struct FindPersonResults: Codable {
 // MARK: - Movie Credits
 struct MovieCredits: Codable {
     var id: Int
-    var cast: [MovieCast]
+    var cast: [MovieCast]?
     var crew: [MovieCrew]
 }
 
@@ -74,7 +74,8 @@ struct MovieCast: Codable, Equatable {
     var profile_path: String?
     var character: String
     var order: Int
-    
+
+    // Equatable
     static func ==(lhs: MovieCast, rhs: MovieCast) -> Bool {
         return lhs.id == rhs.id &&
             lhs.known_for_department == rhs.known_for_department &&
@@ -84,6 +85,7 @@ struct MovieCast: Codable, Equatable {
             lhs.character == rhs.character &&
             lhs.order == rhs.order
     }
+    
 }
 
 struct MovieCrew: Codable {
@@ -171,7 +173,7 @@ struct ActorImageProfile: Codable {
 
 // MARK: - ACTOR CREDITS
 struct ActorCredits: Codable {
-    var cast: [ActorCreditsCast]
+    var cast: [ActorCreditsCast]?
     var id: Int?
 }
 

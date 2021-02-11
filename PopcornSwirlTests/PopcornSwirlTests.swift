@@ -92,7 +92,7 @@ class MovieTests: XCTestCase {
     
     // test if fetching by popular movie category is working
     func testPopularMovieFetching() {
-        movieCD.fetchMovies(in: .popular)
+        movieCD.fetchMovies(.popular)
         XCTAssertFalse(movieCD.popularMovies.count == 0, "No Popular Movies Found")
     }
    
@@ -140,37 +140,71 @@ class MovieTests: XCTestCase {
     // Test if encoding [Int] to JSON String & decode back to [Int] will work
     func testCodingAndDecodingGenres() {
         let genreIDs = [23, 42, 99, 103, 33, 4]
+        var decodedValue: [Int] = []
+        
         guard let IDsString = movieCD.encodeGenres(genreIDs) else { return }
-        print("\n Coding&DecodingTest - \(IDsString) \n")
-        guard let decodedString = movieCD.decodeGenres(IDsString) else { return }
+        print("\n Coding&DecodingTest: Encoding - \(IDsString) \n")
+        
+        if let decodedString = movieCD.decodeGenres(IDsString) {
+            decodedValue = decodedString
+            print("\n Coding&DecodingTest: Decoding - \(decodedString) \n")
+        }
         
         
-        XCTAssertEqual(decodedString, genreIDs, "\(decodedString) is not equal to \(genreIDs)")
+        XCTAssertEqual(decodedValue, genreIDs, "\(decodedValue) is not equal to \(genreIDs)")
         
+    }
+    
+    
+     // MARK: - Figure out why ln: 164, 166 work here and not in .decodeGenres()
+    func testDecodingGenres() {
+        let genreIDs = [23,42,99,103,33,4]
+        guard let IDsString = movieCD.encodeGenres(genreIDs) else { return }
+        let idData = IDsString.data(using: .utf8)!
+        
+        let decoder = JSONDecoder()
+        let ids = try! decoder.decode([Int].self, from: idData)
+        
+        print("\n - IDs: \(ids) \n")
+        XCTAssertEqual(ids, genreIDs, "\(ids) is not equal to \(genreIDs)")
     }
     
     // Test if encoding & decoding works for cast
     func testCodingAndDecodingForCast() {
-        let cast = [MovieCast(id: 1,
-                              known_for_department: "movie",
-                              name: "Actor 1",
-                              popularity: 5.0,
-                              profile_path: nil,
-                              character: "Character 1",
-                              order: 1),
-                    MovieCast(id: 2,
-                              known_for_department: "movie",
-                              name: "Actor 2",
-                              popularity: 10.0,
-                              profile_path: nil,
-                              character: "Character 2",
-                              order: 2)]
+        
+        let cast: [MovieCast] = [MovieCast(id: 1,
+                                           known_for_department: "movie",
+                                           name: "Actor 1",
+                                           popularity: 5.0,
+                                           profile_path: nil,
+                                           character: "Character 1",
+                                           order: 1),
+                                 MovieCast(id: 2,
+                                           known_for_department: "movie",
+                                           name: "Actor 2",
+                                           popularity: 10.0,
+                                           profile_path: nil,
+                                           character: "Character 2",
+                                           order: 2)]
+        
+        var decodedCast: [MovieCast] = []
+        
         
         guard let movieCastString = movieCD.encodeCast(cast) else { return }
-        print(movieCastString)
-        guard let decodedMovies = movieCD.decodeCast(movieCastString) else { return }
+        print( "\nMovieCast - \(movieCastString) \n")
         
-        XCTAssertEqual(decodedMovies, cast, "decodedMovies - \(decodedMovies), cast - \(cast) : Are not equal \n")
+        
+        if let decodedData = movieCD.decodeCast(movieCastString) {
+            decodedCast = decodedData
+            print("    decodedData - PASSED\n")
+            print(" - \(decodedData) \n")
+        } else {
+            print("    decodedData - FAILED\n")
+        }
+        
+        
+        
+        XCTAssertEqual(decodedCast, cast, "\n decodedMovies - \(decodedCast), cast - \(cast) : Are not equal \n")
         
         
     }

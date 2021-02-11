@@ -189,8 +189,10 @@ extension MovieStore {
             do {
                 
                 let movieCredits = try self.decoder.decode(MovieCredits.self, from: json)
+                if let cast = movieCredits.cast {
+                    self.movieCast.limitedAppend(contents: cast)
+                }
                 
-                self.movieCast.limitedAppend(contents: movieCredits.cast)
             
                 
                 
@@ -215,10 +217,6 @@ extension MovieStore {
             guard let movieCastAsString = self.movieCD.encodeCast(self.movieCast) else { return }
             guard let director = director else { return }
             self.movieCD.update(movie: movie, director: director, cast: movieCastAsString)
-            
-            print("\n Fetch Movie Credits: movie.cast == \(movie.cast ?? "isEmpty") \n")
-            
-            
             
             self.getImagesForActor()
         }
@@ -333,8 +331,8 @@ extension MovieStore {
             do {
                 // decode credits 
                 let decodedCredits = try self.decoder.decode(ActorCredits.self, from: json)
-                
-                self.actorCredits = decodedCredits.cast
+                guard let cast = decodedCredits.cast else { return }
+                self.actorCredits = cast
 
                 
             } catch {
