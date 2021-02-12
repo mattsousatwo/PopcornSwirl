@@ -762,13 +762,10 @@ extension MovieStore {
             movies = movieCD.fetchMovies(uuids: ids)
             
         case .actors: // Change to Actors
-            
-            
             let actorIDs = extractIDsFor(.actors, id: searchID)
             let ids = actorIDs.map({ Double($0) })
             movies = movieCD.fetchMovies(uuids: ids)
-            
-            
+//        break
         case .actorMovie:
             let actorMovieIDs = extractIDsFor(.actorMovie, id: searchID)
             let ids = actorMovieIDs.map({ Double($0) })
@@ -779,6 +776,16 @@ extension MovieStore {
             movies = movieCD.fetchMovies(uuids: ids)
         }
         return movies
+    }
+    
+    
+    
+    func raven() {
+        
+        // fetch movies
+        // while movies.isEmpty { }
+        // 
+        
     }
 }
 

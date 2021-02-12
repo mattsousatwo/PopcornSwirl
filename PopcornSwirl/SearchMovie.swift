@@ -67,7 +67,7 @@ struct SearchMovie: View {
             
             // MARK: animation doesnt solve search looping issue && Bool doesnt work to show results 
             
-                SavedRow(search: $searchTag)
+                CardRow(search: $searchTag)
                     .animation(.default)
             
                 

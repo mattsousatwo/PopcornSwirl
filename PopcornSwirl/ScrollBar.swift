@@ -124,7 +124,6 @@ struct ScrollBar: View {
 
 struct Bar: View {
     
-    
     var type: ScrollBarType
     
     var id: Int // used to fetch recomended movies
@@ -230,6 +229,7 @@ struct Bar: View {
                         if i <= 9 {
                             
                             if let actor = actors?.first(where: { $0.id == Double(cast[i].id) }) {
+                                // Actors from Coredata
                                 if let movieCast = movieCast { 
                                     if let imagePath = actorImages[ movieCast[i].id ] {
                                         LabeledScrollNavLink(imagePath: imagePath,
@@ -240,7 +240,9 @@ struct Bar: View {
                                                              actor: actor)
                                         
                                     }
-                                } else {
+                                }
+                                else {
+                                    // Actors from TMDB
                                     if let imagePath = actorImages[ cast[i].id ] {
                                         LabeledScrollNavLink(imagePath: imagePath,
                                                              actorID: cast[i].id,
