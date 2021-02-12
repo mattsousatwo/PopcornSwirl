@@ -43,7 +43,6 @@ struct ImageCard: View {
     var url: URL?
     var movie: Movie
     @State var isFavorite: Bool = false
-    var movieRatings: MovieRatingStore?
     
     var body: some View {
         

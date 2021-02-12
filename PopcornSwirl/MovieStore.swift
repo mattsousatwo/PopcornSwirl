@@ -16,7 +16,6 @@ class MovieStore: ObservableObject {
     // Coredata
     let castStore = CastStore() // used to manage cast dict
     let actorsStore = ActorsStore() // used to manage the actors within cast list
-    let ratingsStore = MovieRatingStore()
     
     let movieCD = MoviesStore() // manage Movies: CoreData - to replace ratingsStore
     

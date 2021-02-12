@@ -7,42 +7,7 @@
 //
 
 import XCTest
-@testable import PopcornSwirl
-
-class RatingTests: XCTestCase {
-    
-    private var ratingStore = MovieRatingStore()
-    
-    func testIfDoublesAreBeingCreatedFromFetchingAll() throws {
-        
-        ratingStore.fetchAllRatings()
-        
-    }
-    
-    // See if creating a new rating will cause doubles to be created
-    func testIfSearchingForARatingWillCauseDoubles() throws {
-        
-        // Arrange
-        ratingStore.fetchAllRatings()
-        let ratingsCount = ratingStore.ratings.count
-        
-        // Act
-        let rating = ratingStore.searchForRatingsFromMovie(id: 1) 
-        print(rating)
-        
-        // Assert
-        XCTAssertEqual(ratingStore.ratings.count, ratingsCount)
-    }
-    
-    func testPreformance() throws {
-        self.measure {
-            
-        }
-    }
-    
-    
-    
-}
+@testable import PopcornSwirl 
 
 class MovieTests: XCTestCase {
     

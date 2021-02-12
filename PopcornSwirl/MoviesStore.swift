@@ -142,11 +142,8 @@ extension MoviesStore {
     
     // Decode Cast JSON from Movie
     func decodeCast(_ movieCast: String) -> [MovieCast]? {
-//        guard let data = try? encoder.encode(movieCast) else { return nil }
         guard let data = movieCast.data(using: .utf8) else { return nil }
         guard let cast = try? decoder.decode([MovieCast].self, from: data) else { return nil }
-
-        
         return cast
         
     }
@@ -338,4 +335,16 @@ enum MovieCategory: String {
     case none = "---" // Movie is not in Popular or Upcoming Movies Scroll Bar
     case popular = "Popular"
     case upcoming = "Upcoming"
+}
+
+// Used to define if any properties are missing from Movie entiy - if so, fetch from TMDB
+enum MissingProperties {
+    case title
+    case overview
+    case director
+    case releaseDate
+    case image
+    case cast
+    case genres
+    case reccomendedMovies
 }

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		601D0D3325996D21005A0B1B /* MovieRatingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601D0D3225996D21005A0B1B /* MovieRatingStore.swift */; };
 		6038CD9925ACC6D70000A5CE /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038CD9525ACC6D70000A5CE /* ImageLoader.swift */; };
 		6038CD9A25ACC6D70000A5CE /* EnvironmentValues+ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038CD9625ACC6D70000A5CE /* EnvironmentValues+ImageCache.swift */; };
 		6038CD9B25ACC6D70000A5CE /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038CD9725ACC6D70000A5CE /* AsyncImage.swift */; };
@@ -67,7 +66,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		601D0D3225996D21005A0B1B /* MovieRatingStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRatingStore.swift; sourceTree = "<group>"; };
 		6038CD9525ACC6D70000A5CE /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		6038CD9625ACC6D70000A5CE /* EnvironmentValues+ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+ImageCache.swift"; sourceTree = "<group>"; };
 		6038CD9725ACC6D70000A5CE /* AsyncImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
@@ -145,7 +143,6 @@
 				60CB9147259D4BE9009BD9B4 /* ActorsStore.swift */,
 				60CB9155259E41D5009BD9B4 /* CastStore.swift */,
 				60C87E48259C14A5001AF3D2 /* GenreStore.swift */,
-				601D0D3225996D21005A0B1B /* MovieRatingStore.swift */,
 				60CB914B259D80BE009BD9B4 /* MoviesStore.swift */,
 			);
 			name = CoreData;
@@ -422,7 +419,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6163E167256EDD7800268C3D /* MovieStore.swift in Sources */,
-				601D0D3325996D21005A0B1B /* MovieRatingStore.swift in Sources */,
 				61D9C6CE257EA96D0047869A /* ActorStore.swift in Sources */,
 				617B6E16251AA0C300BCF757 /* Star.swift in Sources */,
 				6132294C251DAB7F00A84C62 /* SearchMovie.swift in Sources */,

@@ -12,7 +12,6 @@ import Alamofire
 
 struct Home: View {
     
-    var movieRatings = MovieRatingStore()
     @ObservedObject private var genreStore = GenreStore()
     @ObservedObject var movieStore = MovieStore()
     

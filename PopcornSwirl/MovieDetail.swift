@@ -74,10 +74,7 @@ struct MovieDetail: View {
                     HStack(alignment: .bottom) {
                         
                         VStack {
-                            //                                Text("fetchItems: \(fetchItems.count)")
-                            
                             // Movie Poster
-//                            ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), movie: movie)
                             if let poster = movie.imagePath {
                                 ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + poster), movie: movie)
                                     .padding(.horizontal)

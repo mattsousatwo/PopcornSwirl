@@ -136,9 +136,9 @@ struct StarSliderView: View {
 // Action buttons for view
 struct StarSliderButtons: View {
     
-    var ratingStore = MovieRatingStore()
     var movie: Movie
     @Binding var value: Double
+    let movieStore = MoviesStore()
     
     var body: some View {
         
@@ -166,7 +166,7 @@ struct StarSliderButtons: View {
                 
                 movie.rating = value
                 print("Submit - Rating.rating = \(movie.rating)")
-                ratingStore.saveContext()
+                movieStore.saveContext()
                 
             }, label: {
                 RoundedRectangle(cornerRadius: 12)
