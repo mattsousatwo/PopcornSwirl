@@ -83,7 +83,7 @@ struct ActorDetail: View {
                                 .padding()
                             
                             Spacer()
-
+                            
                         }
                         
                         Text(name).font(.title).bold().foregroundColor(.white)

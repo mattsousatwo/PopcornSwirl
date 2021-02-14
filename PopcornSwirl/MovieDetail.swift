@@ -44,7 +44,6 @@ struct MovieDetail: View {
                 ids = genreIDs
             }
         }
-        
         print("Genres: \(ids)")
         return ids
     }
@@ -55,9 +54,20 @@ struct MovieDetail: View {
                 return decodedMovieCast
             }
         }
-        
         return nil
     }
+    
+    var title: String? {
+        var titleString: String = ""
+        if let nameOfMovie = movie.title {
+            titleString = nameOfMovie
+        } else {
+            titleString = movieTitle
+        }
+        print("title: \(titleString)")
+        return titleString
+    }
+    
     
     
     var body: some View {
@@ -112,11 +122,18 @@ struct MovieDetail: View {
                         
                         VStack(alignment: .leading, spacing: 10) {
                             // Movie Title
-                            Text(movieTitle).font(.system(.largeTitle)).bold().multilineTextAlignment(.leading).lineLimit(3)
-                                //                                        .frame(width: geometry.size.width/2, height: 200, alignment: .leading)
-                                .frame(width: UIScreen.main.bounds.width/2, height: 200, alignment: .leading)
-                                .padding(.top).padding(.horizontal)
-                                .foregroundColor(.white)
+                            if let title = title {
+                                Text(title).font(.system(.largeTitle)).bold().multilineTextAlignment(.leading).lineLimit(3)
+                                    .frame(width: UIScreen.main.bounds.width/2, height: 150, alignment: .leading).padding(.top).padding(.horizontal).foregroundColor(.white)
+                            } else {
+                                Text(movieTitle).font(.system(.largeTitle)).bold().multilineTextAlignment(.leading).lineLimit(3)
+                                        .frame(width: UIScreen.main.bounds.width/2, height: 150, alignment: .leading).padding(.top).padding(.horizontal).foregroundColor(.white)
+                            }
+                            
+                            
+                            
+//                   .frame(width: geometry.size.width/2, height: 200, alignment: .leading)
+
                             
                             // Director
                             Text("Director:").bold()
