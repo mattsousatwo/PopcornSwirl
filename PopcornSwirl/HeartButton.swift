@@ -38,15 +38,14 @@ struct HeartButton: View {
                 switch type {
                 case .empty:
                     self.type = .fill
-                    print("Like Button Pressed")
                     movie.isFavorite = true
                     movie.comment = "Heart Button - pressed @ 3:37"
                     movieStore.saveContext()
                     print("HeartButton - id: \(movie.uuid), isFavorite: \(movie.isFavorite)")
                 case .fill:
                     self.type = .empty
-                    print("Unlike Button Pressed")
                     movie.isFavorite = false
+                    movie.comment = ""
                     movieStore.saveContext()
                     print("HeartButton - id: \(movie.uuid), isFavorite: \(movie.isFavorite)")
                 }
@@ -54,7 +53,6 @@ struct HeartButton: View {
                 gradient.mask(
                     Image(systemName: type.rawValue).resizable() )
                     .frame(width: width, height: height)
-                    //                .shadow(radius: 3)
                     .shadow(color: .gray, radius: 3, x: 1, y: 2)
             })
             .animation(.default)
@@ -90,19 +88,6 @@ struct HeartButton: View {
                 })
                 .animation(.default)
             }
-
-            
-//
-//            if let actor = actor {
-//                switch actor.isFavorite {
-//                case true:
-//                    type = .fill
-//                default:
-//                    type = .empty
-//                }
-//
-//
-//            }
             
         }
         

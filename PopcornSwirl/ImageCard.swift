@@ -23,14 +23,18 @@ struct ImageCard: View {
                         .padding()
                         .shadow(radius: 5.0)
                     , alignment: .bottomTrailing)
+                .overlay(
+                    FilmButton(movie: movie)
+                        .padding()
+                        .shadow(radius: 5.0)
+                    , alignment: .bottomLeading)
         } else if let actor = actor {
             URLImage(url: url)
                 .overlay(
                     HeartButton(actor: actor)
                         .padding()
                         .shadow(radius: 5.0)
-                    , alignment: .bottomTrailing
-                )
+                    , alignment: .bottomTrailing)
         }
 
     } // Body
@@ -39,6 +43,8 @@ struct ImageCard: View {
 
 struct ImageCard_Previews: PreviewProvider {
     static var previews: some View {
-        ImageCard()
+        ImageCard(url: nil,
+                  movie: nil,
+                  actor: nil)
     }
 }
