@@ -12,7 +12,7 @@ import SwiftUI
 
 enum ScrollBarType: String  {
     case popularMovie = "Popular"
-    case upcommingMovie = "Upcomming"
+    case upcomingMovie = "Upcomming"
     case recommendedMovie = "Recommended" // Need to access movie ID
     case actors = "Actors" // Need to access movie ID
     case actorMovie = "Movies"
@@ -34,8 +34,8 @@ struct ScrollBar: View {
         switch type {
         case .popularMovie:
             return movieStore.movieForBar(.popularMovie)
-        case .upcommingMovie:
-            return movieStore.movieForBar(.upcommingMovie)
+        case .upcomingMovie:
+            return movieStore.movieForBar(.upcomingMovie)
         case .recommendedMovie:
             return movieStore.movieForBar(.recommendedMovie, id: id)
         case .actors:
@@ -283,7 +283,7 @@ struct Bar: View {
                 .animation(.default)
                 
             // MARK: UPCOMMING MOVIE -
-            case .upcommingMovie:
+            case .upcomingMovie:
                 ForEach(0..<upcomingMovies.count, id: \.self) { i in
                     if upcomingMovies.count != 0 {
                         

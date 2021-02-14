@@ -33,10 +33,9 @@ struct Home: View {
                         
                         ScrollBar(type: .popularMovie)
                         
-                        
                         // MARK: - UPCOMING MOVIES STACK
                         
-                        ScrollBar(type: .upcommingMovie)
+                        ScrollBar(type: .upcomingMovie)
                         
                         
                     } // VStack
@@ -52,28 +51,18 @@ struct Home: View {
         .onAppear() {
             
             // TMDB
-            movieStore.getGenres()
-            
             
             
             //MARK: CoreData -
             genreStore.loadAllGenres()
             
-            
             // Delete all movies
 //            let movieStore = MoviesStore()
 //            movieStore.deleteAllMovie()
-            
-            
-            
-            
-            
+  
             let actorsStore = ActorsStore()
             actorsStore.deleteAllSavedActors()
             
-            let castStore = CastStore()
-            castStore.deleteAll()
-                
         }
         
     } // body

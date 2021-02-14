@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 
-// General Image Card
+// Image that can load from downloaded object 
 struct URLImage: View {
     var url: URL?
     var width: CGFloat = 150

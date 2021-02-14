@@ -660,7 +660,7 @@ extension MovieStore {
             removeOldMovies(from: .popular)
             
             
-        case .upcommingMovie:
+        case .upcomingMovie:
             if upcomingMovies.count == 0 {
                 fetchUpcomingMovies()
             }
@@ -752,8 +752,8 @@ extension MovieStore {
             let popularMovieIDs = extractIDsFor(.popularMovie)
             let ids = popularMovieIDs.map({ Double($0) })
             movies = movieCD.fetchMovies(uuids: ids)
-        case .upcommingMovie:
-            let upcomingMovieIDs = extractIDsFor(.upcommingMovie)
+        case .upcomingMovie:
+            let upcomingMovieIDs = extractIDsFor(.upcomingMovie)
             let ids = upcomingMovieIDs.map({ Double($0) })
             movies = movieCD.fetchMovies(uuids: ids)
         case .recommendedMovie:

@@ -17,12 +17,12 @@ struct ImageCard: View {
     
     var body: some View {
         if let movie = movie {
-        URLImage(url: url)
-            .overlay(
-                HeartButton(movie: movie)
-                    .padding()
-                    .shadow(radius: 5.0)
-                , alignment: .bottomTrailing)
+            URLImage(url: url)
+                .overlay(
+                    HeartButton(movie: movie)
+                        .padding()
+                        .shadow(radius: 5.0)
+                    , alignment: .bottomTrailing)
         } else if let actor = actor {
             URLImage(url: url)
                 .overlay(
