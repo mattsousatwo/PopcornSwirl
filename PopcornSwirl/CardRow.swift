@@ -11,46 +11,47 @@ import SwiftUI
 struct CardRow: View {
     
     @ObservedObject var movieStore = MovieStore()
+    @ObservedObject var movieCD = MoviesStore()
     
     @Binding var search: String
     
-//    private var elementsArray: [[MovieSearchResults]] {
-//
-//        movieStore.fetchResultsForMovie(query: search)
-//
-////        let searchArray = movieStore.fetchResultsFromMovie(search: search)
-//
-//        var newArray: [[MovieSearchResults]] = []
-//
-//        let dividedCount = movieStore.movieSearchResults.count / 2
-//
-//        if dividedCount >= 1 {
-//            newArray = movieStore.movieSearchResults.divided(into: 2)
-//        }
-////        print("SearchArray: \(searchArray.count)")
-//        print("ElementsArray: \(newArray.count)")
-//        return newArray
-//    }
-//
+    private var elementsArray: [[MovieSearchResults]] {
+
+        movieStore.fetchResultsForMovie(query: search)
+
+//        let searchArray = movieStore.fetchResultsFromMovie(search: search)
+
+        var newArray: [[MovieSearchResults]] = []
+
+        let dividedCount = movieStore.movieSearchResults.count / 2
+
+        if dividedCount >= 1 {
+            newArray = movieStore.movieSearchResults.divided(into: 2)
+        }
+//        print("SearchArray: \(searchArray.count)")
+        print("ElementsArray: \(newArray.count)")
+        return newArray
+    }
+
     
     
     // MARK: - swapped elements array with movie array - retrieving movie results after they are called and put them into an array - NOT WORKING
-    private var movieArray: [[MovieSearchResults]] {
-        let results = movieStore.extractMovieSearchResults()
-        
-        var newArray: [[MovieSearchResults]] = []
-        let dividedCount = results.count / 2
-        if dividedCount >= 1 {
-            newArray = results.divided(into: 2)
-        }
-        print("Test 5 - results: \(results.count)")
-        return newArray
-    }
+//    private var movieArray: [[MovieSearchResults]] {
+//        let results = movieStore.extractMovieSearchResults()
+//
+//        var newArray: [[MovieSearchResults]] = []
+//        let dividedCount = results.count / 2
+//        if dividedCount >= 1 {
+//            newArray = results.divided(into: 2)
+//        }
+//        print("Test 5 - results: \(results.count)")
+//        return newArray
+//    }
     
     
     private var showResults: Bool {
         
-        switch movieArray.count {
+        switch elementsArray.count {
         case 0:
             return false
         default:
@@ -69,7 +70,7 @@ struct CardRow: View {
             ScrollView {
                 VStack(alignment: .center) {
                 
-                    ForEach(movieArray, id: \.self) { array in
+                    ForEach(elementsArray, id: \.self) { array in
                         HStack {
 //                            Spacer()
                             ForEach(array, id: \.self) { movie in
@@ -82,15 +83,10 @@ struct CardRow: View {
                                                                         movieOverview: movie.overview,
                                                                         posterPath: (movie.poster_path ?? ""),
                                                                         rating: movie.vote_average,
-                                                                        releaseDate: ""), label: {
-                                                
-//                                RemoteImage(url: MovieStoreKey.imageURL.rawValue + (movie.poster_path ?? "") ).aspectRatio(contentMode: .fill)
-                                    RoundedRectangle(cornerRadius: 12.0)
-                                        .foregroundColor(.blue)
-                                    .frame(width: (geometry.size.width / 3)  ,
-                                           height: 100,
-                                           alignment: .center)
-                                })
+                                                                        releaseDate: ""),
+                                               label: {
+                                                            let movieElement = movieCD.fetchMovie(uuid: movie.id)
+                                                            ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (movie.poster_path ?? "")), movie: movieElement)  })
                                 
                             } // ForEach(array)
                             .padding(.horizontal)
@@ -112,16 +108,11 @@ struct CardRow: View {
             } else { // show results
                 
                 Text("No Results Found").padding()
+                
             }
             
             
         } // Geo
-        
-        
-            .padding(.bottom, 30)
-        
-        
-
         
     }
     

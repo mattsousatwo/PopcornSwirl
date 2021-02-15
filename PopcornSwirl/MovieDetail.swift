@@ -35,7 +35,7 @@ struct MovieDetail: View {
     var rating = Double()
     var releaseDate = String()
     
-    
+    // decoded genre ids 
     var genres: [Int] {
         var ids: [Int] = []
         if let movieGenres = movie.genres {
@@ -48,6 +48,7 @@ struct MovieDetail: View {
         return ids
     }
     
+    // decoded movie cast
     var movieCast: [MovieCast]? {
         if let movieCastString = movie.cast {
             if let decodedMovieCast = movieCD.decodeCast(movieCastString) {
@@ -57,15 +58,17 @@ struct MovieDetail: View {
         return nil
     }
     
-    var title: String? {
-        var titleString: String = ""
-        if let nameOfMovie = movie.title {
-            titleString = nameOfMovie
+    // Text view of movie title
+    func title() -> some View {
+        var title = ""
+        if let movieTitle = movie.title {
+            title = movieTitle
         } else {
-            titleString = movieTitle
+            title = movieTitle
         }
-        print("title: \(titleString)")
-        return titleString
+        
+        return Text(title).font(.system(.largeTitle)).bold().multilineTextAlignment(.leading).lineLimit(3)
+            .frame(width: UIScreen.main.bounds.width/2, height: 150, alignment: .leading).padding(.top).padding(.horizontal).foregroundColor(.white)
     }
     
     
@@ -122,17 +125,7 @@ struct MovieDetail: View {
                         
                         VStack(alignment: .leading, spacing: 10) {
                             // Movie Title
-                            if let title = title {
-                                Text(title).font(.system(.largeTitle)).bold().multilineTextAlignment(.leading).lineLimit(3)
-                                    .frame(width: UIScreen.main.bounds.width/2, height: 150, alignment: .leading).padding(.top).padding(.horizontal).foregroundColor(.white)
-                            } else {
-                                Text(movieTitle).font(.system(.largeTitle)).bold().multilineTextAlignment(.leading).lineLimit(3)
-                                        .frame(width: UIScreen.main.bounds.width/2, height: 150, alignment: .leading).padding(.top).padding(.horizontal).foregroundColor(.white)
-                            }
-                            
-                            
-                            
-//                   .frame(width: geometry.size.width/2, height: 200, alignment: .leading)
+                            title()
 
                             
                             // Director

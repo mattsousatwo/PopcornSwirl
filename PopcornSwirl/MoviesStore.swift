@@ -19,6 +19,8 @@ class MoviesStore: ObservableObject {
     @Published var allMovies = [Movie]()
     @Published var popularMovies = [Movie]()
     @Published var upcomingMovies = [Movie]()
+    @Published var favoriteMovies = [Movie]()
+    @Published var watchedMovies = [Movie]()    
     
     lazy private var decoder = JSONDecoder() // used to decode json data
     lazy private var encoder = JSONEncoder()
@@ -274,7 +276,7 @@ extension MoviesStore {
 
     
     // Fetch all favorited movies
-    func fetchFavoriteMovies() -> [Movie] {
+    func getAllFavoriteMovies() -> [Movie] {
         var movieArray: [Movie] = []
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
         request.predicate = NSPredicate(format: "isFavorite == @%", "true")
@@ -287,8 +289,16 @@ extension MoviesStore {
         return movieArray
     }
     
+    // Used to fetch all movies and store them into a local array
+    func fetchAllFavoriteMovies() {
+        if favoriteMovies.isEmpty == true {
+            let favorites = getAllFavoriteMovies()
+            favoriteMovies.append(contentsOf: favorites)
+        }
+    }
+    
     // Fetch all watched movies
-    func fetchWatchedMovies() -> [Movie] {
+    func getAllWatchedMovies() -> [Movie] {
         var movieArray: [Movie] = []
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
         request.predicate = NSPredicate(format: "isWatched == @%", "true")
@@ -301,6 +311,14 @@ extension MoviesStore {
         return movieArray
     }
     
+    // Used to fetch all movies and store them into a local array
+    func fetchAllWatchedMovies() {
+        if watchedMovies.isEmpty == true {
+            let watched = getAllWatchedMovies()
+            watchedMovies.append(contentsOf: watched)
+        }
+    }
+
     
     func checkIfMovieDetailsNeedToBeFetched(movie: Movie) {
         if movie.cast == nil {
