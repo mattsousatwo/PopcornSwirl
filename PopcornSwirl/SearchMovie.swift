@@ -17,24 +17,25 @@ struct SearchMovie: View {
     
     
     var body: some View {
-        ZStack {
-           LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]),
-                                       startPoint: .top,
-                                       endPoint: .bottom)
-                .ignoresSafeArea(edges: .vertical)
-            
-            VStack {
-        
-                HStack {
+        NavigationView {
+            ZStack {
+                LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]),
+                               startPoint: .top,
+                               endPoint: .bottom)
+                    .ignoresSafeArea(edges: .vertical)
+                
+                VStack {
+                    
+                    HStack {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(.gray)
                             .font(.system(size: 20))
                             .padding()
-                            
+                        
                         TextField("Search", text: $searchTag).font(.title2)
                             .padding(.trailing)
-
-                   
+                        
+                        
                         Button(action: {
                             
                             print(" ~ Search Button Pressed ~")
@@ -54,30 +55,32 @@ struct SearchMovie: View {
                                 .padding()
                             
                         }
-                            
+                        
                     }
                     .mask(
                         RoundedRectangle(cornerRadius: 10)
                             .background(Color.pGray)
                             .shadow(radius: 8))
-
-                .frame(width: UIScreen.main.bounds.width,
-                       height: 50)
                     
+                    .frame(width: UIScreen.main.bounds.width,
+                           height: 50)
+                    
+                    
+                    // MARK: animation doesnt solve search looping issue && Bool doesnt work to show results
+                    
+                    CardRow(search: $searchTag)
+                        .animation(.default)
+                    
+                    
+                    
+                    
+                } // VStack
+                //        .background(Color.pGray)
+            } // ZStack
+            //        .edgesIgnoringSafeArea(.top)
             
-            // MARK: animation doesnt solve search looping issue && Bool doesnt work to show results 
-            
-                CardRow(search: $searchTag)
-                    .animation(.default)
-            
-                
-            
-            
-        } // VStack
-//        .background(Color.pGray)
-    } // ZStack
-//        .edgesIgnoringSafeArea(.top)
-        
+            .navigationBarTitle("Movie Search", displayMode: .inline)
+        }
     }
 }
 
