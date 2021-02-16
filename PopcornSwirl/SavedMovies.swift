@@ -61,49 +61,16 @@ struct SavedMovies: View {
                 .padding()
                 
                 
-                
-                GeometryReader { geo in
-                    
-                    ScrollView {
-                        VStack(alignment: .center) {
-                            
-                            ForEach(favoriteMovies, id: \.self) { array in
-                                
-                                HStack {
-                                    
-                                    ForEach(array, id: \.self) { movie in
-                                        
-                                        NavigationLink(destination: MovieDetail(movieID: Int(movie.uuid),
-                                                                                movieTitle: movie.title ?? "",
-                                                                                movieOverview: movie.overview ?? "",
-                                                                                posterPath: movie.imagePath ?? "",
-                                                                                rating: movie.rating,
-                                                                                releaseDate: movie.releaseDate ?? ""),
-                                                       label: {
-                                                            ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (movie.imagePath ?? "")), movie: movie)
-                                                       })
-                                    } // ForEach
-                                    .padding(.horizontal)
-                                    Spacer()
-                                } // Hstack
-                                .frame(width: geo.size.width,
-                                       height: 200,
-                                       alignment: .center)
-                                .padding()
-                            } // ForEach
-                            .padding()
-                        } // VStack
-                    }
-                    .animation(.default)
+                switch viewType {
+                case .favorite:
+                    SavedMovieBody(movies: watchedMovies)
+                case .watched:
+                    SavedMovieBody(movies: watchedMovies)
                 }
+
                 
                 
             }
-            
-            
-            
-            
-            
             
             
         } // Z
@@ -125,4 +92,50 @@ struct SavedMovies_Previews: PreviewProvider {
 enum SavedMoviesViewType: String, Hashable  {
     case favorite = "Favorite"
     case watched = "Watched"
+}
+
+struct SavedMovieBody: View {
+    
+    var movies: [[Movie]]
+    
+    var body: some View {
+        
+        GeometryReader { geo in
+            
+            ScrollView {
+                VStack(alignment: .center) {
+                    
+                    ForEach(movies, id: \.self) { array in
+                        
+                        HStack {
+                            
+                            ForEach(array, id: \.self) { movie in
+                                
+                                NavigationLink(destination: MovieDetail(movieID: Int(movie.uuid),
+                                                                        movieTitle: movie.title ?? "",
+                                                                        movieOverview: movie.overview ?? "",
+                                                                        posterPath: movie.imagePath ?? "",
+                                                                        rating: movie.rating,
+                                                                        releaseDate: movie.releaseDate ?? ""),
+                                               label: {
+                                                    ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (movie.imagePath ?? "")), movie: movie)
+                                               })
+                                
+                            } // ForEach
+                            .padding(.horizontal)
+                            Spacer()
+                        } // Hstack
+                        .frame(width: geo.size.width,
+                               height: 200,
+                               alignment: .center)
+                        .padding()
+                    } // ForEach
+                    .padding()
+                } // VStack
+            }
+            .animation(.default)
+        }
+        
+    }
+    
 }
