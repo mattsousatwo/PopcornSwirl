@@ -75,8 +75,6 @@ struct CardRow: View {
 //                            Spacer()
                             ForEach(array, id: \.self) { movie in
                                 
-//                                Poster(urlString: self.movieStore.imageURL + (movie.poster_path ?? "" ),
-//                                       title: movie.title)
                                 NavigationLink(destination: MovieDetail(movieID: movie.id,
                                                                         movieTitle: movie.title,
                                                                         genreIDs: movie.genre_ids,

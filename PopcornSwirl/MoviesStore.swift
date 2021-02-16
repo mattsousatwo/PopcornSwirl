@@ -279,7 +279,7 @@ extension MoviesStore {
     func getAllFavoriteMovies() -> [Movie] {
         var movieArray: [Movie] = []
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
-        request.predicate = NSPredicate(format: "isFavorite == @%", "true")
+        request.predicate = NSPredicate(format: "isFavorite == %@", "true")
         do {
             let result = try context.fetch(request)
             movieArray.append(contentsOf: result)
@@ -301,7 +301,7 @@ extension MoviesStore {
     func getAllWatchedMovies() -> [Movie] {
         var movieArray: [Movie] = []
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
-        request.predicate = NSPredicate(format: "isWatched == @%", "true")
+        request.predicate = NSPredicate(format: "isWatched == %@", "true")
         do {
             let result = try context.fetch(request)
             movieArray.append(contentsOf: result)
