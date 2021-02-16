@@ -30,6 +30,16 @@ class MovieTests: XCTestCase {
         XCTAssertTrue(movieSearch.title == testTitle, "Movie is not found - \(movieSearch)")
     }
     
+    func testIfSavingMoviePropertiesWorks() {
+        let movieSearch = movieCD.fetchMovie(uuid: Int(movieTestID))
+        
+        movieCD.update(movie: movieSearch, isWatched: true)
+        
+        print(movieSearch)
+        XCTAssertEqual(movieSearch.isWatched, true)
+        
+    }
+    
     // Test single Movie fetching
     func testIfFetchingSpecificMovieWorks() {
         

@@ -41,8 +41,8 @@ struct SavedMovies: View {
     }
     
     var body: some View {
-        
-        ZStack(alignment: .center) {
+        NavigationView {
+            ZStack(alignment: .center) {
             // Background
             LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea(edges: .vertical)
@@ -63,20 +63,22 @@ struct SavedMovies: View {
                 
                 switch viewType {
                 case .favorite:
-                    SavedMovieBody(movies: watchedMovies)
+                    SavedMovieBody(movies: favoriteMovies)
+                        .animation(.default)
                 case .watched:
                     SavedMovieBody(movies: watchedMovies)
+                        .animation(.default)
                 }
-
-                
                 
             }
             
             
         } // Z
         
-        .navigationTitle(Text("Saved Movies"))
         
+            .navigationBarTitle("\(viewType.rawValue) Movies", displayMode: .inline)
+            .animation(.default)
+        }
     } // Body
     
 } // SavedMovies()
@@ -97,6 +99,7 @@ enum SavedMoviesViewType: String, Hashable  {
 struct SavedMovieBody: View {
     
     var movies: [[Movie]]
+    var displayLimit: Int = 9 // movie count is doubled - ( 9 = 20 movies shown ) - ( 9+1 = 10, 10 * 2 = 20  )
     
     var body: some View {
         
@@ -105,30 +108,37 @@ struct SavedMovieBody: View {
             ScrollView {
                 VStack(alignment: .center) {
                     
-                    ForEach(movies, id: \.self) { array in
+                    ForEach(0..<movies.count, id: \.self) { i in
                         
-                        HStack {
+                        if i <= displayLimit {
                             
-                            ForEach(array, id: \.self) { movie in
+                            HStack {
                                 
-                                NavigationLink(destination: MovieDetail(movieID: Int(movie.uuid),
-                                                                        movieTitle: movie.title ?? "",
-                                                                        movieOverview: movie.overview ?? "",
-                                                                        posterPath: movie.imagePath ?? "",
-                                                                        rating: movie.rating,
-                                                                        releaseDate: movie.releaseDate ?? ""),
-                                               label: {
+                                ForEach(movies[i], id: \.self) { movie in
+                                    
+                                    NavigationLink(destination: MovieDetail(movieID: Int(movie.uuid),
+                                                                            movieTitle: movie.title ?? "",
+                                                                            movieOverview: movie.overview ?? "",
+                                                                            posterPath: movie.imagePath ?? "",
+                                                                            rating: movie.rating,
+                                                                            releaseDate: movie.releaseDate ?? ""),
+                                                   label: {
                                                     ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (movie.imagePath ?? "")), movie: movie)
-                                               })
-                                
-                            } // ForEach
-                            .padding(.horizontal)
-                            Spacer()
-                        } // Hstack
-                        .frame(width: geo.size.width,
-                               height: 200,
-                               alignment: .center)
-                        .padding()
+                                                   })
+                                    
+                                } // ForEach
+                                .padding(.horizontal)
+                                Spacer()
+                            } // Hstack
+                            
+                            .frame(width: geo.size.width,
+                                   height: 200,
+                                   alignment: .center)
+                            .padding()
+
+                        } // if
+                        
+                        
                     } // ForEach
                     .padding()
                 } // VStack

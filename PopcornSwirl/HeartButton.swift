@@ -38,16 +38,12 @@ struct HeartButton: View {
                 switch type {
                 case .empty:
                     self.type = .fill
-                    movie.isFavorite = true
-                    movie.comment = "Heart Button - pressed @ 3:37"
-                    movieStore.saveContext()
-                    print("HeartButton - id: \(movie.uuid), isFavorite: \(movie.isFavorite)")
+                    movieStore.update(movie: movie, isFavorite: true, comment: "true - \(Date())")
+                    print("HeartButton - id: \(movie.uuid), isFavorite: \(movie.isFavorite), comment: \(movie.comment ?? "")")
                 case .fill:
                     self.type = .empty
-                    movie.isFavorite = false
-                    movie.comment = ""
-                    movieStore.saveContext()
-                    print("HeartButton - id: \(movie.uuid), isFavorite: \(movie.isFavorite)")
+                    movieStore.update(movie: movie, isFavorite: false, comment: "false - \(Date())")
+                    print("HeartButton - id: \(movie.uuid), isFavorite: \(movie.isFavorite), comment: \(movie.comment ?? "")")
                 }
             }, label: {
                 gradient.mask(

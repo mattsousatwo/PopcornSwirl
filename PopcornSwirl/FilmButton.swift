@@ -26,13 +26,11 @@ struct FilmButton: View {
                 switch type {
                 case .unWatched:
                     self.type = .watched
-                    movie.isWatched.toggle()
-                    movieStore.saveContext()
+                    movieStore.update(movie: movie, isWatched: true)
                     print("movie: \(movie.title ?? "NO TITLE"), isWatched: \(movie.isWatched)")
                 case .watched:
                     self.type = .unWatched
-                    movie.isWatched.toggle()
-                    movieStore.saveContext()
+                    movieStore.update(movie: movie, isWatched: false)
                     print("movie: \(movie.title ?? "NO TITLE"), isWatched: \(movie.isWatched)")
                 }
 

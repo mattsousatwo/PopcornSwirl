@@ -89,42 +89,55 @@ extension MoviesStore {
         
         if let uuid = uuid {
             movie.uuid = uuid
+            print("saved: \(movie.uuid)")
         }
         if let category = category {
             movie.category = category.rawValue
+            print("saved: \(movie.category ?? "")")
         }
         if let director = director {
             movie.director = director
+            print("saved: \(movie.director ?? "")")
         }
         if let title = title {
             movie.title = title
+            print("saved: \(movie.title ?? "")")
         }
         if let overview = overview {
             movie.overview = overview
+            print("saved: \(movie.overview ?? "")")
         }
         if let imagePath = imagePath {
             movie.imagePath = imagePath
+            print("saved: \(movie.imagePath ?? "")")
         }
         if let genres = genres {
             movie.genres = genres
+            print("saved: \(movie.genres ?? "")")
         }
         if let cast = cast {
             movie.cast = cast
+            print("saved: \(movie.cast ?? "")")
         }
         if let releaseDate = releaseDate {
             movie.releaseDate = releaseDate
+            print("saved: \(movie.releaseDate ?? "")")
         }
         if let rating = rating {
             movie.rating = rating
+            print("saved: \(movie.rating)")
         }
         if let isFavorite = isFavorite {
             movie.isFavorite = isFavorite
+            print("saved: \(movie.isFavorite)")
         }
         if let isWatched = isWatched {
             movie.isWatched = isWatched
+            print("saved: \(movie.isWatched)")
         }
         if let comment = comment {
             movie.comment = comment
+            print("saved: \(movie.comment ?? "")")
         }
         if movie.hasChanges {
             saveContext()

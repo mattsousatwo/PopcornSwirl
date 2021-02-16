@@ -35,6 +35,14 @@ struct MovieDetail: View {
     var rating = Double()
     var releaseDate = String()
     
+    var moviePremire: String {
+        var release = ""
+        if let date = releaseDate.convertToDate() {
+            release = date.movieDate()
+        }
+        return release
+    }
+     
     // decoded genre ids 
     var genres: [Int] {
         var ids: [Int] = []
@@ -71,6 +79,27 @@ struct MovieDetail: View {
             .frame(width: UIScreen.main.bounds.width/2, height: 150, alignment: .leading).padding(.top).padding(.horizontal).foregroundColor(.white)
     }
     
+    // Comment Button
+    func commentButton() -> some View {
+        return Button(action: {
+            movie.isFavorite.toggle()
+            print("oldComment: \(movie.comment ?? "isEmpty")")
+            movie.comment = "New comment @ \(Date().time() )"
+            movieCD.saveContext()
+            print("newComment: \(movie.comment ?? "isEmpty")")
+            print(movie)
+        }, label: {
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 150, height: 40)
+                .foregroundColor(.darkBlue)
+                .opacity(0.6)
+                .overlay(
+                    Text("Comment")
+                        .foregroundColor(.pGray3)
+                        .opacity(0.8)
+                )
+        })
+    }
     
     
     var body: some View {
@@ -96,31 +125,10 @@ struct MovieDetail: View {
                             }
                             
                                 
-                                
+                                commentButton()
                                 
                             
-                            Button(action: {
                                 
-                                movie.isFavorite.toggle()
-                                print("oldComment: \(movie.comment ?? "isEmpty")")
-                                movie.comment = "Added Comment to rating \(movieID)"
-                                movieCD.saveContext()
-                                print("newComment: \(movie.comment ?? "isEmpty")")
-                                print(movie)
-                                
-                            }, label: {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: 150, height: 40)
-                                    .foregroundColor(.darkBlue)
-                                    .opacity(0.6)
-                                    .overlay(
-                                        Text("Comment")
-                                            .foregroundColor(.pGray3)
-                                            .opacity(0.8)
-                                    )
-                            })
-                            
-                            
                         } // v stack
                         
                         VStack(alignment: .leading, spacing: 10) {
@@ -139,7 +147,7 @@ struct MovieDetail: View {
                             Text("Release Date:").bold()
                                 .foregroundColor(.white)
                                 .padding(.horizontal)
-                            Text(releaseDate)
+                            Text(moviePremire)
                                 .foregroundColor(.pGray3)
                                 .padding(.horizontal )
                             
