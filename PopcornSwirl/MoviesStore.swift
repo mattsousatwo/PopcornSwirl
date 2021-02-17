@@ -168,7 +168,7 @@ extension MoviesStore {
    /// Encode Array of Genre ID tags to JSON Data as String for saving
     /// Example: FetchGenreIDs -> encode(genres: ) ->  update(movie:, genres: )
     func encodeGenres(_ genres: [Int]) -> String? {
-//        encoder.outputFormatting = .prettyPrinted
+        encoder.outputFormatting = .prettyPrinted
         guard let data = try? encoder.encode(genres) else { return nil }
         return String(data: data, encoding: .utf8)
     }
@@ -180,6 +180,30 @@ extension MoviesStore {
         
     }
     
+    
+    func encodeWatchProviders(_ provider: PurchaseLink) -> String? {
+        encoder.outputFormatting = .prettyPrinted
+        guard let data = try? encoder.encode(provider) else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+    
+    func decodeWatchProviders(_ provider: String) -> PurchaseLink? {
+        guard let data = provider.data(using: .utf8) else { return nil }
+        guard let providers = try? decoder.decode(PurchaseLink.self, from: data) else { return nil }
+        return providers
+    }
+    
+    func encodeReccomendedMovies(_ movies: [RecommendedMovie]) -> String? {
+        encoder.outputFormatting = .prettyPrinted
+        guard let data = try? encoder.encode(movies) else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+    
+    func decodeReccomendedMovies(_ movies: String) -> [RecommendedMovie]? {
+        guard let data = movies.data(using: .utf8) else { return nil }
+        guard let recMovies = try? decoder.decode([RecommendedMovie].self, from: data) else { return nil }
+        return recMovies
+    }
     
     
 }
@@ -311,18 +335,21 @@ extension MoviesStore {
         }
     }
     
+    // Used in SavedMovies
     func fetchFavorites() -> [[Movie]]? {
         if favoriteMovies.isEmpty {
             fetchAllFavoriteMovies()
         }
         print("FetchFavorites(): \(favoriteMovies.count)")
-        if  favoriteMovies.count == 0 {
+        if favoriteMovies.count == 0 {
             return nil
         }
         var movieArray: [[Movie]] = []
         let dividedCount = favoriteMovies.count / 2
         if dividedCount >= 1 {
             movieArray = favoriteMovies.divided(into: 2)
+        } else {
+            movieArray = [favoriteMovies]
         }
         if movieArray.count == 0 {
             return nil
@@ -354,7 +381,7 @@ extension MoviesStore {
         }
     }
 
-    // Get All Watched Movies
+    // Get All Watched Movies - used in SavedMovies
     func fetchWatched() -> [[Movie]]? {
         if watchedMovies.isEmpty {
             fetchAllWatchedMovies()
@@ -367,6 +394,11 @@ extension MoviesStore {
         let dividedCount = watchedMovies.count / 2
         if dividedCount >= 1 {
             movieArray = watchedMovies.divided(into: 2)
+        } else {
+            movieArray = [watchedMovies]
+        }
+        if movieArray.count == 0 {
+            return nil
         }
         return movieArray
     }

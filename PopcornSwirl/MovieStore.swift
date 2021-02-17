@@ -567,6 +567,8 @@ extension MovieStore {
                 print("USProviders: \(usWatchProviders)")
                 
                 self.watchProviders = usWatchProviders 
+                let movie = self.movieCD.fetchMovie(uuid: id)
+                
                 
                 
             } catch {
@@ -780,13 +782,6 @@ extension MovieStore {
     
     
     
-    func raven() {
-        
-        // fetch movies
-        // while movies.isEmpty { }
-        // 
-        
-    }
 }
 
 

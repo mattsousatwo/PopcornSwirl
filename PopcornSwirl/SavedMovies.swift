@@ -23,7 +23,6 @@ struct SavedMovies: View {
     
     @ObservedObject var movieStore = MoviesStore()
     @ObservedObject var savedType = SavedMovieType()
-    @State private var viewType: SavedMoviesViewType = .favorite
     private var viewOptions: [SavedMoviesViewType] = [.favorite, .watched]
     
     var body: some View {
@@ -53,7 +52,7 @@ struct SavedMovies: View {
                     }
                 }
             } // Z
-            .navigationBarTitle("\(viewType.rawValue) Movies", displayMode: .inline)
+            .navigationBarTitle("\(savedType.type.rawValue) Movies", displayMode: .inline)
         }
     } // Body
     

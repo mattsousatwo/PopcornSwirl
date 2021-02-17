@@ -163,20 +163,6 @@ struct MovieDetail: View {
                     }
                     
                     // Description
-                    
-                    //
-                    //                            Button(action: {
-                    //                                self.showFullOverview.toggle()
-                    //
-                    //                            }, label: {
-                    //                                Text(movieOverview).lineLimit(showFullOverview ? nil : 6 )
-                    //                                    .foregroundColor(.pGray3)
-                    //                                    .padding(.horizontal)
-                    //                                    .padding(.trailing, 8)
-                    //                            })
-                    
-                    
-                    
                     Text(movieOverview).lineLimit(nil)
                         .foregroundColor(.pGray3)
                         .padding(.horizontal)
@@ -191,10 +177,6 @@ struct MovieDetail: View {
                     // MARK: - Actors Scroll
                     
                     ScrollBar(type: .actors, id: movieID, movieCast: movieCast)
-                    
-                    // Actors Scroll
-                    
-                    
                     
                     RoundedRectangle(cornerRadius: 12)
                         .padding(.horizontal)
