@@ -292,7 +292,7 @@ extension MoviesStore {
     func getAllFavoriteMovies() -> [Movie] {
         var movieArray: [Movie] = []
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
-        request.predicate = NSPredicate(format: "isFavorite == %@", "true")
+        request.predicate = NSPredicate(format: "isFavorite == %@", NSNumber(value: true))
         do {
             let result = try context.fetch(request)
             movieArray.append(contentsOf: result)
@@ -310,11 +310,32 @@ extension MoviesStore {
         }
     }
     
+    func fetchFavorites() -> [[Movie]]? {
+        if favoriteMovies.isEmpty {
+            fetchAllFavoriteMovies()
+        }
+        print("FetchFavorites(): \(favoriteMovies.count)")
+        if  favoriteMovies.count == 0 {
+            return nil
+        }
+        var movieArray: [[Movie]] = []
+        let dividedCount = favoriteMovies.count / 2
+        if dividedCount >= 1 {
+            movieArray = favoriteMovies.divided(into: 2)
+        }
+        if movieArray.count == 0 {
+            return nil
+        }
+        return movieArray
+    }
+
+    
+    
     // Fetch all watched movies
     func getAllWatchedMovies() -> [Movie] {
         var movieArray: [Movie] = []
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
-        request.predicate = NSPredicate(format: "isWatched == %@", "true")
+        request.predicate = NSPredicate(format: "isWatched == %@", NSNumber(value: true))
         do {
             let result = try context.fetch(request)
             movieArray.append(contentsOf: result)
@@ -331,6 +352,24 @@ extension MoviesStore {
             watchedMovies.append(contentsOf: watched)
         }
     }
+
+    // Get All Watched Movies
+    func fetchWatched() -> [[Movie]]? {
+        if watchedMovies.isEmpty {
+            fetchAllWatchedMovies()
+        }
+        print("FetchWatched(): \(watchedMovies.count)")
+        if watchedMovies.count == 0 {
+            return nil
+        }
+        var movieArray: [[Movie]] = []
+        let dividedCount = watchedMovies.count / 2
+        if dividedCount >= 1 {
+            movieArray = watchedMovies.divided(into: 2)
+        }
+        return movieArray
+    }
+    
 
     
     func checkIfMovieDetailsNeedToBeFetched(movie: Movie) {

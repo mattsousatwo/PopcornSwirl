@@ -14,8 +14,6 @@ struct SearchMovie: View {
     
     @ObservedObject var movieStore = MovieStore()
     
-    
-    
     var body: some View {
         NavigationView {
             ZStack {
@@ -75,9 +73,8 @@ struct SearchMovie: View {
                     
                     
                 } // VStack
-                //        .background(Color.pGray)
+                
             } // ZStack
-            //        .edgesIgnoringSafeArea(.top)
             
             .navigationBarTitle("Movie Search", displayMode: .inline)
         }

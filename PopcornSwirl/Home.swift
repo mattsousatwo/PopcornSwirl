@@ -56,7 +56,7 @@ struct Home: View {
             //MARK: CoreData -
             genreStore.loadAllGenres()
             
-            // Delete all movies
+//             Delete all movies
 //            let movieStore = MoviesStore()
 //            movieStore.deleteAllMovie()
   

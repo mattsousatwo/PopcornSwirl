@@ -40,6 +40,21 @@ class MovieTests: XCTestCase {
         
     }
     
+    func testFetchForFavoriteMovies() {
+        print("FetchFavorites - TEST \n")
+        let movies = movieCD.getAllFavoriteMovies()
+        for movie in movies {
+            print("Movie: \(movie.title ?? "NO TITLE"), isFav: \(movie.isFavorite)")
+        }
+        print("Movies: \(movies.count)")
+        let favorites = movies.map({ $0.isFavorite == true })
+        print("Favorites: \(favorites.count)")
+        print("\n")
+        XCTAssertEqual(movies.count, favorites.count)
+    }
+    
+    
+    
     // Test single Movie fetching
     func testIfFetchingSpecificMovieWorks() {
         
