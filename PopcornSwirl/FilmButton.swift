@@ -42,7 +42,7 @@ struct FilmButton: View {
             })
             .animation(.default)
             .onAppear(perform: {
-                switch movie.isFavorite {
+                switch movie.isWatched {
                 case true:
                     type = .watched
                 case false:

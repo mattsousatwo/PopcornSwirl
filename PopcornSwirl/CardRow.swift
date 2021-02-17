@@ -16,9 +16,9 @@ struct CardRow: View {
     @Binding var search: String
     
     private var elementsArray: [[MovieSearchResults]] {
-
-        movieStore.fetchResultsForMovie(query: search)
-
+        if movieStore.movieSearchResults.isEmpty {
+            movieStore.fetchResultsForMovie(query: search)
+        }
 //        let searchArray = movieStore.fetchResultsFromMovie(search: search)
 
         var newArray: [[MovieSearchResults]] = []

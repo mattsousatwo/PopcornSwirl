@@ -128,11 +128,12 @@ extension MoviesStore {
             print("saved: \(movie.rating)")
         }
         if let isFavorite = isFavorite {
-            movie.isFavorite = isFavorite
+//            movie.isFavorite = isFavorite
+            movie.isFavorite = NSNumber(value: isFavorite) as! Bool
             print("saved: \(movie.isFavorite)")
         }
         if let isWatched = isWatched {
-            movie.isWatched = isWatched
+            movie.isWatched = NSNumber(value: isWatched) as! Bool
             print("saved: \(movie.isWatched)")
         }
         if let comment = comment {

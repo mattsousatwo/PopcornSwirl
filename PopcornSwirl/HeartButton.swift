@@ -27,14 +27,6 @@ struct HeartButton: View {
         
         if let movie = movie {
             Button( action: {
-                switch movie.isFavorite {
-                case true:
-                    type = .fill
-                case false:
-                    type = .empty
-                }
-                
-                
                 switch type {
                 case .empty:
                     self.type = .fill
@@ -52,15 +44,18 @@ struct HeartButton: View {
                     .shadow(color: .gray, radius: 3, x: 1, y: 2)
             })
             .animation(.default)
+            .onAppear {
+                switch movie.isFavorite {
+                case true:
+                    type = .fill
+                case false:
+                    type = .empty
+                }
+            }
         } else {
             if let actor = actor {
                 Button( action: {
-                    switch actor.isFavorite {
-                    case true:
-                        type = .fill
-                    case false:
-                        type = .empty
-                    }
+
                     switch type {
                     case .empty:
                         self.type = .fill
@@ -83,7 +78,16 @@ struct HeartButton: View {
                         .shadow(color: .gray, radius: 3, x: 1, y: 2)
                 })
                 .animation(.default)
+                .onAppear {
+                    switch actor.isFavorite {
+                    case true:
+                        type = .fill
+                    case false:
+                        type = .empty
+                    }
+                }
             }
+            
             
         }
         
