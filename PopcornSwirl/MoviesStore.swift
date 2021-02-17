@@ -69,77 +69,72 @@ extension MoviesStore {
         saveContext()
         return movie
     }
-    
-    
-    /// Converting Data to String, then saving to Movie with ID
-    func convertMovie(cast json: Data, forMovie movieID: Int) {
-        let movie = allMovies.first(where: { $0.uuid == Double(movieID) })
-        let castAsString = String(data: json, encoding: .utf8)
-        guard let cast = castAsString else { return }
-        if let movie = movie {
-            movie.cast = cast
-            saveContext()
-        } else {
-            var _ = createNewMovie(uuid: Double(movieID), cast: cast)
-        }
-    }
-    
+
     /// Update given movie properties
-    func update(movie: Movie, uuid: Double? = nil, category: MovieCategory? = nil, director: String? = nil, title: String? = nil, overview: String? = nil, imagePath: String? = nil, genres: String? = nil, cast: String? = nil, releaseDate: String? = nil, rating: Double? = nil, isFavorite: Bool? = nil, isWatched: Bool? = nil, comment: String? = nil) {
+    func update(movie: Movie, uuid: Double? = nil, category: MovieCategory? = nil, director: String? = nil, title: String? = nil, overview: String? = nil, imagePath: String? = nil, genres: String? = nil, cast: String? = nil, releaseDate: String? = nil, rating: Double? = nil, isFavorite: Bool? = nil, isWatched: Bool? = nil, comment: String? = nil, recommendedMovies: String? = nil, watchProviders: String? = nil) {
         
         if let uuid = uuid {
             movie.uuid = uuid
-            print("saved: \(movie.uuid)")
+            print("saved uuid: \(movie.uuid)")
         }
         if let category = category {
             movie.category = category.rawValue
-            print("saved: \(movie.category ?? "")")
+            print("saved category: \(movie.category ?? "is Empty")")
         }
         if let director = director {
             movie.director = director
-            print("saved: \(movie.director ?? "")")
+            print("saved director: \(movie.director ?? "is Empty")")
         }
         if let title = title {
             movie.title = title
-            print("saved: \(movie.title ?? "")")
+            print("saved title: \(movie.title ?? "is Empty")")
         }
         if let overview = overview {
             movie.overview = overview
-            print("saved: \(movie.overview ?? "")")
+            print("saved overview: \(movie.overview ?? "is Empty")")
         }
         if let imagePath = imagePath {
             movie.imagePath = imagePath
-            print("saved: \(movie.imagePath ?? "")")
+            print("saved imagePath: \(movie.imagePath ?? "is Empty")")
         }
         if let genres = genres {
             movie.genres = genres
-            print("saved: \(movie.genres ?? "")")
+            print("saved genres: \(movie.genres ?? "is Empty")")
         }
         if let cast = cast {
             movie.cast = cast
-            print("saved: \(movie.cast ?? "")")
+            print("saved cast: \(movie.cast ?? "is Empty")")
         }
         if let releaseDate = releaseDate {
             movie.releaseDate = releaseDate
-            print("saved: \(movie.releaseDate ?? "")")
+            print("saved releaseDate: \(movie.releaseDate ?? "is Empty")")
         }
         if let rating = rating {
             movie.rating = rating
-            print("saved: \(movie.rating)")
+            print("saved rating: \(movie.rating)")
         }
         if let isFavorite = isFavorite {
 //            movie.isFavorite = isFavorite
             movie.isFavorite = NSNumber(value: isFavorite) as! Bool
-            print("saved: \(movie.isFavorite)")
+            print("saved isFavorite: \(movie.isFavorite)")
         }
         if let isWatched = isWatched {
             movie.isWatched = NSNumber(value: isWatched) as! Bool
-            print("saved: \(movie.isWatched)")
+            print("saved isWatched: \(movie.isWatched)")
         }
         if let comment = comment {
             movie.comment = comment
-            print("saved: \(movie.comment ?? "")")
+            print("saved comment: \(movie.comment ?? "is Empty")")
         }
+        if let recomendedMovies = recommendedMovies {
+            movie.recommendedMovies = recomendedMovies
+            print("saved recommendedMovies: \(movie.recommendedMovies ?? "is Empty")")
+        }
+        if let watchProviders = watchProviders {
+            movie.watchProviders = watchProviders
+            print("saved watchProviders: \(movie.watchProviders ?? "is Empty")")
+        }
+        
         if movie.hasChanges {
             saveContext()
         }

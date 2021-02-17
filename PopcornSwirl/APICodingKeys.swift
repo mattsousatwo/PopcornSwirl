@@ -104,7 +104,7 @@ struct Recommendation: Codable {
     var results:  [RecommendedMovie]?
 }
 
-struct RecommendedMovie: Codable { 
+struct RecommendedMovie: Codable, Equatable {
     var title: String
     var poster_path: String?
     var overview: String
@@ -113,7 +113,20 @@ struct RecommendedMovie: Codable {
     var vote_average: Double
     var genre_ids: [Int]
     var release_date: String?
-    
+
+    // Equatable
+    static func ==(lhs: RecommendedMovie, rhs: RecommendedMovie) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.title == rhs.title &&
+            lhs.poster_path == rhs.poster_path &&
+            lhs.popularity == rhs.popularity &&
+            lhs.overview == rhs.overview &&
+            lhs.id == rhs.id &&
+            lhs.vote_average == rhs.vote_average &&
+            lhs.genre_ids == rhs.genre_ids &&
+            lhs.release_date == rhs.release_date
+    }
+
 }
 
 
@@ -340,7 +353,7 @@ struct Results: Codable {
 }
 
 // MARK: - Au
-struct PurchaseLink: Codable {
+struct PurchaseLink: Codable, Equatable {
     var url: String?
     var buy, rent: [Provider]?
     var flatrate: [Provider]?
@@ -352,10 +365,18 @@ struct PurchaseLink: Codable {
         case flatrate = "flatrate"
     }
     
+    // Equatable
+    static func ==(lhs: PurchaseLink, rhs: PurchaseLink) -> Bool {
+        return lhs.url == rhs.url &&
+            lhs.buy == rhs.buy &&
+            lhs.rent == rhs.rent &&
+            lhs.flatrate == rhs.flatrate
+    }
+
 }
 
 // MARK: - Buy
-struct Provider: Codable {
+struct Provider: Codable, Equatable {
     var displayPriority: Int
     var logoPath: String
     var providerID: Int
@@ -367,4 +388,12 @@ struct Provider: Codable {
         case providerID = "provider_id"
         case providerName = "provider_name"
     }
+
+    static func ==(lhs: Provider, rhs: Provider) -> Bool {
+        return lhs.displayPriority == rhs.displayPriority &&
+            lhs.logoPath == rhs.logoPath &&
+            lhs.providerID == rhs.providerID &&
+            lhs.providerName == rhs.providerName
+    } 
+    
 }

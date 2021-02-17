@@ -106,6 +106,11 @@ extension MovieStore {
                 print(error)
             }
             
+            let movie = self.movieCD.fetchMovie(uuid: id)
+            if let recMovieString = self.movieCD.encodeReccomendedMovies(self.recommendedMovies) {
+                self.movieCD.update(movie: movie, recommendedMovies: recMovieString)
+            }
+            
         }
         
     }
@@ -569,6 +574,11 @@ extension MovieStore {
                 self.watchProviders = usWatchProviders 
                 let movie = self.movieCD.fetchMovie(uuid: id)
                 
+                if let watchProviderString = self.movieCD.encodeWatchProviders(usWatchProviders) {
+                    self.movieCD.update(movie: movie, watchProviders: watchProviderString)
+                }
+                
+                
                 
                 
             } catch {
@@ -681,10 +691,10 @@ extension MovieStore {
                                releaseDate: movie.release_date,
                                isFavorite: false,
                                isWatched: false)
-                
-                removeOldMovies(from: .upcoming)
-                
             }
+            removeOldMovies(from: .upcoming)
+            
+            
         case .recommendedMovie:
             if recommendedMovies.count == 0 {
                 fetchRecommendedMoviesForMovie(id: searchID)

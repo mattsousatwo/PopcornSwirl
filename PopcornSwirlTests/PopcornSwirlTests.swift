@@ -195,9 +195,63 @@ class MovieTests: XCTestCase {
         
         
         XCTAssertEqual(decodedCast, cast, "\n decodedMovies - \(decodedCast), cast - \(cast) : Are not equal \n")
-        
-        
     }
+    
+    // Test if coding and decoding for RecommendedMovies works
+    func testCodingForRecMovies() {
+        
+        var decodedMovies: [RecommendedMovie] = []
+        let recMovies: [RecommendedMovie] = [RecommendedMovie(title: "Title 1",
+                                                               poster_path: "PosterPath 1",
+                                                               overview: "Overview for Movie",
+                                                               popularity: 7.9,
+                                                               id: 100,
+                                                               vote_average: 2.0,
+                                                               genre_ids: [1, 2],
+                                                               release_date: "2019-12-16"),
+                                            RecommendedMovie(title: "Title 2",
+                                                             poster_path: "PosterPath 2",
+                                                             overview: "Overview for Movie",
+                                                             popularity: 12.3,
+                                                             id: 200,
+                                                             vote_average: 4.5,
+                                                             genre_ids: [3, 5],
+                                                             release_date: "2020-4-15")]
+        guard let recMovieString = movieCD.encodeReccomendedMovies(recMovies) else { return }
+        print("\nRecMovies: \(recMovieString)\n")
+        
+        if let decodedData = movieCD.decodeReccomendedMovies(recMovieString) {
+            decodedMovies = decodedData
+            print("\n movies: \(decodedMovies)")
+        }
+        XCTAssertEqual(recMovies, decodedMovies)
+    }
+    
+    // Test if coding and decoding for Watch Providers works
+    func testCodingForWatchProviders() {
+        var decodedWatchProviders: PurchaseLink?
+        let watchProviders: PurchaseLink = PurchaseLink(url: "URL",
+                                                        buy: [Provider(displayPriority: 12,
+                                                                       logoPath: "logoPath",
+                                                                       providerID: 100,
+                                                                       providerName: "Watch Provider")],
+                                                        rent: [Provider(displayPriority: 10,
+                                                                        logoPath: "Path",
+                                                                        providerID: 122,
+                                                                        providerName: "Provider Name")],
+                                                        flatrate: [Provider(displayPriority: 1,
+                                                                            logoPath: "Logo Path",
+                                                                            providerID: 3,
+                                                                            providerName: "Provider")])
+        guard let purchaseLinkString = movieCD.encodeWatchProviders(watchProviders) else { return }
+        print("\n PurchaseLinkString: \(purchaseLinkString) \n")
+        if let decodedData = movieCD.decodeWatchProviders(purchaseLinkString) {
+            decodedWatchProviders = decodedData
+            print("\n decodedWatchProviders: \(decodedWatchProviders!) \n")
+        }
+        XCTAssertEqual(watchProviders, decodedWatchProviders)
+    }
+    
     
 }
 
