@@ -17,7 +17,7 @@ struct MovieDetail: View {
     
     // CoreData
     @ObservedObject private var movieCD = MoviesStore()
-    private var movie: Movie {
+    private var movie: Movie { 
         return movieCD.fetchMovie(uuid: movieID)
     }
     
@@ -42,7 +42,7 @@ struct MovieDetail: View {
         }
         return release
     }
-     
+    
     // decoded genre ids 
     var genres: [Int] {
         var ids: [Int] = []
@@ -105,6 +105,7 @@ struct MovieDetail: View {
     var body: some View {
         
         ZStack(alignment: .center) {
+            
             // Background
             LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea(edges: .vertical)
@@ -124,17 +125,17 @@ struct MovieDetail: View {
                                 ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), movie: movie)
                             }
                             
-                                
-                                commentButton()
-                                
                             
-                                
+                            commentButton()
+                            
+                            
+                            
                         } // v stack
                         
                         VStack(alignment: .leading, spacing: 10) {
                             // Movie Title
                             title()
-
+                            
                             
                             // Director
                             Text("Director:").bold()
@@ -171,7 +172,7 @@ struct MovieDetail: View {
                     
                     
                     // Genres
-//                    GenreBar(genres: genreIDs)
+                    //                    GenreBar(genres: genreIDs)
                     GenreBar(genres: genres)
                     
                     // MARK: - Actors Scroll
@@ -189,17 +190,12 @@ struct MovieDetail: View {
                         )
                     
                     // MARK: - Suggested Movies
-                     ScrollBar(type: .recommendedMovie, id: movieID)
-
-                    PurchaseLinkBar(movieID: movieID)
+                    ScrollBar(type: .recommendedMovie, id: movieID)
+                    
+                    PurchaseLinkBar(movieID: movieID, movie: movie)
                         .padding(.bottom)
                     
                 } // V stack
-                
-                
-                
-                // z stack
-                
                 
             } // scroll
             
@@ -215,22 +211,23 @@ struct MovieDetail: View {
                 })
             }
             
-            StarSlider(movie: movie, value: 0.0, width: showStarSlider ? UIScreen.main.bounds.width - 40 : 0 , height: showStarSlider ? 210 : 0) 
+            StarSlider(movie: movie, value: 0.0, width: showStarSlider ? UIScreen.main.bounds.width - 40 : 0 , height: showStarSlider ? 210 : 0)
                 .cornerRadius(12.0)
                 .animation(.easeIn)
             
             
             
         } // ZStack
-        .animation(.default)
         
+        
+                
         
         .onAppear() {
             
             print( "Movie ID: \(movieID)"  )
             print( "Movie Title: \(movieTitle)"  )
             print( "Movie Overview: \(movieOverview)"  )
-            print( "Path: \(MovieStoreKey.imageURL.rawValue + posterPath)" ) 
+            print( "Path: \(MovieStoreKey.imageURL.rawValue + posterPath)" )
             print( "GenreIDs: \(genres)" )
             
             

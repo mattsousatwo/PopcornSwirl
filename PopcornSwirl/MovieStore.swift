@@ -184,7 +184,6 @@ extension MovieStore {
         let creditsRequest = "https://api.themoviedb.org/3/movie/\(id)/credits?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
         
         let movie = movieCD.fetchMovie(uuid: id)
-        var director: String?
         
         AF.request( creditsRequest ).responseJSON { response in
             
@@ -197,20 +196,11 @@ extension MovieStore {
                     self.movieCast.limitedAppend(contents: cast)
                 }
                 
-            
-                
-                
                 print("cast count: \(self.movieCast.count)")
                 
                 for member in movieCredits.crew {
                     if member.job == "Director" {
-                        director = member.name
-                        
-                        // MARK: - Can Delete
                         self.director = member.name
-                        // MARK: -
-                        
-                        
                     }
                 }
                 
@@ -219,8 +209,8 @@ extension MovieStore {
             }
             
             guard let movieCastAsString = self.movieCD.encodeCast(self.movieCast) else { return }
-            guard let director = director else { return }
-            self.movieCD.update(movie: movie, director: director, cast: movieCastAsString)
+            
+            self.movieCD.update(movie: movie, director: self.director, cast: movieCastAsString)
             
             self.getImagesForActor()
         }

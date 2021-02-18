@@ -159,7 +159,6 @@ extension MoviesStore {
         
     }
     
-    
    /// Encode Array of Genre ID tags to JSON Data as String for saving
     /// Example: FetchGenreIDs -> encode(genres: ) ->  update(movie:, genres: )
     func encodeGenres(_ genres: [Int]) -> String? {
@@ -174,7 +173,6 @@ extension MoviesStore {
         return ids
         
     }
-    
     
     func encodeWatchProviders(_ provider: PurchaseLink) -> String? {
         encoder.outputFormatting = .prettyPrinted
@@ -202,7 +200,6 @@ extension MoviesStore {
     
     
 }
-
 
 // MARK: FETCHING
 extension MoviesStore {

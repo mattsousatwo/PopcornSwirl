@@ -9,7 +9,8 @@
 import SwiftUI
 
 // Card to hold movie posters
-struct ImageCard: View {
+struct ImageCard: View, Equatable {
+    
     var url: URL?
     var movie: Movie? = nil
     var actor: Actor? = nil
@@ -38,7 +39,14 @@ struct ImageCard: View {
         }
 
     } // Body
-     
+    
+    // Equatable
+    static func == (lhs: ImageCard, rhs: ImageCard) -> Bool {
+        return lhs.url == rhs.url &&
+            lhs.movie == rhs.movie &&
+            lhs.actor == rhs.actor
+    }
+    
 }
 
 struct ImageCard_Previews: PreviewProvider {

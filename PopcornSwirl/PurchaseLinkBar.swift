@@ -10,8 +10,62 @@ import SwiftUI
 
 struct PurchaseLinkBar: View {
     var movieID: Int
+    var movie: Movie?
     @ObservedObject private var store = MovieStore()
     
+    private var url: URL? {
+        if let moviePurchaseLink = moivePurchaseLinks {
+            guard let movieURL = moviePurchaseLink.url else { return nil }
+            guard let url = URL(string: movieURL) else { return nil }
+            return url
+        } else if let fetchedLink = links {
+            guard let movieURL = fetchedLink.url else { return nil }
+            guard let url = URL(string: movieURL) else { return nil }
+            return url
+        }
+        return nil
+    }
+    
+    
+    // MARK: - CoreData
+    @ObservedObject private var movieCD = MoviesStore()
+    
+    private var moivePurchaseLinks: PurchaseLink? {
+        if let movie = movie, let watchProviders = movie.watchProviders {
+            guard let decodedWatchProviders = movieCD.decodeWatchProviders(watchProviders) else { return nil }
+            return decodedWatchProviders
+        }
+        return nil
+    }
+    
+    private var subscriptionLink: [Provider]? {
+        if let link = moivePurchaseLinks {
+            guard let flatrate = link.flatrate else { return nil }
+            return flatrate
+        }
+        return nil
+    }
+    private var purchaseLink: [Provider]? {
+        if let link = moivePurchaseLinks {
+            guard let buy = link.buy else { return nil }
+            return buy
+        }
+        return nil
+    }
+    private var rentLink: [Provider]? {
+        if let link = moivePurchaseLinks {
+            guard let rent = link.rent else { return nil }
+            return rent
+        }
+        return nil
+    }
+    // MARK: -
+    
+    
+    
+    
+    
+    // MARK: - TMDB
     // Main Purchase Link
     private var links: PurchaseLink? {
         return store.extractWatchProvidersFor(id: movieID)
@@ -39,67 +93,25 @@ struct PurchaseLinkBar: View {
     
     
     var body: some View {
-        
-        
-        if let flatrate = flatrate {
-            HStack {
-                Text("Subscription").font(.system(.title, design: .rounded)).bold()
-                    .foregroundColor(.pGray3)
-                    .padding(.horizontal)
-                
-                Spacer()
+        if let url = url {
+            if let subscriptionLink = subscriptionLink {
+                PurchaseLinkRow(type: .subscription, provider: subscriptionLink, link: url)
+            } else if let flatrate = flatrate {
+                PurchaseLinkRow(type: .subscription, provider: flatrate, link: url)
             }
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(0..<flatrate.count, id: \.self) { i in
-                        PurchaseLinkLabel(imageAdress: flatrate[i].logoPath)
-                    }
-                }
-                .padding(.horizontal)
+            
+            if let purchaseLink = purchaseLink {
+                PurchaseLinkRow(type: .purchase, provider: purchaseLink, link: url)
+            } else if let buy = buy {
+                PurchaseLinkRow(type: .purchase, provider: buy, link: url)
             }
-        }
-        
-        
-        if let buy = buy {
-            HStack {
-                Text("Buy").font(.system(.title, design: .rounded)).bold()
-                    .foregroundColor(.pGray3)
-                    .padding(.horizontal)
-                
-                Spacer()
-            }
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(0..<buy.count, id: \.self) { i in
-                        PurchaseLinkLabel(imageAdress: buy[i].logoPath)
-                        
-                    }
-                }
-                .padding(.horizontal)
+            
+            if let rentLink = rentLink {
+                PurchaseLinkRow(type: .rent, provider: rentLink, link: url)
+            } else if let rent = rent {
+                PurchaseLinkRow(type: .rent, provider: rent, link: url)
             }
         }
-        
-        
-        if let rent = rent {
-            HStack {
-                Text("Rent").font(.system(.title, design: .rounded)).bold()
-                    .foregroundColor(.pGray3)
-                    .padding(.horizontal)
-                Spacer()
-            }
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(0..<rent.count, id: \.self) { i in
-                        PurchaseLinkLabel(imageAdress: rent[i].logoPath)
-                    }
-                    
-                }
-                .padding(.horizontal)
-            }
-        }
-        
-        
-        
 
         
     }
@@ -108,6 +120,36 @@ struct PurchaseLinkBar: View {
 struct PurchaseLinkBar_Previews: PreviewProvider {
     static var previews: some View {
         PurchaseLinkBar(movieID: 0)
+    }
+}
+
+enum PurchaseLinkType: String {
+    case subscription = "Subscription"
+    case purchase = "Purchase"
+    case rent = "Rent"
+}
+
+struct PurchaseLinkRow: View {
+    var type: PurchaseLinkType
+    var provider: [Provider]
+    var link: URL
+    
+    var body: some View {
+        HStack {
+            Text(type.rawValue).font(.system(.title, design: .rounded)).bold()
+                .foregroundColor(.pGray3)
+                .padding(.horizontal)
+            Spacer()
+        }
+        ScrollView(.horizontal, showsIndicators: true) {
+            HStack {
+                ForEach(0..<provider.count, id: \.self) { i in
+                    PurchaseLinkLabel(imageAdress: provider[i].logoPath, link: link)
+                }
+                
+            }
+            .padding(.horizontal)
+        }
     }
 }
 
@@ -123,6 +165,8 @@ struct PurchaseLinkLabel: View {
     
     var imageAdress: String?
     
+    var link: URL
+    
     
     private var url: URL? {
         guard let imageAdress = imageAdress else { return nil }
@@ -130,30 +174,23 @@ struct PurchaseLinkLabel: View {
         return imageURL
     }
     
-    
-    
     var body: some View {
-        
         if let url = url {
-            RoundedRectangle(cornerRadius: radius)
-                .opacity(opacity)
-                .foregroundColor(color)
-                .frame(width: width, height: height)
-                .shadow(radius: shadow)
-                .overlay(
+            Link(destination: link, label: {
+            
                     AsyncImage(url: url, placeholder: {
                         RoundedRectangle(cornerRadius: radius)
+                            .opacity(opacity)
+                            .foregroundColor(color)
+                            .frame(width: width, height: height)
+                            .shadow(radius: shadow)
                     }, image: {
                         Image(uiImage: $0).resizable()
                     })
                     .clipShape( RoundedRectangle(cornerRadius: radius) )
                     .opacity(0.8)
-                    .frame(width: (width / 2) + (width / 3),
-                           height: (height / 2) + (height / 3))
-
-                    , alignment: .center)
-                
-    
+                    .frame(width: width, height: height)
+            })
         } else {
             RoundedRectangle(cornerRadius: radius)
                 .opacity(opacity)
