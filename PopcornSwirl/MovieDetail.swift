@@ -37,11 +37,27 @@ struct MovieDetail: View {
     
     var moviePremire: String {
         var release = ""
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy"
+        if let dateCD = movie.releaseDate {
+            if let convertedDate = dateCD.convertToDate() {
+                release = formatter.string(from: convertedDate)
+            }
+        }
         if let date = releaseDate.convertToDate() {
-            release = date.movieDate()
+            release = formatter.string(from: date)
         }
         return release
     }
+    
+    var director: String {
+        var name = ""
+        if let movieDirector = movie.director {
+            name = movieDirector
+        }
+        return name
+    }
+    
     
     // decoded genre ids 
     var genres: [Int] {
@@ -66,6 +82,16 @@ struct MovieDetail: View {
         return nil
     }
     
+    // Display Movie poster
+    func moviePoster() -> some View {
+        if let poster = movie.imagePath {
+            return ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + poster), movie: movie).padding(.horizontal)
+        } else {
+            return ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), movie: movie).padding(.horizontal)
+        }
+    }
+    
+    
     // Text view of movie title
     func title() -> some View {
         var title = ""
@@ -84,7 +110,7 @@ struct MovieDetail: View {
         return Button(action: {
             movie.isFavorite.toggle()
             print("oldComment: \(movie.comment ?? "isEmpty")")
-            movie.comment = "New comment @ \(Date().time() )"
+            movie.comment = "New comment @ \(Date().time() )" 
             movieCD.saveContext()
             print("newComment: \(movie.comment ?? "isEmpty")")
             print(movie)
@@ -118,12 +144,7 @@ struct MovieDetail: View {
                         
                         VStack {
                             // Movie Poster
-                            if let poster = movie.imagePath {
-                                ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + poster), movie: movie)
-                                    .padding(.horizontal)
-                            } else {
-                                ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath), movie: movie)
-                            }
+                            moviePoster()
                             
                             
                             commentButton()
@@ -141,7 +162,7 @@ struct MovieDetail: View {
                             Text("Director:").bold()
                                 .foregroundColor(.white)
                                 .padding(.horizontal)
-                            Text("\(movie.director ?? "")")
+                            Text("\(director)")
                                 .foregroundColor(.pGray3)
                                 .padding(.horizontal)
                             // Release Date

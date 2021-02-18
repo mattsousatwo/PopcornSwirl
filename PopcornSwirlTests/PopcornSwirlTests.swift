@@ -253,6 +253,20 @@ class MovieTests: XCTestCase {
     }
     
     
+    // Testing if converting release date string to a readable format works
+    func testReleaseDateFormating() {
+        let dateString = "2020-02-17"
+        let desiredFormat = "Feb 17, 2020"
+        
+        guard let date = dateString.convertToDate() else { return }
+        let formater = DateFormatter()
+        formater.dateFormat = "MMM d, yyyy"
+        let formattedDate = formater.string(from: date)
+        
+        XCTAssertEqual(formattedDate, desiredFormat)
+    }
+    
+    
 }
 
 
