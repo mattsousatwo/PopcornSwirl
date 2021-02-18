@@ -9,7 +9,13 @@
 import SwiftUI
 import Combine
 
-struct MovieDetail: View {
+struct MovieDetail: View, Equatable {
+    
+    // Equatable
+    static func == (lhs: MovieDetail, rhs: MovieDetail) -> Bool {
+        return lhs.movieID == rhs.movieID
+    }
+    
     
     // TMDB
     @ObservedObject private var movieStore = MovieStore()
@@ -54,6 +60,8 @@ struct MovieDetail: View {
         var name = ""
         if let movieDirector = movie.director {
             name = movieDirector
+        } else {
+            name = movieStore.director
         }
         return name
     }
@@ -198,7 +206,7 @@ struct MovieDetail: View {
                     
                     // MARK: - Actors Scroll
                     
-                    ScrollBar(type: .actors, id: movieID, movieCast: movieCast)
+                    ScrollBar(type: .actors, id: movieID, movieCast: movieCast).equatable()
                     
                     RoundedRectangle(cornerRadius: 12)
                         .padding(.horizontal)
@@ -211,7 +219,7 @@ struct MovieDetail: View {
                         )
                     
                     // MARK: - Suggested Movies
-                    ScrollBar(type: .recommendedMovie, id: movieID)
+                    ScrollBar(type: .recommendedMovie, id: movieID).equatable()
                     
                     PurchaseLinkBar(movieID: movieID, movie: movie)
                         .padding(.bottom)
@@ -220,6 +228,7 @@ struct MovieDetail: View {
                 
             } // scroll
             
+            // View to cover background if starslider is shown - if pressed will dismiss star slider
             if showStarSlider == true {
                 Button(action: {
                     self.showStarSlider = false

@@ -20,7 +20,7 @@ enum ScrollBarType: String  {
 }
 
 
-struct ScrollBar: View {
+struct ScrollBar: View, Equatable {
     
     @ObservedObject var movieStore = MovieStore()
     @ObservedObject var actorsStore = ActorsStore()
@@ -61,6 +61,10 @@ struct ScrollBar: View {
     }
     
     var movieCast: [MovieCast]?
+    
+    static func == (lhs: ScrollBar, rhs: ScrollBar) -> Bool {
+        return lhs.type == rhs.type
+    }
     
     var body: some View {
         
@@ -372,7 +376,7 @@ struct ScrollNavLink: View {
                                                 movieOverview: overview,
                                                 posterPath: posterPath,
                                                 rating: voteAverage,
-                                                releaseDate: releaseDate)) {
+                                                releaseDate: releaseDate).equatable() ) {
             
             ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath),
                       movie: movie)

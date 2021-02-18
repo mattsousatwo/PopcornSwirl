@@ -81,7 +81,7 @@ struct CardRow: View {
                                                                         movieOverview: movie.overview,
                                                                         posterPath: (movie.poster_path ?? ""),
                                                                         rating: movie.vote_average,
-                                                                        releaseDate: ""),
+                                                                        releaseDate: "").equatable() ,
                                                label: {
                                                             let movieElement = movieCD.fetchMovie(uuid: movie.id)
                                                             ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (movie.poster_path ?? "")), movie: movieElement)  })

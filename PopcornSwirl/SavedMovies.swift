@@ -128,7 +128,7 @@ struct MovieRow: View {
                                                                 movieOverview: movie.overview ?? "",
                                                                 posterPath: movie.imagePath ?? "",
                                                                 rating: movie.rating,
-                                                                releaseDate: movie.releaseDate ?? ""),
+                                                                releaseDate: movie.releaseDate ?? "").equatable() ,
                                        label: {
                                         ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (movie.imagePath ?? "")), movie: movie)
                                        })
