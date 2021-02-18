@@ -13,9 +13,8 @@ struct MovieDetail: View, Equatable {
     
     // Equatable
     static func == (lhs: MovieDetail, rhs: MovieDetail) -> Bool {
-        return lhs.movieID == rhs.movieID
+        return lhs.movie == rhs.movie
     }
-    
     
     // TMDB
     @ObservedObject private var movieStore = MovieStore()
@@ -29,8 +28,7 @@ struct MovieDetail: View, Equatable {
     
     // Animation
     @State private var showStarSlider: Bool = false
-    @State private var showFullOverview = false
-    @State private var showDesription: Bool = false
+    @State private var showCommentBox: Bool = false
     
     // MovieDetail Properties
     var movieID = Int()
@@ -116,6 +114,7 @@ struct MovieDetail: View, Equatable {
     // Comment Button
     func commentButton() -> some View {
         return Button(action: {
+            self.showCommentBox.toggle()
             movie.isFavorite.toggle()
             print("oldComment: \(movie.comment ?? "isEmpty")")
             movie.comment = "New comment @ \(Date().time() )" 
@@ -229,9 +228,13 @@ struct MovieDetail: View, Equatable {
             } // scroll
             
             // View to cover background if starslider is shown - if pressed will dismiss star slider
-            if showStarSlider == true {
+            if showStarSlider == true || showCommentBox == true {
                 Button(action: {
-                    self.showStarSlider = false
+                    if showStarSlider == true {
+                        self.showStarSlider = false
+                    } else if showCommentBox == true {
+                        self.showCommentBox = false
+                    }
                 }, label: {
                     RoundedRectangle(cornerRadius: 0)
                         .foregroundColor(.black)
@@ -246,7 +249,37 @@ struct MovieDetail: View, Equatable {
                 .animation(.easeIn)
             
             
+            VStack {
+                // Spacer for Nav Bar
+                RoundedRectangle(cornerRadius: 0)
+                    .frame(width: showCommentBox ? UIScreen.main.bounds.width : 0,
+                           height: showCommentBox ? 100 : 0)
+                    .foregroundColor(.clear)
+                if showCommentBox == true {
+                CommentBox(movie: movie,
+                           width: showCommentBox ? UIScreen.main.bounds.width - 20 : 0,
+                           height: showCommentBox ? UIScreen.main.bounds.height / 4 : 0)
+                    .overlay(
+                        Button(action: {
+                            print("X Button pressed ")
+                            showCommentBox.toggle()
+                        }, label: {
+                            Image(systemName: "xmark")
+                                .foregroundColor(.black)
+                        })
+                        .padding()
+                        , alignment: .topTrailing)
+                    
+                }
+                
+                
+                Spacer()
+            }.frame(width: showCommentBox ? UIScreen.main.bounds.width : 0,
+                    height: showCommentBox ? UIScreen.main.bounds.height : 0)
+            .animation(.default)
             
+                    
+
         } // ZStack
         
         
