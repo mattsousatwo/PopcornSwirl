@@ -29,6 +29,8 @@ struct MovieDetail: View, Equatable {
     // Animation
     @State private var showStarSlider: Bool = false
     @State private var showCommentBox: Bool = false
+    @State private var commentText: String = ""
+    
     
     // MovieDetail Properties
     var movieID = Int()
@@ -83,6 +85,16 @@ struct MovieDetail: View, Equatable {
         if let movieCastString = movie.cast {
             if let decodedMovieCast = movieCD.decodeCast(movieCastString) {
                 return decodedMovieCast
+            }
+        }
+        return nil
+    }
+    
+    // decoded Recommended Movies
+    var reccomendedMovies: [RecommendedMovie]? {
+        if let recMovies = movie.recommendedMovies {
+            if let decodedMovies = movieCD.decodeReccomendedMovies(recMovies) {
+                return decodedMovies
             }
         }
         return nil
@@ -257,14 +269,16 @@ struct MovieDetail: View, Equatable {
                     .foregroundColor(.clear)
                 if showCommentBox == true {
                 CommentBox(movie: movie,
+                           text: $commentText,
                            width: showCommentBox ? UIScreen.main.bounds.width - 20 : 0,
                            height: showCommentBox ? UIScreen.main.bounds.height / 4 : 0)
                     .overlay(
                         Button(action: {
                             print("X Button pressed ")
                             showCommentBox.toggle()
+                            movieCD.update(movie: movie, comment: commentText)
                         }, label: {
-                            Image(systemName: "xmark")
+                            Image(systemName: "checkmark")
                                 .foregroundColor(.black)
                         })
                         .padding()

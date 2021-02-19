@@ -631,7 +631,7 @@ extension MovieStore {
     }
     
     
-    // Getting IDs being used to then fetch Ratings with
+    /// Getting IDs being used to then fetch Movies with
     func extractIDsFor(_ type: ScrollBarType, id searchID: Int = 0 ) -> [Int] {
         var ids: [Int] = []
         
@@ -751,10 +751,18 @@ extension MovieStore {
         var movies: [Movie] = []
         switch type {
         case .popularMovie:
+            movieCD.fetchMovies(.popular)
+            if movieCD.popularMovies.count != 0 {
+                movies = movieCD.popularMovies
+            }
             let popularMovieIDs = extractIDsFor(.popularMovie)
             let ids = popularMovieIDs.map({ Double($0) })
             movies = movieCD.fetchMovies(uuids: ids)
         case .upcomingMovie:
+            movieCD.fetchMovies(.upcoming)
+            if movieCD.upcomingMovies.count != 0 {
+                movies = movieCD.upcomingMovies
+            }
             let upcomingMovieIDs = extractIDsFor(.upcomingMovie)
             let ids = upcomingMovieIDs.map({ Double($0) })
             movies = movieCD.fetchMovies(uuids: ids)

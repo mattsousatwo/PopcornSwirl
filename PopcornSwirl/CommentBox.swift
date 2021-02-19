@@ -10,8 +10,8 @@ import SwiftUI
 
 struct CommentBox: View {
     
-    var movie: Movie
-    @State private var text: String = ""
+    var movie: Movie?
+    @Binding var text: String
     
     var width: CGFloat = UIScreen.main.bounds.width - 20
     var height: CGFloat = UIScreen.main.bounds.height / 4
@@ -27,16 +27,16 @@ struct CommentBox: View {
             .shadow(radius: shadowRadius)
             .overlay(
                 TextField(comment, text: $text)
+                    .foregroundColor(.pGray3)
                     .padding()
                     .padding(.trailing, 20)
                     .frame(height: height, alignment: .topLeading)
                 )
-            
     }
     
     var body: some View {
         
-        if let comment = movie.comment {
+        if let comment = movie?.comment {
             commentBody(comment)
         } else {
             commentBody("New Comment")
@@ -47,6 +47,6 @@ struct CommentBox: View {
 
 struct CommentBox_Previews: PreviewProvider {
     static var previews: some View {
-        CommentBox(movie: Movie() )
+        CommentBox(movie: nil, text: .constant("") )
     }
 }

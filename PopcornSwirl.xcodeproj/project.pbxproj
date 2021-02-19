@@ -22,7 +22,6 @@
 		60786A7925DC6A3E007EBE41 /* String+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60786A7825DC6A3E007EBE41 /* String+EXT.swift */; };
 		6095286625D0BDB800427D32 /* Array+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6095286525D0BDB800427D32 /* Array+EXT.swift */; };
 		609603A625DE436A003DCBAC /* Date+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609603A525DE436A003DCBAC /* Date+EXT.swift */; };
-		60AB77CC25BD23F600D7F9F5 /* PurchaseLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AB77CB25BD23F600D7F9F5 /* PurchaseLinkButton.swift */; };
 		60B404AC25A161A500DD44F6 /* HeartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B404AB25A161A500DD44F6 /* HeartButton.swift */; };
 		60B9DF8925D9404300BDA067 /* ImageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B9DF8825D9404300BDA067 /* ImageCard.swift */; };
 		60B9DF8F25D9466C00BDA067 /* LabeledImageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B9DF8E25D9466C00BDA067 /* LabeledImageCard.swift */; };
@@ -89,7 +88,6 @@
 		60786A7825DC6A3E007EBE41 /* String+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+EXT.swift"; sourceTree = "<group>"; };
 		6095286525D0BDB800427D32 /* Array+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+EXT.swift"; sourceTree = "<group>"; };
 		609603A525DE436A003DCBAC /* Date+EXT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+EXT.swift"; sourceTree = "<group>"; };
-		60AB77CB25BD23F600D7F9F5 /* PurchaseLinkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseLinkButton.swift; sourceTree = "<group>"; };
 		60B404AB25A161A500DD44F6 /* HeartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartButton.swift; sourceTree = "<group>"; };
 		60B9DF8825D9404300BDA067 /* ImageCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCard.swift; sourceTree = "<group>"; };
 		60B9DF8E25D9466C00BDA067 /* LabeledImageCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledImageCard.swift; sourceTree = "<group>"; };
@@ -215,7 +213,6 @@
 				60C87E38259BB899001AF3D2 /* GenreBar.swift */,
 				6071DCE425A626ED00B948FD /* ScrollBar.swift */,
 				60C275F125BB5AE400D333F9 /* PurchaseLinkBar.swift */,
-				60AB77CB25BD23F600D7F9F5 /* PurchaseLinkButton.swift */,
 				60BE042B25D74BD700DDA4C7 /* CardRow.swift */,
 				604DCD6025D9921F00EF6074 /* FilmButton.swift */,
 				606AF01D25DEEE85007C2E25 /* CommentBox.swift */,
@@ -473,7 +470,6 @@
 				60CB9152259E40E2009BD9B4 /* Cast+CoreDataProperties.swift in Sources */,
 				60BE329B25B3BDC4007A799B /* StarSlider.swift in Sources */,
 				604D5AC825D23A6F007547C6 /* Movie+CoreDataClass.swift in Sources */,
-				60AB77CC25BD23F600D7F9F5 /* PurchaseLinkButton.swift in Sources */,
 				60C275F225BB5AE400D333F9 /* PurchaseLinkBar.swift in Sources */,
 				60CB9148259D4BE9009BD9B4 /* ActorsStore.swift in Sources */,
 				616CFF0D2597F2B7006112EE /* ActorDetail.swift in Sources */,

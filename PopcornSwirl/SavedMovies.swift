@@ -60,7 +60,7 @@ struct SavedMovies: View {
 
 
 struct SavedMovieBody: View {
-    
+
     var displayLimit: Int = 9 // movie count is doubled - ( 9 = 20 movies shown ) - ( 9+1 = 10, 10 * 2 = 20  )
     
     var type: SavedMoviesViewType
@@ -75,6 +75,8 @@ struct SavedMovieBody: View {
     private var watchedMovies: [[Movie]]? {
         return movieStore.fetchWatched()
     }
+    
+    
     
     var body: some View {
         GeometryReader { geo in
@@ -109,13 +111,16 @@ struct SavedMovieBody: View {
                 } // VStack
             }
             .animation(.default)
+            
+            
         }
     }
     
 }
 
-
-struct MovieRow: View {
+// Equatable
+struct MovieRow: View, Equatable {
+    
     var movies: [[Movie]]
     var displayLimit: Int = 9
     var body: some View {

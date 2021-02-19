@@ -61,9 +61,10 @@ struct CardRow: View {
 
     var body: some View {
         
-        
-        
         GeometryReader { geometry in
+            
+            
+            
             if showResults == true {
                 
                 

@@ -20,7 +20,7 @@ class MoviesStore: ObservableObject {
     @Published var popularMovies = [Movie]()
     @Published var upcomingMovies = [Movie]()
     @Published var favoriteMovies = [Movie]()
-    @Published var watchedMovies = [Movie]()    
+    @Published var watchedMovies = [Movie]()
     
     lazy private var decoder = JSONDecoder() // used to decode json data
     lazy private var encoder = JSONEncoder()
@@ -348,8 +348,6 @@ extension MoviesStore {
         }
         return movieArray
     }
-
-    
     
     // Fetch all watched movies
     func getAllWatchedMovies() -> [Movie] {
@@ -372,7 +370,7 @@ extension MoviesStore {
             watchedMovies.append(contentsOf: watched)
         }
     }
-
+    
     // Get All Watched Movies - used in SavedMovies
     func fetchWatched() -> [[Movie]]? {
         if watchedMovies.isEmpty {
@@ -394,16 +392,7 @@ extension MoviesStore {
         }
         return movieArray
     }
-    
-
-    
-    func checkIfMovieDetailsNeedToBeFetched(movie: Movie) {
-        if movie.cast == nil {
-            
-        }
         
-    }
-    
 }
 
 // MARK: DELETING

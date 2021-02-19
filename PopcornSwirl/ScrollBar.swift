@@ -25,11 +25,14 @@ struct ScrollBar: View, Equatable {
     @ObservedObject var movieStore = MovieStore()
     @ObservedObject var actorsStore = ActorsStore()
     
-    
     var type: ScrollBarType
-    
     var id: Int = 0
     
+    // Coredata properties
+    var movieCast: [MovieCast]?
+    var recommendedMovie: [RecommendedMovie]?
+    
+    // TMDB
     var movies: [Movie]? {
         switch type {
         case .popularMovie:
@@ -60,11 +63,11 @@ struct ScrollBar: View, Equatable {
         }
     }
     
-    var movieCast: [MovieCast]?
-    
     static func == (lhs: ScrollBar, rhs: ScrollBar) -> Bool {
         return lhs.type == rhs.type
     }
+    
+    
     
     var body: some View {
         
@@ -138,6 +141,11 @@ struct Bar: View {
     var actors: [Actor]?
     
     var movieCast: [MovieCast]?
+    var recMovie: [RecommendedMovie]?
+    var popMovies: [PopMovie]?
+    
+    
+    @ObservedObject var movieCD = MoviesStore()
     
     private var popularMovies : [PopMovie] {
         return movieStore.extractPopularMovies()
@@ -267,54 +275,109 @@ struct Bar: View {
             // MARK: POPULAR MOVIE -
             case .popularMovie:
                 
-                ForEach(0..<popularMovies.count, id: \.self) { i in
-                    if popularMovies.count != 0 {
-                        if let movies = movies {
-                            if let movie = movies.first(where: { $0.uuid == Double(popularMovies[i].id) } ) {
+                if let movies = movies {
+                    ForEach(0..<movies.count, id: \.self) { i in
+                        let movie = movies[i]
+                        if let genres = movie.genres {
+                            if let decodedGenres = movieCD.decodeGenres(genres) {
                                 
-                                ScrollNavLink(movieID: popularMovies[i].id,
-                                              title: popularMovies[i].title,
-                                              genreIDs: popularMovies[i].genre_ids,
-                                              overview: popularMovies[i].overview,
-                                              posterPath: popularMovies[i].poster_path,
-                                              voteAverage: popularMovies[i].vote_average,
-                                              releaseDate: popularMovies[i].release_date,
+                                ScrollNavLink(movieID: Int(movie.uuid),
+                                              title: movie.title ?? "",
+                                              genreIDs: decodedGenres,
+                                              overview: movie.overview ?? "",
+                                              posterPath: movie.imagePath ?? "",
+                                              voteAverage: movie.rating,
+                                              releaseDate: movie.releaseDate ?? "",
                                               movie: movie)
+                                
+                            }
+                        }
+                    }.animation(.default)
+                } else { 
+                    ForEach(0..<popularMovies.count, id: \.self) { i in
+                        if popularMovies.count != 0 {
+                            if let movies = movies {
+                                if let movie = movies.first(where: { $0.uuid == Double(popularMovies[i].id) } ) {
+                                    ScrollNavLink(movieID: popularMovies[i].id,
+                                                  title: popularMovies[i].title,
+                                                  genreIDs: popularMovies[i].genre_ids,
+                                                  overview: popularMovies[i].overview,
+                                                  posterPath: popularMovies[i].poster_path,
+                                                  voteAverage: popularMovies[i].vote_average,
+                                                  releaseDate: popularMovies[i].release_date,
+                                                  movie: movie)
+                                }
                             }
                         }
                     }
+                    .animation(.default)
                 }
-                .animation(.default)
-                
             // MARK: UPCOMMING MOVIE -
             case .upcomingMovie:
-                ForEach(0..<upcomingMovies.count, id: \.self) { i in
-                    if upcomingMovies.count != 0 {
-                        
-                        if let movies = movies {
-                            if let upcomingMovie = movies.first(where: { $0.uuid == Double(upcomingMovies[i].id) } ) {
-                                
-                                ScrollNavLink(movieID: upcomingMovies[i].id,
-                                              title: upcomingMovies[i].title,
-                                              genreIDs: upcomingMovies[i].genre_ids,
-                                              overview: upcomingMovies[i].overview,
-                                              posterPath: upcomingMovies[i].poster_path ?? "",
-                                              voteAverage: upcomingMovies[i].vote_average,
-                                              releaseDate: upcomingMovies[i].release_date,
-                                              movie: upcomingMovie)
-                                
+
+                // CoreData
+                if let movies = movies {
+                    ForEach(0..<movies.count, id: \.self) { i in
+                        if let movie = movies[i] {
+                            if let genres = movie.genres {
+                                if let genresArray = movieCD.decodeGenres(genres) {
+                                    ScrollNavLink(movieID: Int(movie.uuid),
+                                                  title: movie.title ?? "",
+                                                  genreIDs: genresArray,
+                                                  overview: movie.overview ?? "",
+                                                  posterPath: movie.imagePath ?? "",
+                                                  voteAverage: movie.rating,
+                                                  releaseDate: movie.releaseDate ?? "",
+                                                  movie: movie)
+                                }
                             }
-                        
+                        }
+                    }.animation(.default)
+                    // MARK: -
+                } else {
+                    ForEach(0..<upcomingMovies.count, id: \.self) { i in
+                        if upcomingMovies.count != 0 {
+                            if let movies = movies {
+                                if let upcomingMovie = movies.first(where: { $0.uuid == Double(upcomingMovies[i].id) } ) {
+
+                                    ScrollNavLink(movieID: upcomingMovies[i].id,
+                                                  title: upcomingMovies[i].title,
+                                                  genreIDs: upcomingMovies[i].genre_ids,
+                                                  overview: upcomingMovies[i].overview,
+                                                  posterPath: upcomingMovies[i].poster_path ?? "",
+                                                  voteAverage: upcomingMovies[i].vote_average,
+                                                  releaseDate: upcomingMovies[i].release_date,
+                                                  movie: upcomingMovie)
+
+                                }
+                            }
                         }
                     }
+                    .animation(.default)
                 }
-
-                .animation(.default)
+                
                 
             // MARK: RECOMMENDED MOVIE -
             case .recommendedMovie:
                 ForEach(0..<recommendedMovies.count, id: \.self) { i in
-                    if recommendedMovies.count != 0 {
+                    if let recMovies = recMovie {
+                        if let id = recMovies[i].id {
+                            if let movies = movies {
+                                if let movie = movies.first(where: { $0.uuid == Double(id) }) {
+                                    if let releaseDate = recMovies[i].release_date {
+                                        ScrollNavLink(movieID: id,
+                                                      title: recMovies[i].title,
+                                                      genreIDs: recMovies[i].genre_ids,
+                                                      overview: recMovies[i].overview,
+                                                      posterPath: recMovies[i].poster_path ?? "",
+                                                      voteAverage: recMovies[i].vote_average,
+                                                      releaseDate: releaseDate,
+                                                      movie: movie)
+                                    }
+                                }
+                            }
+                        }
+                    } else if recommendedMovies.count != 0 {
                         
                         if let movies = movies {
                             if let recomendedMovieID = recommendedMovies[i].id {
