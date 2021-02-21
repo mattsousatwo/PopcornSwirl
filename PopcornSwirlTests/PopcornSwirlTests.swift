@@ -37,7 +37,6 @@ class MovieTests: XCTestCase {
         
         print(movieSearch)
         XCTAssertEqual(movieSearch.isWatched, true)
-        
     }
     
     func testFetchForFavoriteMovies() {
@@ -53,6 +52,15 @@ class MovieTests: XCTestCase {
         XCTAssertEqual(movies.count, favorites.count)
     }
     
+    
+    func testForSavingMoviePropertiesFavoriteAndWatched() {
+        let movieSearch = movieCD.fetchMovie(uuid: wonderWomanID)
+        
+        movieCD.update(movie: movieSearch, isWatched: true)
+        
+        print(movieSearch)
+        XCTAssertEqual(movieSearch.isWatched, true)
+    }
     
     
     // Test single Movie fetching

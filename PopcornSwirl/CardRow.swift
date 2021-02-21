@@ -66,48 +66,58 @@ struct CardRow: View {
             
             
             if showResults == true {
-                
-                
-            ScrollView {
-                VStack(alignment: .center) {
-                
-                    ForEach(elementsArray, id: \.self) { array in
-                        HStack {
-//                            Spacer()
-                            ForEach(array, id: \.self) { movie in
-                                
-                                NavigationLink(destination: MovieDetail(movieID: movie.id,
-                                                                        movieTitle: movie.title,
-                                                                        genreIDs: movie.genre_ids,
-                                                                        movieOverview: movie.overview,
-                                                                        posterPath: (movie.poster_path ?? ""),
-                                                                        rating: movie.vote_average,
-                                                                        releaseDate: "").equatable() ,
-                                               label: {
-                                                            let movieElement = movieCD.fetchMovie(uuid: movie.id)
-                                                            ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (movie.poster_path ?? "")), movie: movieElement)  })
-                                
-                            } // ForEach(array)
-                            .padding(.horizontal)
-                            Spacer()
-                        } // HStack
-                        .frame(width: geometry.size.width,
-                               height: 200,
-                               alignment: .center)
-                        .padding()
-                    } // ForEach(elementsArray)
-                    .padding()
+                VStack {
+                    HStack {
+                        Spacer()
+                        Text("Movie Count: (\(movieStore.movieSearchResults.count))")
+                            .padding(.horizontal, 40)
+                    }
                     
-                } // VStack
-            } // Scroll
-            
-            .animation(.default)
+                    ScrollView {
+                        VStack(alignment: .center) {
+                            
+                            ForEach(elementsArray, id: \.self) { array in
+                                HStack {
+                                    //                            Spacer()
+                                    ForEach(array, id: \.self) { movie in
+                                        
+                                        NavigationLink(destination: MovieDetail(movieID: movie.id,
+                                                                                movieTitle: movie.title,
+                                                                                genreIDs: movie.genre_ids,
+                                                                                movieOverview: movie.overview,
+                                                                                posterPath: (movie.poster_path ?? ""),
+                                                                                rating: movie.vote_average,
+                                                                                releaseDate: "").equatable() ,
+                                                       label: {
+                                                        let movieElement = movieCD.fetchMovie(uuid: movie.id)
+                                                        ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (movie.poster_path ?? "")), movie: movieElement)  })
+                                        
+                                    } // ForEach(array)
+                                    .padding(.horizontal)
+                                    Spacer()
+                                } // HStack
+                                .frame(width: geometry.size.width,
+                                       height: 200,
+                                       alignment: .center)
+                                .padding()
+                            } // ForEach(elementsArray)
+                            .padding()
+                            
+                        } // VStack
+                    } // Scroll
+                    
+                    .animation(.default)
+                }
                 
-            
             } else { // show results
-                
-                Text("No Results Found").padding()
-                
+                VStack {
+                    HStack {
+                        Spacer()
+                        Text("No Results Found").padding()
+                        Spacer()
+                    }
+                    Spacer()
+                }
             }
             
             

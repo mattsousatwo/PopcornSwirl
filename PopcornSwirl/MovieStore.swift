@@ -653,11 +653,7 @@ extension MovieStore {
                                overview: movie.overview,
                                imagePath: movie.poster_path,
                                genres: genresString,
-                               releaseDate: movie.release_date,
-                               isFavorite: false,
-                               isWatched: false)
-                
-                
+                               releaseDate: movie.release_date)
             }
             removeOldMovies(from: .popular)
             
@@ -678,9 +674,7 @@ extension MovieStore {
                                overview: movie.overview,
                                imagePath: movie.poster_path,
                                genres: genresString,
-                               releaseDate: movie.release_date,
-                               isFavorite: false,
-                               isWatched: false)
+                               releaseDate: movie.release_date)
             }
             removeOldMovies(from: .upcoming)
             
