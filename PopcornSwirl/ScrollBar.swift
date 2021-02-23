@@ -525,7 +525,7 @@ struct ScrollNavLink: View {
     }
 }
 
-// Navigation Link with 2 labels
+/// Navigation Link with 2 labels
 struct LabeledScrollNavLink: View {
     
     var imagePath: String

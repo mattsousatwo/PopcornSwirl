@@ -178,7 +178,7 @@ extension MovieStore {
 extension MovieStore {
     
     // MARK: GET MOVIE CREDITS
-    // Get the credits for a movie to fill up the actors view
+    /// Get the credits for a movie to fill up the actors view
     func fetchMovieCreditsForMovie(id: Int) {
         
         let creditsRequest = "https://api.themoviedb.org/3/movie/\(id)/credits?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
@@ -305,7 +305,7 @@ extension MovieStore {
         var imageDict = [Int : String]()
         if actorImageProfiles.count == 0 {
             fetchMovieCreditsForMovie(id: id)
-            getImagesForActor()
+//            getImagesForActor()
         }
         for (id, path) in actorImageProfiles {
             

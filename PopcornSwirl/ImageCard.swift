@@ -14,7 +14,6 @@ struct ImageCard: View, Equatable {
     var url: URL?
     var movie: Movie? = nil
     var actor: Actor? = nil
-    @State var isFavorite: Bool = false
     
     var body: some View {
         if let movie = movie {

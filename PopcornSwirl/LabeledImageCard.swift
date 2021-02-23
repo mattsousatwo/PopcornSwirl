@@ -15,7 +15,7 @@ struct LabeledImageCard: View {
     var subtitle: String?
     var movie: Movie?
     var actor: Actor?
-    @State var isFavorite: Bool = false
+//    @State var isFavorite: Bool = false 
     @State var titlesAreShown: Bool = false // If there are titles ? adjust frame : leave frame constrained
     
     
