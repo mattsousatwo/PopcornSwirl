@@ -42,34 +42,7 @@ class ActorsStore: ObservableObject {
 extension ActorsStore {
     
     func createActor(name: String, bio: String?, id: Double, imagePath: String? = nil) {
-        let actor = Actor(context: context) 
-        
-//        switch actors.isEmpty {
-//        case true: // If actors is empty - fetch for actor
-//            actor = fetchActorWith(id: Int(id))
-//        default: // else if actors contains actor
-//            switch actors.contains(where: { $0.id == id }) {
-//            case true: // has actor? break
-//                break
-//            default: // else create actor
-//                actor.name = name
-//                actor.id = id
-//                if let imagePath = imagePath {
-//                    actor.imagePath = imagePath
-//                }
-//                if let bio = bio {
-//                    actor.biography = bio
-//                }
-//                saveContext()
-//                actors.append(actor)
-//            }
-//        }
-//
-//
-        
-        
-        
-        
+        let actor = Actor(context: context)
         switch actor.id {
         case id:
             break
@@ -136,7 +109,7 @@ extension ActorsStore {
         }
         if let isFavorite = isFavorite {
             if actor.isFavorite != isFavorite {
-                actor.isFavorite = isFavorite
+                actor.isFavorite = NSNumber(value: isFavorite) as! Bool 
             }
         }
         if let deathDate = deathDate {
