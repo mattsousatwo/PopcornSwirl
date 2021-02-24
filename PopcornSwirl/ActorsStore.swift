@@ -109,7 +109,16 @@ extension ActorsStore {
 extension ActorsStore {
     
     // Update actor properties
-    func update(actor: Actor, id: Double? = nil, imagePath: String? = nil, name: String? = nil, isFavorite: Bool? = nil, deathDate: String? = nil, birthDate: String? = nil, birthPlace: String? = nil, bio: String? = nil) {
+    func update(actor: Actor,
+                id: Double? = nil,
+                imagePath: String? = nil,
+                name: String? = nil,
+                isFavorite: Bool? = nil,
+                deathDate: String? = nil,
+                birthDate: String? = nil,
+                birthPlace: String? = nil,
+                bio: String? = nil) {
+        
         if let id = id {
             if actor.id != id {
                 actor.id = id

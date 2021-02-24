@@ -71,7 +71,22 @@ extension MoviesStore {
     }
 
     /// Update given movie properties
-    func update(movie: Movie, uuid: Double? = nil, category: MovieCategory? = nil, director: String? = nil, title: String? = nil, overview: String? = nil, imagePath: String? = nil, genres: String? = nil, cast: String? = nil, releaseDate: String? = nil, rating: Double? = nil, isFavorite: Bool? = nil, isWatched: Bool? = nil, comment: String? = nil, recommendedMovies: String? = nil, watchProviders: String? = nil) {
+    func update(movie: Movie,
+                uuid: Double? = nil,
+                category: MovieCategory? = nil,
+                director: String? = nil,
+                title: String? = nil,
+                overview: String? = nil,
+                imagePath: String? = nil,
+                genres: String? = nil,
+                cast: String? = nil,
+                releaseDate: String? = nil,
+                rating: Double? = nil,
+                isFavorite: Bool? = nil,
+                isWatched: Bool? = nil,
+                comment: String? = nil,
+                recommendedMovies: String? = nil,
+                watchProviders: String? = nil) {
         
         if let uuid = uuid {
             movie.uuid = uuid

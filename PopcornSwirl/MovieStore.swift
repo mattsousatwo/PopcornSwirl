@@ -653,7 +653,8 @@ extension MovieStore {
                                overview: movie.overview,
                                imagePath: movie.poster_path,
                                genres: genresString,
-                               releaseDate: movie.release_date)
+                               releaseDate: movie.release_date,
+                               rating: movie.vote_average)
             }
             removeOldMovies(from: .popular)
             
@@ -674,7 +675,8 @@ extension MovieStore {
                                overview: movie.overview,
                                imagePath: movie.poster_path,
                                genres: genresString,
-                               releaseDate: movie.release_date)
+                               releaseDate: movie.release_date,
+                               rating: movie.vote_average)
             }
             removeOldMovies(from: .upcoming)
             
@@ -686,6 +688,17 @@ extension MovieStore {
             for movie in recommendedMovies {
                 if let id = movie.id {
                     ids.append(id)
+                    
+                    let fetchedMovie = movieCD.fetchMovie(uuid: id)
+                    let genresString = movieCD.encodeGenres(movie.genre_ids)
+                    
+                    movieCD.update(movie: fetchedMovie,
+                                   title: movie.title,
+                                   overview: movie.overview,
+                                   imagePath: movie.poster_path,
+                                   genres: genresString,
+                                   releaseDate: movie.release_date,
+                                   rating: movie.vote_average)
                 }
             }
             
@@ -696,7 +709,15 @@ extension MovieStore {
             }
             for i in 0..<movieCast.count {
                 if i <= 24 {
-                    ids.append(movieCast[i].id)
+                    let castMember = movieCast[i]
+                    ids.append(castMember.id)
+                    
+                    let actor = actorsStore.fetchActorWith(id: castMember.id)
+                    actorsStore.update(actor: actor,
+                                       id: Double(castMember.id),
+                                       imagePath: castMember.profile_path ?? "",
+                                       name: castMember.name)
+                    
                 }
             }
             
@@ -706,10 +727,21 @@ extension MovieStore {
                 if actorCredits.count == 0 {
                     fetchCreditsFor(actor: searchID)
                 }
-                for actor in actorCredits {
-                    if actor.media_type == CreditExtractionType.movie.rawValue {
-                        if let id = actor.id {
+                for movie in actorCredits {
+                    if movie.media_type == CreditExtractionType.movie.rawValue {
+                        if let id = movie.id {
                             ids.append(id)
+                            
+                            let fetchedMovie = movieCD.fetchMovie(uuid: id)
+                            let genresString = movieCD.encodeGenres(movie.genre_ids)
+                            
+                            movieCD.update(movie: fetchedMovie,
+                                           title: movie.title ?? "",
+                                           overview: movie.overview,
+                                           imagePath: movie.poster_path ?? "",
+                                           genres: genresString,
+                                           releaseDate: movie.release_date ?? "",
+                                           rating: movie.vote_average)
                         }
                     }
                 }
@@ -723,6 +755,10 @@ extension MovieStore {
                     if credit.media_type == CreditExtractionType.tv.rawValue {
                         if let id = credit.id {
                             ids.append(id)
+                            
+                            // MARK: UPDATE SERIES HERE
+
+                            
                         }
                     }
                 }

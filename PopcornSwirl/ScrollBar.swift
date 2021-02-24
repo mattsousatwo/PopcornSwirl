@@ -450,31 +450,7 @@ struct Bar: View {
                 }
 
             
-            
-            
-//                ForEach(0..<recommendedMovies.count, id: \.self) { i in
-//                    if let movies = movies {
-//                        if let recomendedMovieID = recommendedMovies[i].id {
-//                            if let reccomendedMovie = movies.first(where: { $0.uuid == Double(recomendedMovieID) }) {
-//                                if let releaseDate = recommendedMovies[i].release_date {
-//
-//                                    ScrollNavLink(movieID: recomendedMovieID,
-//                                                  title: recommendedMovies[i].title,
-//                                                  genreIDs: recommendedMovies[i].genre_ids,
-//                                                  overview: recommendedMovies[i].overview,
-//                                                  posterPath: recommendedMovies[i].poster_path ?? "",
-//                                                  voteAverage: recommendedMovies[i].vote_average,
-//                                                  releaseDate: releaseDate,
-//                                                  movie: reccomendedMovie)
-//                                }
-//                            }
-//
-//                        }
-//                    }
-//                }
-//
-//
-                
+
                 
                 
             } // switch
@@ -550,13 +526,26 @@ struct LabeledScrollNavLink: View {
         }
         
         if let movie = movie {
-            NavigationLink(destination: ActorDetail(image: MovieStoreKey.imageURL.rawValue + imagePath,
-                                                    actorID: actorID,
-                                                    name: title,
-                                                    isFavorite: movie.isFavorite)) {
+            
+            NavigationLink(destination: MovieDetail(movieID: Int(movie.uuid),
+                                                    movieTitle: movie.title ?? "",
+                                                    movieOverview: movie.overview ?? "",
+                                                    posterPath: movie.imagePath ?? "",
+                                                    rating: movie.rating,
+                                                    releaseDate: movie.releaseDate ?? "")) {
                 LabeledImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + imagePath),
                                  title: title, subtitle: subtitle, movie: movie)
             }
+
+            
+//            
+//            NavigationLink(destination: ActorDetail(image: MovieStoreKey.imageURL.rawValue + imagePath,
+//                                                    actorID: actorID,
+//                                                    name: title,
+//                                                    isFavorite: movie.isFavorite)) {
+//                LabeledImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + imagePath),
+//                                 title: title, subtitle: subtitle, movie: movie)
+//            }
         }
         
             
