@@ -14,8 +14,6 @@ import Combine
 class MovieStore: ObservableObject {
     
     // Coredata
-    /// used to manage cast dict
-    let castStore = CastStore()
     /// used to manage the actors within cast list
     let actorsStore = ActorsStore()
     /// Used to manage TV Series
