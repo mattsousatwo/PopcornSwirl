@@ -299,27 +299,6 @@ class MovieStoreTests: XCTestCase {
 }
 
 
-class CastTests: XCTestCase {
-    
-    private let castStore = CastStore()
-    
-    func testfetchAllCastMembers() throws {
-        // Arrange
-        castStore.fetchAllCastEntities()
-        
-        // Act
-        
-        
-        // Assert
-        
-        
-        
-    }
-    
-}
-
-
-
 class ActorsTests: XCTestCase {
     
     private let actorsStore = ActorsStore()
@@ -346,6 +325,39 @@ class ActorsTests: XCTestCase {
         XCTAssertEqual(actor.name, name, "Actor name is not equal to Matt - \(actor)")
     }
     
+    func testIfCreditsEncodingWorks() {
+        let actorsCredits = [ActorCreditsCast(id: 19,
+                                 overview: "Overview",
+                                 genre_ids: [12,13,14],
+                                 name: "Name",
+                                 media_type: "Movie",
+                                 poster_path: "poster_path",
+                                 vote_average: 4.9,
+                                 character: "Character Name",
+                                 title: "Credit Title",
+                                 release_date: "12-02-18"),
+                 ActorCreditsCast(id: 20,
+                                  overview: "Overview",
+                                  genre_ids: [15,16,17],
+                                  name: "Credit Name",
+                                  media_type: "TV",
+                                  poster_path: "poster_path",
+                                  vote_average: 8.0,
+                                  character: "character name",
+                                  title: "Credit title",
+                                  release_date: "02-18-19")]
+        
+        
+        guard let creditsString = actorsStore.encodeActorCredits(actorsCredits) else { return }
+        
+        guard let credits = actorsStore.decodeActorCredits(creditsString) else { return }
+        
+        XCTAssertEqual(actorsCredits, credits)
+        
+        
+        
+    }
+    
 }
 
 
@@ -360,6 +372,12 @@ class ArrayTests: XCTestCase {
         print("testArray.count \(testArray.count)")
         XCTAssertEqual(testArray.count, 25, ".limited(append: ) failed, array.count: \(testArray.count)")
     }
+    
+}
+
+class SeriesTests: XCTestCase {
+    
+
     
 }
 

@@ -163,7 +163,6 @@ struct Bar: View {
     /// Coredata Series
     var series: [Series]?
     
-    
     @ObservedObject var movieCD = MoviesStore()
     
     private var popularMovies : [PopMovie] {
@@ -192,26 +191,51 @@ struct Bar: View {
 
     // TV
     private var actorMovies: [ActorCreditsCast] {
-        return movieStore.extractCreditsFor(actorID: id, type: .movie)
+        
+        var credits: [ActorCreditsCast] = []
+        
+        let actor = actorStore.fetchActorWith(id: id)
+        if actor.credits == nil {
+            // fetch from internet
+            return movieStore.extractCreditsFor(actorID: id, type: .movie)
+        } else {
+            if let encodedCredits = actor.credits {
+                if let decodedCredits = actorStore.decodeActorCredits(encodedCredits) {
+                    for movie in decodedCredits {
+                        if movie.media_type == "movie" {
+                            credits.append(movie)
+                        }
+                    }
+                }
+            }
+        }
+        return credits
     }
+    
+    
     private var actorTVSeries: [ActorCreditsCast] {
-        return movieStore.extractCreditsFor(actorID: id, type: .tv)
+        var credits: [ActorCreditsCast] = []
+        
+        let actor = actorStore.fetchActorWith(id: id)
+        if actor.credits == nil {
+            // fetch from internet
+            return movieStore.extractCreditsFor(actorID: id, type: .tv)
+        } else {
+            if let encodedCredits = actor.credits {
+                if let decodedCredits = actorStore.decodeActorCredits(encodedCredits) {
+                    for movie in decodedCredits {
+                        if movie.media_type == "tv" {
+                            credits.append(movie)
+                        }
+                    }
+                }
+            }
+        }
+        return credits
     }
 
     @ObservedObject var movieStore = MovieStore()
-    
-    
-    enum MovieType : String {
-        case coredata = "Coredata: "
-        case tmdb = "TMDB: "
-    }
-
-    func testCase(type: MovieType, _ count: Int ) -> some View {
-        print("\n\(type.rawValue) test \(count)\n")
-        return RoundedRectangle(cornerRadius: 2).frame(width: 0, height: 0)
-    }
-    
-        
+    @ObservedObject var actorStore = ActorsStore()
     
     var body: some View {
 
@@ -415,9 +439,7 @@ struct Bar: View {
                 
 
                 if let movies = movies {
-                    testCase(type: .coredata, 1)
                     if recommendedMovies.count != 0 {
-                        testCase(type: .coredata, 2)
                         ForEach(0..<movies.count, id: \.self) { i in
                             // TMDB
                             let recMovie = recommendedMovies[i]
@@ -425,11 +447,8 @@ struct Bar: View {
                             let movie = movies[i]
 
                             if recMovie.id == Int(movie.uuid) {
-                                testCase(type: .coredata, 3)
                                 if let genres = movie.genres {
-                                    testCase(type: .coredata, 4)
                                     if let decodedGenres = movieCD.decodeGenres(genres) {
-                                        testCase(type: .coredata, 5)
                                         ScrollNavLink(movieID: Int(movie.uuid),
                                                       title: movie.title ?? recMovie.title,
                                                       genreIDs: decodedGenres,
@@ -446,16 +465,11 @@ struct Bar: View {
                         }
                     }
                 } else if recommendedMovies.count != movies?.count {
-                    testCase(type: .tmdb, 10)
                     ForEach(0..<recommendedMovies.count, id: \.self) { i in
                         if recommendedMovies.count != 0  {
-                            testCase(type: .tmdb, 11)
                             if let movies = movies {
-                                testCase(type: .tmdb, 12)
                                 if let recommendedMovieID = recommendedMovies[i].id {
-                                    testCase(type: .tmdb, 13)
                                     if let movie = movies.first(where: { $0.uuid == Double(recommendedMovieID) }) {
-                                        testCase(type: .tmdb, 14)
                                         ScrollNavLink(movieID: recommendedMovieID,
                                                       title: recommendedMovies[i].title,
                                                       genreIDs: recommendedMovies[i].genre_ids,
