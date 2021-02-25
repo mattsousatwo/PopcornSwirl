@@ -15,6 +15,8 @@ struct StarSlider: View {
     
     @State var value: Double = 0 // Change to rating.rating
     
+    @State var showSlider: Bool
+    
     var width: CGFloat = 200
     var height: CGFloat = 100
     var accent = Color.red
@@ -36,22 +38,13 @@ struct StarSlider: View {
                         .padding(.top)
                     StarSliderView(value: $value, accent: accent)
                         .padding(.horizontal)
-                    StarSliderButtons(movie: movie, value: $value)
+                    StarSliderButtons(movie: movie, value: $value, showSlider: $showSlider)
                     
                 }
                 
             ) // Slider Stack
         
             
-            
-            
-
-                
-                
-                
-        
-        
-
     }
 }
 
@@ -138,7 +131,12 @@ struct StarSliderButtons: View {
     
     var movie: Movie
     @Binding var value: Double
+    
+    @Binding var showSlider: Bool
+    
+    
     let movieStore = MoviesStore()
+    
     
     var body: some View {
         
@@ -146,9 +144,11 @@ struct StarSliderButtons: View {
             
             // Cancel
             Button(action: {
-                print("Cancel")
+                print("Cancel - showSlider : \(showSlider)")
                 
 //                self.dismiss.toggle()
+                showSlider = false
+                
             }, label: {
                 RoundedRectangle(cornerRadius: 12)
                     .foregroundColor(Color.lightBlue)
@@ -164,9 +164,12 @@ struct StarSliderButtons: View {
             Button(action: {
                 print("Submit")
                 
-                movie.rating = value
+                movieStore.update(movie: movie,
+                                  rating: value)
                 print("Submit - Rating.rating = \(movie.rating)")
-                movieStore.saveContext()
+                
+                
+                showSlider = false
                 
             }, label: {
                 RoundedRectangle(cornerRadius: 12)

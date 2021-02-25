@@ -28,8 +28,10 @@ struct MovieDetail: View, Equatable {
     
     // Animation
     @State private var showStarSlider: Bool = false
+    @State private var value: Double = 0
     @State private var showCommentBox: Bool = false
     @State private var commentText: String = ""
+    
     
     
     // MovieDetail Properties
@@ -255,10 +257,42 @@ struct MovieDetail: View, Equatable {
                                height: UIScreen.main.bounds.height)
                 })
             }
-            
-            StarSlider(movie: movie, value: 0.0, width: showStarSlider ? UIScreen.main.bounds.width - 40 : 0 , height: showStarSlider ? 210 : 0)
+
+            StarSlider(movie: movie,
+                       value: movie.rating,
+                       showSlider: showStarSlider,
+                       width: showStarSlider ? UIScreen.main.bounds.width - 40 : 0,
+                       height: showStarSlider ? 210 : 0)
                 .cornerRadius(12.0)
                 .animation(.easeIn)
+
+
+            // MARK: Deconstructed StarSlider
+//            RoundedRectangle(cornerRadius: 12)
+//                .frame(width: showStarSlider ? UIScreen.main.bounds.width - 40 : 0,
+//                       height: showStarSlider ? 210 : 0)
+//                .shadow(radius: 8)
+//                .cornerRadius(12)
+//                .overlay(LinearGradient(gradient: Gradient(colors: [Color.pPurple,
+//                                                                    Color.pPurple]),
+//                                        startPoint: .top, endPoint: .bottom))
+//                .overlay(
+//                    VStack {
+//
+//                        StarSliderTextView(value: $value)
+//                            .padding(.top)
+//                        StarSliderView(value: $value, accent: Color.red)
+//                            .padding(.horizontal)
+//                        StarSliderButtons(movie: movie,
+//                                          value: $value,
+//                                          showSlider: $showStarSlider)
+//
+//                    }
+//                )
+//                .animation(.default)
+
+
+            
             
             
             VStack {
