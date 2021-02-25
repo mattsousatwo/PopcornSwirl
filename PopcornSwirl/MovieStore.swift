@@ -14,10 +14,14 @@ import Combine
 class MovieStore: ObservableObject {
     
     // Coredata
-    let castStore = CastStore() // used to manage cast dict
-    let actorsStore = ActorsStore() // used to manage the actors within cast list
-    
-    let movieCD = MoviesStore() // manage Movies: CoreData - to replace ratingsStore
+    /// used to manage cast dict
+    let castStore = CastStore()
+    /// used to manage the actors within cast list
+    let actorsStore = ActorsStore()
+    /// Used to manage TV Series
+    let seriesStore = SeriesStore()
+    /// Used to manage Movies in Coredata
+    let movieCD = MoviesStore()
     
     // Movie Stores
     @Published var popularMovies = [PopMovie]() // all popular movies
@@ -751,12 +755,21 @@ extension MovieStore {
                 if actorCredits.count == 0 {
                     fetchCreditsFor(actor: searchID)
                 }
-                for credit in actorCredits {
-                    if credit.media_type == CreditExtractionType.tv.rawValue {
-                        if let id = credit.id {
+                for series in actorCredits {
+                    if series.media_type == CreditExtractionType.tv.rawValue {
+                        if let id = series.id {
                             ids.append(id)
                             
                             // MARK: UPDATE SERIES HERE
+                            let fetchedSeries = seriesStore.fetchSeries(uuid: id)
+                            
+                            seriesStore.update(series: fetchedSeries,
+                                               imagePath: series.poster_path ?? "",
+                                               overview: series.overview,
+                                               rating: series.vote_average,
+                                               releaseDate: series.release_date ?? "",
+                                               title: series.title ?? "",
+                                               uuid: Double(id))
 
                             
                         }
@@ -800,12 +813,6 @@ extension MovieStore {
             let reccomendedMovieIDs = extractIDsFor(.recommendedMovie, id: searchID)
             let ids = reccomendedMovieIDs.map({ Double($0) })
             movies = movieCD.fetchMovies(uuids: ids)
-            
-        case .actors: // Change to Actors
-            let actorIDs = extractIDsFor(.actors, id: searchID)
-            let ids = actorIDs.map({ Double($0) })
-            movies = movieCD.fetchMovies(uuids: ids)
-//        break
         case .actorMovie:
             let actorMovieIDs = extractIDsFor(.actorMovie, id: searchID)
             let ids = actorMovieIDs.map({ Double($0) })
@@ -814,6 +821,8 @@ extension MovieStore {
             let actorTVIDs = extractIDsFor(.actorTV, id: searchID)
             let ids = actorTVIDs.map({ Double($0) })
             movies = movieCD.fetchMovies(uuids: ids)
+        default:
+            break
         }
         return movies
     }

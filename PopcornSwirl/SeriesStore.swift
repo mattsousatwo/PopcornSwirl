@@ -10,12 +10,12 @@ import Foundation
 import CoreData
 import UIKit
 
-class SeriesStore {
+class SeriesStore: CoreDataCoder, ObservableObject {
 
     var context: NSManagedObjectContext
     var entity: NSEntityDescription
     
-    init() {
+    override init() { 
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         context = appDelegate.persistentContainer.viewContext
         entity = NSEntityDescription.entity(forEntityName: SeriesStoreKeys.entity.rawValue, in: context)!
@@ -134,15 +134,15 @@ extension SeriesStore {
 extension SeriesStore {
     
     /// Fetch specific Series using ID
-    func fetchSeries(uuid searchID: Double) -> Series {
+    func fetchSeries(uuid searchID: Int) -> Series {
         var series = Series(context: context)
         let request: NSFetchRequest<Series> = Series.fetchRequest()
-        request.predicate = NSPredicate(format: "uuid == %i", Int(searchID))
+        request.predicate = NSPredicate(format: "uuid == %i", searchID)
         do {
             let result = try context.fetch(request)
             switch result.isEmpty {
             case true:
-                series = createSeries(uuid: searchID)
+                series = createSeries(uuid: Double(searchID))
             case false:
                 if let foundSeries = result.first {
                     series = foundSeries
@@ -153,6 +153,16 @@ extension SeriesStore {
         }
         
         return series
+    }
+    
+    /// Fetch an array of Series
+    func fetchArrayOfSeries(withIDs searchIDs: [Int]) -> [Series] {
+        var seriesArray: [Series] = []
+        for id in searchIDs {
+            let series = fetchSeries(uuid: id)
+            seriesArray.append(series)
+        }
+        return seriesArray
     }
     
 }

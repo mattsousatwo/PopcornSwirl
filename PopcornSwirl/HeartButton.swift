@@ -13,18 +13,20 @@ struct HeartButton: View {
     
     var actor: Actor?
     var movie: Movie?
+    var series: Series? = nil
     var width: CGFloat = 25
     var height: CGFloat = 25
     
     @State private var type: HeartType = .empty
     private let movieStore = MoviesStore()
     private let actorsStore = ActorsStore()
+    private let seriesStore = SeriesStore()
     private let gradient = LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]),
                                           startPoint: .top, endPoint: .bottom)
     
     var body: some View {
         
-        
+        // MARK: Movies
         if let movie = movie {
             Button( action: {
                 switch type {
@@ -52,47 +54,86 @@ struct HeartButton: View {
                     type = .empty
                 }
             }
-        } else {
-            if let actor = actor {
-                Button( action: {
-
-                    switch type {
-                    case .empty:
-                        self.type = .fill
-                        print("Like Button Pressed")
-                        actor.isFavorite = true
-                        actorsStore.saveContext()
-                        print("HeartButton - actorID: \(actor.id), isFavorite: \(actor.isFavorite)")
-                    case .fill:
-                        self.type = .empty
-                        print("Unlike Button Pressed")
-                        actor.isFavorite = false
-                        actorsStore.saveContext()
-                        print("HeartButton - actorID: \(actor.id), isFavorite: \(actor.isFavorite)")
-                    }
-                }, label: {
-                    gradient.mask(
-                        Image(systemName: type.rawValue).resizable() )
-                        .frame(width: width, height: height)
-                        //                .shadow(radius: 3)
-                        .shadow(color: .gray, radius: 3, x: 1, y: 2)
-                })
-                .animation(.default)
-                .onAppear {
-                    switch actor.isFavorite {
-                    case true:
-                        type = .fill
-                    case false:
-                        type = .empty
-                    }
-                }
-            }
-            
-            
         }
         
         
-
+        // MARK: Actor
+        if let actor = actor {
+            Button( action: {
+                
+                switch type {
+                case .empty:
+                    self.type = .fill
+                    print("Like Button Pressed")
+                    actor.isFavorite = true
+                    actorsStore.saveContext()
+                    print("HeartButton - actorID: \(actor.id), isFavorite: \(actor.isFavorite)")
+                case .fill:
+                    self.type = .empty
+                    print("Unlike Button Pressed")
+                    actor.isFavorite = false
+                    actorsStore.saveContext()
+                    print("HeartButton - actorID: \(actor.id), isFavorite: \(actor.isFavorite)")
+                }
+            }, label: {
+                gradient.mask(
+                    Image(systemName: type.rawValue).resizable() )
+                    .frame(width: width, height: height)
+                    //                .shadow(radius: 3)
+                    .shadow(color: .gray, radius: 3, x: 1, y: 2)
+            })
+            .animation(.default)
+            .onAppear {
+                switch actor.isFavorite {
+                case true:
+                    type = .fill
+                case false:
+                    type = .empty
+                }
+            }
+        }
+        
+        
+        
+        
+        // MARK: Series
+        if let series = series {
+            Button( action: {
+                switch type {
+                case .empty:
+                    self.type = .fill
+                    
+                    
+                case .fill:
+                    self.type = .empty
+                    
+                    
+                }
+            }, label: {
+                gradient.mask(
+                    Image(systemName: type.rawValue).resizable() )
+                    .frame(width: width, height: height)
+                    .shadow(color: .gray, radius: 3, x: 1, y: 2)
+            })
+            .animation(.default)
+            .onAppear {
+                switch series.isFavorite {
+                case true:
+                    type = .fill
+                case false:
+                    type = .empty
+                }
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         

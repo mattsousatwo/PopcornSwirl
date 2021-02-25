@@ -11,7 +11,7 @@ import CoreData
 import UIKit
 import SwiftUI
 
-class MoviesStore: ObservableObject {
+class MoviesStore: CoreDataCoder, ObservableObject {
     
     var context: NSManagedObjectContext
     var entity: NSEntityDescription
@@ -22,10 +22,8 @@ class MoviesStore: ObservableObject {
     @Published var favoriteMovies = [Movie]()
     @Published var watchedMovies = [Movie]()
     
-    lazy private var decoder = JSONDecoder() // used to decode json data
-    lazy private var encoder = JSONEncoder()
-    
-    init() {
+
+    override init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         context = appDelegate.persistentContainer.viewContext
         entity = NSEntityDescription.entity(forEntityName: MovieKeys.entity.rawValue, in: context)!
@@ -154,65 +152,6 @@ extension MoviesStore {
             saveContext()
         }
     }
-    
-}
-
-// MARK: Decoding
-extension MoviesStore {
-    
-    func encodeCast(_ cast: [MovieCast]) -> String? {
-        encoder.outputFormatting = .prettyPrinted
-        guard let data = try? encoder.encode(cast) else { return nil }
-        return String(data: data, encoding: .utf8)
-    }
-    
-    // Decode Cast JSON from Movie
-    func decodeCast(_ movieCast: String) -> [MovieCast]? {
-        guard let data = movieCast.data(using: .utf8) else { return nil }
-        guard let cast = try? decoder.decode([MovieCast].self, from: data) else { return nil }
-        return cast
-        
-    }
-    
-   /// Encode Array of Genre ID tags to JSON Data as String for saving
-    /// Example: FetchGenreIDs -> encode(genres: ) ->  update(movie:, genres: )
-    func encodeGenres(_ genres: [Int]) -> String? {
-        encoder.outputFormatting = .prettyPrinted
-        guard let data = try? encoder.encode(genres) else { return nil }
-        return String(data: data, encoding: .utf8)
-    }
-    
-    func decodeGenres(_ string: String) -> [Int]? {
-        guard let data = string.data(using: .utf8) else { return nil }
-        guard let ids = try? decoder.decode([Int].self, from: data) else { return nil }
-        return ids
-        
-    }
-    
-    func encodeWatchProviders(_ provider: PurchaseLink) -> String? {
-        encoder.outputFormatting = .prettyPrinted
-        guard let data = try? encoder.encode(provider) else { return nil }
-        return String(data: data, encoding: .utf8)
-    }
-    
-    func decodeWatchProviders(_ provider: String) -> PurchaseLink? {
-        guard let data = provider.data(using: .utf8) else { return nil }
-        guard let providers = try? decoder.decode(PurchaseLink.self, from: data) else { return nil }
-        return providers
-    }
-    
-    func encodeReccomendedMovies(_ movies: [RecommendedMovie]) -> String? {
-        encoder.outputFormatting = .prettyPrinted
-        guard let data = try? encoder.encode(movies) else { return nil }
-        return String(data: data, encoding: .utf8)
-    }
-    
-    func decodeReccomendedMovies(_ movies: String) -> [RecommendedMovie]? {
-        guard let data = movies.data(using: .utf8) else { return nil }
-        guard let recMovies = try? decoder.decode([RecommendedMovie].self, from: data) else { return nil }
-        return recMovies
-    }
-    
     
 }
 

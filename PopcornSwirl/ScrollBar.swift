@@ -24,6 +24,7 @@ struct ScrollBar: View, Equatable {
     
     @ObservedObject var movieStore = MovieStore()
     @ObservedObject var actorsStore = ActorsStore()
+    @ObservedObject var seriesStore = SeriesStore()
     
     var type: ScrollBarType
     var id: Int = 0
@@ -61,6 +62,17 @@ struct ScrollBar: View, Equatable {
         default:
             return nil 
         }
+    }
+    
+    var series: [Series]? {
+        switch type {
+        case .actorTV:
+            let seriesIDs = movieStore.extractIDsFor(.actorTV, id: id)
+            return seriesStore.fetchArrayOfSeries(withIDs: seriesIDs)
+        default:
+            return nil
+        }
+        
     }
     
     static func == (lhs: ScrollBar, rhs: ScrollBar) -> Bool {
@@ -116,6 +128,10 @@ struct ScrollBar: View, Equatable {
                     if let actors = actors {
                         Bar(type: type, id: id, actors: actors, movieCast: movieCast)
                     }
+                    if let series = series {
+                        Bar(type: type, id: id, series: series)
+                    }
+                    
                 } .padding() // HStack
   
             } // ScrollView - Content
@@ -143,6 +159,9 @@ struct Bar: View {
     var movieCast: [MovieCast]?
     var recMovie: [RecommendedMovie]?
     var popMovies: [PopMovie]?
+    
+    /// Coredata Series
+    var series: [Series]?
     
     
     @ObservedObject var movieCD = MoviesStore()
@@ -226,20 +245,24 @@ struct Bar: View {
                 if actorTVSeries.count != 0 {
                     ForEach(0..<actorTVSeries.count, id: \.self) { i in
                         if i <= 9 {
-                            if let movies = movies {
+                            if let series = series {
                                 if let id = actorTVSeries[i].id {
-                                if let tVSeries = movies.first(where: { $0.uuid == Double(id) }) {
-                                    
-                                    ScrollNavLink(movieID: id,
-                                                  title: actorTVSeries[i].title ?? "",
-                                                  genreIDs: actorTVSeries[i].genre_ids,
-                                                  overview: actorTVSeries[i].overview,
-                                                  posterPath: actorTVSeries[i].poster_path ?? "",
-                                                  voteAverage: actorTVSeries[i].vote_average,
-                                                  releaseDate: actorTVSeries[i].release_date ?? "",
-                                                  movie: tVSeries)
+                                    if let tVSeries = series.first(where: { $0.uuid == Double(id) }) {
+                                        
+                                        
+                                        
+                                        
+                                        ScrollNavLink(movieID: id,
+                                                      title: actorTVSeries[i].title ?? "",
+                                                      genreIDs: actorTVSeries[i].genre_ids,
+                                                      overview: actorTVSeries[i].overview,
+                                                      posterPath: actorTVSeries[i].poster_path ?? "",
+                                                      voteAverage: actorTVSeries[i].vote_average,
+                                                      releaseDate: actorTVSeries[i].release_date ?? "",
+                                                      series: tVSeries)
+                                                      
+                                    }
                                 }
-                            }
                             }
                         }
                     }
@@ -481,22 +504,38 @@ struct ScrollNavLink: View {
     var posterPath: String
     var voteAverage: Double
     var releaseDate: String
-    var movie: Movie
+    var movie: Movie?
+    var series: Series?
     
     var body: some View {
-        
-        NavigationLink(destination: MovieDetail(movieID: movieID,
-                                                movieTitle: title,
-                                                genreIDs: genreIDs,
-                                                movieOverview: overview,
-                                                posterPath: posterPath,
-                                                rating: voteAverage,
-                                                releaseDate: releaseDate).equatable() ) {
-            
-            ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath),
-                      movie: movie)
+        if let movie = movie {
+            NavigationLink(destination: MovieDetail(movieID: movieID,
+                                                    movieTitle: title,
+                                                    genreIDs: genreIDs,
+                                                    movieOverview: overview,
+                                                    posterPath: posterPath,
+                                                    rating: voteAverage,
+                                                    releaseDate: releaseDate).equatable() ) {
+                
+                ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath),
+                          movie: movie)
+            }
+        } else if let series = series {
+            NavigationLink(destination: MovieDetail(movieID: movieID,
+                                                    movieTitle: title,
+                                                    genreIDs: genreIDs,
+                                                    movieOverview: overview,
+                                                    posterPath: posterPath,
+                                                    rating: voteAverage,
+                                                    releaseDate: releaseDate).equatable() ) {
+                
+                ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath),
+                          series: series)
+            }
         }
-
+        
+        
+        
         
     }
 }

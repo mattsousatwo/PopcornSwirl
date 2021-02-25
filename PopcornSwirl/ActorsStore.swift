@@ -11,7 +11,7 @@ import CoreData
 import Combine
 import SwiftUI
 
-class ActorsStore: ObservableObject {
+class ActorsStore: CoreDataCoder, ObservableObject {
     
     var movie : MovieStore?
     
@@ -21,7 +21,7 @@ class ActorsStore: ObservableObject {
     @Published var actors = [Actor]()
     @Published var actorsForMovie = [Actor]()
     
-    init() {
+    override init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         context = appDelegate.persistentContainer.viewContext
         entity = NSEntityDescription.entity(forEntityName: ActorKeys.entity.rawValue, in: context)!

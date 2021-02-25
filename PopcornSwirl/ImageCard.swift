@@ -14,6 +14,7 @@ struct ImageCard: View, Equatable {
     var url: URL?
     var movie: Movie? = nil
     var actor: Actor? = nil
+    var series: Series? = nil
     
     var body: some View {
         if let movie = movie {
@@ -36,6 +37,18 @@ struct ImageCard: View, Equatable {
                         .shadow(radius: 5.0)
                     , alignment: .bottomTrailing)
         }
+        
+        
+        if let series = series {
+            URLImage(url: url)
+                .overlay(
+                    HeartButton(series: series)
+                        .padding()
+                        .shadow(radius: 5.0)
+                    , alignment: .bottomTrailing)
+        }
+        
+        
 
     } // Body
     
