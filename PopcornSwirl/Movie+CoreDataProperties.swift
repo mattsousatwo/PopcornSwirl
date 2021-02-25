@@ -32,7 +32,8 @@ extension Movie {
     @NSManaged public var cast: String?
     @NSManaged public var genres: String?
     @NSManaged public var recommendedMovies: String? 
-    @NSManaged public var watchProviders: String? 
+    @NSManaged public var watchProviders: String?
+    @NSManaged public var voteAverage: Double
     
 }
 

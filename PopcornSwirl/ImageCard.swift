@@ -29,6 +29,11 @@ struct ImageCard: View, Equatable {
                         .padding()
                         .shadow(radius: 5.0)
                     , alignment: .bottomLeading)
+                
+//                .overlay(
+//                    Text("\(movie.title ?? "")")
+//                    , alignment: .center)
+//
         } else if let actor = actor {
             URLImage(url: url)
                 .overlay(

@@ -158,7 +158,6 @@ struct Bar: View {
     
     var movieCast: [MovieCast]?
     var recMovie: [RecommendedMovie]?
-    var popMovies: [PopMovie]?
     
     /// Coredata Series
     var series: [Series]?
@@ -191,23 +190,21 @@ struct Bar: View {
 
     // TV
     private var actorMovies: [ActorCreditsCast] {
-        
         var credits: [ActorCreditsCast] = []
-        
         let actor = actorStore.fetchActorWith(id: id)
-        if actor.credits == nil {
-            // fetch from internet
-            return movieStore.extractCreditsFor(actorID: id, type: .movie)
-        } else {
-            if let encodedCredits = actor.credits {
-                if let decodedCredits = actorStore.decodeActorCredits(encodedCredits) {
-                    for movie in decodedCredits {
-                        if movie.media_type == "movie" {
-                            credits.append(movie)
-                        }
+        if let encodedCredits = actor.credits {
+            if let decodedCredits = actorStore.decodeActorCredits(encodedCredits) {
+                print("actorMovie - Coredata")
+                for movie in decodedCredits {
+                    if movie.media_type == "movie" {
+                        credits.append(movie)
                     }
                 }
             }
+        }
+        if credits.isEmpty == true {
+            print("actorMovie - TMDB")
+            return movieStore.extractCreditsFor(actorID: id, type: .movie)
         }
         return credits
     }
@@ -215,21 +212,20 @@ struct Bar: View {
     
     private var actorTVSeries: [ActorCreditsCast] {
         var credits: [ActorCreditsCast] = []
-        
         let actor = actorStore.fetchActorWith(id: id)
-        if actor.credits == nil {
-            // fetch from internet
-            return movieStore.extractCreditsFor(actorID: id, type: .tv)
-        } else {
-            if let encodedCredits = actor.credits {
-                if let decodedCredits = actorStore.decodeActorCredits(encodedCredits) {
-                    for movie in decodedCredits {
-                        if movie.media_type == "tv" {
-                            credits.append(movie)
-                        }
+        if let encodedCredits = actor.credits {
+            if let decodedCredits = actorStore.decodeActorCredits(encodedCredits) {
+                print("actorTV - Coredata")
+                for movie in decodedCredits {
+                    if movie.media_type == "tv" {
+                        credits.append(movie)
                     }
                 }
             }
+        }
+        if credits.isEmpty == true {
+            print("actorTV - TMDB")
+            return movieStore.extractCreditsFor(actorID: id, type: .tv)
         }
         return credits
     }
@@ -336,32 +332,27 @@ struct Bar: View {
             case .popularMovie:
                 
                 if let movies = movies {
-                    if popularMovies.count != 0 {
-                        ForEach(0..<movies.count, id: \.self) { i in
-                            
-                            // TMDB
-                            let popMovie = popularMovies[i]
-                            // Coredata
-                            let movie = movies[i]
-                            
-                            if popMovie.id == Int(movie.uuid) {
-                                if let genres = movie.genres {
-                                    if let decodedGenres = movieCD.decodeGenres(genres) {
-                                        
-                                        ScrollNavLink(movieID: Int(movie.uuid),
-                                                      title: movie.title ?? popMovie.title,
-                                                      genreIDs: decodedGenres,
-                                                      overview: movie.overview ?? popMovie.overview,
-                                                      posterPath: movie.imagePath ?? popMovie.poster_path,
-                                                      voteAverage: popMovie.vote_average,
-                                                      releaseDate: movie.releaseDate ?? popMovie.release_date,
-                                                      movie: movie)
-                                            .animation(.default)
-                                    }
-                                }
+                    ForEach(0..<movies.count, id: \.self) { i in
+                        
+                        // Coredata
+                        let movie = movies[i] 
+                        
+                        if let genres = movie.genres {
+                            if let decodedGenres = movieCD.decodeGenres(genres) {
+                                
+                                ScrollNavLink(movieID: Int(movie.uuid),
+                                              title: movie.title ?? "",
+                                              genreIDs: decodedGenres,
+                                              overview: movie.overview ?? "",
+                                              posterPath: movie.imagePath ?? "",
+                                              voteAverage: movie.voteAverage,
+                                              releaseDate: movie.releaseDate ?? "",
+                                              movie: movie)
+                                    .animation(.default)
                             }
                         }
                     }
+                    
                 } else if movies?.count != popularMovies.count {
                     ForEach(0..<popularMovies.count, id: \.self) { i in
                         if popularMovies.count != 0 {

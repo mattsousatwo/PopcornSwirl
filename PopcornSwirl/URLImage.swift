@@ -27,6 +27,7 @@ struct URLImage: View {
                 .clipShape( RoundedRectangle(cornerRadius: cornerRadius) )
                 .frame(width: width, height: height, alignment: alignment)
                 .shadow(radius: shadowRadius)
+            
         } else {
             RoundedRectangle(cornerRadius: cornerRadius)
                 .frame(width: width, height: height)

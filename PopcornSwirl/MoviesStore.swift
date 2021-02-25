@@ -84,6 +84,7 @@ extension MoviesStore {
                 isWatched: Bool? = nil,
                 comment: String? = nil,
                 recommendedMovies: String? = nil,
+                voteAverage: Double? = nil,
                 watchProviders: String? = nil) {
         
         if let uuid = uuid {
@@ -142,6 +143,10 @@ extension MoviesStore {
         if let recomendedMovies = recommendedMovies {
             movie.recommendedMovies = recomendedMovies
             print("saved recommendedMovies: \(movie.recommendedMovies ?? "is Empty")")
+        }
+        if let voteAverage = voteAverage {
+            movie.voteAverage = voteAverage
+            print("saved voteAverage: \(movie.voteAverage)")
         }
         if let watchProviders = watchProviders {
             movie.watchProviders = watchProviders

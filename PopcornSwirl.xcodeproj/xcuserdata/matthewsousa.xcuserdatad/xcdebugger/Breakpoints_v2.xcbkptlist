@@ -3,4 +3,166 @@
    uuid = "D2E34552-4B2F-4B29-AAEF-421839D8653D"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1C529973-03D3-4E11-91DD-DBE0B5231481"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PopcornSwirl/ScrollBar.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "334"
+            endingLineNumber = "334"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "1C529973-03D3-4E11-91DD-DBE0B5231481 - f2c6e97d5eb78dee"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PopcornSwirl.Bar.body.getter : some"
+                  moduleName = "PopcornSwirl"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewsousa/Documents/Developer/XCode%20DB%202020/PopcornSwirl/PopcornSwirl/ScrollBar.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "334"
+                  endingLineNumber = "334"
+                  offsetFromSymbolStart = "6416">
+               </Location>
+               <Location
+                  uuid = "1C529973-03D3-4E11-91DD-DBE0B5231481 - f2c6e97d5eb78dee"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PopcornSwirl.Bar.body.getter : some"
+                  moduleName = "PopcornSwirl"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewsousa/Documents/Developer/XCode%20DB%202020/PopcornSwirl/PopcornSwirl/ScrollBar.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "334"
+                  endingLineNumber = "334"
+                  offsetFromSymbolStart = "8740">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "38E94087-DCA7-4C39-961E-BD42D36F0EAA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PopcornSwirl/ScrollBar.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "343"
+            endingLineNumber = "343"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8BD7454E-08DC-46F1-8B46-01001E0E08EC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PopcornSwirl/MovieStore.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "807"
+            endingLineNumber = "807"
+            landmarkName = "movieForBar(_:id:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DBFC7A8C-08AE-42E4-A5A5-28D254050E02"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PopcornSwirl/MovieStore.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "806"
+            endingLineNumber = "806"
+            landmarkName = "movieForBar(_:id:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7C414D37-6445-4F22-BF0B-DD327AA4BB21"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PopcornSwirl/MovieStore.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "805"
+            endingLineNumber = "805"
+            landmarkName = "movieForBar(_:id:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "561650D0-6DAE-4DA1-94DD-36045029EB0F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PopcornSwirl/MoviesStore.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
+            landmarkName = "fetchMovies(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "561650D0-6DAE-4DA1-94DD-36045029EB0F - 5cd25ea76b6c7ecb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "default argument 0 of PopcornSwirl.MoviesStore.fetchMovies(PopcornSwirl.MovieCategory) -&gt; ()"
+                  moduleName = "PopcornSwirl"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewsousa/Documents/Developer/XCode%20DB%202020/PopcornSwirl/PopcornSwirl/MoviesStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "167"
+                  endingLineNumber = "167"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  uuid = "561650D0-6DAE-4DA1-94DD-36045029EB0F - 641f42da2d9f3d89"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PopcornSwirl.MoviesStore.fetchMovies(PopcornSwirl.MovieCategory) -&gt; ()"
+                  moduleName = "PopcornSwirl"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewsousa/Documents/Developer/XCode%20DB%202020/PopcornSwirl/PopcornSwirl/MoviesStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "168"
+                  endingLineNumber = "168"
+                  offsetFromSymbolStart = "84">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

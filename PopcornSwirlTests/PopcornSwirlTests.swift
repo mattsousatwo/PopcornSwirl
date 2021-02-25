@@ -91,6 +91,7 @@ class MovieTests: XCTestCase {
     // test if fetching by popular movie category is working
     func testPopularMovieFetching() {
         movieCD.fetchMovies(.popular)
+        print("PopularMovie.count: \(movieCD.popularMovies.count)")
         XCTAssertFalse(movieCD.popularMovies.count == 0, "No Popular Movies Found")
     }
    
@@ -277,8 +278,6 @@ class MovieTests: XCTestCase {
     
 }
 
-
-
 class MovieStoreTests: XCTestCase {
     
     private var movieStore = MovieStore()
@@ -297,7 +296,6 @@ class MovieStoreTests: XCTestCase {
     }
     
 }
-
 
 class ActorsTests: XCTestCase {
     
@@ -359,7 +357,6 @@ class ActorsTests: XCTestCase {
     }
     
 }
-
 
 class ArrayTests: XCTestCase {
     
