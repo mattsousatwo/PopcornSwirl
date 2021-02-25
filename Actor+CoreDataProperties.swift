@@ -25,6 +25,7 @@ extension Actor {
     @NSManaged public var deathDate: String?
     @NSManaged public var birthDate: String?
     @NSManaged public var birthPlace: String?
+    @NSManaged public var credits: String?
 
 }
 

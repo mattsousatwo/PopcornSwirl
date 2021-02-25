@@ -72,4 +72,17 @@ class CoreDataCoder {
         return recMovies
     }
     
+    /// Convert ActorCredits to String
+    func encodeActorCredits(_ credits: [ActorCreditsCast]) -> String? {
+        guard let data = try? encoder.encode(credits) else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+    
+    /// Decode String to ActorCredits
+    func decodeActorCredits(_ credits: String) -> [ActorCreditsCast]? {
+        guard let data = credits.data(using: .utf8) else { return nil }
+        guard let actorCredits = try? decoder.decode([ActorCreditsCast].self, from: data) else { return nil }
+        return actorCredits
+    }
+    
 }

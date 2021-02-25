@@ -351,6 +351,13 @@ extension MovieStore {
         if actorCredits.isEmpty == true {
             fetchCreditsFor(actor: actorID)
         }
+        
+        if actorCredits.isEmpty != true {
+            let actor = actorsStore.fetchActorWith(id: actorID)
+            let credits = actorsStore.encodeActorCredits(actorCredits)
+            actorsStore.update(actor: actor, credits: credits)
+        }
+        
         switch type {
         case .movie:
             for movie in actorCredits {

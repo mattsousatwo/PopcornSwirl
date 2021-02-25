@@ -87,6 +87,7 @@ extension ActorsStore {
                 imagePath: String? = nil,
                 name: String? = nil,
                 isFavorite: Bool? = nil,
+                credits: String? = nil,
                 deathDate: String? = nil,
                 birthDate: String? = nil,
                 birthPlace: String? = nil,
@@ -110,6 +111,11 @@ extension ActorsStore {
         if let isFavorite = isFavorite {
             if actor.isFavorite != isFavorite {
                 actor.isFavorite = NSNumber(value: isFavorite) as! Bool 
+            }
+        }
+        if let credits = credits {
+            if actor.credits != credits {
+                actor.credits = credits
             }
         }
         if let deathDate = deathDate {
