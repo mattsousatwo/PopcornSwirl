@@ -257,6 +257,7 @@ struct MovieDetail: View, Equatable {
                                height: UIScreen.main.bounds.height)
                 })
             }
+            
 
             StarSlider(movie: movie,
                        value: movie.rating,

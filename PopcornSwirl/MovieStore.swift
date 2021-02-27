@@ -643,7 +643,7 @@ extension MovieStore {
     }
     
     
-    /// Getting IDs being used to then fetch Movies with
+    /// Handles which movie IDs should be used to fetch movies in ScrollBar via moiveForBar(type: )
     func extractIDsFor(_ type: ScrollBarType, id searchID: Int = 0 ) -> [Int] {
         var ids: [Int] = []
         
@@ -714,6 +714,19 @@ extension MovieStore {
                 }
             }
             
+            if recommendedMovies.count == 0 {
+                let movie = movieCD.fetchMovie(uuid: searchID)
+                if let recommended = movie.recommendedMovies {
+                    if let recommendedMovieList = movieCD.decodeReccomendedMovies(recommended) {
+                        for movie in recommendedMovieList {
+                            if let id = movie.id {
+                                ids.append(id)
+                            }
+                        }
+                    }
+                }
+            }
+            
         case .actors:
             
             if movieCast.count == 0 {
@@ -730,6 +743,20 @@ extension MovieStore {
                                        imagePath: castMember.profile_path ?? "",
                                        name: castMember.name)
                     
+                }
+            }
+            
+            // if cannot fetch through TMDB
+            if movieCast.count == 0 {
+                let movie = movieCD.fetchMovie(uuid: searchID)
+                if let cast = movie.cast {
+                    if let decodedCast = movieCD.decodeCast(cast) {
+                        for i in 0..<decodedCast.count {
+                            if i >= 24 {
+                                ids.append(decodedCast[i].id)
+                            }
+                        }
+                    }
                 }
             }
             
@@ -816,9 +843,9 @@ extension MovieStore {
             if movieCD.upcomingMovies.count != 0 {
                 movies = movieCD.upcomingMovies
             }
-            let upcomingMovieIDs = extractIDsFor(.upcomingMovie)
-            let ids = upcomingMovieIDs.map({ Double($0) })
-            movies = movieCD.fetchMovies(uuids: ids)
+//            let upcomingMovieIDs = extractIDsFor(.upcomingMovie)
+//            let ids = upcomingMovieIDs.map({ Double($0) })
+//            movies = movieCD.fetchMovies(uuids: ids)
         case .recommendedMovie:
             let reccomendedMovieIDs = extractIDsFor(.recommendedMovie, id: searchID)
             let ids = reccomendedMovieIDs.map({ Double($0) })

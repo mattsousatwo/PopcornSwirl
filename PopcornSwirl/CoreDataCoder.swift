@@ -41,7 +41,6 @@ class CoreDataCoder {
         guard let data = string.data(using: .utf8) else { return nil }
         guard let ids = try? decoder.decode([Int].self, from: data) else { return nil }
         return ids
-        
     }
     
     /// Convert Watch Providers to String

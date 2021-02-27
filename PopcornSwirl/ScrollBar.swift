@@ -188,7 +188,7 @@ struct Bar: View {
         return movieStore.extractActorImageProfiles(id: id)
     }
 
-    // TV
+    /// Actor Movies
     private var actorMovies: [ActorCreditsCast] {
         var credits: [ActorCreditsCast] = []
         let actor = actorStore.fetchActorWith(id: id)
@@ -209,7 +209,7 @@ struct Bar: View {
         return credits
     }
     
-    
+    /// Actor TVSeries
     private var actorTVSeries: [ActorCreditsCast] {
         var credits: [ActorCreditsCast] = []
         let actor = actorStore.fetchActorWith(id: id)
@@ -237,6 +237,7 @@ struct Bar: View {
 
         
             switch type {
+            // MARK: ActorMovie -
             case .actorMovie:
                 ForEach(0..<actorMovies.count, id: \.self) { i in
                     if i <= 9 {
@@ -260,6 +261,7 @@ struct Bar: View {
               
                 } // For
             
+            // MARK: ActorTV -
             case .actorTV:
                 
                 if actorTVSeries.count != 0 {
@@ -333,13 +335,10 @@ struct Bar: View {
                 
                 if let movies = movies {
                     ForEach(0..<movies.count, id: \.self) { i in
-                        
                         // Coredata
-                        let movie = movies[i] 
-                        
+                        let movie = movies[i]
                         if let genres = movie.genres {
                             if let decodedGenres = movieCD.decodeGenres(genres) {
-                                
                                 ScrollNavLink(movieID: Int(movie.uuid),
                                               title: movie.title ?? "",
                                               genreIDs: decodedGenres,
@@ -353,7 +352,7 @@ struct Bar: View {
                         }
                     }
                     
-                } else if movies?.count != popularMovies.count {
+                } else if movies?.count == nil {
                     ForEach(0..<popularMovies.count, id: \.self) { i in
                         if popularMovies.count != 0 {
                             if let movies = movies {
@@ -374,35 +373,35 @@ struct Bar: View {
                 }
             // MARK: UPCOMMING MOVIE -
             case .upcomingMovie:
-
+                
                 // CoreData
                 if let movies = movies {
-                    if upcomingMovies.count != 0 {
-                        ForEach(0..<movies.count, id: \.self) { i in
-                            // Coredata
-                            let movie = movies[i]
-                            // TMDB
-                            let upcomingMovie = upcomingMovies[i]
-                            
-                            if let genres = movie.genres {
-                                if let genresArray = movieCD.decodeGenres(genres) {
-                                    ScrollNavLink(movieID: Int(movie.uuid),
-                                                  title: movie.title ?? upcomingMovie.title,
-                                                  genreIDs: genresArray,
-                                                  overview: movie.overview ?? upcomingMovie.overview,
-                                                  posterPath: movie.imagePath ?? upcomingMovie.poster_path ?? "",
-                                                  voteAverage: movie.rating,
-                                                  releaseDate: movie.releaseDate ?? upcomingMovie.release_date,
-                                                  movie: movie)
-                                        .animation(.default)
-                                }
+                    
+                    ForEach(0..<movies.count, id: \.self) { i in
+                        // Coredata
+                        let movie = movies[i]
+                        // TMDB
+                        
+                        
+                        if let genres = movie.genres {
+                            if let genresArray = movieCD.decodeGenres(genres) {
+                                ScrollNavLink(movieID: Int(movie.uuid),
+                                              title: movie.title ?? "",
+                                              genreIDs: genresArray,
+                                              overview: movie.overview ?? "",
+                                              posterPath: movie.imagePath ?? "",
+                                              voteAverage: movie.rating,
+                                              releaseDate: movie.releaseDate ?? "",
+                                              movie: movie)
+                                    .animation(.default)
                             }
                         }
+                        
                     }
                     
                     
                     // MARK: -
-                } else if movies?.count != upcomingMovies.count {
+                } else if movies?.count == nil  {
                     ForEach(0..<upcomingMovies.count, id: \.self) { i in
                         if upcomingMovies.count != 0 {
                             if let movies = movies {
@@ -428,34 +427,35 @@ struct Bar: View {
             // MARK: RECOMMENDED MOVIE -
             case .recommendedMovie:
                 
-
+                
                 if let movies = movies {
-                    if recommendedMovies.count != 0 {
-                        ForEach(0..<movies.count, id: \.self) { i in
-                            // TMDB
-                            let recMovie = recommendedMovies[i]
-                            // Coredata
-                            let movie = movies[i]
-
-                            if recMovie.id == Int(movie.uuid) {
-                                if let genres = movie.genres {
-                                    if let decodedGenres = movieCD.decodeGenres(genres) {
-                                        ScrollNavLink(movieID: Int(movie.uuid),
-                                                      title: movie.title ?? recMovie.title,
-                                                      genreIDs: decodedGenres,
-                                                      overview: movie.overview ?? recMovie.overview,
-                                                      posterPath: movie.imagePath ?? recMovie.poster_path ?? "",
-                                                      voteAverage: movie.rating,
-                                                      releaseDate: movie.releaseDate ?? recMovie.release_date ?? "",
-                                                      movie: movie)
-                                            .animation(.default)
-
-                                    }
-                                }
+                    
+                    ForEach(0..<movies.count, id: \.self) { i in
+                        
+                        
+                        // Coredata
+                        let movie = movies[i]
+                        
+                        
+                        if let genres = movie.genres {
+                            if let decodedGenres = movieCD.decodeGenres(genres) {
+                                ScrollNavLink(movieID: Int(movie.uuid),
+                                              title: movie.title ?? "",
+                                              genreIDs: decodedGenres,
+                                              overview: movie.overview ?? "",
+                                              posterPath: movie.imagePath ?? "",
+                                              voteAverage: movie.rating,
+                                              releaseDate: movie.releaseDate ?? "",
+                                              movie: movie)
+                                    .animation(.default)
+                                
+                                
                             }
+                            
                         }
                     }
-                } else if recommendedMovies.count != movies?.count {
+                }
+                else if recommendedMovies.count != movies?.count {
                     ForEach(0..<recommendedMovies.count, id: \.self) { i in
                         if recommendedMovies.count != 0  {
                             if let movies = movies {
@@ -477,7 +477,7 @@ struct Bar: View {
                     }
                 }
 
-            
+
 
                 
                 
@@ -580,16 +580,6 @@ struct LabeledScrollNavLink: View {
                 LabeledImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + imagePath),
                                  title: title, subtitle: subtitle, movie: movie)
             }
-
-            
-//            
-//            NavigationLink(destination: ActorDetail(image: MovieStoreKey.imageURL.rawValue + imagePath,
-//                                                    actorID: actorID,
-//                                                    name: title,
-//                                                    isFavorite: movie.isFavorite)) {
-//                LabeledImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + imagePath),
-//                                 title: title, subtitle: subtitle, movie: movie)
-//            }
         }
         
             

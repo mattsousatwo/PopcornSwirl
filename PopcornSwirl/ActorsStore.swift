@@ -75,8 +75,6 @@ extension ActorsStore {
         
     }
     
-    
-    
 }
 
 extension ActorsStore {
@@ -164,7 +162,6 @@ extension ActorsStore {
     // MARK: HOW TO GET ACTORS WITH MOVIEID
     //// use MovieStore.fetchMovieCreditsFroMovie(id: Int) to get MovieCast
     //// MovieStore.movieCast holds All actors
-    
     func fetchActorsForMovie(id: Int) { // Not used
         
         guard let movie = movie else { return }

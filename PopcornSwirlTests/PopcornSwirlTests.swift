@@ -351,9 +351,13 @@ class ActorsTests: XCTestCase {
         guard let credits = actorsStore.decodeActorCredits(creditsString) else { return }
         
         XCTAssertEqual(actorsCredits, credits)
-        
-        
-        
+    }
+
+    /// Test if delete all actors will remove all actors
+    func testIfDeleteAllActorsWorks() {
+        actorsStore.deleteAllSavedActors()
+        actorsStore.fetchAllActors()
+        XCTAssertEqual(actorsStore.actors.count, 0)
     }
     
 }

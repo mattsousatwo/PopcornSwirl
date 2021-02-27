@@ -60,9 +60,9 @@ struct Home: View {
 //            let movieStore = MoviesStore()
 //            movieStore.deleteAllMovie()
   
-            let actorsStore = ActorsStore()
-            actorsStore.deleteAllSavedActors()
-            
+//            let actorsStore = ActorsStore()
+//            actorsStore.deleteAllSavedActors()
+//
         }
         
     } // body
