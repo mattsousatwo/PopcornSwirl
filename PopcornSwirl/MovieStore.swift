@@ -264,8 +264,8 @@ extension MovieStore {
     // Get Images for Actor
     func getImagesForActor() {
         
-        for actor in self.movieCast {
-            let imageRequest = "https://api.themoviedb.org/3/person/\(actor.id)/images?api_key=ebccbee67fef37cc7a99378c44af7d33"
+        for castMember in self.movieCast {
+            let imageRequest = "https://api.themoviedb.org/3/person/\(castMember.id)/images?api_key=ebccbee67fef37cc7a99378c44af7d33"
             AF.request( imageRequest ).responseJSON { response in
                 
                 guard let json = response.data else {
@@ -276,6 +276,9 @@ extension MovieStore {
                 do {
                     let results = try self.decoder.decode(ActorSchema.self, from: json)
                     
+                    let actor = self.actorsStore.fetchActorWith(id: castMember.id)
+                        
+                    
                     for profileOne in results.profiles {
                         
                         for profileTwo in results.profiles {
@@ -284,12 +287,18 @@ extension MovieStore {
                                 
                                 guard let imagePath = profileOne.file_path else { return }
                                 
-                                self.actorImageProfiles[actor.id] = imagePath
+                                // Save to coredata
+                                self.actorsStore.update(actor: actor, imagePath: imagePath)
+                                
+                                self.actorImageProfiles[castMember.id] = imagePath
                                 
                             } else {
                                 guard let imagePath = profileTwo.file_path else { return }
                                 
-                                self.actorImageProfiles[actor.id] = imagePath
+                                // Save to coredata
+                                self.actorsStore.update(actor: actor, imagePath: imagePath)
+                                
+                                self.actorImageProfiles[castMember.id] = imagePath
                             }
                         }
                         

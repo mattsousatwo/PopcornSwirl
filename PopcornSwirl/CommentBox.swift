@@ -27,6 +27,10 @@ struct CommentBox: View {
             .shadow(radius: shadowRadius)
             .overlay(
                 TextField(comment, text: $text)
+                    .fixedSize(horizontal: false,
+                               vertical: true)
+                    .lineLimit(nil)
+                    .multilineTextAlignment(.leading)
                     .foregroundColor(.pGray3)
                     .padding()
                     .padding(.trailing, 20)

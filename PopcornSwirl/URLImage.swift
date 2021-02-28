@@ -33,7 +33,7 @@ struct URLImage: View {
                 .frame(width: width, height: height)
                 .foregroundColor(Color.purple.opacity(0.8) )
                 .shadow(radius: shadowRadius)
-        }
+        } 
         
     }
     

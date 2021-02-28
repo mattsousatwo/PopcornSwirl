@@ -292,43 +292,91 @@ struct Bar: View {
                     .animation(.default)
                 }
                 
-            // MARK: ACTORS
+            // MARK: ACTORS -
             case .actors:
-                if actorImages.count != 0 {
-                    ForEach(0..<actorImages.count, id: \.self) { i in
+                
+                if let movieCast = movieCast {
+                    ForEach(0..<movieCast.count, id: \.self) { i in
                         if i <= 9 {
                             
-                            if let actor = actors?.first(where: { $0.id == Double(cast[i].id) }) {
-                                // Actors from Coredata
-                                if let movieCast = movieCast { 
-                                    if let imagePath = actorImages[ movieCast[i].id ] {
-                                        LabeledScrollNavLink(imagePath: imagePath,
-                                                             actorID: movieCast[i].id,
-                                                             title: movieCast[i].name,
-                                                             subtitle: movieCast[i].character,
-                                                             movie: nil,
-                                                             actor: actor)
-                                        
-                                    }
-                                }
-                                else {
-                                    // Actors from TMDB
+                            let actor = actorStore.fetchActorWith(id: movieCast[i].id)
+                                                        
+                            if let imagePath = actor.imagePath {
+                                LabeledScrollNavLink(imagePath: imagePath,
+                                                     actorID: Int(actor.id),
+                                                     title: movieCast[i].name,
+                                                     subtitle: movieCast[i].character,
+                                                     actor: actor)
+                            }
+                            
+                        }
+                    }
+                    .animation(.default)
+                } else {
+                    if actorImages.count != 0 {
+                        ForEach(0..<actorImages.count, id: \.self) { i in
+                            if i <= 9 {
+                                if let actor = actors?.first(where: { $0.id == Double(cast[i].id) }) {
                                     if let imagePath = actorImages[ cast[i].id ] {
                                         LabeledScrollNavLink(imagePath: imagePath,
                                                              actorID: cast[i].id,
                                                              title: cast[i].name,
                                                              subtitle: cast[i].character,
-                                                             movie: nil,
-                                                             actor: actor)
+                                                              actor: actor)
                                     }
                                 }
                             }
-                            
-                        } // i <= 9
-                    } // for
-                    
-                    .animation(.default)
-                } // if
+                        }
+                        .animation(.default)
+                    }
+                }
+
+
+//
+//
+//
+//
+//
+//                if actorImages.count != 0 {
+//                    ForEach(0..<actorImages.count, id: \.self) { i in
+//                        if i <= 9 {
+//
+//                            if let actor = actors?.first(where: { $0.id == Double(cast[i].id) }) {
+//                                // Actors from Coredata
+//                                if let movieCast = movieCast {
+//                                    if let imagePath = actorImages[ movieCast[i].id ] {
+//                                        LabeledScrollNavLink(imagePath: imagePath,
+//                                                             actorID: movieCast[i].id,
+//                                                             title: movieCast[i].name,
+//                                                             subtitle: movieCast[i].character,
+//                                                             movie: nil,
+//                                                             actor: actor)
+//
+//                                    }
+//                                }
+//                                else {
+//                                    // Actors from TMDB
+//                                    if let imagePath = actorImages[ cast[i].id ] {
+//                                        LabeledScrollNavLink(imagePath: imagePath,
+//                                                             actorID: cast[i].id,
+//                                                             title: cast[i].name,
+//                                                             subtitle: cast[i].character,
+//                                                             movie: nil,
+//                                                             actor: actor)
+//                                    }
+//                                }
+//                            }
+//
+//                        } // i <= 9
+//                    } // for
+//
+//                    .animation(.default)
+//                } // if
+//
+//
+//
+//
+            
             
             // MARK: POPULAR MOVIE -
             case .popularMovie:
@@ -380,8 +428,6 @@ struct Bar: View {
                     ForEach(0..<movies.count, id: \.self) { i in
                         // Coredata
                         let movie = movies[i]
-                        // TMDB
-                        
                         
                         if let genres = movie.genres {
                             if let genresArray = movieCD.decodeGenres(genres) {

@@ -62,7 +62,7 @@ struct Home: View {
   
 //            let actorsStore = ActorsStore()
 //            actorsStore.deleteAllSavedActors()
-//
+
         }
         
     } // body
