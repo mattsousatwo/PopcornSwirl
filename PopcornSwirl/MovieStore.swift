@@ -346,12 +346,7 @@ extension MovieStore {
         }
     }
     
-    // Used to extract actor credits depending on type
-    enum CreditExtractionType: String {
-        case movie = "movie", tv = "tv"
-    }
-    
-    // MARK: Can add actors TV & Movie credits here 
+    // MARK: Can add actors TV & Movie credits here
     // Extract all credits depending on type  
     func extractCreditsFor(actorID: Int, type: CreditExtractionType) -> [ActorCreditsCast] {
         var credits: [ActorCreditsCast] = []
@@ -737,7 +732,6 @@ extension MovieStore {
             }
             
         case .actors:
-            
             if movieCast.count == 0 {
                 fetchMovieCreditsForMovie(id: searchID)
             }
@@ -768,13 +762,12 @@ extension MovieStore {
                     }
                 }
             }
-            
-            
         case .actorMovie:
             if searchID != 0 {
                 if actorCredits.count == 0 {
                     fetchCreditsFor(actor: searchID)
                 }
+                // load from TMDB
                 for movie in actorCredits {
                     if movie.media_type == CreditExtractionType.movie.rawValue {
                         if let id = movie.id {
@@ -793,6 +786,24 @@ extension MovieStore {
                         }
                     }
                 }
+                
+
+                // Load from coredata
+                if actorCredits.count == 0 {
+
+                    let actor = actorsStore.fetchActorWith(id: searchID)
+                    if let encodedCredits = actor.credits {
+                        if let credits = actorsStore.decodeActorCredits(encodedCredits, .movie) {
+                            for credit in credits {
+                                    if let id = credit.id {
+                                        ids.append(id)
+                                }
+                            }
+                        }
+                    }
+
+                }
+                
             }
         case .actorTV:
             if searchID != 0 {
@@ -820,7 +831,26 @@ extension MovieStore {
                     }
                 }
             }
+            
+            // Load from coredata
+            if actorCredits.count == 0 {
+
+                let actor = actorsStore.fetchActorWith(id: searchID)
+                if let encodedCredits = actor.credits {
+                    if let credits = actorsStore.decodeActorCredits(encodedCredits, .tv) {
+                        for credit in credits {
+                                if let id = credit.id {
+                                    ids.append(id)
+                            }
+                        }
+                    }
+                }
+
+            }
+            
+            
         }
+        
         
         return ids
     }
@@ -843,18 +873,11 @@ extension MovieStore {
                 movies = movieCD.popularMovies
             }
             print("SavedPopularMovies.count: \(movies.count)")
-//            let popularMovieIDs = extractIDsFor(.popularMovie)
-//            let ids = popularMovieIDs.map({ Double($0) })
-//            
-//            movies = movieCD.fetchMovies(uuids: ids)
         case .upcomingMovie:
             movieCD.fetchMovies(.upcoming)
             if movieCD.upcomingMovies.count != 0 {
                 movies = movieCD.upcomingMovies
             }
-//            let upcomingMovieIDs = extractIDsFor(.upcomingMovie)
-//            let ids = upcomingMovieIDs.map({ Double($0) })
-//            movies = movieCD.fetchMovies(uuids: ids)
         case .recommendedMovie:
             let reccomendedMovieIDs = extractIDsFor(.recommendedMovie, id: searchID)
             let ids = reccomendedMovieIDs.map({ Double($0) })
@@ -882,3 +905,9 @@ enum MovieStoreKey: String {
     case apiKey = "ebccbee67fef37cc7a99378c44af7d33" // API Key
     case imageURL = "https://image.tmdb.org/t/p/original" // used as base for movie images
 }
+
+// Used to extract actor credits depending on type
+enum CreditExtractionType: String {
+    case movie = "movie", tv = "tv"
+}
+

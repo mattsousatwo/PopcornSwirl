@@ -17,41 +17,79 @@ struct ActorDetail: View {
     @State var isFavorite: Bool
     @ObservedObject private var actorStore = ActorsStore()
     
-    
     @State private var showFullBio: Bool = false
     
     @ObservedObject private var movie = MovieStore()
-    
-    private var movies: [ActorCreditsCast] {
-        var moviesArray: [ActorCreditsCast] = []
-        if movie.actorCredits.count != 0 {
-            for movie in movie.actorCredits {
-                if movie.media_type == "movie" {
-                    moviesArray.append(movie)
-                }
-            }
-        }
-        print("MoviesArray.count : \(moviesArray.count)")
-        return moviesArray
-    }
-    
-    private var tv: [ActorCreditsCast] {
-        var tvArray: [ActorCreditsCast] = []
-        if movie.actorCredits.count != 0 {
-            for series in movie.actorCredits {
-                if series.media_type == "tv" {
-                    tvArray.append(series)
-                }
-            }
-        }
-        return tvArray
-    }
     
     private var details: ActorDetails? {
         if movie.actorDetails.count != 0 {
             return movie.actorDetails.first
         }
         return nil
+    }
+    
+    private func displayBirthday() -> some View {
+        var birthdate: String?
+        var birthPlace: String?
+        var deathDate: String?
+        
+        // coredata
+        if let actor = actor {
+            if let actorBirthdate = actor.birthDate {
+                birthdate = actorBirthdate
+            }
+            if let actorBirthPlace = actor.birthPlace {
+                birthPlace = actorBirthPlace
+            }
+            if let actorDeath = actor.deathDate {
+                deathDate = actorDeath
+            }
+        }
+        
+        // TMDB
+        if birthdate == nil {
+            for movie in movie.actorDetails {
+                if let birthDate = movie.birthday {
+                    birthdate = birthDate
+                }
+            }
+        }
+        if birthPlace == nil {
+            for movie in movie.actorDetails {
+                if let placeOfBirth = movie.place_of_birth {
+                    birthPlace = placeOfBirth
+                }
+            }
+        }
+        if deathDate == nil {
+            for movie in movie.actorDetails {
+                if let deathday = movie.deathday {
+                    deathDate = deathday
+                }
+            }
+        }
+        
+        
+        let stack = VStack(alignment: .leading) {
+            Text("Birth:").font(.title2).bold()
+            if let deathdate = deathDate {
+                if let birthdate = birthdate {
+                    if let birthplace = birthPlace {
+                        Text("\(birthdate)(\(birthplace)) - \(deathdate)")
+                    }
+                }
+            } else if let birthdate = birthdate {
+                if let birthplace = birthPlace {
+                    Text("\(birthdate), \(birthplace)")
+                }
+            }
+        }
+        .padding(.horizontal)
+        .padding(.bottom, 5)
+        .foregroundColor(.white)
+        
+        
+        return stack
     }
     
     private var imageGradient: LinearGradient {
@@ -91,29 +129,36 @@ struct ActorDetail: View {
                             .padding(.bottom, 5)
                         
                         
-                        VStack(alignment: .leading ) {
-                            ForEach(movie.actorDetails, id: \.self) { details in
-                                Text("Birth Place:").font(.title2).bold()
-                                if details.deathday == "" {
-                                    Text("\(details.birthday ?? "" ) - \(details.deathday ?? "" )")
-                                } else {
-                                    Text( "\(details.birthday ?? "") (\((details.place_of_birth ?? ""))) " )
-                                }
-                            }
-                            
-                        }
-                        .padding(.horizontal)
-                        .padding(.bottom, 5)
-                        .foregroundColor(.white)
+                        // Birthdate
+                        displayBirthday()
+                        
+//                        VStack(alignment: .leading ) {
+//                            ForEach(movie.actorDetails, id: \.self) { details in
+//                                Text("Birth Place:").font(.title2).bold()
+//                                if details.deathday == "" {
+//                                    Text("\(details.birthday ?? "" ) - \(details.deathday ?? "" )")
+//                                } else {
+//                                    Text( "\(details.birthday ?? "") (\((details.place_of_birth ?? ""))) " )
+//                                }
+//                            }
+//
+//                        }
+//                        .padding(.horizontal)
+//                        .padding(.bottom, 5)
+//                        .foregroundColor(.white)
+//
+                        
+                        
+                        
                         
                         Text("Biography").font(.title2).bold()
                             .foregroundColor(.white)
                             .padding(.horizontal)
-                        if let details = details {
+                        if let actor = actor {
                             Button(action: {
                                 self.showFullBio.toggle()
                             }, label: {
-                                Text(details.biography).lineLimit(showFullBio ? nil : 6 )
+                                Text(actor.biography ?? "").lineLimit(showFullBio ? nil : 6 )
                                     .foregroundColor(.white)
                                     .padding(.horizontal)
                                     .padding(.bottom)
@@ -133,7 +178,6 @@ struct ActorDetail: View {
         } // GeometryReader
         
         .onAppear(perform: {
-            movie.fetchCreditsFor(actor: actorID)
             movie.fetchDetailsForActor(id: actorID)
         })
         

@@ -78,10 +78,28 @@ class CoreDataCoder {
     }
     
     /// Decode String to ActorCredits
-    func decodeActorCredits(_ credits: String) -> [ActorCreditsCast]? {
+    func decodeActorCredits(_ credits: String, _ type: CreditExtractionType? = nil) -> [ActorCreditsCast]? {
         guard let data = credits.data(using: .utf8) else { return nil }
         guard let actorCredits = try? decoder.decode([ActorCreditsCast].self, from: data) else { return nil }
-        return actorCredits
+        
+        var credits: [ActorCreditsCast] = []
+        switch type {
+        case nil:
+            credits = actorCredits
+        default:
+            if let type = type {
+                if actorCredits.count != 0 {
+                    for credit in actorCredits {
+                        if credit.media_type == type.rawValue {
+                            credits.append(credit)
+                        }
+                    }
+                }
+            }
+        }
+    
+        
+        return credits
     }
     
 }
