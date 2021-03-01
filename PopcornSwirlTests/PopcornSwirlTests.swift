@@ -360,6 +360,21 @@ class ActorsTests: XCTestCase {
         XCTAssertEqual(actorsStore.actors.count, 0)
     }
     
+    /// test if age calculation works
+    func testCalculatingAge() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
+        let dateOne = formatter.date(from: "2000/10/08")
+        let dateTwo = formatter.date(from: "2005/11/09")
+        
+        guard let starterDate = dateOne else { return }
+        guard  let endingDate = dateTwo else { return }
+        
+        let age = starterDate.calculateTime(to: endingDate)
+
+        XCTAssertEqual(age, 5)
+    }
+    
 }
 
 class ArrayTests: XCTestCase {

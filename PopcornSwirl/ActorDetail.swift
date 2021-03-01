@@ -69,18 +69,40 @@ struct ActorDetail: View {
             }
         }
         
+        var age = 0
+        if let birthday = birthdate {
+            if let convertedDate = birthday.convertToDate() {
+                age = convertedDate.calculateTime(to: Date())
+            }
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy"
+        // Format date
+        if let birthday = birthdate {
+            if let convertedDate = birthday.convertToDate() {
+                birthdate = formatter.string(from: convertedDate)
+            }
+        }
+        if let deathday = deathDate {
+            if let convertedDate = deathday.convertToDate() {
+                deathDate = formatter.string(from: convertedDate)
+            }
+        }
+        
+        
         
         let stack = VStack(alignment: .leading) {
             Text("Birth:").font(.title2).bold()
             if let deathdate = deathDate {
                 if let birthdate = birthdate {
                     if let birthplace = birthPlace {
-                        Text("\(birthdate)(\(birthplace)) - \(deathdate)")
+                        Text("\(birthdate)(\(birthplace)) - \(deathdate): \(age)")
                     }
                 }
             } else if let birthdate = birthdate {
                 if let birthplace = birthPlace {
-                    Text("\(birthdate), \(birthplace)")
+                    Text("\(birthdate), \(age) (\(birthplace))")
                 }
             }
         }
