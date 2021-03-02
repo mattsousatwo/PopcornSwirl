@@ -71,8 +71,14 @@ struct ActorDetail: View {
         
         var age = 0
         if let birthday = birthdate {
-            if let convertedDate = birthday.convertToDate() {
-                age = convertedDate.calculateTime(to: Date())
+            if let convertedBirthdate = birthday.convertToDate() {
+                if let deathdate = deathDate {
+                    if let convertedDeathdate = deathdate.convertToDate() {
+                        age = convertedBirthdate.calculateTime(to: convertedDeathdate)
+                    }
+                } else {
+                    age = convertedBirthdate.calculateTime(to: Date())
+                }
             }
         }
         

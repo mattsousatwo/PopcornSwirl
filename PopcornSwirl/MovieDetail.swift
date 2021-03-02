@@ -335,14 +335,11 @@ struct MovieDetail: View, Equatable {
                 
         
         .onAppear() {
-            
             print( "Movie ID: \(movieID)"  )
             print( "Movie Title: \(movieTitle)"  )
             print( "Movie Overview: \(movieOverview)"  )
             print( "Path: \(MovieStoreKey.imageURL.rawValue + posterPath)" )
             print( "GenreIDs: \(genres)" )
-            
-            
         }
         
         

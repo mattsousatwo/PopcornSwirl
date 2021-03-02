@@ -158,6 +158,59 @@ extension MoviesStore {
         }
     }
     
+    
+    func fetchAndUpdatePopularMovie() {
+        
+    }
+    
+    /// Update properties for Movie using properties from a PopMovie
+    func updatePropertiesFor(movie: Movie, with popMovie: PopMovie) {
+        
+        
+        if movie.title == nil {
+            update(movie: movie, title: popMovie.title)
+        }
+        if movie.overview == nil {
+            update(movie: movie, overview: popMovie.overview)
+        }
+        if movie.imagePath == nil {
+            update(movie: movie, imagePath: popMovie.poster_path)
+        }
+        if movie.genres == nil {
+            if let genres = encodeGenres(popMovie.genre_ids) {
+                update(movie: movie, genres: genres)
+            }
+        }
+        if movie.releaseDate == nil {
+            update(movie: movie, releaseDate: popMovie.release_date)
+        }
+        if movie.voteAverage == 0 {
+            update(movie: movie, voteAverage: popMovie.vote_average)
+        }
+        
+        
+        var movieIsPopular: Bool = false
+        var movieStore = MovieStore()
+        print("MovieIsPopular - movieCount: \(movieStore.popularMovies.count)")
+        for fetchedPopularMovie in movieStore.popularMovies {
+            if Int(movie.uuid) == fetchedPopularMovie.id {
+                movieIsPopular = true
+            } else {
+                movieIsPopular = false
+            }
+        }
+        
+            switch movieIsPopular {
+            case true:
+                update(movie: movie, category: .popular)
+                print("MovieIsPopular: \(movieIsPopular)")
+            case false:
+                update(movie: movie, category: nil)
+                print("MovieIsPopular: \(movieIsPopular)")
+            }
+        
+    }
+
 }
 
 // MARK: FETCHING

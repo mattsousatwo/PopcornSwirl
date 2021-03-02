@@ -148,5 +148,13 @@ struct MovieRow: View, Equatable {
             } // if
         } // ForEach
         .padding()
+        .onAppear {
+            for movieBlock in movies {
+                for movie in movieBlock {
+                    print(movie)
+                }
+            }
+        }
     }
+    
 }

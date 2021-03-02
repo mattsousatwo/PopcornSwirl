@@ -656,21 +656,24 @@ extension MovieStore {
             if popularMovies.count == 0 {
                 fetchPopularMovies()
             }
-            for movie in popularMovies {
-                ids.append(movie.id)
-                
-                let fetchedMovie = movieCD.fetchMovie(uuid: movie.id)
-                let genresString = movieCD.encodeGenres(movie.genre_ids)
-                
-                
-                movieCD.update(movie: fetchedMovie,
-                               category: .popular,
-                               title: movie.title,
-                               overview: movie.overview,
-                               imagePath: movie.poster_path,
-                               genres: genresString,
-                               releaseDate: movie.release_date,
-                               voteAverage: movie.vote_average)
+            if popularMovies.count != 0 {
+                for movie in popularMovies {
+                    ids.append(movie.id)
+                    
+                    let fetchedMovie = movieCD.fetchMovie(uuid: movie.id)
+                    let genresString = movieCD.encodeGenres(movie.genre_ids)
+                    
+//                    movieCD.updatePropertiesFor(movie: fetchedMovie, with: movie)
+                                    movieCD.update(movie: fetchedMovie,
+                                                   category: .popular,
+                                                   title: movie.title,
+                                                   overview: movie.overview,
+                                                   imagePath: movie.poster_path,
+                                                   genres: genresString,
+                                                   releaseDate: movie.release_date,
+                                                   voteAverage: movie.vote_average)
+                    print("FetchedMovie: \(fetchedMovie)")
+                }
             }
             removeOldMovies(from: .popular)
             

@@ -49,20 +49,15 @@ struct Home: View {
         } // Nav
         
         .onAppear() {
-            
-            // TMDB
-            
-            
             //MARK: CoreData -
             genreStore.loadAllGenres()
 
-//             Delete all movies
-//            let movieStore = MoviesStore()
-//            movieStore.deleteAllMovie()
-  
-//            let actorsStore = ActorsStore()
-//            actorsStore.deleteAllSavedActors()
-
+            let moviesStore = MoviesStore()
+            moviesStore.deleteAllMovie()
+            
+            
+            
+            
         }
         
     } // body
