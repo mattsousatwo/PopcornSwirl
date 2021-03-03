@@ -330,53 +330,6 @@ struct Bar: View {
                         .animation(.default)
                     }
                 }
-
-
-//
-//
-//
-//
-//
-//                if actorImages.count != 0 {
-//                    ForEach(0..<actorImages.count, id: \.self) { i in
-//                        if i <= 9 {
-//
-//                            if let actor = actors?.first(where: { $0.id == Double(cast[i].id) }) {
-//                                // Actors from Coredata
-//                                if let movieCast = movieCast {
-//                                    if let imagePath = actorImages[ movieCast[i].id ] {
-//                                        LabeledScrollNavLink(imagePath: imagePath,
-//                                                             actorID: movieCast[i].id,
-//                                                             title: movieCast[i].name,
-//                                                             subtitle: movieCast[i].character,
-//                                                             movie: nil,
-//                                                             actor: actor)
-//
-//                                    }
-//                                }
-//                                else {
-//                                    // Actors from TMDB
-//                                    if let imagePath = actorImages[ cast[i].id ] {
-//                                        LabeledScrollNavLink(imagePath: imagePath,
-//                                                             actorID: cast[i].id,
-//                                                             title: cast[i].name,
-//                                                             subtitle: cast[i].character,
-//                                                             movie: nil,
-//                                                             actor: actor)
-//                                    }
-//                                }
-//                            }
-//
-//                        } // i <= 9
-//                    } // for
-//
-//                    .animation(.default)
-//                } // if
-//
-//
-//
-//
-            
             
             // MARK: POPULAR MOVIE -
             case .popularMovie:
@@ -572,6 +525,7 @@ struct ScrollNavLink: View {
     
     var body: some View {
         if let movie = movie {
+            
             NavigationLink(destination: MovieDetail(movieID: movieID,
                                                     movieTitle: title,
                                                     genreIDs: genreIDs,
@@ -583,6 +537,7 @@ struct ScrollNavLink: View {
                 ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + posterPath),
                           movie: movie)
             }
+            
         } else if let series = series {
             NavigationLink(destination: MovieDetail(movieID: movieID,
                                                     movieTitle: title,
@@ -613,6 +568,8 @@ struct LabeledScrollNavLink: View {
     var movie: Movie?
     var actor: Actor?
     
+    @State private var isActive: Bool = false
+    
     var body: some View {
         
         if let actor = actor {
@@ -634,7 +591,8 @@ struct LabeledScrollNavLink: View {
                                                     movieOverview: movie.overview ?? "",
                                                     posterPath: movie.imagePath ?? "",
                                                     rating: movie.rating,
-                                                    releaseDate: movie.releaseDate ?? "")) {
+                                                    releaseDate: movie.releaseDate ?? ""),
+                           isActive: $isActive) {
                 LabeledImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + imagePath),
                                  title: title, subtitle: subtitle, movie: movie)
             }

@@ -190,7 +190,7 @@ extension MoviesStore {
         
         
         var movieIsPopular: Bool = false
-        var movieStore = MovieStore()
+        let movieStore = MovieStore()
         print("MovieIsPopular - movieCount: \(movieStore.popularMovies.count)")
         for fetchedPopularMovie in movieStore.popularMovies {
             if Int(movie.uuid) == fetchedPopularMovie.id {

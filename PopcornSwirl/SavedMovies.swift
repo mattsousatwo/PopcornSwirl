@@ -85,7 +85,7 @@ struct SavedMovieBody: View {
                     switch type {
                     case .favorite:
                         if let favorites = favoriteMovies {
-                            MovieRow(movies: favorites)
+                            MovieRow(movies: favorites).equatable()
                                 .animation(.default)
                         } else {
                             HStack {
@@ -97,7 +97,7 @@ struct SavedMovieBody: View {
                         }
                     case .watched:
                         if let watched = watchedMovies {
-                            MovieRow(movies: watched)
+                            MovieRow(movies: watched).equatable()
                                 .animation(.default)
                         } else {
                             HStack {
@@ -111,7 +111,6 @@ struct SavedMovieBody: View {
                 } // VStack
             }
             .animation(.default)
-            
             
         }
     }
@@ -137,8 +136,9 @@ struct MovieRow: View, Equatable {
                                        label: {
                                         ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (movie.imagePath ?? "")), movie: movie)
                                        })
+                            
                     } // ForEach
-                    .padding(.horizontal)
+                    .padding()
                     Spacer()
                 } // Hstack
                 .frame(width: UIScreen.main.bounds.size.width,
@@ -148,6 +148,7 @@ struct MovieRow: View, Equatable {
             } // if
         } // ForEach
         .padding()
+        Spacer()
         .onAppear {
             for movieBlock in movies {
                 for movie in movieBlock {

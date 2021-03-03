@@ -18,7 +18,7 @@ struct Home: View {
     
     var body: some View {
         
-        NavigationView {
+//        NavigationView {
             
             ZStack {
                 
@@ -42,20 +42,21 @@ struct Home: View {
                     
                     .navigationBarTitle("Home", displayMode: .inline)
                     
+                    
                 } // scroll
                 
             } // Z Stack
             
-        } // Nav
+//        } // Nav
         
         .onAppear() {
             //MARK: CoreData -
             genreStore.loadAllGenres()
 
-            let moviesStore = MoviesStore()
-            moviesStore.deleteAllMovie()
-            
-            
+//            let moviesStore = MoviesStore()
+//            moviesStore.deleteAllMovie()
+//
+//
             
             
         }
