@@ -14,34 +14,38 @@ struct MainTabView: View {
     
     
     var body: some View {
-        
-        TabView {
+        // MARK: NAVLINK TEST -
+        NavigationView {
+            TabView {
+                Home()
+                    .tabItem {
+                        Image(systemName: "square.grid.2x2")
+                        Text("Home")
+                    }.tag(0)
+                
+                
+                SearchMovie(searchTag: "")
+                    .tabItem {
+                        Image(systemName: "magnifyingglass")
+                        Text("Search")
+                        
+                    }.tag(1)
+                
+                SavedMovies()
+                    .tabItem {
+                        Image(systemName: "bookmark")
+                        Text("Saved")
+                        
+                    }.tag(2)
+                
+            } // TabView
             
-            Home()
-                .tabItem {
-                    Image(systemName: "square.grid.2x2")
-                    Text("Home")
-                }
-            
-            
-            SearchMovie(searchTag: "")
-                .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("Search")
-                    
-                }
-            
-            SavedMovies()
-                .tabItem {
-                    Image(systemName: "bookmark")
-                    Text("Saved")
-                    
-                }
-            
-            
-        
-        
+            .navigationBarTitleDisplayMode(.inline)
         }
+        
+        
+        
+        
         
     }
 }

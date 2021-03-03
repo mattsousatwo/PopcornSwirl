@@ -18,6 +18,7 @@ struct Home: View {
     
     var body: some View {
         
+        // MARK: NAVLINK TEST -
 //        NavigationView {
             
             ZStack {
@@ -26,27 +27,28 @@ struct Home: View {
                 
                 ScrollView(.vertical, showsIndicators: false ) {
                     
-                    // MARK: - POPULAR MOVIES STACK
+                    // MARK: POPULAR MOVIES STACK
                     
                     VStack(spacing: 20) {
                         
                         
                         ScrollBar(type: .popularMovie)
                         
-                        // MARK: - UPCOMING MOVIES STACK
+                        // MARK: UPCOMING MOVIES STACK
                         
                         ScrollBar(type: .upcomingMovie)
                         
                         
                     } // VStack
+                    // MARK: NAVLINK TEST -
+//                    .navigationBarTitle("Home", displayMode: .inline)
                     
-                    .navigationBarTitle("Home", displayMode: .inline)
                     
                     
                 } // scroll
-                
+                .navigationBarBackButtonHidden(false)
             } // Z Stack
-            
+            // MARK: NAVLINK TEST -
 //        } // Nav
         
         .onAppear() {

@@ -347,6 +347,7 @@ struct Bar: View {
                                       voteAverage: popularMovies[i].vote_average,
                                       releaseDate: popularMovies[i].release_date,
                                       movie: movie)
+
                             .animation(.default)
                             .onAppear {
                                 if let genresString = movieCD.encodeGenres(popularMovies[i].genre_ids) {
@@ -362,6 +363,7 @@ struct Bar: View {
                             }
                     }
                 }
+            
                 else if let movies = movies  {
                     if movies.count != 0 {
                         ForEach(0..<movies.count, id: \.self) { i in
@@ -524,6 +526,7 @@ struct ScrollNavLink: View {
     var series: Series?
     
     var body: some View {
+        
         if let movie = movie {
             
             NavigationLink(destination: MovieDetail(movieID: movieID,
