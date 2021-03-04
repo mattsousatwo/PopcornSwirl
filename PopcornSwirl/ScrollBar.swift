@@ -149,7 +149,7 @@ struct Bar: View {
     
     var type: ScrollBarType
     
-    var id: Int // used to fetch recomended movies
+    var id: Int // used to fetch recomended movies | cast | actorImages 
     
     var movies: [Movie]?
     

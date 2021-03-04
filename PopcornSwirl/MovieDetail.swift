@@ -166,12 +166,7 @@ struct MovieDetail: View, Equatable {
                         VStack {
                             // Movie Poster
                             moviePoster()
-                            
-                            
                             commentButton()
-                            
-                            
-                            
                         } // v stack
                         
                         VStack(alignment: .leading, spacing: 10) {
@@ -330,8 +325,6 @@ struct MovieDetail: View, Equatable {
                     
 
         } // ZStack
-        
-        
                 
         
         .onAppear() {
