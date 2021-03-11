@@ -54,7 +54,7 @@ extension MovieStore {
     // MARK: FETCH Popular Movies
     func fetchPopularMovies() {
         let popMovieRequest = "https://api.themoviedb.org/3/movie/popular?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&page=1"
-        
+                
         AF.request( popMovieRequest ).responseJSON {
             response in
             
@@ -452,10 +452,13 @@ extension MovieStore {
     
     
     // Return array of results for movie search
-    func extractMovieSearchResults() -> [MovieSearchResults] {
-        var searchResults = [MovieSearchResults]()
-        for movie in self.movieSearchResults {
-            searchResults.append(movie)
+    func extractMovieSearchResults() -> [[MovieSearchResults]] {
+        var searchResults = [[MovieSearchResults]]()
+        if self.movieSearchResults.count != 0 {
+            let dividedCount = movieSearchResults.count / 2
+            if dividedCount >= 1 {
+                searchResults = movieSearchResults.divided(into: 2)
+            }
         }
         return searchResults
     }

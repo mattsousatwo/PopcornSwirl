@@ -223,7 +223,6 @@ struct MovieDetail: View, Equatable {
                         .overlay(
                             Text("Advertisment").font(.title)
                                 .foregroundColor(.pGray2)
-                            
                         )
                     
                     // MARK: - Suggested Movies
@@ -328,11 +327,15 @@ struct MovieDetail: View, Equatable {
                 
         
         .onAppear() {
+            
+            print("MovieDetail - is loading:")
+            
             print( "Movie ID: \(movieID)"  )
             print( "Movie Title: \(movieTitle)"  )
             print( "Movie Overview: \(movieOverview)"  )
             print( "Path: \(MovieStoreKey.imageURL.rawValue + posterPath)" )
             print( "GenreIDs: \(genres)" )
+            print("MovieDetail - is loaded\n")
         }
         
         

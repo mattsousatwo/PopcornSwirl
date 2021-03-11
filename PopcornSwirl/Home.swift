@@ -17,6 +17,8 @@ struct Home: View {
     @ObservedObject var movieCD = MoviesStore()
     
     
+    @State var presentModal: Bool = false
+    
     var body: some View {
         
         // MARK: NAVLINK TEST -
@@ -47,13 +49,20 @@ struct Home: View {
                                         
                                         let movie = movieCD.fetchMovie(uuid: tMDBMovies[i].id)
                                         
-                                        NavigationLink(destination: MovieDetail(movieID: tMDBMovies[i].id,
-                                                      movieTitle: tMDBMovies[i].title,
-                                                      genreIDs: tMDBMovies[i].genre_ids,
-                                                      movieOverview: tMDBMovies[i].overview,
-                                                      posterPath: tMDBMovies[i].poster_path,
-                                                      rating: tMDBMovies[i].vote_average,
-                                                      releaseDate: tMDBMovies[i].release_date).equatable() ) {
+                                        NavigationLink(destination:
+//                                                        MovieDetail(movieID: tMDBMovies[i].id,
+//                                                      movieTitle: tMDBMovies[i].title,
+//                                                      genreIDs: tMDBMovies[i].genre_ids,
+//                                                      movieOverview: tMDBMovies[i].overview,
+//                                                      posterPath: tMDBMovies[i].poster_path,
+//                                                      rating: tMDBMovies[i].vote_average,
+//                                                      releaseDate: tMDBMovies[i].release_date).equatable()
+                                        
+                                                        ActorDetail(image: "ImagePath",
+                                                                                                actorID: 12,
+                                                                                                name: "TEST NAME",
+                                                                                                isFavorite: false)
+                                        ) {
                                             
                                             ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + tMDBMovies[i].poster_path),
                                                       movie: movie)
@@ -88,17 +97,14 @@ struct Home: View {
                                                                 
                                        label: {
                                         Text("Navigate")
+                                            .padding()
                                             .foregroundColor(.white)
-                                            .padding()
+                                            .background(Color.green)
                                             .cornerRadius(12)
-                                            .background(Color.red)
-                                            .padding()
+                                            
                                             
                                        })
-                        
-                        
-                        
-                        
+
                         
                         
                         

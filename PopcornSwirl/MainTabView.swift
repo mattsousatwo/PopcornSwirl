@@ -23,21 +23,19 @@ struct MainTabView: View {
                         Text("Home")
                     }.tag(0)
                 
-                
                 SearchMovie(searchTag: "")
                     .tabItem {
                         Image(systemName: "magnifyingglass")
                         Text("Search")
-                        
                     }.tag(1)
-                
+
                 SavedMovies()
                     .tabItem {
                         Image(systemName: "bookmark")
                         Text("Saved")
-                        
                     }.tag(2)
                 
+                    .navigationViewStyle(StackNavigationViewStyle())
             } // TabView
             
             .navigationBarTitleDisplayMode(.inline)

@@ -26,7 +26,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
+        
         let contentView = MainTabView().environment(\.managedObjectContext, context)
+        
+        // Load into MovieDetail 
+//        let contentView = MovieDetail(movieID: 12,
+//                                      movieTitle: "",
+//                                      genreIDs: [3],
+//                                      movieOverview: "",
+//                                      posterPath: "",
+//                                      rating: 9.0,
+//                                      releaseDate: "").environment(\.managedObjectContext, context)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {

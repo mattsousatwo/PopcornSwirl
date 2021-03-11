@@ -11,11 +11,13 @@ import SwiftUI
 struct SearchMovie: View {
     
     @State var searchTag: String
+    @State var toggleSearch: Bool = false
+    
     
     @ObservedObject var movieStore = MovieStore()
     
     var body: some View {
-        NavigationView {
+
             ZStack {
                 LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]),
                                startPoint: .top,
@@ -37,6 +39,8 @@ struct SearchMovie: View {
                         Button(action: {
                             
                             print(" ~ Search Button Pressed ~")
+                            
+                            
                             movieStore.fetchResultsForMovie(query: searchTag)
                             
                             self.hideKeyboard()
@@ -64,8 +68,9 @@ struct SearchMovie: View {
                            height: 50)
                     
                     
-                    
-                    CardRow(search: $searchTag)
+                    let movieSearchResults = movieStore.extractMovieSearchResults()
+                    CardRow(search: searchTag,
+                            elements: movieSearchResults)
 //                        .animation(.default)
                     
                     
@@ -77,7 +82,7 @@ struct SearchMovie: View {
             
             .navigationBarTitle("Movie Search", displayMode: .inline)
         }
-    }
+
 }
 
 struct SearchMovie_Previews: PreviewProvider {
