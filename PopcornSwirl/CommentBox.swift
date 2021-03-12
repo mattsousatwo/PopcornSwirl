@@ -18,6 +18,24 @@ struct CommentBox: View {
     var color: Color = .purple
     var shadowRadius: CGFloat = 8
     
+    init(movie: Movie?,
+         text: Binding<String>,
+         width: CGFloat = UIScreen.main.bounds.width - 20,
+         height: CGFloat = UIScreen.main.bounds.height / 4,
+         color: Color = .purple,
+         shadowRadius: CGFloat = 8) {
+        
+        self._text = text
+        self.movie = movie
+        self.width = width
+        self.height = height
+        self.color = color
+        self.shadowRadius = shadowRadius
+        
+        
+        UITextView.appearance().backgroundColor = .clear
+    }
+    
     func commentBody(_ comment: String) -> some View {
         return RoundedRectangle(cornerRadius: 12.0)
             .foregroundColor(color)
@@ -26,15 +44,17 @@ struct CommentBox: View {
                    alignment: .top)
             .shadow(radius: shadowRadius)
             .overlay(
-                TextField(comment, text: $text)
-                    .fixedSize(horizontal: false,
-                               vertical: true)
-                    .lineLimit(nil)
-                    .multilineTextAlignment(.leading)
+                TextEditor(text: $text)
+//                TextField(comment, text: $text)
+//                    .fixedSize(horizontal: false,
+//                               vertical: true)
+//                    .lineLimit(nil)
+//                    .multilineTextAlignment(.leading)
+                    .background(color)
                     .foregroundColor(.pGray3)
                     .padding()
                     .padding(.trailing, 20)
-                    .frame(height: height, alignment: .topLeading)
+                    .frame(width: width, height: height, alignment: .topLeading)
                 )
     }
     
@@ -48,6 +68,7 @@ struct CommentBox: View {
         
     }
 }
+
 
 struct CommentBox_Previews: PreviewProvider {
     static var previews: some View {

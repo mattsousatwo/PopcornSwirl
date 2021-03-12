@@ -397,17 +397,3 @@ class SeriesTests: XCTestCase {
     
 }
 
-class FilmButtonTests: XCTestCase {
-    
-    var movieStore = MoviesStore()
-    lazy var wonderWomanID = 464052 // Wonder Woman 1984
-    
-    func testIfFilmButtonSavingWorks() {
-        
-        let wonderWoman = movieStore.fetchMovie(uuid: wonderWomanID)
-          
-        
-        
-    }
-    
-}

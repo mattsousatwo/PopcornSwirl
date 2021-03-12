@@ -216,6 +216,8 @@ struct MovieDetail: View, Equatable {
                     
                     ScrollBar(type: .actors, id: movieID, movieCast: movieCast).equatable()
                     
+                    
+                    // MARK: AD
                     RoundedRectangle(cornerRadius: 12)
                         .padding(.horizontal)
                         .frame(width: UIScreen.main.bounds.width, height: 100, alignment: .center)
@@ -246,7 +248,7 @@ struct MovieDetail: View, Equatable {
                 }, label: {
                     RoundedRectangle(cornerRadius: 0)
                         .foregroundColor(.black)
-                        .opacity(0.6)
+                        .opacity(0.8)
                         .frame(width: UIScreen.main.bounds.width,
                                height: UIScreen.main.bounds.height)
                 })
@@ -258,6 +260,7 @@ struct MovieDetail: View, Equatable {
                        showSlider: showStarSlider,
                        width: showStarSlider ? UIScreen.main.bounds.width - 40 : 0,
                        height: showStarSlider ? 210 : 0)
+
                 .cornerRadius(12.0)
                 .animation(.easeIn)
 
@@ -297,21 +300,22 @@ struct MovieDetail: View, Equatable {
                            height: showCommentBox ? 100 : 0)
                     .foregroundColor(.clear)
                 if showCommentBox == true {
-                CommentBox(movie: movie,
-                           text: $commentText,
-                           width: showCommentBox ? UIScreen.main.bounds.width - 20 : 0,
-                           height: showCommentBox ? UIScreen.main.bounds.height / 4 : 0)
-                    .overlay(
-                        Button(action: {
-                            print("X Button pressed ")
-                            showCommentBox.toggle()
-                            movieCD.update(movie: movie, comment: commentText)
-                        }, label: {
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.black)
-                        })
-                        .padding()
-                        , alignment: .topTrailing)
+                    
+                        CommentBox(movie: movie,
+                                   text: $commentText,
+                                   width: showCommentBox ? UIScreen.main.bounds.width - 20 : 0,
+                                   height: showCommentBox ? UIScreen.main.bounds.height / 4 : 0)
+                            .overlay(
+                                Button(action: {
+                                    print("X Button pressed ")
+                                    showCommentBox.toggle()
+                                    movieCD.update(movie: movie, comment: commentText)
+                                }, label: {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.black)
+                                })
+                                .padding()
+                                , alignment: .topTrailing)
                     
                 }
                 
