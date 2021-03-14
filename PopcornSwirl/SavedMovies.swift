@@ -11,6 +11,7 @@ import SwiftUI
 enum SavedMoviesViewType: String, Hashable {
     case favorite = "Favorite"
     case watched = "Watched"
+    case actors = "Actors"
 }
 
 // Used to push movie selection on screen.
@@ -23,10 +24,14 @@ struct SavedMovies: View {
     
     @ObservedObject var movieStore = MoviesStore()
     @ObservedObject var savedType = SavedMovieType()
-    private var viewOptions: [SavedMoviesViewType] = [.favorite, .watched]
+    private var viewOptions: [SavedMoviesViewType] = [.favorite, .watched, .actors]
+    
+    init() {
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.lightGray], for: .normal)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.black], for: .selected)
+    }
     
     var body: some View {
-        NavigationView {
             ZStack(alignment: .center) {
                 // Background
                 LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .top, endPoint: .bottom)
@@ -41,7 +46,8 @@ struct SavedMovies: View {
                                     Text($0.rawValue)
                                 }
                                }).pickerStyle(SegmentedPickerStyle())
-                    }
+                            .shadow(radius: 2)
+                        }
                     .padding()
                     // Saved Movies Body
                     switch savedType.type {
@@ -49,11 +55,12 @@ struct SavedMovies: View {
                         SavedMovieBody(type: .favorite)
                     case .watched:
                         SavedMovieBody(type: .watched)
+                    case .actors:
+                        SavedMovieBody(type: .actors)
                     }
                 }
             } // Z
             .navigationBarTitle("\(savedType.type.rawValue) Movies", displayMode: .inline)
-        }
     } // Body
     
 } // SavedMovies()
@@ -65,6 +72,7 @@ struct SavedMovieBody: View {
     
     var type: SavedMoviesViewType
     var movieStore = MoviesStore()
+    var actorsStore = ActorsStore()
     
     // Get All Favorited Movies
     private var favoriteMovies: [[Movie]]? {
@@ -76,6 +84,10 @@ struct SavedMovieBody: View {
         return movieStore.fetchWatched()
     }
     
+    /// All favorite actors 
+    private var actors: [[Actor]]? {
+        return actorsStore.fetchFavoritedActors()
+    }
     
     
     var body: some View {
@@ -90,7 +102,7 @@ struct SavedMovieBody: View {
                         } else {
                             HStack {
                                 Spacer()
-                                Text("No Favorite Movies")
+                                Text("0 Favorite Movies Found")
                                 Spacer()
                             }
                             Spacer()
@@ -102,11 +114,29 @@ struct SavedMovieBody: View {
                         } else {
                             HStack {
                                 Spacer()
-                                Text("No Watched Movies")
+                                Text("0 Watched Movies Found")
                                 Spacer()
                             }
                             Spacer()
                         }
+                        
+                    case .actors:
+                        
+                        if let actors = actors {
+                            MovieRow(actors: actors).equatable()
+                                .frame(width: geo.size.width)
+                                
+                                .animation(.default)
+                        } else {
+                            HStack {
+                                Spacer()
+                                Text("0 Favorited Actors Found")
+                                Spacer()
+                            }
+                            Spacer()
+                        }
+                        
+                        
                     }
                 } // VStack
             }
@@ -120,13 +150,17 @@ struct SavedMovieBody: View {
 // Equatable
 struct MovieRow: View, Equatable {
     
-    var movies: [[Movie]]
+    var movies: [[Movie]]?
+    var actors: [[Actor]]?
     var displayLimit: Int = 9
     var body: some View {
-        ForEach(0..<movies.count, id: \.self) { i in
+        // MARK: If Movie
+        if let movieArray = movies {
+            ForEach(0..<movieArray.count, id: \.self) { i in
             if i <= displayLimit {
                 HStack {
-                    ForEach(movies[i], id: \.self) { movie in
+                    ForEach(movieArray[i], id: \.self) { movie in
+//                        Spacer()
                         NavigationLink(destination: MovieDetail(movieID: Int(movie.uuid),
                                                                 movieTitle: movie.title ?? "",
                                                                 movieOverview: movie.overview ?? "",
@@ -147,15 +181,41 @@ struct MovieRow: View, Equatable {
                 .padding()
             } // if
         } // ForEach
-        .padding()
-        Spacer()
-        .onAppear {
-            for movieBlock in movies {
-                for movie in movieBlock {
-                    print(movie)
-                }
+            .padding()
+        } else if let actors = actors {
+            VStack(alignment: .center) {
+                // MARK: If Actor
+                ForEach(0..<actors.count, id: \.self) { i in
+                if i <= displayLimit {
+                    HStack {
+                        ForEach(actors[i], id: \.self) { actor in
+                            Spacer()
+                            NavigationLink(destination: ActorDetail(image: MovieStoreKey.imageURL.rawValue + (actor.imagePath ?? ""),
+                                                                    actorID: Int(actor.id),
+                                                                    name: actor.name ?? "",
+                                                                    actor: actor,
+                                                                    isFavorite: actor.isFavorite) ,
+                                           label: {
+                                            ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (actor.imagePath ?? "")), actor: actor)
+                                           })
+                            Spacer()
+                                
+                        } // ForEach
+//                        .padding()
+                    
+                    } // Hstack
+                    .frame(width: UIScreen.main.bounds.size.width,
+                           height: 200,
+                           alignment: .center)
+//                    .padding()
+                } // if
+            } // ForEach
+                .padding(.vertical)
             }
         }
+        
+//        Spacer()
+
     }
     
 }

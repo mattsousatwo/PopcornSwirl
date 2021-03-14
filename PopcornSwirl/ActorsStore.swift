@@ -258,6 +258,32 @@ extension ActorsStore {
     }
     
     
+    
+    
+    /// Get all favorited Actors
+    func fetchFavoritedActors() -> [[Actor]]? {
+        var actorsArray: [Actor] = []
+        let request: NSFetchRequest<Actor> = Actor.fetchRequest()
+        request.predicate = NSPredicate(format: "isFavorite == %@", NSNumber(value: true))
+        do {
+            actorsArray = try context.fetch(request)
+        } catch {
+            print(error)
+        }
+        var arrayOfActorArrays: [[Actor]] = []
+        if actorsArray.count != 0 {
+            let dividedCount = actorsArray.count / 2
+            if dividedCount >= 1 {
+                arrayOfActorArrays = actorsArray.divided(into: 2)
+            } else {
+                arrayOfActorArrays = [actorsArray]
+            }
+        } else {
+            return nil
+        }
+        return arrayOfActorArrays
+    }
+    
 }
 
 // MARK: Delete

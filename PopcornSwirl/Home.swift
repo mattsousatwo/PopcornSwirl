@@ -115,7 +115,7 @@ struct Home: View {
                         
                     } // VStack
                     // MARK: NAVLINK TEST -
-//                    .navigationBarTitle("Home", displayMode: .inline)
+                    .navigationBarTitle("Home", displayMode: .inline)
                     
                     
                     

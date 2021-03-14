@@ -35,9 +35,9 @@ struct MainTabView: View {
                         Text("Saved")
                     }.tag(2)
                 
-                    .navigationViewStyle(StackNavigationViewStyle())
+//                    .navigationViewStyle(StackNavigationViewStyle())
             } // TabView
-            
+            .navigationTitle("Popcorn Swirl")
             .navigationBarTitleDisplayMode(.inline)
         }
         
