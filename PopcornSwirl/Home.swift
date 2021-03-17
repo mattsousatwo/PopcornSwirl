@@ -12,7 +12,6 @@ import Alamofire
 
 struct Home: View {
     
-    @ObservedObject private var genreStore = GenreStore()
     @ObservedObject var movieStore = MovieStore()
     @ObservedObject var movieCD = MoviesStore()
     
@@ -30,7 +29,7 @@ struct Home: View {
                 
                 ScrollView(.vertical, showsIndicators: false ) {
                     
-                    // MARK: POPULAR MOVIES STACK
+                    // MARK: Popular Movies Scroll
                     
                     VStack(spacing: 20) {
               
@@ -38,77 +37,7 @@ struct Home: View {
                         ScrollBar(type: .popularMovie)
                         
                         
-                        
-                        let tMDBMovies = movieStore.extractPopularMovies()
-    
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 15) {
-                                
-                                if tMDBMovies.count != 0 {
-                                    ForEach(0..<tMDBMovies.count, id: \.self) { i in
-                                        
-                                        let movie = movieCD.fetchMovie(uuid: tMDBMovies[i].id)
-                                        
-                                        NavigationLink(destination:
-//                                                        MovieDetail(movieID: tMDBMovies[i].id,
-//                                                      movieTitle: tMDBMovies[i].title,
-//                                                      genreIDs: tMDBMovies[i].genre_ids,
-//                                                      movieOverview: tMDBMovies[i].overview,
-//                                                      posterPath: tMDBMovies[i].poster_path,
-//                                                      rating: tMDBMovies[i].vote_average,
-//                                                      releaseDate: tMDBMovies[i].release_date).equatable()
-                                        
-                                                        ActorDetail(image: "ImagePath",
-                                                                                                actorID: 12,
-                                                                                                name: "TEST NAME",
-                                                                                                isFavorite: false)
-                                        ) {
-                                            
-                                            ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + tMDBMovies[i].poster_path),
-                                                      movie: movie)
-                                            
-                                        }
-                                            .animation(.default)
-                                            .onAppear {
-                                                if let genresString = movieCD.encodeGenres(tMDBMovies[i].genre_ids) {
-                                                    movie.update(title: tMDBMovies[i].title,
-                                                                 overview: tMDBMovies[i].overview,
-                                                                 imagePath: tMDBMovies[i].poster_path,
-                                                                 genres: genresString,
-                                                                 releaseDate: tMDBMovies[i].release_date,
-                                                                 voteAverage: tMDBMovies[i].vote_average)
-                                                }
-                                            }
-                                    }
-                                }
-                                
-                            }.padding()
-                        }
-                        
-                        
-                        
-                        
-                        // MARK: navlink test
-                        
-                        NavigationLink(destination: ActorDetail(image: "ImagePath",
-                                                                actorID: 12,
-                                                                name: "TEST NAME",
-                                                                isFavorite: false),
-                                                                
-                                       label: {
-                                        Text("Navigate")
-                                            .padding()
-                                            .foregroundColor(.white)
-                                            .background(Color.green)
-                                            .cornerRadius(12)
-                                            
-                                            
-                                       })
-
-                        
-                        
-                        
-                        // MARK: UPCOMING MOVIES STACK
+                        // MARK: Upcoming Movies scroll
                         
                         ScrollBar(type: .upcomingMovie)
                         
@@ -124,18 +53,6 @@ struct Home: View {
             } // Z Stack
             // MARK: NAVLINK TEST -
 //        } // Nav
-        
-        .onAppear() {
-            //MARK: CoreData -
-            genreStore.loadAllGenres()
-
-//            let moviesStore = MoviesStore()
-//            moviesStore.deleteAllMovie()
-//
-//
-            
-            
-        }
         
     } // body
 }

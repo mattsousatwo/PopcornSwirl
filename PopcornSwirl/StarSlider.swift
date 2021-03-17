@@ -140,11 +140,11 @@ struct StarSliderButtons: View {
     
     var body: some View {
         
-        HStack {
+        HStack { 
             
             // Cancel
             Button(action: {
-                print("Cancel - showSlider : \(showSlider)")
+                print("ShowStarSlider - Cancel - StarSlider: \(showSlider)")
                 
 //                self.dismiss.toggle()
                 showSlider = false
@@ -184,6 +184,10 @@ struct StarSliderButtons: View {
             
         }
         .padding()
+        
+        .onAppear {
+            print("ShowStarSlider - StarSlider: \(showSlider)")
+        }
         
     }
 }

@@ -530,7 +530,7 @@ extension MovieStore {
                     
                     self.genreDictionary[genre.id] = genre.name
                 }
-
+                print("GenreDict.count = \(self.genreDictionary.count)")
             } catch {
                 print(error)
             }
@@ -547,6 +547,46 @@ extension MovieStore {
         }
         return genreNames
     }
+    
+    /// Get all genres and return them in dictionary
+    func pullGenres() -> [Int: String] {
+        var dictionary = [Int: String]()
+        
+        if genreDictionary.count == 0 {
+            getGenres()
+        }
+        dictionary = genreDictionary
+        print("GenreDictionary = \(dictionary.count)")
+        return dictionary
+    }
+    
+    /// Get genres from sever and save to coredata
+    func pullGenresFromServer() -> [Genre] {
+        var fetchedGenres: [Genre] = []
+        let genreRequest = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
+        
+        AF.request( genreRequest ).responseJSON { response in
+            
+            guard let json = response.data else {
+                print("Genre Request Failed")
+                return
+            }
+            do {
+                let results = try self.decoder.decode(GenreArray.self, from: json)
+                
+                fetchedGenres = results.genres
+                
+            } catch {
+                print(error)
+            }
+
+            
+        }
+        print("Genres pulled from server: \(fetchedGenres.count)")
+        return fetchedGenres
+    }
+    
+    
     
 }
 

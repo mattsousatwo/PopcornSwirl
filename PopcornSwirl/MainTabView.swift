@@ -12,7 +12,6 @@ struct MainTabView: View {
     
     
     
-    
     var body: some View {
         // MARK: NAVLINK TEST -
         NavigationView {
@@ -41,7 +40,18 @@ struct MainTabView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         
-        
+        .onAppear {
+            
+            
+            let movieStore = MovieStore()
+//            let genresDict = movieStore.pullGenres()
+            
+            let genres = GenreStore()
+            
+            movieStore.pullGenresFromServer() 
+//            genres.initalizeGenres()
+            print("InitalizeGenres: genres.count = \(genres.genres.count)")
+        }
         
         
         

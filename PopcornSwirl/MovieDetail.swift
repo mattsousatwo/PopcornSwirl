@@ -10,6 +10,8 @@ import SwiftUI
 import Combine
 
 struct MovieDetail: View, Equatable {
+        
+    @ObservedObject private var genreStore = GenreStore()
     
     // Equatable
     static func == (lhs: MovieDetail, rhs: MovieDetail) -> Bool {
@@ -19,9 +21,9 @@ struct MovieDetail: View, Equatable {
     // TMDB
     @ObservedObject private var movieStore = MovieStore()
     
-    
     // CoreData
     @ObservedObject private var movieCD = MoviesStore()
+    
     private var movie: Movie { 
         return movieCD.fetchMovie(uuid: movieID)
     }
@@ -31,8 +33,6 @@ struct MovieDetail: View, Equatable {
     @State private var value: Double = 0
     @State private var showCommentBox: Bool = false
     @State private var commentText: String = ""
-    
-    
     
     // MovieDetail Properties
     var movieID = Int()
@@ -69,8 +69,13 @@ struct MovieDetail: View, Equatable {
     }
     
     
+    var loadedGenres: [Genres] {
+        return genreStore.loadAllGenres()
+    }
+    
+    
     // decoded genre ids 
-    var genres: [Int] {
+    var genres: [String] {
         var ids: [Int] = []
         if let movieGenres = movie.genres {
             print("MovieGenres: \(movieGenres)")
@@ -78,8 +83,25 @@ struct MovieDetail: View, Equatable {
                 ids = genreIDs
             }
         }
-        print("Genres: \(ids)")
-        return ids
+        
+        var genreNames: [String] = []
+        
+        for id in ids {
+            for genre in loadedGenres {
+                if genre.id == Int16(id) {
+                if var name = genre.name {
+                    // Configure Names
+                    if name == "Science Fiction" {
+                        name = "Sci-Fi"
+                    }
+                    genreNames.append(name)
+                }
+            }
+            }
+        }
+        
+        print("GenresNames: \(genreNames), count: \(genreNames.count), ID: \(ids)")
+        return genreNames
     }
     
     // decoded movie cast
@@ -152,28 +174,28 @@ struct MovieDetail: View, Equatable {
     var body: some View {
         
         ZStack(alignment: .center) {
-            
+
             // Background
             LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea(edges: .vertical)
-            
+
             // Content
             ScrollView {
-                
+
                 VStack(alignment: .leading) {
                     HStack(alignment: .bottom) {
-                        
+
                         VStack {
                             // Movie Poster
                             moviePoster()
                             commentButton()
                         } // v stack
-                        
+
                         VStack(alignment: .leading, spacing: 10) {
                             // Movie Title
                             title()
-                            
-                            
+
+
                             // Director
                             Text("Director:").bold()
                                 .foregroundColor(.white)
@@ -188,10 +210,11 @@ struct MovieDetail: View, Equatable {
                             Text(moviePremire)
                                 .foregroundColor(.pGray3)
                                 .padding(.horizontal )
-                            
+
                             // Rating
                             Button(action: {
-                                self.showStarSlider.toggle()
+                                self.showStarSlider = NSNumber(value: true) as! Bool
+                                print("ShowStarSlider - Rating - MovieDetail: \(showStarSlider)")
                             }, label: {
                                 StarBar(value: rating)
                                     .frame(width: UIScreen.main.bounds.width/2, height: 25 )
@@ -199,25 +222,21 @@ struct MovieDetail: View, Equatable {
                             })
                         }
                     }
-                    
-                    // Description
+
+//                    // Description
                     Text(movieOverview).lineLimit(nil)
                         .foregroundColor(.pGray3)
                         .padding(.horizontal)
                         .padding(.trailing, 8)
+
+                    //MARK: - Genres -
+//                    GenreBar(genres: genres)
+
                     
-                    
-                    
-                    // Genres
-                    //                    GenreBar(genres: genreIDs)
-                    GenreBar(genres: genres)
-                    
-                    // MARK: - Actors Scroll
-                    
+
                     ScrollBar(type: .actors, id: movieID, movieCast: movieCast).equatable()
+
                     
-                    
-                    // MARK: AD
                     RoundedRectangle(cornerRadius: 12)
                         .padding(.horizontal)
                         .frame(width: UIScreen.main.bounds.width, height: 100, alignment: .center)
@@ -226,17 +245,17 @@ struct MovieDetail: View, Equatable {
                             Text("Advertisment").font(.title)
                                 .foregroundColor(.pGray2)
                         )
-                    
-                    // MARK: - Suggested Movies
+//
+//                    // MARK: - Suggested Movies
                     ScrollBar(type: .recommendedMovie, id: movieID).equatable()
-                    
+//
                     PurchaseLinkBar(movieID: movieID, movie: movie)
                         .padding(.bottom)
-                    
+//
                 } // V stack
-                
+
             } // scroll
-            
+
             // View to cover background if starslider is shown - if pressed will dismiss star slider
             if showStarSlider == true || showCommentBox == true {
                 Button(action: {
@@ -253,7 +272,7 @@ struct MovieDetail: View, Equatable {
                                height: UIScreen.main.bounds.height)
                 })
             }
-            
+
 
             StarSlider(movie: movie,
                        value: movie.rating,
@@ -265,7 +284,7 @@ struct MovieDetail: View, Equatable {
                 .animation(.easeIn)
 
 
-            // MARK: Deconstructed StarSlider
+//             MARK: Deconstructed StarSlider
 //            RoundedRectangle(cornerRadius: 12)
 //                .frame(width: showStarSlider ? UIScreen.main.bounds.width - 40 : 0,
 //                       height: showStarSlider ? 210 : 0)
@@ -290,9 +309,9 @@ struct MovieDetail: View, Equatable {
 //                .animation(.default)
 
 
-            
-            
-            
+
+
+
             VStack {
                 // Spacer for Nav Bar
                 RoundedRectangle(cornerRadius: 0)
@@ -300,7 +319,7 @@ struct MovieDetail: View, Equatable {
                            height: showCommentBox ? 100 : 0)
                     .foregroundColor(.clear)
                 if showCommentBox == true {
-                    
+
                         CommentBox(movie: movie,
                                    text: $commentText,
                                    width: showCommentBox ? UIScreen.main.bounds.width - 20 : 0,
@@ -316,23 +335,28 @@ struct MovieDetail: View, Equatable {
                                 })
                                 .padding()
                                 , alignment: .topTrailing)
-                    
+
                 }
-                
-                
+
+
                 Spacer()
             }.frame(width: showCommentBox ? UIScreen.main.bounds.width : 0,
                     height: showCommentBox ? UIScreen.main.bounds.height : 0)
             .animation(.default)
-            
-                    
+
+
 
         } // ZStack
                 
         
         .onAppear() {
+
+//            genreStore.loadAllGenres()
+            
+            
             
             print("MovieDetail - is loading:")
+            print("ShowStarSlider - MovieDetail: \(showStarSlider)")
             
             print( "Movie ID: \(movieID)"  )
             print( "Movie Title: \(movieTitle)"  )
@@ -340,6 +364,7 @@ struct MovieDetail: View, Equatable {
             print( "Path: \(MovieStoreKey.imageURL.rawValue + posterPath)" )
             print( "GenreIDs: \(genres)" )
             print("MovieDetail - is loaded\n")
+
         }
         
         

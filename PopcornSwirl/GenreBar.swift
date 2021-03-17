@@ -22,21 +22,20 @@ struct GenreBar_Previews: PreviewProvider {
 
 struct GenreBar: View {
     
+    
     @ObservedObject private var movie = MovieStore()
     
-    @ObservedObject private var genreStore = GenreStore()
+    var genres: [String]
     
-    var genres: [Int]
-    
-    private var genreList: [String] {
-        return genreStore.extractGenreFrom(ids: genres)
-    }
+//    private var genreList: [String] {
+//        return genreStore.extractGenreFrom(ids: genres)
+//    }
     
     var body: some View {
         
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                ForEach(genreList, id: \.self) { genre in
+                ForEach(genres, id: \.self) { genre in
                     
                     
                     RoundedRectangle(cornerRadius: 10)

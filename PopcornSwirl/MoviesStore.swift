@@ -304,9 +304,8 @@ extension MoviesStore {
                 movie = newMovie
             case false:
                 
-                for element in result {
-                    print("Movie Found: \(element.title ?? "no title"), id: \(id)")
-                    movie = element
+                if let movieElement = result.first {
+                    movie = movieElement
                 }
             }
         } catch {
@@ -315,7 +314,6 @@ extension MoviesStore {
         
         return movie
     }
-
     
     // Fetch all favorited movies
     func getAllFavoriteMovies() -> [Movie] {

@@ -160,7 +160,6 @@ struct MovieRow: View, Equatable {
             if i <= displayLimit {
                 HStack {
                     ForEach(movieArray[i], id: \.self) { movie in
-//                        Spacer()
                         NavigationLink(destination: MovieDetail(movieID: Int(movie.uuid),
                                                                 movieTitle: movie.title ?? "",
                                                                 movieOverview: movie.overview ?? "",
@@ -170,6 +169,8 @@ struct MovieRow: View, Equatable {
                                        label: {
                                         ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (movie.imagePath ?? "")), movie: movie)
                                        })
+                            
+                            
                             
                     } // ForEach
                     .padding()
@@ -182,6 +183,8 @@ struct MovieRow: View, Equatable {
             } // if
         } // ForEach
             .padding()
+            
+            
         } else if let actors = actors {
             VStack(alignment: .center) {
                 // MARK: If Actor
@@ -198,10 +201,11 @@ struct MovieRow: View, Equatable {
                                            label: {
                                             ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (actor.imagePath ?? "")), actor: actor)
                                            })
+//                                .padding(.top)
                             Spacer()
                                 
                         } // ForEach
-//                        .padding()
+                        .padding()
                     
                     } // Hstack
                     .frame(width: UIScreen.main.bounds.size.width,

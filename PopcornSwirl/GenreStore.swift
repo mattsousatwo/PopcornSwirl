@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 import SwiftUI
+import Combine
 
 class GenreStore: ObservableObject {
     
@@ -26,6 +27,47 @@ class GenreStore: ObservableObject {
         entity = NSEntityDescription.entity(forEntityName: GenreKeys.entity.rawValue, in: context)!
     }
     
+    
+    
+    /// save all genres
+    func setGenreDictionary() {
+        fetchAllGenres()
+
+        
+        
+        
+    }
+    
+    
+    
+    /// Save genres to device if not already saved
+    func initalizeGenres() {
+        movie.getGenres()
+        print("InitalizeGenres")
+        fetchAllGenres()
+        
+        
+        
+        if genres.count == 0 {
+            if movie.genreDictionary.count != 0 {
+                for (id, name) in movie.genreDictionary {
+                    createGenre(id: id, name: name)
+                    print("InitalizeGenres - NewGenre: \(name), \(id)")
+                }
+            }
+            
+        }
+    }
+    
+    /// Create a new Genre Entity
+    func createGenre(id: Int, name: String) {
+        let genre = Genres(context: context)
+        genre.id = Int16(id)
+        genre.name = name
+        saveContext()
+    }
+    
+    /// Save Genre context
     func saveContext() {
         do {
             try context.save()
@@ -34,6 +76,7 @@ class GenreStore: ObservableObject {
         }
     }
     
+    /// Fetch all Genre entities
     func fetchAllGenres() {
         let request: NSFetchRequest<Genres> = Genres.fetchRequest()
         do {
@@ -44,38 +87,60 @@ class GenreStore: ObservableObject {
         }
     }
     
-    // Check if genres are loaded before fetching 
-    func loadAllGenres() {
+    /// Check if genres are loaded before fetching, & return an array of Genres
+    func loadAllGenres() -> [Genres] {
         if genres.isEmpty == true {
             fetchAllGenres()
         }
+        return genres
     }
     
     
-    // Extract genres from id tags
+    /// Extract genres from id tags
     func extractGenreFrom(ids: [Int]) -> [String] {
         var extractedArray: [String] = []
-        if genres.isEmpty {
-            fetchAllGenres()
-        }
-        if genres.count != 0 {
-            for genre in genres {
-                for id in ids {
-                    if genre.id == Int16(id) {
-                        
-                        if var name = genre.name {
-                            // Configure Names
-                            if name == "Science Fiction" {
-                                name = "Sci-Fi"
-                            }
-                            
-                            extractedArray.append(name)
-                        }
-                        
+        for (genre, id) in zip(genres, ids) {
+            if genre.id == Int16(id) {
+                if var name = genre.name {
+                    // Configure Names
+                    if name == "Science Fiction" {
+                        name = "Sci-Fi"
                     }
+                    extractedArray.append(name)
                 }
             }
         }
+        
+        for genre in extractedArray {
+            print("Extracted Array: \(genre)")
+        }
+            
+            if extractedArray.count == 0 {
+                print("Extracted Array: == NIL")
+            }
+        
+        
+//
+//        if genres.count != 0 {
+//            for genre in genres {
+//                for id in ids {
+//                    if genre.id == Int16(id) {
+//
+//                        if var name = genre.name {
+//                            // Configure Names
+//                            if name == "Science Fiction" {
+//                                name = "Sci-Fi"
+//                            }
+//
+//                            extractedArray.append(name)
+//                        }
+//
+//                    }
+//                }
+//            }
+//        }
+       
+        
         
         return extractedArray
     }
