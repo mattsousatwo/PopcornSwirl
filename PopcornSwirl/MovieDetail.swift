@@ -81,22 +81,6 @@ struct MovieDetail: View, Equatable {
         let genreDict = GenreDict()
         
         let genreNames = genreDict.convertGenre(IDs: ids)
-        
-//
-//
-//        for id in ids {
-//            for genre in loadedGenres {
-//                if genre.id == Int16(id) {
-//                if var name = genre.name {
-//                    // Configure Names
-//                    if name == "Science Fiction" {
-//                        name = "Sci-Fi"
-//                    }
-//                    genreNames.append(name)
-//                }
-//            }
-//            }
-//        }
 
         print("GenresNames: \(genreNames), count: \(genreNames.count), ID: \(ids)")
         return genreNames

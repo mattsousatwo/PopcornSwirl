@@ -150,75 +150,81 @@ struct SavedMovieBody: View {
 // Equatable
 struct MovieRow: View, Equatable {
     
+    static func == (lhs: MovieRow, rhs: MovieRow) -> Bool {
+        lhs.movies == rhs.movies || lhs.actors == rhs.actors
+    }
+    
+    
     var movies: [[Movie]]?
     var actors: [[Actor]]?
     var displayLimit: Int = 9
+    
+    
+    let columnSize = [ GridItem(.adaptive(minimum: 150)) ]
+    
+    
     var body: some View {
+        
         // MARK: If Movie
         if let movieArray = movies {
-            ForEach(0..<movieArray.count, id: \.self) { i in
-            if i <= displayLimit {
-                HStack {
-                    ForEach(movieArray[i], id: \.self) { movie in
-                        NavigationLink(destination: MovieDetail(movieID: Int(movie.uuid),
-                                                                movieTitle: movie.title ?? "",
-                                                                movieOverview: movie.overview ?? "",
-                                                                posterPath: movie.imagePath ?? "",
-                                                                rating: movie.rating,
-                                                                releaseDate: movie.releaseDate ?? "").equatable() ,
-                                       label: {
-                                        ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (movie.imagePath ?? "")), movie: movie)
-                                       })
-                            
-                            
-                            
-                    } // ForEach
-                    .padding()
-                    Spacer()
-                } // Hstack
-                .frame(width: UIScreen.main.bounds.size.width,
-                       height: 200,
-                       alignment: .center)
-                .padding()
-            } // if
-        } // ForEach
+            LazyVGrid(columns: columnSize, alignment: .center, spacing: 20) {
+                ForEach(0..<movieArray.count, id: \.self) { i in
+                    if i <= displayLimit {
+                        ForEach(movieArray[i], id: \.self) { movie in
+                            NavigationLink(destination: MovieDetail(movieID: Int(movie.uuid),
+                                                                    movieTitle: movie.title ?? "",
+                                                                    movieOverview: movie.overview ?? "",
+                                                                    posterPath: movie.imagePath ?? "",
+                                                                    rating: movie.rating,
+                                                                    releaseDate: movie.releaseDate ?? "").equatable() ,
+                                           label: {
+                                            ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (movie.imagePath ?? "")), movie: movie)
+                                           })
+                        }
+                        
+                        
+                    }
+                    
+                }
+                
+            } // ForEach
             .padding()
             
             
+            
+            
+            
+            
         } else if let actors = actors {
-            VStack(alignment: .center) {
+            
+            LazyVGrid(columns: columnSize, alignment: .center, spacing: 20) {
                 // MARK: If Actor
                 ForEach(0..<actors.count, id: \.self) { i in
-                if i <= displayLimit {
-                    HStack {
+                    if i <= displayLimit {
                         ForEach(actors[i], id: \.self) { actor in
-                            Spacer()
-                            NavigationLink(destination: ActorDetail(image: MovieStoreKey.imageURL.rawValue + (actor.imagePath ?? ""),
+                            let imagePath = MovieStoreKey.imageURL.rawValue + (actor.imagePath ?? "")
+                            NavigationLink(destination: ActorDetail(image: imagePath,
                                                                     actorID: Int(actor.id),
                                                                     name: actor.name ?? "",
                                                                     actor: actor,
                                                                     isFavorite: actor.isFavorite) ,
                                            label: {
-                                            ImageCard(url: URL(string: MovieStoreKey.imageURL.rawValue + (actor.imagePath ?? "")), actor: actor)
+                                            ImageCard(url: URL(string: imagePath),
+                                                      actor: actor)
                                            })
-//                                .padding(.top)
-                            Spacer()
-                                
                         } // ForEach
-                        .padding()
-                    
-                    } // Hstack
-                    .frame(width: UIScreen.main.bounds.size.width,
-                           height: 200,
-                           alignment: .center)
-//                    .padding()
-                } // if
-            } // ForEach
-                .padding(.vertical)
+    
+                    } // if
+                } // ForEach
             }
+            .padding()
+            
+            
+            
+            
         }
         
-//        Spacer()
+
 
     }
     
