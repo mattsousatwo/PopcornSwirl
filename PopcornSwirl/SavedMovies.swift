@@ -160,7 +160,7 @@ struct MovieRow: View, Equatable {
     var displayLimit: Int = 9
     
     
-    let columnSize = [ GridItem(.adaptive(minimum: 150)) ]
+    private let columnSize = [ GridItem(.adaptive(minimum: 150)) ]
     
     
     var body: some View {
