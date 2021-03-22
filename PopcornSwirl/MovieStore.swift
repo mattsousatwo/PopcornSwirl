@@ -29,7 +29,7 @@ class MovieStore: ObservableObject {
     @Published var movieSearchResults = [MovieSearchResults]()
     @Published var upcomingMovies = [UpcomingMovie]()
     @Published var actorImageProfiles = [Int : String]() // Stores actor images by ID
-    @Published var genreDictionary = [Int: String]() // Stores genres
+
     
     // ActorDetail
     @Published var actorCredits = [ActorCreditsCast]()
@@ -512,59 +512,59 @@ extension MovieStore {
 
 
 // MARK: GET Genres
-extension MovieStore { 
-    
-    func getGenres() {
-        let genreRequest = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
-        
-        AF.request( genreRequest ).responseJSON { response in
-            
-            guard let json = response.data else {
-                print("Genre List not found")
-                return
-            }
-            do {
-                let results = try self.decoder.decode(GenreArray.self, from: json)
-                
-                for genre in results.genres {
-                    
-                    self.genreDictionary[genre.id] = genre.name
-                    print("GenreID: \(genre.id), Name: \(genre.name)")
-                    
-                }
-                print("GenreDict.count = \(self.genreDictionary.count)")
-            } catch {
-                print(error)
-            }
-            
-
-        }
-    }
-    
-    func extractGenres(from IDs: [Int]) -> [String] {
-        var genreNames = [String]()
-        for id in IDs {
-            if let genre = genreDictionary[id] {
-                genreNames.append(genre)
-            }
-        }
-        return genreNames
-    }
-    
-    /// Get all genres and return them in dictionary
-    func pullGenres() -> [Int: String] {
-        var dictionary = [Int: String]()
-        
-        if genreDictionary.count == 0 {
-            getGenres()
-        }
-        dictionary = genreDictionary
-        print("GenreDictionary = \(dictionary.count)")
-        return dictionary
-    }
-
-    
-}
+//extension MovieStore {
+//
+//    func getGenres() {
+//        let genreRequest = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
+//
+//        AF.request( genreRequest ).responseJSON { response in
+//
+//            guard let json = response.data else {
+//                print("Genre List not found")
+//                return
+//            }
+//            do {
+//                let results = try self.decoder.decode(GenreArray.self, from: json)
+//
+//                for genre in results.genres {
+//
+//                    self.genreDictionary[genre.id] = genre.name
+//                    print("GenreID: \(genre.id), Name: \(genre.name)")
+//
+//                }
+//                print("GenreDict.count = \(self.genreDictionary.count)")
+//            } catch {
+//                print(error)
+//            }
+//
+//
+//        }
+//    }
+//
+//    func extractGenres(from IDs: [Int]) -> [String] {
+//        var genreNames = [String]()
+//        for id in IDs {
+//            if let genre = genreDictionary[id] {
+//                genreNames.append(genre)
+//            }
+//        }
+//        return genreNames
+//    }
+//
+//    /// Get all genres and return them in dictionary
+//    func pullGenres() -> [Int: String] {
+//        var dictionary = [Int: String]()
+//
+//        if genreDictionary.count == 0 {
+//            getGenres()
+//        }
+//        dictionary = genreDictionary
+//        print("GenreDictionary = \(dictionary.count)")
+//        return dictionary
+//    }
+//
+//
+//}
 
 
 // MARK: - Purchase Movie Links

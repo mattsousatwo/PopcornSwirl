@@ -66,24 +66,23 @@ struct MovieDetail: View, Equatable {
         }
         return name
     }
-    
+
+    // decoded genre ids
+    var genres: [String] {
+        var ids: [Int] = []
+        if let movieGenres = movie.genres {
+            print("MovieGenres: \(movieGenres)")
+            if let genreIDs = movieCD.decodeGenres(movieGenres) {
+                ids = genreIDs
+            }
+        }
+
+        
+        let genreDict = GenreDict()
+        
+        let genreNames = genreDict.convertGenre(IDs: ids)
+        
 //
-//    var loadedGenres: [Genres] {
-//        return genreStore.loadAllGenres()
-//    }
-    
-//
-//    // decoded genre ids
-//    var genres: [String] {
-//        var ids: [Int] = []
-//        if let movieGenres = movie.genres {
-//            print("MovieGenres: \(movieGenres)")
-//            if let genreIDs = movieCD.decodeGenres(movieGenres) {
-//                ids = genreIDs
-//            }
-//        }
-//
-//        var genreNames: [String] = []
 //
 //        for id in ids {
 //            for genre in loadedGenres {
@@ -98,11 +97,11 @@ struct MovieDetail: View, Equatable {
 //            }
 //            }
 //        }
-//
-//        print("GenresNames: \(genreNames), count: \(genreNames.count), ID: \(ids)")
-//        return genreNames
-//    }
-//
+
+        print("GenresNames: \(genreNames), count: \(genreNames.count), ID: \(ids)")
+        return genreNames
+    }
+
     // decoded movie cast
     var movieCast: [MovieCast]? {
         if let movieCastString = movie.cast {
@@ -229,7 +228,7 @@ struct MovieDetail: View, Equatable {
                         .padding(.trailing, 8)
 
                     //MARK: - Genres -
-//                    GenreBar(genres: genres)
+                    GenreBar(genres: genres)
 
                     
 

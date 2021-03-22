@@ -395,3 +395,22 @@ class SeriesTests: XCTestCase {
     
 }
 
+
+class GenreTests: XCTestCase {
+    
+    
+    func testGenreClassExtraction() {
+        let genre = GenreDict()
+        
+        let names = genre.convertGenre(IDs: [28])
+        
+        let testGoal = ["Action"]
+        
+        XCTAssertEqual(names, testGoal)
+        
+    }
+    
+    
+    
+    
+}

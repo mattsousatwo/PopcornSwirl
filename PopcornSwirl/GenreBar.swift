@@ -22,14 +22,7 @@ struct GenreBar_Previews: PreviewProvider {
 
 struct GenreBar: View {
     
-    
-    @ObservedObject private var movie = MovieStore()
-    
     var genres: [String]
-    
-    //    private var genreList: [String] {
-    //        return genreStore.extractGenreFrom(ids: genres)
-    //    }
     
     var body: some View {
         

@@ -237,57 +237,6 @@ struct ActorDetails: Codable, Hashable {
 // MARK: -
 
 
-// MARK: - GENRES
-struct Genre: Codable, Hashable {
-    var id: Int
-    var name: String
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(name, forKey: .name)
-    }
-    
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
-        name = try values.decode(String.self, forKey: .name)
-    }
-
-}
-
-struct GenreArray: Codable {
-    var genres: [Genre]
-    
-    enum CodingKeys: String, CodingKey {
-        case genres
-    }
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(genres, forKey: .genres)
-    }
-
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        genres = try values.decode([Genre].self, forKey: .genres)
-    }
-}
-
-struct GenreID: Codable {
-    var value: [Int]
-}
-
-
-
 // MARK: - WatchProviders
 struct WatchProviders: Codable {
     var id: Int
