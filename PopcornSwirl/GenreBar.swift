@@ -27,29 +27,31 @@ struct GenreBar: View {
     
     var genres: [String]
     
-//    private var genreList: [String] {
-//        return genreStore.extractGenreFrom(ids: genres)
-//    }
+    //    private var genreList: [String] {
+    //        return genreStore.extractGenreFrom(ids: genres)
+    //    }
     
     var body: some View {
         
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ForEach(genres, id: \.self) { genre in
-                    
-                    
-                    RoundedRectangle(cornerRadius: 10)
-                        .opacity(0.6)
-                        .foregroundColor(.lightBlue)
-                        .frame(width: 100,
-                            height: 40)
-                        .shadow(radius: 3)
-                        .overlay(Text(genre).bold().foregroundColor(.pGray3).opacity(0.8))
+            if genres.count != 0 {
+                HStack {
+                    ForEach(genres, id: \.self) { genre in
+                        
+                        
+                        RoundedRectangle(cornerRadius: 10)
+                            .opacity(0.6)
+                            .foregroundColor(.lightBlue)
+                            .frame(width: 100,
+                                   height: 40)
+                            .shadow(radius: 3)
+                            .overlay(Text(genre).bold().foregroundColor(.pGray3).opacity(0.8))
+                        
+                    }
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 10)
                     
                 }
-                .padding(.vertical, 10)
-                .padding(.horizontal, 10)
-                
             }
         }
         .padding(.horizontal)

@@ -393,7 +393,5 @@ class ArrayTests: XCTestCase {
 
 class SeriesTests: XCTestCase {
     
-
-    
 }
 

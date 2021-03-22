@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MainTabView: View {
-    
+    @ObservedObject var movieStore = MovieStore()
     
     
     var body: some View {
@@ -39,19 +39,7 @@ struct MainTabView: View {
             .navigationTitle("Popcorn Swirl")
             .navigationBarTitleDisplayMode(.inline)
         }
-        
-        .onAppear {
-            
-            
-            let movieStore = MovieStore()
-//            let genresDict = movieStore.pullGenres()
-            
-            let genres = GenreStore()
-            
-            movieStore.pullGenresFromServer() 
-//            genres.initalizeGenres()
-            print("InitalizeGenres: genres.count = \(genres.genres.count)")
-        }
+
         
         
         

@@ -11,7 +11,6 @@ import Combine
 
 struct MovieDetail: View, Equatable {
         
-    @ObservedObject private var genreStore = GenreStore()
     
     // Equatable
     static func == (lhs: MovieDetail, rhs: MovieDetail) -> Bool {
@@ -68,42 +67,42 @@ struct MovieDetail: View, Equatable {
         return name
     }
     
+//
+//    var loadedGenres: [Genres] {
+//        return genreStore.loadAllGenres()
+//    }
     
-    var loadedGenres: [Genres] {
-        return genreStore.loadAllGenres()
-    }
-    
-    
-    // decoded genre ids 
-    var genres: [String] {
-        var ids: [Int] = []
-        if let movieGenres = movie.genres {
-            print("MovieGenres: \(movieGenres)")
-            if let genreIDs = movieCD.decodeGenres(movieGenres) {
-                ids = genreIDs
-            }
-        }
-        
-        var genreNames: [String] = []
-        
-        for id in ids {
-            for genre in loadedGenres {
-                if genre.id == Int16(id) {
-                if var name = genre.name {
-                    // Configure Names
-                    if name == "Science Fiction" {
-                        name = "Sci-Fi"
-                    }
-                    genreNames.append(name)
-                }
-            }
-            }
-        }
-        
-        print("GenresNames: \(genreNames), count: \(genreNames.count), ID: \(ids)")
-        return genreNames
-    }
-    
+//
+//    // decoded genre ids
+//    var genres: [String] {
+//        var ids: [Int] = []
+//        if let movieGenres = movie.genres {
+//            print("MovieGenres: \(movieGenres)")
+//            if let genreIDs = movieCD.decodeGenres(movieGenres) {
+//                ids = genreIDs
+//            }
+//        }
+//
+//        var genreNames: [String] = []
+//
+//        for id in ids {
+//            for genre in loadedGenres {
+//                if genre.id == Int16(id) {
+//                if var name = genre.name {
+//                    // Configure Names
+//                    if name == "Science Fiction" {
+//                        name = "Sci-Fi"
+//                    }
+//                    genreNames.append(name)
+//                }
+//            }
+//            }
+//        }
+//
+//        print("GenresNames: \(genreNames), count: \(genreNames.count), ID: \(ids)")
+//        return genreNames
+//    }
+//
     // decoded movie cast
     var movieCast: [MovieCast]? {
         if let movieCastString = movie.cast {
@@ -236,16 +235,19 @@ struct MovieDetail: View, Equatable {
 
                     ScrollBar(type: .actors, id: movieID, movieCast: movieCast).equatable()
 
-                    
+                    HStack {
+                        Spacer()
                     RoundedRectangle(cornerRadius: 12)
-                        .padding(.horizontal)
-                        .frame(width: UIScreen.main.bounds.width, height: 100, alignment: .center)
+                        .frame(width: UIScreen.main.bounds.width - 40,
+                               height: 100,
+                               alignment: .center)
                         .foregroundColor(.darkBlue)
                         .overlay(
                             Text("Advertisment").font(.title)
                                 .foregroundColor(.pGray2)
                         )
-//
+                        Spacer()
+                    }
 //                    // MARK: - Suggested Movies
                     ScrollBar(type: .recommendedMovie, id: movieID).equatable()
 //
@@ -362,7 +364,7 @@ struct MovieDetail: View, Equatable {
             print( "Movie Title: \(movieTitle)"  )
             print( "Movie Overview: \(movieOverview)"  )
             print( "Path: \(MovieStoreKey.imageURL.rawValue + posterPath)" )
-            print( "GenreIDs: \(genres)" )
+//            print( "GenreIDs: \(genres)" )
             print("MovieDetail - is loaded\n")
 
         }
