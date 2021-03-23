@@ -23,8 +23,9 @@ struct CommentView: View {
         self.movie = movie
         self._isPresented = isPresented
         
+        let dividedRating = movie.voteAverage / 2
         
-        _value = State<Double>.init(initialValue: movie.voteAverage)
+        _value = State<Double>.init(initialValue: dividedRating)
         
         if let comment = movie.comment {
             _text = State<String>.init(initialValue: comment)
@@ -75,12 +76,12 @@ struct CommentView: View {
     var body: some View {
         
         Form {
-            Section {
+            Section(header: Text("Comment") ) {
                 TextEditor(text: $text)
                     .frame(height: 150)
             }
             
-            Section {
+            Section(header: Text("Rating") ) {
                 HStack {
                     Spacer()
                     Text("\(value, specifier: "%.1f")")
@@ -93,7 +94,9 @@ struct CommentView: View {
                     
                     minusButton()
                     
-                    Slider(value: $value, in: 0...5, step: 0.5) { (valueIsChanged) in
+                    Slider(value: $value,
+                           in: 0...5,
+                           step: 0.5) { (valueIsChanged) in
                         if valueIsChanged == true {
                             self.hideKeyboard()
                         }
@@ -106,58 +109,33 @@ struct CommentView: View {
                 .padding(.vertical)
                 
             }
-            
-            
-            
-            // MARK: Button option 1
-            /// Button looks as wanted however padding is unresponsive to touches
-            
-//            Button("Save") {
-//                if value != movie.rating {
-//                    movie.update(rating: value)
-//                }
-//                if text != movie.comment {
-//                    movie.update(comment: text)
-//                }
-//
-//                self.isPresented = false
-//            }
-//            .padding()
-//            .frame(maxWidth: .infinity)
-//            .background(Color.blue)
-//            .foregroundColor(.white)
-//            .font(.headline)
-//            .cornerRadius(15)
-//            .shadow(radius: 2)
-//            .buttonStyle(PlainButtonStyle() )
-//
-//
-            
-            
-            // MARK: Button option 2
-            /// Button color and size are off, however padding is responsive to touches
-            
+
             Button(action: {
-                print("SAVE")
+                if value != movie.rating {
+                    movie.update(rating: value)
+                }
+                if text != movie.comment {
+                    movie.update(comment: text)
+                }
+                
+                self.isPresented = false
                     },
                    label: {
                     RoundedRectangle(cornerRadius: 12)
-                        .frame(width: 150, height: 40, alignment: .center)
+                        .frame(maxWidth: .infinity,
+                               minHeight: 40,
+                               alignment: .center)
+                        .padding()
+                        .foregroundColor(.blue)
                         .shadow(radius: 2)
                         .overlay(
-                            Text("Save").font(.headline)
-                                .foregroundColor(.pGray2)
+                            Text("Save")
+                                .font(.headline)
+                                .foregroundColor(.pGray3)
                         )
-                        
-                    
                    })
-            .background(Color.blue)
+
             .buttonStyle(PlainButtonStyle() )
-            
-            
-            
-            
-            
             
         }
         .onTapGesture {
@@ -174,6 +152,7 @@ struct CommentView_Previews: PreviewProvider {
     static var previews: some View {
         CommentView(movie: Movie(),
                     isPresented: .constant(true))
+         
         
         
     }
