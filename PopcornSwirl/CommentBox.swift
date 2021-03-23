@@ -32,7 +32,6 @@ struct CommentBox: View {
         self.color = color
         self.shadowRadius = shadowRadius
         
-        
         UITextView.appearance().backgroundColor = .clear
     }
     
@@ -45,11 +44,6 @@ struct CommentBox: View {
             .shadow(radius: shadowRadius)
             .overlay(
                 TextEditor(text: $text)
-//                TextField(comment, text: $text)
-//                    .fixedSize(horizontal: false,
-//                               vertical: true)
-//                    .lineLimit(nil)
-//                    .multilineTextAlignment(.leading)
                     .background(color)
                     .foregroundColor(.pGray3)
                     .padding()

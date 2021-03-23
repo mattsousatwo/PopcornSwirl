@@ -11,13 +11,26 @@ import SwiftUI
 struct CommentView: View {
     
     
-    @Binding var value: Double
-    @Binding var text: String
+
+    var movie: Movie
+    @Binding var isPresented: Bool
     
+    @State private var value: Double
+    @State private var text: String
     
-    init(value: Binding<Double>, text: Binding<String>) {
-        self._value = value
-        self._text = text
+    init(movie: Movie, isPresented: Binding<Bool>) {
+        
+        self.movie = movie
+        self._isPresented = isPresented
+        
+        
+        _value = State<Double>.init(initialValue: movie.voteAverage)
+        
+        if let comment = movie.comment {
+            _text = State<String>.init(initialValue: comment)
+        } else {
+            _text = State<String>.init(initialValue: "New Comment")
+        }
 //
 //        UITableView.appearance().backgroundColor = .blue
 //        UITextView.appearance().backgroundColor = .clear
@@ -94,17 +107,57 @@ struct CommentView: View {
                 
             }
             
-            Button("Save") {
-                
-                
-            }
-            .padding()
-            .frame(maxWidth: .infinity)
+            
+            
+            // MARK: Button option 1
+            /// Button looks as wanted however padding is unresponsive to touches
+            
+//            Button("Save") {
+//                if value != movie.rating {
+//                    movie.update(rating: value)
+//                }
+//                if text != movie.comment {
+//                    movie.update(comment: text)
+//                }
+//
+//                self.isPresented = false
+//            }
+//            .padding()
+//            .frame(maxWidth: .infinity)
+//            .background(Color.blue)
+//            .foregroundColor(.white)
+//            .font(.headline)
+//            .cornerRadius(15)
+//            .shadow(radius: 2)
+//            .buttonStyle(PlainButtonStyle() )
+//
+//
+            
+            
+            // MARK: Button option 2
+            /// Button color and size are off, however padding is responsive to touches
+            
+            Button(action: {
+                print("SAVE")
+                    },
+                   label: {
+                    RoundedRectangle(cornerRadius: 12)
+                        .frame(width: 150, height: 40, alignment: .center)
+                        .shadow(radius: 2)
+                        .overlay(
+                            Text("Save").font(.headline)
+                                .foregroundColor(.pGray2)
+                        )
+                        
+                    
+                   })
             .background(Color.blue)
-            .foregroundColor(.white)
-            .font(.headline)
-            .cornerRadius(15)
-            .shadow(radius: 2)
+            .buttonStyle(PlainButtonStyle() )
+            
+            
+            
+            
+            
             
         }
         .onTapGesture {
@@ -119,6 +172,9 @@ struct CommentView: View {
 
 struct CommentView_Previews: PreviewProvider {
     static var previews: some View {
-        CommentView(value: .constant(2), text: .constant("Placeholder"))
+        CommentView(movie: Movie(),
+                    isPresented: .constant(true))
+        
+        
     }
 }

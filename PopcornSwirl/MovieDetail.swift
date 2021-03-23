@@ -29,7 +29,6 @@ struct MovieDetail: View, Equatable {
     
     // Animation
     @State private var showStarSlider: Bool = false
-    @State private var value: Double = 0
     @State private var showCommentBox: Bool = false
     @State private var commentText: String = ""
     
@@ -134,13 +133,6 @@ struct MovieDetail: View, Equatable {
     func commentButton() -> some View {
         Button(action: {
             self.showCommentBox.toggle()
-            movie.isFavorite.toggle()
-            print("oldComment: \(movie.comment ?? "isEmpty")")
-            movie.comment = "New comment @ \(Date().time() )"
-            movieCD.saveContext()
-            print("newComment: \(movie.comment ?? "isEmpty")")
-            print(movie)
-
         }) {
             RoundedRectangle(cornerRadius: 10)
                 .frame(width: 150, height: 40)
@@ -152,8 +144,8 @@ struct MovieDetail: View, Equatable {
                         .opacity(0.8)
                     , alignment: .center)
         } .sheet(isPresented: $showCommentBox) {
-            CommentView(value: $value,
-                        text: $commentText)
+            CommentView(movie: movie,
+                        isPresented: $showCommentBox)
         }
     }
     
