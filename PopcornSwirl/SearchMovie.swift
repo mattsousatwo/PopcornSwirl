@@ -40,8 +40,8 @@ struct SearchMovie: View {
                             
                             print(" ~ Search Button Pressed ~")
                             
-                            
-                            movieStore.fetchResultsForMovie(query: searchTag)
+                            let movieQuery = searchTag.replacingOccurrences(of: " ", with: "+")
+                            movieStore.fetchResultsForMovie(query: movieQuery)
                             
                             self.hideKeyboard()
                             
