@@ -129,17 +129,19 @@ struct MovieDetail: View, Equatable {
             .frame(width: UIScreen.main.bounds.width/2, height: 150, alignment: .leading).padding(.top).padding(.horizontal).foregroundColor(.white)
     }
     
-    // Comment Button
+    
+    /// Button to trigger CommentView
     func commentButton() -> some View {
-        return Button(action: {
+        Button(action: {
             self.showCommentBox.toggle()
             movie.isFavorite.toggle()
             print("oldComment: \(movie.comment ?? "isEmpty")")
-            movie.comment = "New comment @ \(Date().time() )" 
+            movie.comment = "New comment @ \(Date().time() )"
             movieCD.saveContext()
             print("newComment: \(movie.comment ?? "isEmpty")")
             print(movie)
-        }, label: {
+
+        }) {
             RoundedRectangle(cornerRadius: 10)
                 .frame(width: 150, height: 40)
                 .foregroundColor(.darkBlue)
@@ -148,8 +150,11 @@ struct MovieDetail: View, Equatable {
                     Text("Comment")
                         .foregroundColor(.pGray3)
                         .opacity(0.8)
-                )
-        })
+                    , alignment: .center)
+        } .sheet(isPresented: $showCommentBox) {
+            CommentView(value: $value,
+                        text: $commentText)
+        }
     }
     
     
@@ -176,8 +181,6 @@ struct MovieDetail: View, Equatable {
                         VStack(alignment: .leading, spacing: 10) {
                             // Movie Title
                             title()
-
-
                             // Director
                             Text("Director:").bold()
                                 .foregroundColor(.white)
@@ -192,16 +195,11 @@ struct MovieDetail: View, Equatable {
                             Text(moviePremire)
                                 .foregroundColor(.pGray3)
                                 .padding(.horizontal )
-
-                            // Rating
-                            Button(action: {
-                                self.showStarSlider = NSNumber(value: true) as! Bool
-                                print("ShowStarSlider - Rating - MovieDetail: \(showStarSlider)")
-                            }, label: {
-                                StarBar(value: rating)
-                                    .frame(width: UIScreen.main.bounds.width/2, height: 25 )
-                                    .padding(.vertical, 4)
-                            })
+                            
+                            StarBar(value: rating)
+                                .frame(width: UIScreen.main.bounds.width/2, height: 25 )
+                                .padding(.vertical, 4)
+                            
                         }
                     }
 
@@ -240,95 +238,6 @@ struct MovieDetail: View, Equatable {
                 } // V stack
 
             } // scroll
-
-            // View to cover background if starslider is shown - if pressed will dismiss star slider
-            if showStarSlider == true || showCommentBox == true {
-                Button(action: {
-                    if showStarSlider == true {
-                        self.showStarSlider = false
-                    } else if showCommentBox == true {
-                        self.showCommentBox = false
-                    }
-                }, label: {
-                    RoundedRectangle(cornerRadius: 0)
-                        .foregroundColor(.black)
-                        .opacity(0.8)
-                        .frame(width: UIScreen.main.bounds.width,
-                               height: UIScreen.main.bounds.height)
-                })
-            }
-
-
-            StarSlider(movie: movie,
-                       value: movie.rating,
-                       showSlider: showStarSlider,
-                       width: showStarSlider ? UIScreen.main.bounds.width - 40 : 0,
-                       height: showStarSlider ? 210 : 0)
-
-                .cornerRadius(12.0)
-                .animation(.easeIn)
-
-
-//             MARK: Deconstructed StarSlider
-//            RoundedRectangle(cornerRadius: 12)
-//                .frame(width: showStarSlider ? UIScreen.main.bounds.width - 40 : 0,
-//                       height: showStarSlider ? 210 : 0)
-//                .shadow(radius: 8)
-//                .cornerRadius(12)
-//                .overlay(LinearGradient(gradient: Gradient(colors: [Color.pPurple,
-//                                                                    Color.pPurple]),
-//                                        startPoint: .top, endPoint: .bottom))
-//                .overlay(
-//                    VStack {
-//
-//                        StarSliderTextView(value: $value)
-//                            .padding(.top)
-//                        StarSliderView(value: $value, accent: Color.red)
-//                            .padding(.horizontal)
-//                        StarSliderButtons(movie: movie,
-//                                          value: $value,
-//                                          showSlider: $showStarSlider)
-//
-//                    }
-//                )
-//                .animation(.default)
-
-
-
-
-
-            VStack {
-                // Spacer for Nav Bar
-                RoundedRectangle(cornerRadius: 0)
-                    .frame(width: showCommentBox ? UIScreen.main.bounds.width : 0,
-                           height: showCommentBox ? 100 : 0)
-                    .foregroundColor(.clear)
-                if showCommentBox == true {
-
-                        CommentBox(movie: movie,
-                                   text: $commentText,
-                                   width: showCommentBox ? UIScreen.main.bounds.width - 20 : 0,
-                                   height: showCommentBox ? UIScreen.main.bounds.height / 4 : 0)
-                            .overlay(
-                                Button(action: {
-                                    print("X Button pressed ")
-                                    showCommentBox.toggle()
-                                    movieCD.update(movie: movie, comment: commentText)
-                                }, label: {
-                                    Image(systemName: "checkmark")
-                                        .foregroundColor(.black)
-                                })
-                                .padding()
-                                , alignment: .topTrailing)
-
-                }
-
-
-                Spacer()
-            }.frame(width: showCommentBox ? UIScreen.main.bounds.width : 0,
-                    height: showCommentBox ? UIScreen.main.bounds.height : 0)
-            .animation(.default)
-
 
 
         } // ZStack

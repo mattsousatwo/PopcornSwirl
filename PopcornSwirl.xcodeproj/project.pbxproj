@@ -27,6 +27,7 @@
 		609603A625DE436A003DCBAC /* Date+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609603A525DE436A003DCBAC /* Date+EXT.swift */; };
 		60B2213325E582B600729489 /* Series+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2213125E582B600729489 /* Series+CoreDataClass.swift */; };
 		60B2213425E582B600729489 /* Series+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2213225E582B600729489 /* Series+CoreDataProperties.swift */; };
+		60B38E982609547900FB3180 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B38E972609547900FB3180 /* CommentView.swift */; };
 		60B404AC25A161A500DD44F6 /* HeartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B404AB25A161A500DD44F6 /* HeartButton.swift */; };
 		60B9DF8925D9404300BDA067 /* ImageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B9DF8825D9404300BDA067 /* ImageCard.swift */; };
 		60B9DF8F25D9466C00BDA067 /* LabeledImageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B9DF8E25D9466C00BDA067 /* LabeledImageCard.swift */; };
@@ -90,6 +91,7 @@
 		609603A525DE436A003DCBAC /* Date+EXT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+EXT.swift"; sourceTree = "<group>"; };
 		60B2213125E582B600729489 /* Series+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Series+CoreDataClass.swift"; sourceTree = "<group>"; };
 		60B2213225E582B600729489 /* Series+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Series+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		60B38E972609547900FB3180 /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		60B404AB25A161A500DD44F6 /* HeartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartButton.swift; sourceTree = "<group>"; };
 		60B9DF8825D9404300BDA067 /* ImageCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCard.swift; sourceTree = "<group>"; };
 		60B9DF8E25D9466C00BDA067 /* LabeledImageCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledImageCard.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				60BE042B25D74BD700DDA4C7 /* CardRow.swift */,
 				604DCD6025D9921F00EF6074 /* FilmButton.swift */,
 				606AF01D25DEEE85007C2E25 /* CommentBox.swift */,
+				60B38E972609547900FB3180 /* CommentView.swift */,
 			);
 			name = SecondaryViews;
 			sourceTree = "<group>";
@@ -450,6 +453,7 @@
 				61D9C6CE257EA96D0047869A /* ActorStore.swift in Sources */,
 				617B6E16251AA0C300BCF757 /* Star.swift in Sources */,
 				609603A625DE436A003DCBAC /* Date+EXT.swift in Sources */,
+				60B38E982609547900FB3180 /* CommentView.swift in Sources */,
 				6132294C251DAB7F00A84C62 /* SearchMovie.swift in Sources */,
 				60B404AC25A161A500DD44F6 /* HeartButton.swift in Sources */,
 				617B6E14251A937500BCF757 /* Colors+EXT.swift in Sources */,
