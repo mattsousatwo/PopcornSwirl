@@ -170,6 +170,16 @@ struct Bar: View {
 
     private var recommendedMovies: [RecommendedMovie] {
         let movies = movieStore.extractRecomendedMovies(id: id)
+        let selectedMovie = movieCD.fetchMovie(uuid: id)
+        
+        
+        let extractedMoviesAsString = movieCD.encodeReccomendedMovies(movies)
+    
+        if extractedMoviesAsString != selectedMovie.recommendedMovies {
+            // Update recomended movies if save movies do not match fetched movies from server
+            selectedMovie.update(recommendedMovies: extractedMoviesAsString)
+        }
+ 
         print("ReccomendedMovies.count: \(movies.count)")
         return movies
     }
