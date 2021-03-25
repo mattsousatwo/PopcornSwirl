@@ -165,7 +165,14 @@ struct Bar: View {
     @ObservedObject var movieCD = MoviesStore()
     
     private var popularMovies : [PopMovie] {
-        return movieStore.extractPopularMovies()
+        let popularMovies = movieStore.extractPopularMovies()
+        
+        
+//        movieStore.updateMovieCategories(popularMovies)
+        movieStore.removeOldMovies(from: .popular)
+        
+        
+        return popularMovies
     }
 
     private var recommendedMovies: [RecommendedMovie] {
@@ -185,7 +192,10 @@ struct Bar: View {
     }
 
     private var upcomingMovies: [UpcomingMovie] {
-        return movieStore.extractUpcomingMovies()
+        let upcomingMovies =  movieStore.extractUpcomingMovies()
+//        movieStore.updateMovieCategories(nil, upcomingMovies)
+        movieStore.removeOldMovies(from: .upcoming)
+        return upcomingMovies
     }
 
     private var cast: [MovieCast] {
@@ -362,12 +372,14 @@ struct Bar: View {
                             .onAppear {
                                 if let genresString = movieCD.encodeGenres(popularMovies[i].genre_ids) {
                                     movieCD.update(movie: movie,
+                                                   category: .popular,
                                                    title: popularMovies[i].title,
                                                    overview: popularMovies[i].overview,
                                                    imagePath: popularMovies[i].poster_path,
                                                    genres: genresString,
                                                    releaseDate: popularMovies[i].release_date,
                                                    voteAverage: popularMovies[i].vote_average)
+                                    
                                 }
                                 
                             }
@@ -414,6 +426,7 @@ struct Bar: View {
                             .onAppear {
                                 if let genres = movieCD.encodeGenres(upcomingMovies[i].genre_ids) {
                                     movieCD.update(movie: upcomingMovie,
+                                                   category: .upcoming,
                                                    title: upcomingMovies[i].title,
                                                    overview: upcomingMovies[i].overview,
                                                    imagePath: upcomingMovies[i].poster_path,

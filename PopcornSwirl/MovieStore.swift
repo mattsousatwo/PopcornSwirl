@@ -652,7 +652,7 @@ extension MovieStore {
                 for i in 0..<savedPopularMovies.count {
                     if popularIDs.contains( Int(savedPopularMovies[i]) ) == false {
                         let movie = movieCD.fetchMovie(uuid: Int(savedPopularMovies[i]))
-                        movieCD.update(movie: movie, category: MovieCategory.none)
+                        movie.update(category: MovieCategory.none)
                     }
                 }
             }
@@ -664,7 +664,7 @@ extension MovieStore {
                 for i in 0..<savedUpcomingMovies.count {
                     if upcomingIDs.contains( savedUpcomingMovies[i] ) == false {
                         let movie = movieCD.fetchMovie(uuid: savedUpcomingMovies[i] )
-                        movieCD.update(movie: movie, category: MovieCategory.none)
+                        movie.update(category: MovieCategory.none)
                     }
                 }
             }
@@ -702,7 +702,7 @@ extension MovieStore {
                     print("FetchedMovie: \(fetchedMovie)")
                 }
             }
-            removeOldMovies(from: .popular)
+//            removeOldMovies(from: .popular)
             
             
         case .upcomingMovie:
@@ -724,7 +724,7 @@ extension MovieStore {
                                releaseDate: movie.release_date,
                                voteAverage: movie.vote_average)
             }
-            removeOldMovies(from: .upcoming)
+//            removeOldMovies(from: .upcoming)
             
             
         case .recommendedMovie:
@@ -903,6 +903,8 @@ extension MovieStore {
                 movies = movieCD.popularMovies
             }
             print("SavedPopularMovies.count: \(movies.count)")
+            
+            
         case .upcomingMovie:
             movieCD.fetchMovies(.upcoming)
             if movieCD.upcomingMovies.count != 0 {
