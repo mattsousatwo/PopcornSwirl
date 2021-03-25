@@ -933,6 +933,63 @@ extension MovieStore {
 }
 
 
+// MARK: TV Credits (cast)
+extension MovieStore {
+    
+    /// fetch credits for TV Series
+    func fetchTVSeriesCredits(id: Int) {
+        
+        // https://developers.themoviedb.org/3/tv/get-tv-credits
+        let tvSeriesCreditRequest = "https://api.themoviedb.org/3/tv/{tv_id}/credits?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
+        
+    }
+    
+}
+
+
+// MARK: Similar TV Shows
+extension MovieStore {
+    
+    /// fetch similar tv shows
+    func fetchRecommendedMoviesForSeries(id: Int) {
+        
+        // https://developers.themoviedb.org/3/tv/get-similar-tv-shows
+        let similarMoviesRequest = "https://api.themoviedb.org/3/tv/{tv_id}/similar?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US&page=1"
+        
+    }
+    
+}
+
+
+// MARK: TV Series Detail
+extension MovieStore {
+    
+    /// Fetch Details for TV Series
+    func fetchTVSeriesDetails(id: Int) {
+        
+        // https://developers.themoviedb.org/3/tv/get-tv-details
+        let detailsRequest = "https://api.themoviedb.org/3/tv/{tv_id}?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
+        
+        
+    }
+    
+}
+
+
+// MARK: TV Series Watch Providers
+extension MovieStore {
+    
+    /// Fetch all watch providers for series
+    func fetchTVSeriesWatchProviders(id: Int) {
+        
+        // https://developers.themoviedb.org/3/tv/get-tv-watch-providers
+        let seriesWatchProvidersRequest = "https://api.themoviedb.org/3/tv/{tv_id}/watch/providers?api_key=\(MovieStoreKey.apiKey.rawValue)"
+        
+    }
+}
+
+
+
 enum MovieStoreKey: String {
     case apiKey = "ebccbee67fef37cc7a99378c44af7d33" // API Key
     case imageURL = "https://image.tmdb.org/t/p/original" // used as base for movie images
