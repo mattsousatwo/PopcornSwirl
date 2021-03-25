@@ -68,7 +68,7 @@ struct MovieCredits: Codable {
 
 struct MovieCast: Codable, Equatable {
     var id: Int
-    var known_for_department: String
+    var known_for_department: String?
     var name: String
     var popularity: Double
     var profile_path: String?
@@ -215,7 +215,7 @@ struct ActorCreditsCast: Codable, Hashable {
 // MARK: - ACTOR DETAILS
 struct ActorDetails: Codable, Hashable {
     var birthday: String?
-    var known_for_department: String
+    var known_for_department: String? 
     var deathday: String?
     var id: Int
     var name: String

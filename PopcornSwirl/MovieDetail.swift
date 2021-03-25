@@ -57,13 +57,7 @@ struct MovieDetail: View, Equatable {
     }
     
     var director: String {
-        var name = ""
-        if let movieDirector = movie.director {
-            name = movieDirector
-        } else {
-            name = movieStore.director
-        }
-        return name
+        return movieStore.extractDirector(id: Int(movie.uuid) )
     }
 
     // decoded genre ids

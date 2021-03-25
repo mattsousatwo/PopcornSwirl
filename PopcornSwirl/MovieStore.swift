@@ -202,7 +202,11 @@ extension MovieStore {
                 
                 for member in movieCredits.crew {
                     if member.job == "Director" {
-                        self.director = member.name
+                        if member.name != movie.director ||
+                            movie.director == "" {
+                            self.movieCD.update(movie: movie,
+                                                director: member.name)
+                        }
                     }
                 }
                 
@@ -212,12 +216,37 @@ extension MovieStore {
             
             guard let movieCastAsString = self.movieCD.encodeCast(self.movieCast) else { return }
             
-            self.movieCD.update(movie: movie, director: self.director, cast: movieCastAsString)
+            self.movieCD.update(movie: movie,
+                                cast: movieCastAsString)
             
-            self.getImagesForActor()
+            if let director = movie.director {
+                self.director = director
+            }
         }
         
+        self.getImagesForActor()
     }
+    
+    /// Pull value from @Published director property
+    func extractDirector(id: Int) -> String {
+        var tempString = ""
+        
+        if director == "" {
+            fetchMovieCreditsForMovie(id: id)
+        } else {
+            tempString = director
+        }
+        if tempString == "" {
+            let movie = movieCD.fetchMovie(uuid: id)
+            if let savedDirector = movie.director {
+                tempString = savedDirector
+            }
+        }
+        
+        return tempString
+        
+    }
+    
     
     // MARK: Extract Movie Cast after they have been fetched
     func extractMovieCast(id: Int) -> [MovieCast] {
@@ -233,29 +262,8 @@ extension MovieStore {
         }
         for i in (movieCount ? 0..<25 : 0..<movieCast.count) {
             actors.limited(append: movieCast[i])
-//            actorsStore.createActor(name: movieCast[i].name,
-//                                    bio: nil,
-//                                    id: Double(movieCast[i].id),
-//                                    imagePath: movieCast[i].profile_path)
         }
-        
-//        actorsStore.saveActorsIn(actors)
-        
-        
-        
-//        for i in 0..<24 {
-//            print("extractMovieCast() : for \(i) in 0..<24")
-//            if i <= 24 {
-//                actors.append(movieCast[i])
-////                self.castStore.createCastMember(actorID: Double(movieCast[i].id), movieID: Double(id))
-//                print("extractMovieCast() : loop { \(i) }")
-////                self.actorsStore.createActor(name: movieCast[i].name,
-////                                             bio: nil,
-////                                             id: Double(movieCast[i].id),
-////                                             imagePath:  movieCast[i].profile_path)
-//
-//            }
-//        }
+
         print("extractedMovieCast.count: \(actors.count)")
         return actors
     }
