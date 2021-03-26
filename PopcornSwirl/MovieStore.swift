@@ -80,6 +80,7 @@ extension MovieStore {
         
         if popularMovies.count == 0 {
             fetchPopularMovies()
+            removeOldMovies(from: .popular)
         }
         
         for movie in popularMovies {
@@ -165,6 +166,7 @@ extension MovieStore {
         var movies = [UpcomingMovie]()
         if upcomingMovies.count == 0 {
             fetchUpcomingMovies()
+            removeOldMovies(from: .upcoming)
         }
         for movie in upcomingMovies {
             movies.append(movie)
@@ -651,8 +653,9 @@ extension MovieStore {
                 let savedPopularMovies = movieCD.popularMovies.map({ $0.uuid })
                 for i in 0..<savedPopularMovies.count {
                     if popularIDs.contains( Int(savedPopularMovies[i]) ) == false {
-                        let movie = movieCD.fetchMovie(uuid: Int(savedPopularMovies[i]))
-                        movie.update(category: MovieCategory.none)
+                        if let movie = movieCD.popularMovies.first(where: { $0.uuid == savedPopularMovies[i] }) {
+                            movie.update(category: MovieCategory.none)
+                        }
                     }
                 }
             }
@@ -663,8 +666,9 @@ extension MovieStore {
                 let savedUpcomingMovies = movieCD.upcomingMovies.map({ Int($0.uuid) })
                 for i in 0..<savedUpcomingMovies.count {
                     if upcomingIDs.contains( savedUpcomingMovies[i] ) == false {
-                        let movie = movieCD.fetchMovie(uuid: savedUpcomingMovies[i] )
-                        movie.update(category: MovieCategory.none)
+                        if let movie = movieCD.upcomingMovies.first(where: { $0.uuid == Double(savedUpcomingMovies[i]) } ) {
+                            movie.update(category: MovieCategory.none)
+                        }
                     }
                 }
             }

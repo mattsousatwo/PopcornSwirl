@@ -102,4 +102,33 @@ class CoreDataCoder {
         return credits
     }
     
+    
+    /// Convert PopMovie to String
+    func encodePopularMovies(_ movies: [PopMovie]) -> String? {
+        encoder.outputFormatting = .prettyPrinted
+        guard let data = try? encoder.encode(movies) else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+    
+    /// Convert String to PopMovie
+    func decodePopularMovies(_ movies: String) -> [PopMovie]? {
+        guard let data = movies.data(using: .utf8) else { return nil }
+        guard let popMovies = try? decoder.decode([PopMovie].self, from: data) else { return nil }
+        return popMovies
+    }
+    
+    /// Convert UpcommingMovie to String
+    func encodeUpcomingMovies(_ movies: [UpcomingMovie]) -> String? {
+        encoder.outputFormatting = .prettyPrinted
+        guard let data = try? encoder.encode(movies) else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+    
+    /// Convert String to UpcomingMovie
+    func decodeUpcomingMovies(_ movies: String) -> [UpcomingMovie]? {
+        guard let data = movies.data(using: .utf8) else { return nil }
+        guard let upcomingMovies = try? decoder.decode([UpcomingMovie].self, from: data) else { return nil }
+        return upcomingMovies
+    }
+    
 }

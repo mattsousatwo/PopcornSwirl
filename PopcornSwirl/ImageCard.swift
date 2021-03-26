@@ -30,6 +30,7 @@ struct ImageCard: View, Equatable {
                         .shadow(radius: 5.0)
                     , alignment: .bottomLeading)
                 
+                
 //                .overlay(
 //                    Text("\(movie.title ?? "")")
 //                    , alignment: .center)
@@ -41,6 +42,7 @@ struct ImageCard: View, Equatable {
                         .padding()
                         .shadow(radius: 5.0)
                     , alignment: .bottomTrailing)
+                
         }
         
         

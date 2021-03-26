@@ -34,12 +34,12 @@ struct Home: View {
                     VStack(spacing: 20) {
               
                         
-                        ScrollBar(type: .popularMovie)
+                        ScrollBar(type: .popularMovie).equatable()
                         
                         
                         // MARK: Upcoming Movies scroll
                         
-                        ScrollBar(type: .upcomingMovie)
+                        ScrollBar(type: .upcomingMovie).equatable()
                         
                         
                     } // VStack

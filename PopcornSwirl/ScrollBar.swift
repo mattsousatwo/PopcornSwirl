@@ -147,6 +147,23 @@ struct ScrollBar: View, Equatable {
 
 struct Bar: View {
     
+    private func compareFetchedToSaved<M>(movies: [M]) {
+        
+        /// Recommended Movies
+        if let movies = movies as? [RecommendedMovie] {
+            let selectedMovie = movieCD.fetchMovie(uuid: id)
+            let recMovieString = movieCD.encodeReccomendedMovies(movies)
+            
+            if recMovieString != selectedMovie.recommendedMovies {
+                // Update recomended movies if save movies do not match fetched movies from server
+                selectedMovie.update(recommendedMovies: recMovieString)
+            }
+        }
+        
+        
+        
+    }
+    
     var type: ScrollBarType
     
     var id: Int // used to fetch recomended movies | cast | actorImages 
@@ -169,7 +186,7 @@ struct Bar: View {
         
         
 //        movieStore.updateMovieCategories(popularMovies)
-        movieStore.removeOldMovies(from: .popular)
+//        movieStore.removeOldMovies(from: .popular)
         
         
         return popularMovies
@@ -177,16 +194,9 @@ struct Bar: View {
 
     private var recommendedMovies: [RecommendedMovie] {
         let movies = movieStore.extractRecomendedMovies(id: id)
-        let selectedMovie = movieCD.fetchMovie(uuid: id)
         
+        compareFetchedToSaved(movies: movies)
         
-        let extractedMoviesAsString = movieCD.encodeReccomendedMovies(movies)
-    
-        if extractedMoviesAsString != selectedMovie.recommendedMovies {
-            // Update recomended movies if save movies do not match fetched movies from server
-            selectedMovie.update(recommendedMovies: extractedMoviesAsString)
-        }
- 
         print("ReccomendedMovies.count: \(movies.count)")
         return movies
     }
@@ -194,7 +204,7 @@ struct Bar: View {
     private var upcomingMovies: [UpcomingMovie] {
         let upcomingMovies =  movieStore.extractUpcomingMovies()
 //        movieStore.updateMovieCategories(nil, upcomingMovies)
-        movieStore.removeOldMovies(from: .upcoming)
+//        movieStore.removeOldMovies(from: .upcoming)
         return upcomingMovies
     }
 
@@ -383,6 +393,7 @@ struct Bar: View {
                                 }
                                 
                             }
+                            
                     }
                 }
             
