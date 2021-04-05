@@ -10,7 +10,6 @@
 		6038CD9925ACC6D70000A5CE /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038CD9525ACC6D70000A5CE /* ImageLoader.swift */; };
 		6038CD9A25ACC6D70000A5CE /* EnvironmentValues+ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038CD9625ACC6D70000A5CE /* EnvironmentValues+ImageCache.swift */; };
 		6038CD9B25ACC6D70000A5CE /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038CD9725ACC6D70000A5CE /* AsyncImage.swift */; };
-		6038CD9C25ACC6D70000A5CE /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038CD9825ACC6D70000A5CE /* ImageCache.swift */; };
 		6038CDB025ACD4640000A5CE /* URLImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038CDAF25ACD4640000A5CE /* URLImage.swift */; };
 		604D5AC825D23A6F007547C6 /* Movie+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604D5AC625D23A6F007547C6 /* Movie+CoreDataClass.swift */; };
 		604D5AC925D23A6F007547C6 /* Movie+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604D5AC725D23A6F007547C6 /* Movie+CoreDataProperties.swift */; };
@@ -74,7 +73,6 @@
 		6038CD9525ACC6D70000A5CE /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		6038CD9625ACC6D70000A5CE /* EnvironmentValues+ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+ImageCache.swift"; sourceTree = "<group>"; };
 		6038CD9725ACC6D70000A5CE /* AsyncImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
-		6038CD9825ACC6D70000A5CE /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageCache.swift; path = "../../../Downloaded GitHub Projects/AsyncImage-master/AsyncImage/ImageCache.swift"; sourceTree = "<group>"; };
 		6038CDAF25ACD4640000A5CE /* URLImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLImage.swift; sourceTree = "<group>"; };
 		604D5AC625D23A6F007547C6 /* Movie+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Movie+CoreDataClass.swift"; path = "PopcornSwirl/Movie+CoreDataClass.swift"; sourceTree = "<group>"; };
 		604D5AC725D23A6F007547C6 /* Movie+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Movie+CoreDataProperties.swift"; path = "PopcornSwirl/Movie+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -177,7 +175,6 @@
 				60B9DF8725D9400600BDA067 /* ImageCards */,
 				6038CD9725ACC6D70000A5CE /* AsyncImage.swift */,
 				6038CD9625ACC6D70000A5CE /* EnvironmentValues+ImageCache.swift */,
-				6038CD9825ACC6D70000A5CE /* ImageCache.swift */,
 				6038CD9525ACC6D70000A5CE /* ImageLoader.swift */,
 			);
 			name = AsyncImage;
@@ -482,7 +479,6 @@
 				6071DBC425BDD69900521D4E /* Actor+CoreDataProperties.swift in Sources */,
 				61C83EDB251A3DF50012019F /* SceneDelegate.swift in Sources */,
 				60C87E39259BB899001AF3D2 /* GenreBar.swift in Sources */,
-				6038CD9C25ACC6D70000A5CE /* ImageCache.swift in Sources */,
 				60634EBB25E6E4A000A07141 /* SeriesStore.swift in Sources */,
 				60B9DF9325D947E900BDA067 /* LargeImageCard.swift in Sources */,
 				619BE26925684ABA0067ABEB /* APICodingKeys.swift in Sources */,
