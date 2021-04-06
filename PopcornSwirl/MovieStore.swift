@@ -472,109 +472,10 @@ extension MovieStore {
         }
         return searchResults
     }
-    
-    
-    // Get results from movie search
-    func fetchResultsFromMovie(search: String) -> [MovieSearchResults] {
-        
-        var movieSearchResults = [MovieSearchResults]()
-        
-        let searchMovieRequest = "https://api.themoviedb.org/3/search/movie?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US&query=\(MovieStoreKey.apiKey.rawValue)&page=1&include_adult=false"
-        
-        AF.request( searchMovieRequest ).responseJSON { response in
-            
-            guard let json = response.data else { return }
-            
-            do {
-                
-                let searchResults = try self.decoder.decode(MovieSearch.self, from: json)
-                
-                guard let results = searchResults.results else {
-                    print("No movie results found")
-                    return }
-                
-                movieSearchResults = results
-                
-                print("Movie Query Result Count:  \(self.movieSearchResults.count)")
-                for movie in self.movieSearchResults {
-                    print(movie.title)
-                    
-                }
-                
-            } catch {
-                print(error)
-            }
 
-        }
-        
-        return movieSearchResults
-        
-    }
-    
-    
-    // MARK: GET Search Results (ACTOR)
-    func fetchResultsForActor(query: String) {
-        
-    }
     
 }
 
-
-
-// MARK: GET Genres
-//extension MovieStore {
-//
-//    func getGenres() {
-//        let genreRequest = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
-//
-//        AF.request( genreRequest ).responseJSON { response in
-//
-//            guard let json = response.data else {
-//                print("Genre List not found")
-//                return
-//            }
-//            do {
-//                let results = try self.decoder.decode(GenreArray.self, from: json)
-//
-//                for genre in results.genres {
-//
-//                    self.genreDictionary[genre.id] = genre.name
-//                    print("GenreID: \(genre.id), Name: \(genre.name)")
-//
-//                }
-//                print("GenreDict.count = \(self.genreDictionary.count)")
-//            } catch {
-//                print(error)
-//            }
-//
-//
-//        }
-//    }
-//
-//    func extractGenres(from IDs: [Int]) -> [String] {
-//        var genreNames = [String]()
-//        for id in IDs {
-//            if let genre = genreDictionary[id] {
-//                genreNames.append(genre)
-//            }
-//        }
-//        return genreNames
-//    }
-//
-//    /// Get all genres and return them in dictionary
-//    func pullGenres() -> [Int: String] {
-//        var dictionary = [Int: String]()
-//
-//        if genreDictionary.count == 0 {
-//            getGenres()
-//        }
-//        dictionary = genreDictionary
-//        print("GenreDictionary = \(dictionary.count)")
-//        return dictionary
-//    }
-//
-//
-//}
 
 
 // MARK: - Purchase Movie Links

@@ -29,16 +29,6 @@ class PopMovie: Codable, Identifiable {
 
 
 // MARK: - FINDBY
-
-struct FindResults: Codable {
-    
-    var movie_results: [FindMovieResults]
-    
-    var person_results: [FindPersonResults]
-    
-
-}
-
 struct FindMovieResults: Codable {
     var poster_path: String?
     var title: String

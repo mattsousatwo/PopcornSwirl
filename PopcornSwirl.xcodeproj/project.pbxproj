@@ -56,7 +56,6 @@
 		61C83EE5251A3DF90012019F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61C83EE4251A3DF90012019F /* Preview Assets.xcassets */; };
 		61C83EE8251A3DF90012019F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61C83EE6251A3DF90012019F /* LaunchScreen.storyboard */; };
 		61C83EF3251A3DF90012019F /* PopcornSwirlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C83EF2251A3DF90012019F /* PopcornSwirlTests.swift */; };
-		61D9C6CE257EA96D0047869A /* ActorStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D9C6CD257EA96D0047869A /* ActorStore.swift */; };
 		61E3B53B2592F21100EE7F91 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E3B53A2592F21100EE7F91 /* MainTabView.swift */; };
 /* End PBXBuildFile section */
 
@@ -123,7 +122,6 @@
 		61C83EEE251A3DF90012019F /* PopcornSwirlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PopcornSwirlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		61C83EF2251A3DF90012019F /* PopcornSwirlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopcornSwirlTests.swift; sourceTree = "<group>"; };
 		61C83EF4251A3DF90012019F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		61D9C6CD257EA96D0047869A /* ActorStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActorStore.swift; sourceTree = "<group>"; };
 		61E3B53A2592F21100EE7F91 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -256,7 +254,6 @@
 			children = (
 				619BE26825684ABA0067ABEB /* APICodingKeys.swift */,
 				6163E166256EDD7800268C3D /* MovieStore.swift */,
-				61D9C6CD257EA96D0047869A /* ActorStore.swift */,
 			);
 			name = MovieDB;
 			sourceTree = "<group>";
@@ -450,7 +447,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6163E167256EDD7800268C3D /* MovieStore.swift in Sources */,
-				61D9C6CE257EA96D0047869A /* ActorStore.swift in Sources */,
 				617B6E16251AA0C300BCF757 /* Star.swift in Sources */,
 				609603A625DE436A003DCBAC /* Date+EXT.swift in Sources */,
 				60B38E982609547900FB3180 /* CommentView.swift in Sources */,

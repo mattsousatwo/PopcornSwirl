@@ -157,59 +157,6 @@ extension MoviesStore {
             saveContext()
         }
     }
-    
-    
-    func fetchAndUpdatePopularMovie() {
-        
-    }
-    
-    /// Update properties for Movie using properties from a PopMovie
-    func updatePropertiesFor(movie: Movie, with popMovie: PopMovie) {
-        
-        
-        if movie.title == nil {
-            update(movie: movie, title: popMovie.title)
-        }
-        if movie.overview == nil {
-            update(movie: movie, overview: popMovie.overview)
-        }
-        if movie.imagePath == nil {
-            update(movie: movie, imagePath: popMovie.poster_path)
-        }
-        if movie.genres == nil {
-            if let genres = encodeGenres(popMovie.genre_ids) {
-                update(movie: movie, genres: genres)
-            }
-        }
-        if movie.releaseDate == nil {
-            update(movie: movie, releaseDate: popMovie.release_date)
-        }
-        if movie.voteAverage == 0 {
-            update(movie: movie, voteAverage: popMovie.vote_average)
-        }
-        
-        
-        var movieIsPopular: Bool = false
-        let movieStore = MovieStore()
-        print("MovieIsPopular - movieCount: \(movieStore.popularMovies.count)")
-        for fetchedPopularMovie in movieStore.popularMovies {
-            if Int(movie.uuid) == fetchedPopularMovie.id {
-                movieIsPopular = true
-            } else {
-                movieIsPopular = false
-            }
-        }
-        
-            switch movieIsPopular {
-            case true:
-                update(movie: movie, category: .popular)
-                print("MovieIsPopular: \(movieIsPopular)")
-            case false:
-                update(movie: movie, category: nil)
-                print("MovieIsPopular: \(movieIsPopular)")
-            }
-        
-    }
 
 }
 
@@ -243,26 +190,6 @@ extension MoviesStore {
             print(error)
         }
     }
-    
-    // Extract all movies
-    func extractMovies(_ movieCategory: MovieCategory = .none) -> [Movie] {
-        var movies = [Movie]()
-        
-        switch movieCategory {
-        case .none:
-            fetchMovies()
-            movies.append(contentsOf: allMovies)
-        case .popular:
-            fetchMovies(.popular)
-            movies.append(contentsOf: popularMovies)
-        case .upcoming:
-            fetchMovies( .upcoming)
-            movies.append(contentsOf: upcomingMovies)
-        }
-        
-        return movies
-    }
-    
     
     // Fetch an array of Movies with ID
     func fetchMovies(uuids: [Double]) -> [Movie] {
@@ -431,14 +358,3 @@ enum MovieCategory: String {
     case upcoming = "Upcoming"
 }
 
-// Used to define if any properties are missing from Movie entiy - if so, fetch from TMDB
-enum MissingProperties {
-    case title
-    case overview
-    case director
-    case releaseDate
-    case image
-    case cast
-    case genres
-    case reccomendedMovies
-}

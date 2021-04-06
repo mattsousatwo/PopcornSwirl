@@ -61,20 +61,6 @@ extension ActorsStore {
         
     }
     
-    
-    func saveActorsIn(_ actorArray: [MovieCast]) {
-        
-        for actor in actorArray {
-            createActor(name: actor.name,
-                        bio: nil,
-                        id: Double(actor.id),
-                        imagePath: actor.profile_path)
-        }
-        
-        
-        
-    }
-    
 }
 
 extension ActorsStore {
@@ -159,44 +145,6 @@ extension ActorsStore {
         }
     }
     
-    // MARK: HOW TO GET ACTORS WITH MOVIEID
-    //// use MovieStore.fetchMovieCreditsFroMovie(id: Int) to get MovieCast
-    //// MovieStore.movieCast holds All actors
-    func fetchActorsForMovie(id: Int) { // Not used
-        
-        guard let movie = movie else { return }
-        if movie.movieCast.isEmpty == true {
-            movie.fetchMovieCreditsForMovie(id: id)
-        }
-        let actorsForMovie: [MovieCast] = movie.movieCast
-        
-        var actorsArray: [Actor] = []
-        
-        for castMember in actorsForMovie {
-            let request: NSFetchRequest<Actor> = Actor.fetchRequest()
-            request.predicate = NSPredicate(format: "id == %i", castMember.id)
-            do {
-                let results = try context.fetch(request)
-                switch results.isEmpty {
-                case true:
-                    createActor(name: castMember.name, bio: "", id: Double(castMember.id), imagePath: castMember.profile_path)
-                    let actor = actors.first(where: { $0.id == Double(castMember.id) })
-                    if let actor = actor {
-                        actorsArray.append(actor)
-                    }
-                default:
-                    actorsArray.append(contentsOf: results)
-                }
-            } catch {
-                print(error)
-            }
-
-        }
-        self.actorsForMovie = actorsArray
-        print("ActorsFetched: \(self.actorsForMovie.count)")
-    }
-    
-    
     func fetchActorWith(id: Int) -> Actor { // used a lot
         var actorsArray: [Actor] = []
         let request: NSFetchRequest<Actor> = Actor.fetchRequest()
@@ -218,19 +166,6 @@ extension ActorsStore {
         return actor
         
     }
-    
-    
-    // Return an array of actors with search id
-    func fetchActorsWith(ids: [Int]) -> [Actor] {
-        var actors: [Actor] = []
-        for id in ids {
-            let fetchedActor = fetchActorWith(id: id)
-            actors.append(fetchedActor)
-        }
-        return actors
-    }
-    
-    
     
     func fetchAllActorsWith(ids: [Int]) -> [Actor] {
         var actorsArray: [Actor] = []
