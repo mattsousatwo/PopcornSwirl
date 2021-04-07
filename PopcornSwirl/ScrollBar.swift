@@ -473,17 +473,38 @@ struct Bar: View {
                 
             // MARK: RECOMMENDED MOVIE -
             case .recommendedMovie:
-                
-                
-                if let movies = movies {
-                    
+                if recommendedMovies.count != 0 {
+                    ForEach(0..<recommendedMovies.count, id: \.self) { i in
+                        if let movies = movies {
+                            if let recMovieID = recommendedMovies[i].id {
+                                if let movie = movies.first(where: { $0.uuid == Double(recMovieID) }) {
+                                    ScrollNavLink(movieID: recMovieID,
+                                                  title: recommendedMovies[i].title,
+                                                  genreIDs: recommendedMovies[i].genre_ids,
+                                                  overview: recommendedMovies[i].overview,
+                                                  posterPath: recommendedMovies[i].poster_path ?? "",
+                                                  voteAverage: recommendedMovies[i].vote_average,
+                                                  releaseDate: recommendedMovies[i].release_date ?? "",
+                                                  movie: movie)
+                                        .animation(.default)
+                                        .onAppear {
+                                            if let genres = movieCD.encodeGenres(recommendedMovies[i].genre_ids) {
+                                                movieCD.update(movie: movie,
+                                                               title: recommendedMovies[i].title,
+                                                               overview: recommendedMovies[i].overview,
+                                                               imagePath: recommendedMovies[i].poster_path,
+                                                               genres: genres,
+                                                               releaseDate: recommendedMovies[i].release_date,
+                                                               voteAverage: recommendedMovies[i].vote_average)
+                                            }
+                                        }                                }
+                            }
+                        }
+                    }
+                }
+                else if let movies = movies {
                     ForEach(0..<movies.count, id: \.self) { i in
-                        
-                        
-                        // Coredata
                         let movie = movies[i]
-                        
-                        
                         if let genres = movie.genres {
                             if let decodedGenres = movieCD.decodeGenres(genres) {
                                 ScrollNavLink(movieID: Int(movie.uuid),
@@ -495,39 +516,10 @@ struct Bar: View {
                                               releaseDate: movie.releaseDate ?? "",
                                               movie: movie)
                                     .animation(.default)
-                                
-                                
-                            }
-                            
-                        }
-                    }
-                }
-                else if recommendedMovies.count != movies?.count {
-                    ForEach(0..<recommendedMovies.count, id: \.self) { i in
-                        if recommendedMovies.count != 0  {
-                            if let movies = movies {
-                                if let recommendedMovieID = recommendedMovies[i].id {
-                                    if let movie = movies.first(where: { $0.uuid == Double(recommendedMovieID) }) {
-                                        ScrollNavLink(movieID: recommendedMovieID,
-                                                      title: recommendedMovies[i].title,
-                                                      genreIDs: recommendedMovies[i].genre_ids,
-                                                      overview: recommendedMovies[i].overview,
-                                                      posterPath: recommendedMovies[i].poster_path ?? "",
-                                                      voteAverage: recommendedMovies[i].vote_average,
-                                                      releaseDate: recommendedMovies[i].release_date ?? "",
-                                                      movie: movie)
-                                            .animation(.default)
-                                    }
-                                }
                             }
                         }
                     }
                 }
-
-
-
-                
-                
             } // switch
             
     }

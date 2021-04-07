@@ -16,19 +16,19 @@ extension Date {
         }
     }
     
-    // return formated time
-    func time() -> String {
-        formater.dateFormat = "h:mm a"
-        
-        return formater.string(from: Date() )
-    }
-    
-    // Date for movie release date
-    func movieDate() -> String { // not sure if working
-        formater.dateFormat = "MMM d, yyyy"
-        return formater.string(from: self )
-    }
-    
+//    // return formated time
+//    func time() -> String {
+//        formater.dateFormat = "h:mm a"
+//
+//        return formater.string(from: Date() )
+//    }
+//
+//    // Date for movie release date
+//    func movieDate() -> String { // not sure if working
+//        formater.dateFormat = "MMM d, yyyy"
+//        return formater.string(from: self )
+//    }
+//
     func calculateTime(to rhs: Date) -> Int {
         var age: Int = 0
         let difference = Calendar.current.dateComponents([.year], from: self, to: rhs)

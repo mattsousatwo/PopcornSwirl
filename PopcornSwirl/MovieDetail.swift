@@ -230,10 +230,6 @@ struct MovieDetail: View, Equatable {
                 
         
         .onAppear() {
-
-//            genreStore.loadAllGenres()
-            
-            
             
             print("MovieDetail - is loading:")
             print("ShowStarSlider - MovieDetail: \(showStarSlider)")

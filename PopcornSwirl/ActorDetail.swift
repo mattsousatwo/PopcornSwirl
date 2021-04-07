@@ -160,22 +160,6 @@ struct ActorDetail: View {
                         // Birthdate
                         displayBirthday()
                         
-//                        VStack(alignment: .leading ) {
-//                            ForEach(movie.actorDetails, id: \.self) { details in
-//                                Text("Birth Place:").font(.title2).bold()
-//                                if details.deathday == "" {
-//                                    Text("\(details.birthday ?? "" ) - \(details.deathday ?? "" )")
-//                                } else {
-//                                    Text( "\(details.birthday ?? "") (\((details.place_of_birth ?? ""))) " )
-//                                }
-//                            }
-//
-//                        }
-//                        .padding(.horizontal)
-//                        .padding(.bottom, 5)
-//                        .foregroundColor(.white)
-//
-                        
                         
                         
                         

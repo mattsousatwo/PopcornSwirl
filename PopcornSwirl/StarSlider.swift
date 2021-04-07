@@ -63,36 +63,36 @@ struct StarSlider_Previews: PreviewProvider {
 
 // Textview to display slider value
 struct StarSliderTextView: View {
-    
+
     @Binding var value: Double
-    
+
     var body: some View {
-        
+
         HStack {
             Image(systemName: "star.fill").resizable()
                 .foregroundColor(.pGray3)
                 .frame(width: 30, height: 30)
-            
+
             Text("\(value, specifier: "%.1f")")
                 .font(.title).fontWeight(.light)
                 .frame(width: 60, height: 40, alignment: .center)
         }
         .padding(.horizontal)
         .padding(.vertical, 5)
-        
-        
+
+
     }
 }
 
 
 // View to show slider view
 struct StarSliderView: View {
-    
+
     @Binding var value: Double
     var accent = Color.blue
-    
+
     var body: some View {
-        
+
         HStack {
             Button(action: {
                     if value >= 0.1 {
@@ -103,9 +103,9 @@ struct StarSliderView: View {
                         .font(Font.title.weight(.light))
                         .foregroundColor(.pGray3)
                    })
-            
+
             Slider(value: $value, in: 0...5, step: 0.5)
-            
+
             Button(action: {
                 if value <= 4.9 {
                     value += 0.1
@@ -120,35 +120,35 @@ struct StarSliderView: View {
         }
         .padding(.horizontal, 5)
         .padding(.vertical)
-        
+
     }
-    
+
 }
 
 
 // Action buttons for view
 struct StarSliderButtons: View {
-    
+
     var movie: Movie
     @Binding var value: Double
-    
+
     @Binding var showSlider: Bool
-    
-    
+
+
     let movieStore = MoviesStore()
-    
-    
+
+
     var body: some View {
-        
-        HStack { 
-            
+
+        HStack {
+
             // Cancel
             Button(action: {
                 print("ShowStarSlider - Cancel - StarSlider: \(showSlider)")
-                
+
 //                self.dismiss.toggle()
                 showSlider = false
-                
+
             }, label: {
                 RoundedRectangle(cornerRadius: 12)
                     .foregroundColor(Color.lightBlue)
@@ -157,20 +157,20 @@ struct StarSliderButtons: View {
                         Text("Cancel").bold().foregroundColor(.pGray3).opacity(0.8)
                     )
             })
-            
+
             Spacer()
-            
+
             // Save Button
             Button(action: {
                 print("Submit")
-                
+
                 movieStore.update(movie: movie,
                                   rating: value)
                 print("Submit - Rating.rating = \(movie.rating)")
-                
-                
+
+
                 showSlider = false
-                
+
             }, label: {
                 RoundedRectangle(cornerRadius: 12)
                     .foregroundColor(Color.lightBlue)
@@ -179,15 +179,15 @@ struct StarSliderButtons: View {
                         Text("Submit").bold().foregroundColor(.pGray3).opacity(0.8)
                 )
             })
-            
-            
-            
+
+
+
         }
         .padding()
-        
+
         .onAppear {
             print("ShowStarSlider - StarSlider: \(showSlider)")
         }
-        
+
     }
 }
