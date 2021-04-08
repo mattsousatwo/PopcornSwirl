@@ -146,5 +146,19 @@ class CoreDataCoder {
         return tvSeriesCast
     }
     
+    // Convert Similar Series to String
+    func encodeSimilarSeries(_ series: [SimilarSeries]) -> String? {
+        encoder.outputFormatting = .prettyPrinted
+        guard let data = try? encoder.encode(series) else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+    
+    // Convert String to Similar Series
+    func decodeSimilarSeries(_ series: String) -> [SimilarSeries]? {
+        guard let data = series.data(using: .utf8) else { return nil }
+        guard let similarSeries = try? decoder.decode([SimilarSeries].self, from: data) else { return nil }
+        return similarSeries
+    }
+    
     
 }

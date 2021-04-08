@@ -98,7 +98,11 @@ extension SeriesStore {
                 rating: Double? = nil,
                 releaseDate: String? = nil,
                 title: String? = nil,
-                uuid: Double? = nil) {
+                uuid: Double? = nil,
+                providers: PurchaseLink? = nil,
+                seasonCount: Int16? = nil,
+                episodeCount: Int16? = nil,
+                similarSeries: [SimilarSeries]? = nil) {
         if let cast = cast {
             series.cast = cast
         }
@@ -122,6 +126,22 @@ extension SeriesStore {
         }
         if let uuid = uuid {
             series.uuid = uuid
+        }
+        if let providers = providers {
+            if let purchaseLinks = encodeWatchProviders(providers) {
+                series.providers = purchaseLinks
+            }
+        }
+        if let seasonCount = seasonCount {
+            series.seasonCount = seasonCount
+        }
+        if let episodeCount = episodeCount {
+            series.episodeCount = episodeCount
+        }
+        if let similarSeries = similarSeries {
+            if let similar = encodeSimilarSeries(similarSeries) {
+                series.similarSeries = similar
+            }
         }
         if series.hasChanges {
             saveContext()

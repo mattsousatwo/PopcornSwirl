@@ -895,6 +895,10 @@ extension MovieStore {
             do {
                 let results = try self.decoder.decode(SimilarSeriesSchema.self, from: json)
                 self.similarSeries = results.results
+                let series = self.seriesStore.fetchSeries(uuid: id)
+                
+                self.seriesStore.update(series: series,
+                                        similarSeries: self.similarSeries)
                 
                 
                 
@@ -932,6 +936,15 @@ extension MovieStore {
             do {
                 let results = try self.decoder.decode(SeriesDetail.self, from: data)
                 self.seriesDetail = results
+                let series = self.seriesStore.fetchSeries(uuid: id)
+                
+                if let episodeCount = self.seriesDetail.number_of_episodes,
+                   let seasonCount = self.seriesDetail.number_of_seasons {
+                    self.seriesStore.update(series: series,
+                                       seasonCount: Int16(seasonCount),
+                                       episodeCount: Int16(episodeCount))
+                    
+                }
    
             } catch {
                 print(error)
@@ -970,12 +983,7 @@ extension MovieStore {
                     self.watchProviders = usWatchProviders
                     let series = self.seriesStore.fetchSeries(uuid: id)
                     
-                    if let watchProvidersString = self.seriesStore.encodeWatchProviders(usWatchProviders) {
-                        /// Create update func for Series
-                        
-                    }
-                    
-                    
+                    self.seriesStore.update(series: series, providers: usWatchProviders)
                     
                 } catch {
                     print(error)

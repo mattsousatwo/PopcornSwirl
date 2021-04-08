@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D80" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Actor" representedClassName="Actor" syncable="YES">
         <attribute name="biography" optional="YES" attributeType="String"/>
         <attribute name="birthDate" optional="YES" attributeType="String"/>
@@ -31,17 +31,21 @@
     </entity>
     <entity name="Series" representedClassName="Series" syncable="YES">
         <attribute name="cast" optional="YES" attributeType="String"/>
+        <attribute name="episodeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="imagePath" optional="YES" attributeType="String"/>
         <attribute name="isFavorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="overview" optional="YES" attributeType="String"/>
+        <attribute name="providers" optional="YES" attributeType="String"/>
         <attribute name="rating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="releaseDate" optional="YES" attributeType="String"/>
+        <attribute name="seasonCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="similarSeries" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="uuid" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
     </entity>
     <elements>
         <element name="Actor" positionX="-45" positionY="36" width="128" height="164"/>
         <element name="Movie" positionX="-45" positionY="45" width="128" height="269"/>
-        <element name="Series" positionX="-45" positionY="153" width="128" height="14"/>
+        <element name="Series" positionX="-45" positionY="153" width="128" height="209"/>
     </elements>
 </model>

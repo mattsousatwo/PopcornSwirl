@@ -25,6 +25,11 @@ extension Series {
     @NSManaged public var releaseDate: String?
     @NSManaged public var isFavorite: Bool
     @NSManaged public var imagePath: String?
+    
+    @NSManaged public var episodeCount: Int16
+    @NSManaged public var seasonCount: Int16
+    @NSManaged public var similarSeries: String?
+    @NSManaged public var providers: String?
 
 }
 
