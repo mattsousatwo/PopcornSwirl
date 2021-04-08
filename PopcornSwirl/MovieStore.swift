@@ -35,6 +35,12 @@ class MovieStore: ObservableObject {
     @Published var actorCredits = [ActorCreditsCast]()
     @Published var actorDetails = [ActorDetails]()
 
+    // Series Credits
+    @Published var tvSeriesCast = [TVSeriesCast]() // Cast for tvSeries
+    @Published var similarSeries = [SimilarSeries]()
+    @Published var seriesDetail = SeriesDetail()
+    
+    
     
     // WatchProviders
     @Published var watchProviders: PurchaseLink?
@@ -339,7 +345,6 @@ extension MovieStore {
 
     // MARK: GET Movie & TV Credits for Actor
     func fetchCreditsFor(actor: Int) {
-        
         let creditsRequest = "https://api.themoviedb.org/3/person/\(actor)/combined_credits?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
         AF.request( creditsRequest ).responseJSON { response in
             guard let json = response.data else { return }
@@ -843,25 +848,73 @@ extension MovieStore {
     
     /// fetch credits for TV Series
     func fetchTVSeriesCredits(id: Int) {
-        
         // https://developers.themoviedb.org/3/tv/get-tv-credits
-        let tvSeriesCreditRequest = "https://api.themoviedb.org/3/tv/{tv_id}/credits?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
-        
+        let tvSeriesCreditRequest = "https://api.themoviedb.org/3/tv/\(id)/credits?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
+        AF.request( tvSeriesCreditRequest ).responseJSON { response in
+            guard let json = response.data else { return }
+            do {
+                let results = try self.decoder.decode(TVSeriesCreditSchema.self, from: json)
+                self.tvSeriesCast = results.cast
+                
+                let series = self.seriesStore.fetchSeries(uuid: id)
+                
+                if let encodedCast = self.seriesStore.encodeTVSeriesCast(self.tvSeriesCast) {
+                    self.seriesStore.update(series: series, cast: encodedCast)
+                }
+                
+                
+            } catch {
+                print(error)
+            }
+        }
     }
-    
+
+    // Get all series
+    func extractTVSeriesCredits(id: Int) -> [TVSeriesCast] {
+        var cast = [TVSeriesCast]()
+        if tvSeriesCast.count == 0 {
+            fetchTVSeriesCredits(id: id)
+        }
+        cast.append(contentsOf: tvSeriesCast)
+        return cast
+    }
 }
 
 
 // MARK: Similar TV Shows
 extension MovieStore {
     
+    
+    
     /// fetch similar tv shows
-    func fetchRecommendedMoviesForSeries(id: Int) {
-        
+    func fetchSimilarSeriesForShow(id: Int) {
         // https://developers.themoviedb.org/3/tv/get-similar-tv-shows
-        let similarMoviesRequest = "https://api.themoviedb.org/3/tv/{tv_id}/similar?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US&page=1"
-        
+        let similarSeriesRequest = "https://api.themoviedb.org/3/tv/\(id)/similar?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US&page=1"
+        AF.request( similarSeriesRequest ).responseJSON { response in
+            guard let json = response.data else { return }
+            do {
+                let results = try self.decoder.decode(SimilarSeriesSchema.self, from: json)
+                self.similarSeries = results.results
+                
+                
+                
+            } catch {
+                print(error)
+            }
+        }
     }
+    
+    
+    // Get all similar series
+    func extractSimilarSereis(id: Int) -> [SimilarSeries] {
+        var series = [SimilarSeries]()
+        if similarSeries.count == 0 {
+            fetchSimilarSeriesForShow(id: id)
+        }
+        series.append(contentsOf: similarSeries)
+        return series
+    }
+    
     
 }
 
@@ -871,25 +924,64 @@ extension MovieStore {
     
     /// Fetch Details for TV Series
     func fetchTVSeriesDetails(id: Int) {
-        
         // https://developers.themoviedb.org/3/tv/get-tv-details
-        let detailsRequest = "https://api.themoviedb.org/3/tv/{tv_id}?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
+        let detailsRequest = "https://api.themoviedb.org/3/tv/\(id)?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
         
-        
+        AF.request( detailsRequest ).responseJSON { response in
+            guard let data = response.data else { return }
+            do {
+                let results = try self.decoder.decode(SeriesDetail.self, from: data)
+                self.seriesDetail = results
+   
+            } catch {
+                print(error)
+            }
+        }
     }
     
+    
+    // Get TVSeriesDetails
+    func extractDetailsFor(sereies id: Int) -> SeriesDetail {
+        var details = SeriesDetail()
+        if seriesDetail.id != id {
+            fetchTVSeriesDetails(id: id)
+        }
+        details = self.seriesDetail
+        return details
+    }
+    
+    
 }
-
 
 // MARK: TV Series Watch Providers
 extension MovieStore {
     
     /// Fetch all watch providers for series
     func fetchTVSeriesWatchProviders(id: Int) {
-        
         // https://developers.themoviedb.org/3/tv/get-tv-watch-providers
-        let seriesWatchProvidersRequest = "https://api.themoviedb.org/3/tv/{tv_id}/watch/providers?api_key=\(MovieStoreKey.apiKey.rawValue)"
-        
+        let seriesWatchProvidersRequest = "https://api.themoviedb.org/3/tv/\(id)/watch/providers?api_key=\(MovieStoreKey.apiKey.rawValue)"
+        AF.request( seriesWatchProvidersRequest ).responseJSON { response in
+            guard let data = response.data else { return }
+                do {
+                    let results = try self.decoder.decode(WatchProviders.self, from: data)
+                    guard let resultsResponse = results.results else { return }
+                    guard let usWatchProviders = resultsResponse.us else { return }
+                    
+                    self.watchProviders = usWatchProviders
+                    let series = self.seriesStore.fetchSeries(uuid: id)
+                    
+                    if let watchProvidersString = self.seriesStore.encodeWatchProviders(usWatchProviders) {
+                        /// Create update func for Series
+                        
+                    }
+                    
+                    
+                    
+                } catch {
+                    print(error)
+                }
+            
+        }
     }
 }
 
@@ -905,3 +997,4 @@ enum CreditExtractionType: String {
     case movie = "movie", tv = "tv"
 }
 
+ 

@@ -131,4 +131,20 @@ class CoreDataCoder {
         return upcomingMovies
     }
     
+    
+    // Convert TVSeriesCast to String
+    func encodeTVSeriesCast(_ cast: [TVSeriesCast]) -> String? {
+        encoder.outputFormatting = .prettyPrinted
+        guard let data = try? encoder.encode(cast) else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+    
+    // Convert String to TVSeriesCast
+    func decodeTVSeriesCast(_ cast: String) -> [TVSeriesCast]? {
+        guard let data = cast.data(using: .utf8) else { return nil }
+        guard let tvSeriesCast = try? decoder.decode([TVSeriesCast].self, from: data) else { return nil }
+        return tvSeriesCast
+    }
+    
+    
 }

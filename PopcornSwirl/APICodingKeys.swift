@@ -336,3 +336,57 @@ struct Provider: Codable, Equatable {
     } 
     
 }
+
+
+// MARK: - TV Series Credits
+struct TVSeriesCreditSchema: Codable {
+    var id: Int
+    var cast: [TVSeriesCast]
+}
+
+struct TVSeriesCast: Codable, Equatable {
+    var name: String
+    var character: String
+    
+    static func ==(lhs: TVSeriesCast, rhs: TVSeriesCast) -> Bool {
+        return lhs.name == rhs.name &&
+            lhs.character == rhs.character
+    }
+}
+
+
+// MARK: - Similar Shows to TVSeries
+struct SimilarSeriesSchema: Codable {
+    var page: Int
+    var results: [SimilarSeries]
+}
+
+struct SimilarSeries: Codable {
+    var poster_path: String?
+    var popularity: Int
+    var id: Int
+    var vote_average: Double
+    var overview: String
+    var first_air_date: String
+    var genre_ids: [Int]
+    var name: String
+    
+}
+
+
+
+// MARK: - TV Series Details
+struct SeriesDetail: Codable {
+    var first_air_date: String?
+    var genres: [Int]?
+    var id: Int?
+    var name: String?
+    var number_of_episodes: Int?
+    var number_of_seasons: Int?
+    var overview: String?
+    var poster_path: String?
+    var vote_average: Double?
+}
+
+
+

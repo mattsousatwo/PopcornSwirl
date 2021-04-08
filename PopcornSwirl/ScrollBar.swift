@@ -305,7 +305,7 @@ struct Bar: View {
                                         
                                         
                                         ScrollNavLink(movieID: id,
-                                                      title: actorTVSeries[i].title ?? "",
+                                                      title: actorTVSeries[i].name ?? "",
                                                       genreIDs: actorTVSeries[i].genre_ids,
                                                       overview: actorTVSeries[i].overview,
                                                       posterPath: actorTVSeries[i].poster_path ?? "",

@@ -393,6 +393,29 @@ class ArrayTests: XCTestCase {
 
 class SeriesTests: XCTestCase {
     
+    let movieStore = MovieStore()
+    let seriesDB = SeriesStore()
+    let theGoodDoctorID = 61231
+    
+    // Test if we can encode and decode TVSeriesCast
+    func testTVCastEncoding() {
+        let cast = [TVSeriesCast(name: "Actor 1", character: "Character 1"),
+                    TVSeriesCast(name: "Actor 2", character: "Character 2")]
+        guard let castString = seriesDB.encodeTVSeriesCast(cast) else { return }
+        guard let decodedCast = seriesDB.decodeTVSeriesCast(castString) else { return }
+        
+        XCTAssertEqual(cast, decodedCast)
+    }
+    
+    // Test fetching TVSeriesCast
+    func testFetchingForTVSeriesCast() {
+        movieStore.fetchTVSeriesCredits(id: theGoodDoctorID)
+        print("\n goodDoctorCast.count = \(movieStore.tvSeriesCast.count)\n")
+        XCTAssertFalse(movieStore.tvSeriesCast.count == 0)
+        
+        
+    }
+    
 }
 
 
