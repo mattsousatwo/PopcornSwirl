@@ -37,9 +37,6 @@ struct SearchMovie: View {
                         
                         
                         Button(action: {
-                            
-                            print(" ~ Search Button Pressed ~")
-                            
                             let movieQuery = searchTag.replacingOccurrences(of: " ", with: "+")
                             movieStore.fetchResultsForMovie(query: movieQuery)
                             

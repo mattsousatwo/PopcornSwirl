@@ -96,8 +96,6 @@ struct ActorDetail: View {
             }
         }
         
-        
-        
         let stack = VStack(alignment: .leading) {
             Text("Birth:").font(.title2).bold()
             if let deathdate = deathDate {
@@ -115,7 +113,6 @@ struct ActorDetail: View {
         .padding(.horizontal)
         .padding(.bottom, 5)
         .foregroundColor(.white)
-        
         
         return stack
     }
@@ -156,12 +153,8 @@ struct ActorDetail: View {
                             .padding(.horizontal)
                             .padding(.bottom, 5)
                         
-                        
                         // Birthdate
                         displayBirthday()
-                        
-                        
-                        
                         
                         Text("Biography").font(.title2).bold()
                             .foregroundColor(.white)

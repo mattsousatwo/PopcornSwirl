@@ -19,7 +19,6 @@ enum ScrollBarType: String  {
     case actorTV = "TV"
 }
 
-
 struct ScrollBar: View, Equatable {
     
     @ObservedObject var movieStore = MovieStore()
@@ -56,8 +55,6 @@ struct ScrollBar: View, Equatable {
         case .actors:
             let actorIDs = movieStore.extractIDsFor(.actors, id: id)
             let y = actorsStore.fetchAllActorsWith(ids: actorIDs)
-            print("FOUND ACTORS: \(y.count)")
-            
             return y
         default:
             return nil 
@@ -97,7 +94,10 @@ struct ScrollBar: View, Equatable {
                 if type == .recommendedMovie {
                     if movieStore.recommendedMovies.count >= 9 {
                         Button(action: {
-                            print("See All Reccomended Movies")
+                        
+                            
+                            
+                            
                         }, label: {
                             Text("See All")
                                 .foregroundColor(.pGray3)
@@ -107,7 +107,9 @@ struct ScrollBar: View, Equatable {
                 } else if type == .actors {
                     if movieStore.actorImageProfiles.count >= 9 {
                         Button(action: {
-                            print("See All Actors")
+ 
+                            
+                            
                         }, label: {
                             Text("See All")
                                 .foregroundColor(.pGray3)
@@ -182,22 +184,13 @@ struct Bar: View {
     @ObservedObject var movieCD = MoviesStore()
     
     private var popularMovies : [PopMovie] {
-        let popularMovies = movieStore.extractPopularMovies()
-        
-        
-//        movieStore.updateMovieCategories(popularMovies)
-//        movieStore.removeOldMovies(from: .popular)
-        
-        
-        return popularMovies
+        return movieStore.extractPopularMovies()
     }
 
     private var recommendedMovies: [RecommendedMovie] {
         let movies = movieStore.extractRecomendedMovies(id: id)
         
         compareFetchedToSaved(movies: movies)
-        
-        print("ReccomendedMovies.count: \(movies.count)")
         return movies
     }
 
@@ -209,9 +202,7 @@ struct Bar: View {
     }
 
     private var cast: [MovieCast] {
-        let c = movieStore.extractMovieCast(id: id)
-        print("Cast: \(c) ")
-        return c
+        return movieStore.extractMovieCast(id: id)
     }
 
     private var actorImages: [Int : String ] {
@@ -224,7 +215,6 @@ struct Bar: View {
         let actor = actorStore.fetchActorWith(id: id)
         if let encodedCredits = actor.credits {
             if let decodedCredits = actorStore.decodeActorCredits(encodedCredits) {
-                print("actorMovie - Coredata")
                 for movie in decodedCredits {
                     if movie.media_type == "movie" {
                         credits.append(movie)
@@ -233,7 +223,6 @@ struct Bar: View {
             }
         }
         if credits.isEmpty == true {
-            print("actorMovie - TMDB")
             return movieStore.extractCreditsFor(actorID: id, type: .movie)
         }
         return credits
@@ -245,7 +234,6 @@ struct Bar: View {
         let actor = actorStore.fetchActorWith(id: id)
         if let encodedCredits = actor.credits {
             if let decodedCredits = actorStore.decodeActorCredits(encodedCredits) {
-                print("actorTV - Coredata")
                 for movie in decodedCredits {
                     if movie.media_type == "tv" {
                         credits.append(movie)
@@ -254,7 +242,6 @@ struct Bar: View {
             }
         }
         if credits.isEmpty == true {
-            print("actorTV - TMDB")
             return movieStore.extractCreditsFor(actorID: id, type: .tv)
         }
         return credits

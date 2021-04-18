@@ -64,7 +64,6 @@ struct MovieDetail: View, Equatable {
     var genres: [String] {
         var ids: [Int] = []
         if let movieGenres = movie.genres {
-            print("MovieGenres: \(movieGenres)")
             if let genreIDs = movieCD.decodeGenres(movieGenres) {
                 ids = genreIDs
             }
@@ -75,7 +74,6 @@ struct MovieDetail: View, Equatable {
         
         let genreNames = genreDict.convertGenre(IDs: ids)
 
-        print("GenresNames: \(genreNames), count: \(genreNames.count), ID: \(ids)")
         return genreNames
     }
 
@@ -227,21 +225,6 @@ struct MovieDetail: View, Equatable {
 
 
         } // ZStack
-                
-        
-        .onAppear() {
-            
-            print("MovieDetail - is loading:")
-            print("ShowStarSlider - MovieDetail: \(showStarSlider)")
-            
-            print( "Movie ID: \(movieID)"  )
-            print( "Movie Title: \(movieTitle)"  )
-            print( "Movie Overview: \(movieOverview)"  )
-            print( "Path: \(MovieStoreKey.imageURL.rawValue + posterPath)" )
-//            print( "GenreIDs: \(genres)" )
-            print("MovieDetail - is loaded\n")
-
-        }
         
         
     } // body

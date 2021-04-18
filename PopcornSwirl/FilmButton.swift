@@ -27,11 +27,9 @@ struct FilmButton: View {
                 case .unWatched:
                     self.type = .watched
                     movieStore.update(movie: movie, isWatched: true)
-                    print("movie: \(movie.title ?? "NO TITLE"), isWatched: \(movie.isWatched)")
                 case .watched:
                     self.type = .unWatched
                     movieStore.update(movie: movie, isWatched: false)
-                    print("movie: \(movie.title ?? "NO TITLE"), isWatched: \(movie.isWatched)")
                 }
 
             }, label: {
@@ -48,7 +46,6 @@ struct FilmButton: View {
                 case false:
                     type = .unWatched
                 }
-                print("movie: \(movie.title ?? "NO TITLE"), isWatched: \(movie.isWatched)")
             })
 
 

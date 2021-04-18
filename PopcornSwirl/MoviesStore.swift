@@ -43,20 +43,16 @@ extension MoviesStore {
     }
     
     // Save a new movie
-    func createNewMovie(uuid: Double, category: MovieCategory = .none, director: String = "", title: String = "", overview: String = "", genres: [Int] = [], cast: String = "", releaseDate: String = "", rating: Double = 0.0, isFavorite: Bool = false, isWatched: Bool = false, comment: String = "") -> Movie {
+    func createNewMovie(uuid: Double, category: MovieCategory = .none, director: String = "", title: String = "", overview: String = "", genres: String = "", cast: String = "", releaseDate: String = "", rating: Double = 0.0, isFavorite: Bool = false, isWatched: Bool = false, comment: String = "") -> Movie {
         
         let movie = Movie(context: context)
         
         movie.uuid = uuid
         movie.category = category.rawValue
-        
         movie.director = director
         movie.title = title
         movie.overview = overview
-//        movie.genres = genres ---- CONVERT TO NSOBJECT?
-//        if cast != "" {
-//            movie.cast = cast
-//        }
+        movie.genres = genres
         movie.releaseDate = releaseDate
         movie.rating = rating
         
@@ -89,68 +85,51 @@ extension MoviesStore {
         
         if let uuid = uuid {
             movie.uuid = uuid
-            print("saved uuid: \(movie.uuid)")
         }
         if let category = category {
             movie.category = category.rawValue
-            print("saved category: \(movie.category ?? "is Empty")")
         }
         if let director = director {
             movie.director = director
-            print("saved director: \(movie.director ?? "is Empty")")
         }
         if let title = title {
             movie.title = title
-            print("saved title: \(movie.title ?? "is Empty")")
         }
         if let overview = overview {
             movie.overview = overview
-            print("saved overview: \(movie.overview ?? "is Empty")")
         }
         if let imagePath = imagePath {
             movie.imagePath = imagePath
-            print("saved imagePath: \(movie.imagePath ?? "is Empty")")
         }
         if let genres = genres {
             movie.genres = genres
-            print("saved genres: \(movie.genres ?? "is Empty")")
         }
         if let cast = cast {
             movie.cast = cast
-            print("saved cast: \(movie.cast ?? "is Empty")")
         }
         if let releaseDate = releaseDate {
             movie.releaseDate = releaseDate
-            print("saved releaseDate: \(movie.releaseDate ?? "is Empty")")
         }
         if let rating = rating {
             movie.rating = rating
-            print("saved rating: \(movie.rating)")
         }
         if let isFavorite = isFavorite {
-//            movie.isFavorite = isFavorite
             movie.isFavorite = NSNumber(value: isFavorite) as! Bool
-            print("saved isFavorite: \(movie.isFavorite)")
         }
         if let isWatched = isWatched {
             movie.isWatched = NSNumber(value: isWatched) as! Bool
-            print("saved isWatched: \(movie.isWatched)")
         }
         if let comment = comment {
             movie.comment = comment
-            print("saved comment: \(movie.comment ?? "is Empty")")
         }
         if let recomendedMovies = recommendedMovies {
             movie.recommendedMovies = recomendedMovies
-            print("saved recommendedMovies: \(movie.recommendedMovies ?? "is Empty")")
         }
         if let voteAverage = voteAverage {
             movie.voteAverage = voteAverage
-            print("saved voteAverage: \(movie.voteAverage)")
         }
         if let watchProviders = watchProviders {
             movie.watchProviders = watchProviders
-            print("saved watchProviders: \(movie.watchProviders ?? "is Empty")")
         }
         
         if movie.hasChanges {
@@ -201,12 +180,9 @@ extension MoviesStore {
                 let result = try context.fetch(request)
                 switch result.isEmpty {
                 case true:
-                    print("Movie Not Found \(id)")
                     let newMovie = createNewMovie(uuid: id)
                     movieArray.append(newMovie)
-                    print(" -> Movie Saved: \(newMovie.uuid) \n")
                 case false:
-                    print("Movie Found: \(id)")
                     movieArray.append(contentsOf: result)
                 }
             } catch {
@@ -226,7 +202,6 @@ extension MoviesStore {
             let result = try context.fetch(request)
             switch result.isEmpty {
             case true:
-                print("Movie Not Found \(uuid)")
                 let newMovie = createNewMovie(uuid: Double(uuid))
                 movie = newMovie
             case false:
@@ -269,7 +244,6 @@ extension MoviesStore {
         if favoriteMovies.isEmpty {
             fetchAllFavoriteMovies()
         }
-        print("FetchFavorites(): \(favoriteMovies.count)")
         if favoriteMovies.count == 0 {
             return nil
         }
@@ -313,7 +287,6 @@ extension MoviesStore {
         if watchedMovies.isEmpty {
             fetchAllWatchedMovies()
         }
-        print("FetchWatched(): \(watchedMovies.count)")
         if watchedMovies.count == 0 {
             return nil
         }

@@ -30,8 +30,6 @@ struct GenreBar: View {
             if genres.count != 0 {
                 HStack {
                     ForEach(genres, id: \.self) { genre in
-                        
-                        
                         RoundedRectangle(cornerRadius: 10)
                             .opacity(0.6)
                             .foregroundColor(.lightBlue)

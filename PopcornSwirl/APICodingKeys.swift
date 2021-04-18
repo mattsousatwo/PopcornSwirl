@@ -341,7 +341,7 @@ struct Provider: Codable, Equatable {
 // MARK: - TV Series Credits
 struct TVSeriesCreditSchema: Codable {
     var id: Int
-    var cast: [TVSeriesCast]
+    var cast, crew: [TVSeriesCast]
 }
 
 struct TVSeriesCast: Codable, Equatable {

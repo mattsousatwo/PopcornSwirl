@@ -162,7 +162,6 @@ extension ActorsStore {
                 actor = firstActor
             }
         }
-        print("FetchActor - actor: \(actor.name ?? "name is empty")")
         return actor
         
     }
@@ -176,13 +175,11 @@ extension ActorsStore {
                 let result = try context.fetch(request)
                 switch result.isEmpty {
                 case true:
-                    print("Actor Not Found \(id)")
                     let actor = Actor(context: context)
                     actor.id = Double(id)
                     saveContext()
                     actorsArray.append(actor)
                 case false:
-                    print("Actor Found")
                     actorsArray.append(contentsOf: result)
                 }
             } catch {

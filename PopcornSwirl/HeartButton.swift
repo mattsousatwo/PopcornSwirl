@@ -33,11 +33,9 @@ struct HeartButton: View {
                 case .empty:
                     self.type = .fill
                     movieStore.update(movie: movie, isFavorite: true, comment: "true - \(Date())")
-                    print("HeartButton - id: \(movie.uuid), isFavorite: \(movie.isFavorite), comment: \(movie.comment ?? "")")
                 case .fill:
                     self.type = .empty
                     movieStore.update(movie: movie, isFavorite: false, comment: "false - \(Date())")
-                    print("HeartButton - id: \(movie.uuid), isFavorite: \(movie.isFavorite), comment: \(movie.comment ?? "")")
                 }
             }, label: {
                 gradient.mask(
@@ -64,16 +62,12 @@ struct HeartButton: View {
                 switch type {
                 case .empty:
                     self.type = .fill
-                    print("Like Button Pressed")
                     actor.isFavorite = true
                     actorsStore.saveContext()
-                    print("HeartButton - actorID: \(actor.id), isFavorite: \(actor.isFavorite)")
                 case .fill:
                     self.type = .empty
-                    print("Unlike Button Pressed")
                     actor.isFavorite = false
                     actorsStore.saveContext()
-                    print("HeartButton - actorID: \(actor.id), isFavorite: \(actor.isFavorite)")
                 }
             }, label: {
                 gradient.mask(
@@ -126,19 +120,7 @@ struct HeartButton: View {
             }
         }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    }
+            }
     enum HeartType: String {
         case empty = "heart"
         case fill = "heart.fill"

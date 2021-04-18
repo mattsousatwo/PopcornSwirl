@@ -55,7 +55,6 @@ struct StarBar: View {
     init(value: Double) {
         let dividedValue = value / 2
         self.value = dividedValue
-        print("Star Bar Converted Value: input value = \(value), divided value = \(dividedValue)")
     }
     
     var body: some View {

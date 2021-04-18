@@ -144,7 +144,7 @@ struct StarSliderButtons: View {
 
             // Cancel
             Button(action: {
-                print("ShowStarSlider - Cancel - StarSlider: \(showSlider)")
+               
 
 //                self.dismiss.toggle()
                 showSlider = false
@@ -162,11 +162,11 @@ struct StarSliderButtons: View {
 
             // Save Button
             Button(action: {
-                print("Submit")
+                
 
                 movieStore.update(movie: movie,
                                   rating: value)
-                print("Submit - Rating.rating = \(movie.rating)")
+                
 
 
                 showSlider = false
@@ -184,10 +184,6 @@ struct StarSliderButtons: View {
 
         }
         .padding()
-
-        .onAppear {
-            print("ShowStarSlider - StarSlider: \(showSlider)")
-        }
 
     }
 }

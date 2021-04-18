@@ -35,20 +35,13 @@ class MovieTests: XCTestCase {
         
         movieCD.update(movie: movieSearch, isWatched: true)
         
-        print(movieSearch)
+        
         XCTAssertEqual(movieSearch.isWatched, true)
     }
     
     func testFetchForFavoriteMovies() {
-        print("FetchFavorites - TEST \n")
         let movies = movieCD.getAllFavoriteMovies()
-        for movie in movies {
-            print("Movie: \(movie.title ?? "NO TITLE"), isFav: \(movie.isFavorite)")
-        }
-        print("Movies: \(movies.count)")
         let favorites = movies.map({ $0.isFavorite == true })
-        print("Favorites: \(favorites.count)")
-        print("\n")
         XCTAssertEqual(movies.count, favorites.count)
     }
     
@@ -58,7 +51,6 @@ class MovieTests: XCTestCase {
         
         movieCD.update(movie: movieSearch, isWatched: true)
         
-        print(movieSearch)
         XCTAssertEqual(movieSearch.isWatched, true)
     }
     
@@ -77,35 +69,30 @@ class MovieTests: XCTestCase {
     func testIfMovieIsThere() {
         movieCD.fetchMovies()
         let movie = movieCD.allMovies.first(where: { $0.uuid == Double(wonderWomanID) })
-        print("movieCount: \(movieCD.allMovies.count)")
         XCTAssertNotNil(movie, "Movie is not found, movieCount: \(movieCD.allMovies.count)")
     }
     
     // test if fetching movies will work
     func testAllMovieFetching() {
         movieCD.fetchMovies()
-        print("AllMovies: \(movieCD.allMovies.count)")
         XCTAssertFalse(movieCD.allMovies.count == 0, "No Movies are found")
     }
     
     // test if fetching by popular movie category is working
     func testPopularMovieFetching() {
         movieCD.fetchMovies(.popular)
-        print("PopularMovie.count: \(movieCD.popularMovies.count)")
         XCTAssertFalse(movieCD.popularMovies.count == 0, "No Popular Movies Found")
     }
    
     // Test reccomended video fetching
     func testMovieBarForReccomended() {
         let reccomendedMovies = movieStore.movieForBar(.recommendedMovie, id: wonderWomanID)
-        print("reccomendedMovies: \(reccomendedMovies.count)")
         XCTAssertFalse(reccomendedMovies.count == 0, "No Movies Found - count: \(reccomendedMovies.count)")
     }
     
     // Test if actors fetching is working
     func testMovieBarForActors() {
         let actors = movieStore.movieForBar(.actors, id: wonderWomanID)
-        print("actors Count: \(actors.count)")
         XCTAssertFalse(actors.count == 0, "No Actors found - should update to use Actor not Movie")
     }
     
@@ -142,11 +129,8 @@ class MovieTests: XCTestCase {
         var decodedValue: [Int] = []
         
         guard let IDsString = movieCD.encodeGenres(genreIDs) else { return }
-        print("\n Coding&DecodingTest: Encoding - \(IDsString) \n")
-        
         if let decodedString = movieCD.decodeGenres(IDsString) {
             decodedValue = decodedString
-            print("\n Coding&DecodingTest: Decoding - \(decodedString) \n")
         }
         
         
@@ -155,7 +139,6 @@ class MovieTests: XCTestCase {
     }
     
     
-     // MARK: - Figure out why ln: 164, 166 work here and not in .decodeGenres()
     func testDecodingGenres() {
         let genreIDs = [23,42,99,103,33,4]
         guard let IDsString = movieCD.encodeGenres(genreIDs) else { return }
@@ -163,8 +146,6 @@ class MovieTests: XCTestCase {
         
         let decoder = JSONDecoder()
         let ids = try! decoder.decode([Int].self, from: idData)
-        
-        print("\n - IDs: \(ids) \n")
         XCTAssertEqual(ids, genreIDs, "\(ids) is not equal to \(genreIDs)")
     }
     
@@ -190,15 +171,9 @@ class MovieTests: XCTestCase {
         
         
         guard let movieCastString = movieCD.encodeCast(cast) else { return }
-        print( "\nMovieCast - \(movieCastString) \n")
-        
         
         if let decodedData = movieCD.decodeCast(movieCastString) {
             decodedCast = decodedData
-            print("    decodedData - PASSED\n")
-            print(" - \(decodedData) \n")
-        } else {
-            print("    decodedData - FAILED\n")
         }
         
         
@@ -227,11 +202,8 @@ class MovieTests: XCTestCase {
                                                              genre_ids: [3, 5],
                                                              release_date: "2020-4-15")]
         guard let recMovieString = movieCD.encodeReccomendedMovies(recMovies) else { return }
-        print("\nRecMovies: \(recMovieString)\n")
-        
         if let decodedData = movieCD.decodeReccomendedMovies(recMovieString) {
             decodedMovies = decodedData
-            print("\n movies: \(decodedMovies)")
         }
         XCTAssertEqual(recMovies, decodedMovies)
     }
@@ -253,10 +225,8 @@ class MovieTests: XCTestCase {
                                                                             providerID: 3,
                                                                             providerName: "Provider")])
         guard let purchaseLinkString = movieCD.encodeWatchProviders(watchProviders) else { return }
-        print("\n PurchaseLinkString: \(purchaseLinkString) \n")
         if let decodedData = movieCD.decodeWatchProviders(purchaseLinkString) {
             decodedWatchProviders = decodedData
-            print("\n decodedWatchProviders: \(decodedWatchProviders!) \n")
         }
         XCTAssertEqual(watchProviders, decodedWatchProviders)
     }
@@ -385,17 +355,17 @@ class ArrayTests: XCTestCase {
         for i in 0...30 {
             testArray.limited(append: i)
         }
-        print("testArray.count \(testArray.count)")
         XCTAssertEqual(testArray.count, 25, ".limited(append: ) failed, array.count: \(testArray.count)")
     }
     
 }
 
-class SeriesTests: XCTestCase {
+class SeriesTests: XCTestCase { 
     
     let movieStore = MovieStore()
     let seriesDB = SeriesStore()
     let theGoodDoctorID = 61231
+    
     
     // Test if we can encode and decode TVSeriesCast
     func testTVCastEncoding() {
@@ -410,7 +380,6 @@ class SeriesTests: XCTestCase {
     // Test fetching TVSeriesCast
     func testFetchingForTVSeriesCast() {
         movieStore.fetchTVSeriesCredits(id: theGoodDoctorID)
-        print("\n goodDoctorCast.count = \(movieStore.tvSeriesCast.count)\n")
         XCTAssertFalse(movieStore.tvSeriesCast.count == 0)
         
         

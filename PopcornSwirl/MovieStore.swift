@@ -63,21 +63,14 @@ extension MovieStore {
                 
         AF.request( popMovieRequest ).responseJSON {
             response in
-            
             guard let json = response.data else { return }
-            
             do {
                 let decodedMovies = try self.decoder.decode(Popular.self, from: json)
-                
-                
                 self.popularMovies = decodedMovies.results
-                
             } catch {
                 print(error)
             } // do / catch
-
         } // request
-        
     } // fetchPopularMovies
     
     // Get movies after fetchPopularMovies is finished retrieving data
@@ -149,11 +142,7 @@ extension MovieStore {
         AF.request( upcomingMovieRequest ).responseJSON { response in
             
             
-            guard let json = response.data else {
-                print("Upcoming movie response is nil ")
-                return
-            }
-            
+            guard let json = response.data else { return }
             do {
                 let movies = try self.decoder.decode(UpcomingSchema.self, from: json)
                 
@@ -205,8 +194,6 @@ extension MovieStore {
                 if let cast = movieCredits.cast {
                     self.movieCast.limitedAppend(contents: cast)
                 }
-                
-                print("cast count: \(self.movieCast.count)")
                 
                 for member in movieCredits.crew {
                     if member.job == "Director" {
@@ -272,7 +259,7 @@ extension MovieStore {
             actors.limited(append: movieCast[i])
         }
 
-        print("extractedMovieCast.count: \(actors.count)")
+        
         return actors
     }
     
@@ -284,11 +271,7 @@ extension MovieStore {
             let imageRequest = "https://api.themoviedb.org/3/person/\(castMember.id)/images?api_key=ebccbee67fef37cc7a99378c44af7d33"
             AF.request( imageRequest ).responseJSON { response in
                 
-                guard let json = response.data else {
-                    print("No response for Actor image request ")
-                    return }
-                
-                
+                guard let json = response.data else { return }
                 do {
                     let results = try self.decoder.decode(ActorSchema.self, from: json)
                     
@@ -338,7 +321,7 @@ extension MovieStore {
             
             imageDict[id] = path
         }
-//        print("Test 3 - imageDict: \(imageDict.count)")
+
         return imageDict
     }
     
@@ -413,7 +396,6 @@ extension MovieStore {
                                    birthDate: details.birthday ?? nil,
                                    birthPlace: details.place_of_birth ?? nil,
                                    bio: details.biography)
-                print("updatedActor: \(actor.name ?? "nil"), \(actor.id), \(actor.imagePath ?? "nil"), \(actor.deathDate ?? "nil"), \(actor.birthDate ?? "nil"), \(actor.birthPlace ?? "nil"), \(actor.biography ?? "nil")")
             } catch {
                 print(error)
             }
@@ -445,18 +427,8 @@ extension MovieStore {
                 
                 let searchResults = try self.decoder.decode(MovieSearch.self, from: json)
                 
-                guard let results = searchResults.results else {
-                    print("No movie results found")
-                    return }
-                
-                self.movieSearchResults = results
-                
-                print("Movie Query Result Count:  \(self.movieSearchResults.count)")
-                for movie in self.movieSearchResults {
-                    print(movie.title)
-                    
-                }
-                
+                guard let results = searchResults.results else { return }
+                self.movieSearchResults = results                
             } catch {
                 print(error)
             }
@@ -495,10 +467,7 @@ extension MovieStore {
         
         AF.request( request ).responseJSON { response in
             
-            guard let json = response.data else {
-                print("No Links for Movie Purchase Found")
-                return
-            }
+            guard let json = response.data else { return }
             
             do {
                 
@@ -506,8 +475,6 @@ extension MovieStore {
                 
                 guard let resultsResponse = results.results else { return }
                 guard let usWatchProviders = resultsResponse.us else { return }
-                
-                print("USProviders: \(usWatchProviders)")
                 
                 self.watchProviders = usWatchProviders 
                 let movie = self.movieCD.fetchMovie(uuid: id)
@@ -600,7 +567,6 @@ extension MovieStore {
                     let fetchedMovie = movieCD.fetchMovie(uuid: movie.id)
                     let genresString = movieCD.encodeGenres(movie.genre_ids)
                     
-//                    movieCD.updatePropertiesFor(movie: fetchedMovie, with: movie)
                                     movieCD.update(movie: fetchedMovie,
                                                    category: .popular,
                                                    title: movie.title,
@@ -609,10 +575,9 @@ extension MovieStore {
                                                    genres: genresString,
                                                    releaseDate: movie.release_date,
                                                    voteAverage: movie.vote_average)
-                    print("FetchedMovie: \(fetchedMovie)")
+                    
                 }
             }
-//            removeOldMovies(from: .popular)
             
             
         case .upcomingMovie:
@@ -634,7 +599,7 @@ extension MovieStore {
                                releaseDate: movie.release_date,
                                voteAverage: movie.vote_average)
             }
-//            removeOldMovies(from: .upcoming)
+
             
             
         case .recommendedMovie:
@@ -812,7 +777,6 @@ extension MovieStore {
             if movieCD.popularMovies.count != 0 {
                 movies = movieCD.popularMovies
             }
-            print("SavedPopularMovies.count: \(movies.count)")
             
             
         case .upcomingMovie:
@@ -849,7 +813,7 @@ extension MovieStore {
     /// fetch credits for TV Series
     func fetchTVSeriesCredits(id: Int) {
         // https://developers.themoviedb.org/3/tv/get-tv-credits
-        let tvSeriesCreditRequest = "https://api.themoviedb.org/3/tv/\(id)/credits?api_key=\(MovieStoreKey.apiKey.rawValue)&language=en-US"
+        let tvSeriesCreditRequest = "https://api.themoviedb.org/3/tv/\(id)/credits?api_key=ebccbee67fef37cc7a99378c44af7d33&language=en-US"
         AF.request( tvSeriesCreditRequest ).responseJSON { response in
             guard let json = response.data else { return }
             do {
@@ -861,8 +825,6 @@ extension MovieStore {
                 if let encodedCast = self.seriesStore.encodeTVSeriesCast(self.tvSeriesCast) {
                     self.seriesStore.update(series: series, cast: encodedCast)
                 }
-                
-                
             } catch {
                 print(error)
             }
