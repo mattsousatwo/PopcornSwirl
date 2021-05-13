@@ -20,7 +20,7 @@ struct Home: View {
     
     var body: some View {
         
-        // MARK: NAVLINK TEST -
+        
 //        NavigationView {
             
             ZStack {
@@ -43,7 +43,7 @@ struct Home: View {
                         
                         
                     } // VStack
-                    // MARK: NAVLINK TEST -
+                    
                     .navigationBarTitle("Home", displayMode: .inline)
                     
                     
@@ -51,7 +51,6 @@ struct Home: View {
                 } // scroll
                 .navigationBarBackButtonHidden(false)
             } // Z Stack
-            // MARK: NAVLINK TEST -
 //        } // Nav
         
     } // body

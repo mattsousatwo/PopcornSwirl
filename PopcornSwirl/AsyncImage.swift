@@ -38,3 +38,4 @@ struct AsyncImage<Placeholder: View>: View {
         }
     }
 }
+

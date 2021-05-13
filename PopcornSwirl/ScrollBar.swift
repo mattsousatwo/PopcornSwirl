@@ -36,17 +36,17 @@ struct ScrollBar: View, Equatable {
     var movies: [Movie]? {
         switch type {
         case .popularMovie:
-            return movieStore.movieForBar(.popularMovie)
+            return movieStore.moviesForBar(.popularMovie)
         case .upcomingMovie:
-            return movieStore.movieForBar(.upcomingMovie)
+            return movieStore.moviesForBar(.upcomingMovie)
         case .recommendedMovie:
-            return movieStore.movieForBar(.recommendedMovie, id: id)
+            return movieStore.moviesForBar(.recommendedMovie, id: id)
         case .actors:
             return nil
         case .actorMovie:
-            return movieStore.movieForBar(.actorMovie, id: id)
+            return movieStore.moviesForBar(.actorMovie, id: id)
         case .actorTV:
-            return movieStore.movieForBar(.actorTV, id: id)
+            return movieStore.moviesForBar(.actorTV, id: id)
         }
     }
     

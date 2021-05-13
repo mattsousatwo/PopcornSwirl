@@ -34,8 +34,6 @@ struct CardRow: View {
         
         GeometryReader { geometry in
             
-            
-            
             if showResults == true {
                 VStack {
                     HStack {

@@ -23,9 +23,14 @@ struct CommentView: View {
         self.movie = movie
         self._isPresented = isPresented
         
-        let dividedRating = movie.voteAverage / 2
+        var rating = 0.0
+        if movie.rating == 0 {
+            rating = movie.voteAverage / 2
+        } else {
+            rating = movie.rating
+        }
         
-        _value = State<Double>.init(initialValue: dividedRating)
+        _value = State<Double>.init(initialValue: rating)
         
         if let comment = movie.comment {
             _text = State<String>.init(initialValue: comment)

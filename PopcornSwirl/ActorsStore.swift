@@ -145,7 +145,8 @@ extension ActorsStore {
         }
     }
     
-    func fetchActorWith(id: Int) -> Actor { // used a lot
+    /// Use id to fetch specific actor
+    func fetchActorWith(id: Int) -> Actor {
         var actorsArray: [Actor] = []
         let request: NSFetchRequest<Actor> = Actor.fetchRequest()
         
@@ -166,6 +167,7 @@ extension ActorsStore {
         
     }
     
+    /// Fetch array of actors with [ids]
     func fetchAllActorsWith(ids: [Int]) -> [Actor] {
         var actorsArray: [Actor] = []
         let request: NSFetchRequest<Actor> = Actor.fetchRequest()

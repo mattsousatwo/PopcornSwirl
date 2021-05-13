@@ -13,7 +13,6 @@ struct MainTabView: View {
     
     
     var body: some View {
-        // MARK: NAVLINK TEST -
         NavigationView {
             TabView {
                 Home()

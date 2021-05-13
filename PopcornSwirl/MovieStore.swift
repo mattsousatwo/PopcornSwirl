@@ -769,7 +769,7 @@ extension MovieStore {
     
     
     // Get all Movies for bar type - use extractIDsFor
-    func movieForBar(_ type: ScrollBarType, id searchID: Int = 0) -> [Movie] {
+    func moviesForBar(_ type: ScrollBarType, id searchID: Int = 0) -> [Movie] {
         var movies: [Movie] = []
         switch type {
         case .popularMovie:
