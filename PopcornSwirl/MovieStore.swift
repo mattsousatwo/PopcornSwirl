@@ -110,6 +110,7 @@ extension MovieStore {
             
             let movie = self.movieCD.fetchMovie(uuid: id)
             if let recMovieString = self.movieCD.encodeReccomendedMovies(self.recommendedMovies) {
+             
                 self.movieCD.update(movie: movie, recommendedMovies: recMovieString)
             }
             
