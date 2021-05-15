@@ -15,9 +15,7 @@ struct PopularWidgetView: View, Equatable {
         return lhs.reference == rhs.reference
     }
     
-    
     let reference: PopularReference
-    let image: UIImage
     
     
     var backgroundColor: some View {
@@ -30,7 +28,7 @@ struct PopularWidgetView: View, Equatable {
             backgroundColor
             VStack {
 //                URLImage(url: URL(string: ("https://image.tmdb.org/t/p/original" + reference.poster)), width: 80, height: 120)
-                Image(uiImage: image)
+                Image(uiImage: reference.poster)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 80, height: 120)

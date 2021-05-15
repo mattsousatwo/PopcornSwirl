@@ -36,7 +36,7 @@ struct Provider: IntentTimelineProvider {
             case .Failure:
                 entry = SimpleEntry(date: Date(),
                                     reference: PopularReference(poster: UIImage(named:"placeholder")!))
-                policy = .after(Calendar.current.date(byAdding: .second, value: 10, to: Date())!)
+                policy = .after(Calendar.current.date(byAdding: .minute, value: 10, to: Date())!)
                 break
             case .Success(let image, let title, let description):
                 entry = SimpleEntry(date: Date(),
@@ -58,14 +58,22 @@ struct SimpleEntry: TimelineEntry {
 }
 
 struct PopularWidgetEntryView : View {
+    @Environment(\.widgetFamily) var family: WidgetFamily
+    
     var entry: Provider.Entry
 
+    @ViewBuilder
     var body: some View {
         
 //        Text(entry.date, style: .time)
 //        StarBar(value: 5)
+        switch family {
+        case .systemMedium:
+            MediumPopularWidgetView(reference: entry.reference)
+        default:
+            PopularWidgetView(reference: entry.reference)
+        }
         
-        PopularWidgetView(reference: entry.reference, image: entry.reference.poster)
             
     }
 }
@@ -81,7 +89,7 @@ struct PopularWidget: Widget {
         }
         .configurationDisplayName("Most Popular Movie")
         .description("Updated each day to give you access to the most popular movie.")
-        .supportedFamilies([.systemSmall])
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
 //
