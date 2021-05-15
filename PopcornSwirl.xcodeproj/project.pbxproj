@@ -42,8 +42,8 @@
 		6040CA0A264ED23000DDFFF5 /* TVSeriesCredits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040CA09264ED23000DDFFF5 /* TVSeriesCredits.swift */; };
 		6040CA0F264ED24700DDFFF5 /* RecommendedSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040CA0E264ED24700DDFFF5 /* RecommendedSeries.swift */; };
 		6040CA14264ED25A00DDFFF5 /* SeriesProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040CA13264ED25A00DDFFF5 /* SeriesProfile.swift */; };
-		6040CA35264ED43A00DDFFF5 /* PopularWidgetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040CA34264ED43A00DDFFF5 /* PopularWidgetManager.swift */; };
-		6040CA39264ED47200DDFFF5 /* PopularWidgetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040CA34264ED43A00DDFFF5 /* PopularWidgetManager.swift */; };
+		6040CA35264ED43A00DDFFF5 /* PopularReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040CA34264ED43A00DDFFF5 /* PopularReference.swift */; };
+		6040CA39264ED47200DDFFF5 /* PopularReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040CA34264ED43A00DDFFF5 /* PopularReference.swift */; };
 		6040CA89264ED9B200DDFFF5 /* PopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040C9D4264ED0E700DDFFF5 /* PopularMovies.swift */; };
 		6040CA91264F1D9500DDFFF5 /* WidgetImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040CA90264F1D9500DDFFF5 /* WidgetImageProvider.swift */; };
 		6040CA95264F240C00DDFFF5 /* WidgetImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040CA90264F1D9500DDFFF5 /* WidgetImageProvider.swift */; };
@@ -152,7 +152,7 @@
 		6040CA09264ED23000DDFFF5 /* TVSeriesCredits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVSeriesCredits.swift; sourceTree = "<group>"; };
 		6040CA0E264ED24700DDFFF5 /* RecommendedSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedSeries.swift; sourceTree = "<group>"; };
 		6040CA13264ED25A00DDFFF5 /* SeriesProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesProfile.swift; sourceTree = "<group>"; };
-		6040CA34264ED43A00DDFFF5 /* PopularWidgetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularWidgetManager.swift; sourceTree = "<group>"; };
+		6040CA34264ED43A00DDFFF5 /* PopularReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularReference.swift; sourceTree = "<group>"; };
 		6040CA90264F1D9500DDFFF5 /* WidgetImageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetImageProvider.swift; sourceTree = "<group>"; };
 		6040CA9C264F5B6C00DDFFF5 /* MediumPopularWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumPopularWidgetView.swift; sourceTree = "<group>"; };
 		604AC744261B847E0042BF4E /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
@@ -236,13 +236,12 @@
 		60094D72264CD30D003612C6 /* PopularWidget */ = {
 			isa = PBXGroup;
 			children = (
+				6024B78226502EDD00E5AAB3 /* Views */,
 				6040CA25264ED3C600DDFFF5 /* Support Files */,
 				60094D73264CD30D003612C6 /* PopularWidget.swift */,
 				60094D78264CD30D003612C6 /* Info.plist */,
-				60094D9B264CD5ED003612C6 /* SmallPopularWidgetView.swift */,
-				6040CA34264ED43A00DDFFF5 /* PopularWidgetManager.swift */,
+				6040CA34264ED43A00DDFFF5 /* PopularReference.swift */,
 				6040CA90264F1D9500DDFFF5 /* WidgetImageProvider.swift */,
-				6040CA9C264F5B6C00DDFFF5 /* MediumPopularWidgetView.swift */,
 			);
 			path = PopularWidget;
 			sourceTree = "<group>";
@@ -257,6 +256,15 @@
 				60634EBE25E7099500A07141 /* CoreDataCoder.swift */,
 			);
 			name = CoreData;
+			sourceTree = "<group>";
+		};
+		6024B78226502EDD00E5AAB3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				60094D9B264CD5ED003612C6 /* SmallPopularWidgetView.swift */,
+				6040CA9C264F5B6C00DDFFF5 /* MediumPopularWidgetView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		6029494825A1655000EB6842 /* CoredataClasses */ = {
@@ -625,7 +633,7 @@
 				60094DCA264CD9B4003612C6 /* EnvironmentValues+ImageCache.swift in Sources */,
 				60094DC9264CD9B4003612C6 /* AsyncImage.swift in Sources */,
 				6040CA95264F240C00DDFFF5 /* WidgetImageProvider.swift in Sources */,
-				6040CA39264ED47200DDFFF5 /* PopularWidgetManager.swift in Sources */,
+				6040CA39264ED47200DDFFF5 /* PopularReference.swift in Sources */,
 				60094DFB264CE564003612C6 /* Actor+CoreDataClass.swift in Sources */,
 				60094D79264CD30D003612C6 /* PopularWidget.intentdefinition in Sources */,
 				60094D74264CD30D003612C6 /* PopularWidget.swift in Sources */,
@@ -693,7 +701,7 @@
 				604AC745261B847E0042BF4E /* ImageCache.swift in Sources */,
 				6038CD9B25ACC6D70000A5CE /* AsyncImage.swift in Sources */,
 				6071DBC325BDD69900521D4E /* Actor+CoreDataClass.swift in Sources */,
-				6040CA35264ED43A00DDFFF5 /* PopularWidgetManager.swift in Sources */,
+				6040CA35264ED43A00DDFFF5 /* PopularReference.swift in Sources */,
 				60B9DF8F25D9466C00BDA067 /* LabeledImageCard.swift in Sources */,
 				61E3B53B2592F21100EE7F91 /* MainTabView.swift in Sources */,
 				604D5AC925D23A6F007547C6 /* Movie+CoreDataProperties.swift in Sources */,
