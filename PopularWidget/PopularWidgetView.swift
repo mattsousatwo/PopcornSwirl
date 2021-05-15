@@ -7,11 +7,21 @@
 //
 
 import SwiftUI
+import Combine
 
-struct PopularWidgetView: View {
+
+struct PopularWidgetView: View, Equatable {
+    static func == (lhs: PopularWidgetView, rhs: PopularWidgetView) -> Bool {
+        return lhs.reference == rhs.reference
+    }
+    
+    
+    let reference: PopularReference
+    let image: UIImage
+    
     
     var backgroundColor: some View {
-        return Color.blue
+        return Color.purpleBG
     }
     
     var body: some View {
@@ -19,17 +29,23 @@ struct PopularWidgetView: View {
         ZStack {
             backgroundColor
             VStack {
-                URLImage(url: URL(string:""), width: 80, height: 120)
-                Text("Mortal Kombat").font(.system(.subheadline, design: .rounded)).bold()
+//                URLImage(url: URL(string: ("https://image.tmdb.org/t/p/original" + reference.poster)), width: 80, height: 120)
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 80, height: 120)
+                    .clipShape( RoundedRectangle(cornerRadius: 10) )
+                Text(reference.title).font(.system(.footnote, design: .rounded)).bold()
                     .foregroundColor(.pGray3)
+                    .frame(width: 140, height: 16)
             }
         }
         
     }
 }
 
-struct PopularWidgetView_Previews: PreviewProvider {
-    static var previews: some View {
-        PopularWidgetView().previewLayout(.fixed(width: 169, height: 169))
-    }
-}
+//struct PopularWidgetView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PopularWidgetView(reference: PopularReference()).previewLayout(.fixed(width: 169, height: 169))
+//    }
+//}
