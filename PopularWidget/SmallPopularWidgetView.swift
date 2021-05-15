@@ -10,8 +10,8 @@ import SwiftUI
 import Combine
 
 
-struct PopularWidgetView: View, Equatable {
-    static func == (lhs: PopularWidgetView, rhs: PopularWidgetView) -> Bool {
+struct SmallPopularWidgetView: View, Equatable {
+    static func == (lhs: SmallPopularWidgetView, rhs: SmallPopularWidgetView) -> Bool {
         return lhs.reference == rhs.reference
     }
     
@@ -31,11 +31,19 @@ struct PopularWidgetView: View, Equatable {
                 Image(uiImage: reference.poster)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 80, height: 120)
-                    .clipShape( RoundedRectangle(cornerRadius: 10) )
-                Text(reference.title).font(.system(.footnote, design: .rounded)).bold()
-                    .foregroundColor(.pGray3)
-                    .frame(width: 140, height: 16)
+                    .frame(width: 120, height: 120)
+                    .clipShape( RoundedRectangle(cornerRadius: 20) )
+                if reference.title != "" {
+                    Text(reference.title).font(.system(.footnote, design: .rounded)).bold()
+                        .foregroundColor(.pGray3)
+                        .frame(width: 140, height: 16)
+
+                } else {
+                    RoundedRectangle(cornerRadius: 5)
+                        .foregroundColor(.white)
+                        .opacity(0.4)
+                        .frame(width: 130, height: 18)
+                }
             }
         }
         

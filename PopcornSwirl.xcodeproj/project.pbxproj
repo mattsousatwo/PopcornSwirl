@@ -16,8 +16,8 @@
 		60094D7E264CD30D003612C6 /* PopularWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 60094D6D264CD30D003612C6 /* PopularWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		60094D93264CD51B003612C6 /* Star.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617B6E15251AA0C300BCF757 /* Star.swift */; };
 		60094D97264CD553003612C6 /* Colors+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617B6E13251A937500BCF757 /* Colors+EXT.swift */; };
-		60094D9C264CD5ED003612C6 /* PopularWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60094D9B264CD5ED003612C6 /* PopularWidgetView.swift */; };
-		60094DA0264CD65E003612C6 /* PopularWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60094D9B264CD5ED003612C6 /* PopularWidgetView.swift */; };
+		60094D9C264CD5ED003612C6 /* SmallPopularWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60094D9B264CD5ED003612C6 /* SmallPopularWidgetView.swift */; };
+		60094DA0264CD65E003612C6 /* SmallPopularWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60094D9B264CD5ED003612C6 /* SmallPopularWidgetView.swift */; };
 		60094DC7264CD9B4003612C6 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038CD9525ACC6D70000A5CE /* ImageLoader.swift */; };
 		60094DC8264CD9B4003612C6 /* URLImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038CDAF25ACD4640000A5CE /* URLImage.swift */; };
 		60094DC9264CD9B4003612C6 /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038CD9725ACC6D70000A5CE /* AsyncImage.swift */; };
@@ -134,7 +134,7 @@
 		60094D75264CD30D003612C6 /* PopularWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = PopularWidget.intentdefinition; sourceTree = "<group>"; };
 		60094D76264CD30D003612C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		60094D78264CD30D003612C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		60094D9B264CD5ED003612C6 /* PopularWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularWidgetView.swift; sourceTree = "<group>"; };
+		60094D9B264CD5ED003612C6 /* SmallPopularWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallPopularWidgetView.swift; sourceTree = "<group>"; };
 		6038CD9525ACC6D70000A5CE /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		6038CD9625ACC6D70000A5CE /* EnvironmentValues+ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+ImageCache.swift"; sourceTree = "<group>"; };
 		6038CD9725ACC6D70000A5CE /* AsyncImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
@@ -239,7 +239,7 @@
 				6040CA25264ED3C600DDFFF5 /* Support Files */,
 				60094D73264CD30D003612C6 /* PopularWidget.swift */,
 				60094D78264CD30D003612C6 /* Info.plist */,
-				60094D9B264CD5ED003612C6 /* PopularWidgetView.swift */,
+				60094D9B264CD5ED003612C6 /* SmallPopularWidgetView.swift */,
 				6040CA34264ED43A00DDFFF5 /* PopularWidgetManager.swift */,
 				6040CA90264F1D9500DDFFF5 /* WidgetImageProvider.swift */,
 				6040CA9C264F5B6C00DDFFF5 /* MediumPopularWidgetView.swift */,
@@ -629,7 +629,7 @@
 				60094DFB264CE564003612C6 /* Actor+CoreDataClass.swift in Sources */,
 				60094D79264CD30D003612C6 /* PopularWidget.intentdefinition in Sources */,
 				60094D74264CD30D003612C6 /* PopularWidget.swift in Sources */,
-				60094DA0264CD65E003612C6 /* PopularWidgetView.swift in Sources */,
+				60094DA0264CD65E003612C6 /* SmallPopularWidgetView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,7 +640,7 @@
 				6040C9F1264ED1A000DDFFF5 /* UpcomingMovies.swift in Sources */,
 				6163E167256EDD7800268C3D /* MovieStore.swift in Sources */,
 				617B6E16251AA0C300BCF757 /* Star.swift in Sources */,
-				60094D9C264CD5ED003612C6 /* PopularWidgetView.swift in Sources */,
+				60094D9C264CD5ED003612C6 /* SmallPopularWidgetView.swift in Sources */,
 				609603A625DE436A003DCBAC /* Date+EXT.swift in Sources */,
 				6040C9E9264ED16E00DDFFF5 /* MovieSearch.swift in Sources */,
 				6040CA91264F1D9500DDFFF5 /* WidgetImageProvider.swift in Sources */,

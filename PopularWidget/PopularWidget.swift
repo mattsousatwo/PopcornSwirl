@@ -16,12 +16,12 @@ struct Provider: IntentTimelineProvider {
     
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(date: Date(),
-                    reference: PopularReference(poster: UIImage(named:"placeholder")!))
+                    reference: [PopularReference(poster: UIImage(named:"placeholder")!)])
     }
 
     func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
         let entry = SimpleEntry(date: Date(),
-                                reference: PopularReference(poster: UIImage(named:"placeholder")!))
+                                reference: [PopularReference(poster: UIImage(named:"placeholder")!)])
         completion(entry)
     }
 
@@ -35,12 +35,12 @@ struct Provider: IntentTimelineProvider {
             switch imageResponse {
             case .Failure:
                 entry = SimpleEntry(date: Date(),
-                                    reference: PopularReference(poster: UIImage(named:"placeholder")!))
+                                    reference: [PopularReference(poster: UIImage(named:"placeholder")!)])
                 policy = .after(Calendar.current.date(byAdding: .minute, value: 10, to: Date())!)
                 break
-            case .Success(let image, let title, let description):
+            case .Success(let reference):
                 entry = SimpleEntry(date: Date(),
-                                    reference: PopularReference(poster: image, title: title, description: description))
+                                    reference: reference)
                 policy = .after(Calendar.current.date(byAdding: .day, value: 1, to: Date())!)
                break
             }
@@ -54,7 +54,7 @@ struct Provider: IntentTimelineProvider {
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    public let reference: PopularReference
+    public let reference: [PopularReference]
 }
 
 struct PopularWidgetEntryView : View {
@@ -64,14 +64,16 @@ struct PopularWidgetEntryView : View {
 
     @ViewBuilder
     var body: some View {
-        
-//        Text(entry.date, style: .time)
-//        StarBar(value: 5)
+
         switch family {
         case .systemMedium:
-            MediumPopularWidgetView(reference: entry.reference)
+            if let firstRefrence = entry.reference.first {
+                MediumPopularWidgetView(reference: firstRefrence)
+            }
         default:
-            PopularWidgetView(reference: entry.reference)
+            if let firstRefrence = entry.reference.first {
+                SmallPopularWidgetView(reference: firstRefrence)
+            }
         }
         
             

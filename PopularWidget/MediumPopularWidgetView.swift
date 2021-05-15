@@ -25,18 +25,35 @@ struct MediumPopularWidgetView: View, Equatable {
                 Image(uiImage: reference.poster)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 120, height: 145)
-                    .clipShape( RoundedRectangle(cornerRadius: 12))
+                    .frame(width: 120, height: 120)
+                    .clipShape( RoundedRectangle(cornerRadius: 20))
                     .padding(.leading, 6)
                     .padding(.vertical, 5)
                 
                 VStack {
-                    Text(reference.title).font(.system(.headline, design: .rounded)).bold()
-                        .foregroundColor(.pGray3)
-                        
-                    Text(reference.description).lineLimit(4)
-                        .font(.system(size: 16, weight: .light, design: .rounded))
-                        .foregroundColor(.gray)
+                    if reference.title != "" {
+                        Text(reference.title).font(.system(.headline, design: .rounded)).bold()
+                            .lineLimit(2)
+                            .foregroundColor(.pGray3)
+                    } else {
+                        RoundedRectangle(cornerRadius: 5)
+                            .foregroundColor(.white)
+                            .opacity(0.4)
+                            .frame(width: 175, height: 20)
+                    }
+                    
+                    if reference.description != "" {
+                        Text(reference.description).lineLimit(4)
+                            .font(.system(size: 16, weight: .light, design: .rounded))
+                            .foregroundColor(.gray)
+                    } else {
+                        RoundedRectangle(cornerRadius: 5)
+                            .foregroundColor(.white)
+                            .opacity(0.4)
+                            .frame(width: 175, height: 80)
+                    }
+                    
+
                        
                 }
                 .frame(width: 175, height: 190, alignment: .leading)

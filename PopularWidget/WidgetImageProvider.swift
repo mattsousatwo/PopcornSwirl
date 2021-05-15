@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 enum WidgetImageResponse {
-    case Success(image: UIImage, title: String, description: String)
+    case Success(reference: [PopularReference])
     case Failure
 }
 
@@ -67,7 +67,8 @@ class WidgetImageProvider {
         }
         
         let image = UIImage(data: content)!
-        let response = WidgetImageResponse.Success(image: image, title: title, description: description)
+        let reference = PopularReference(poster: image, title: title, description: description)
+        let response = WidgetImageResponse.Success(reference: [reference])
         completion?(response)
     }
 }
